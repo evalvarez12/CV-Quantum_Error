@@ -16,116 +16,18 @@ import tools
 def displace(a, alpha):
     return (alpha*a.dag() - alpha.conjugate()*a).expm()
 
+
 def squeeze(a, z):
     return ((z.conjugate()*a**2 - z*(a.dag()**2))/2).expm()
 
-def beam_splitter(operators, theta, tensor=True):
-    """
-    Returns the corresponding beam splitter operator.
-    Asummes symmetric beam splitter
-    
-    Returns
-    --------
-    bs_ops : qobj - Operator corresponding to the beam splitter transform
-    """
-#    U = np.array([[np.cos(theta) + 1j*np.sin(theta)] , [1j*np.sin(theta) + np.cos(theta)]])
-    
-    a, b = operators
-    
-    if tensor:
-        # Tensoring additional identities required to form the new Hlbert space
-        N = a.dims[0][0]
-        identity = qt.identity(N)
-        a = qt.tensor(a, identity)
-        b = qt.tensor(identity, b)
-    
-    operators_out = [a*np.cos(theta) + b*1j*np.sin(theta), a*1j*np.sin(theta) + b*np.cos(theta)]
-    return operators_out
 
-
-def tritter(operators, theta1, theta2, tensor=True):
-    """
-           |    
-    c ->---/----->
-           |
-           |
-    b ->---/----->
-           |
-           ^
-           a
-    """
-    a, b, c = operators
-    a, b = beam_splitter([a, b], theta1, tensor)
+def tmsqueeze(N, z):
+    a = qt.tensor(qt.destroy(N), qt.identity(N))
+    b = qt.tensor(qt.identity(N), qt.destroy(N))
     
-    if tensor:
-        # Tensor additional identityes reqiured
-        c = qt.tensor(qt.identity(c.dims[0][0]), c)
+    S = (z.conjugate()*a*b - z*a.dag()*b.dag()).expm()
+    return S
     
-    a, c = beam_splitter([a, c], theta2, tensor)
-    
-    if tensor:
-        b = qt.tensor(b, qt.identity(b.dims[0][0]))
-    
-    return [a, b, c]
-
-
-def beam_splitter_Uoperator(N, theta, pos=[0,1]):
-    Nextra = max(pos)
-#    a = qt.tensor(qt.destroy(N), qt.identity(N))
-    a = tools.tensor(qt.destroy(N), N, pos[0], Nextra)
-    b = tools.tensor(qt.destroy(N), N, pos[1], Nextra)
-#    b = qt.tensor(qt.identity(N), qt.destroy(N))
-    
-    
-    # Define the mode-mixing Hamiltonian
-    H = (a.dag()*b + a*b.dag())
-    
-    # Unitary evolution
-    U = (-1j*theta*H).expm()
-    
-    return U
-
-
-def beam_splitter_applyU(rho, theta):
-    # Get unitary opertator
-    U = beam_splitter_Uoperator(rho.dims[0][0], theta)
-    
-    rho = U * rho * U.dag()
-    return rho
-
-
-def tritter_applyU(rho, theta1, theta2):
-    """
-           |    
-    c ->---/----->
-           |
-           |
-    b ->---/----->
-           |
-           ^
-           a
-    """
-    N = rho.dims[0][0]
-    
-    U1 = beam_splitter_Uoperator(N, theta1)
-    U1 = qt.tensor(U1, qt.identity(N))
-    U2 = beam_splitter_Uoperator(N, theta2)
-    U2 = qt.tensor(qt.identity(N), U2)
-
-    rho = U1 * rho * U1.dag()
-    rho = U2 * rho * U2.dag()
-
-
-
-
-def loss_channel(eta, a_in):
-    theta = np.arccos(np.sqrt(eta))
-    
-    a_noise =qt.destroy(a_in.dims[0][0])
-    
-    a_out, _ = beam_splitter([a_in, a_noise], theta)
-    return a_out
-
 
 def homodyne_operator2(N, phase, amplitude=1):
     z = amplitude*np.exp(1j*phase)
@@ -138,6 +40,7 @@ def homodyne_operator2(N, phase, amplitude=1):
     S = abs(z)*(X*np.sin(np.angle(z)) + Y*np.cos(np.angle(z)))
     
     return S
+
 
 def homodyne_operator(a, phase, amplitude=1):
     z = amplitude*np.exp(1j*phase)
@@ -156,8 +59,27 @@ def var_homodyne(state, phase, amplitude=1):
     
     return qt.expect(Shd*Shd, state) - qt.expect(Shd, state)**2
     
+
 def mean_homodyne(state, phase, amplitude=1):
     Shd = homodyne_operator2(state.dims[0][0], phase, amplitude)
     
     return qt.expect(Shd, state)
+
+
+def purify(rho):
+    eigenvals, eigenstates = rho.eigenstates()
+    
+    for i in range(len(eigenvals)):
+        eigenstates[i] = np.sqrt(eigenvals[i]) * qt.tensor(eigenstates[i], eigenstates[i])
+        
+    return sum(eigenstates)
+
+
+def photon_on_projector(N):
+    P = 0
+    for i in range(1, N):
+        P += qt.basis(N, i).dag()
+    return P 
+    
+    
 

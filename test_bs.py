@@ -8,6 +8,7 @@ Created on Mon Feb 18 14:36:08 2019
 import qutip as qt
 import numpy as np
 import operations as ops
+import beam_splitter as bs
 
 
 # Define some initail parameters
@@ -23,7 +24,7 @@ a = qt.destroy(N)
 b = qt.destroy(N)
 
 theta = np.pi/4
-a,b = ops.beam_splitter([a, b], theta)
+a,b = bs.beam_splitter([a, b], theta)
 
 # Hong-Ou-Mandel interference
 # Two photons enter both sides of a 50/50 bs
@@ -38,6 +39,6 @@ print(state * state.dag())
 state_sh = qt.basis(N, 1) * qt.basis(N, 1).dag()
 state_sh = qt.tensor(state_sh, state_sh)
 print(state_sh)
-state_sh = ops.beam_splitter_applyU(state_sh, theta)
+state_sh = bs.beam_splitter_applyU(state_sh, theta)
 print(state_sh)
 

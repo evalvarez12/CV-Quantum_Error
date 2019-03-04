@@ -10,41 +10,96 @@ Created on Thu Feb 28 11:04:31 2019
 import numpy as np
 import qutip as qt
 import operations as ops
+import beam_splitter as bs
 import tools
 
 def scissor(rho_in, kappa):
+    """
+             D
+             |    
+  c=in  >----/-----> D
+             |
+             |
+  b=|0> ->---/-----> out
+             |
+             ^
+            a=|1>
+    """
     N = rho_in.dims[0][0]
-    b = qt.destroy(N)
+    N_modes = len(rho_in.dims[0])
+        
+    theta1 = np.arccos(np.sqrt(kappa))
+    theta2 = np.pi/4
+    
+    state_b = qt.basis(N) * qt.basis(N).dag()
+    state_a = qt.basis(N, 1) * qt.basis(N, 1).dag()
+    
+    rho = qt.tensor([state_a, state_b, rho_in])
+#    print(rho, rho.tr())
+    print(rho.dims, N_modes)
+    rho = bs.tritter_applyU(rho, theta1, theta2)
+#    print(rho, rho.tr())
+    
+    # Define the proyectors, in this case to |10>    
+    projector0 = qt.basis(N, 0).dag()
+    projector1 = qt.basis(N, 1).dag()
+    projector = qt.tensor([projector0, qt.identity(N), projector1])
+    if N_modes > 1:
+        projector = tools.tensor(projector, N, 0, N_modes-1)
+    
+    rho = projector * rho * projector.dag()
+    rho = rho/rho.tr()
+    
+    return rho
+
+def scissor_1NLA(rho_in, kappa, mu_aux):
+    N = rho_in.dims[0][0]
+    N_modes = len(rho_in.dims[0])
     
     theta1 = np.arccos(np.sqrt(kappa))
     theta2 = np.pi/4
-
-    # Operator space order:
-    # c -> c id id
-    # b -> id b id
-    # a -> id id a 
-    c, b, a = ops.tritter([b, b, b], theta1, theta2)
     
-    proyector0 = qt.basis(N)
-    proyector1 = qt.basis(N, 1)
-    proyector10 = qt.tensor([proyector0, qt.identity(N), proyector1])
+    state_b = qt.basis(N) * qt.basis(N).dag()
     
-    vacuum = qt.basis(N) * qt.basis(N).dag()
-    vacuum_b = tools.tensor(vacuum, [N]*2, 1)
-    vacuum_c = tools.tensor(vacuum, [N]*2, 0)
-        
     
-    print(proyector10.dims)
-    print(vacuum_b.dims)
-    print(vacuum_c.dims)
-    print(c.dims)
-    a_out = proyector10.dag()* rho_in * vacuum_b * c.dag() * vacuum_c * c * proyector10
-    return a_out
+    state_a = qt.tensor(state_b, state_b)
+    S = ops.tmsqueeze(N, mu_aux)
+    state_a = S * state_a * S.dag()
+#    state_a = qt.basis(N, 1) * qt.basis(N, 1).dag()
+    
+    rho = qt.tensor([state_a, state_b, rho_in])
+#    print(rho, rho.tr())
+    rho = bs.tritter_applyU(rho, theta1, theta2, pos=[0, 2, 3])
+#    print(rho, rho.tr())
+    
+    # Define the proyectors, in this case to |10>    
+    projector_0 = qt.basis(N, 0).dag()
+    projector_on = ops.photon_on_projector(N)
+#    proyector10 = qt.tensor([proyector0, qt.identity(N), proyector1])
+    projector = qt.tensor([projector_0, projector_on, qt.identity(N), projector_on])
+    
+    if N_modes > 1:
+        projector = tools.tensor(projector, N, 0, N_modes-1)
+    
+    rho = projector * rho * projector.dag()
+    rho = rho/rho.tr()
+    
+    return rho
+
+N =5
+kappa = .05
+
+a = qt.displace(N,1)
+
+state = qt.basis(N) * qt.basis(N).dag()
+D = qt.displace(N, 1)
+
+state = D * state * D.dag()
+print(state) 
 
 
-N =5 
-kappa = 0.5
-
-a = qt.destroy(N)
-
-print(scissor(a, kappa))
+print(scissor(state, kappa))
+#
+#mu_aux = 0.1
+#rho1NLA = scissor_1NLA(rho, kappa, mu_aux)
+#print(rho1NLA)
