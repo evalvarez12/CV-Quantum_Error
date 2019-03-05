@@ -31,8 +31,8 @@ def scissor(rho_in, kappa):
     theta1 = np.arccos(np.sqrt(kappa))
     theta2 = np.pi/4
     
-    state_b = qt.basis(N) * qt.basis(N).dag()
     state_a = qt.basis(N, 1) * qt.basis(N, 1).dag()
+    state_b = qt.basis(N) * qt.basis(N).dag()
     
     rho = qt.tensor([state_a, state_b, rho_in])
 #    print(rho, rho.tr())
@@ -46,7 +46,8 @@ def scissor(rho_in, kappa):
     projector = qt.tensor([projector0, qt.identity(N), projector1])
     if N_modes > 1:
         projector = tools.tensor(projector, N, 0, N_modes-1)
-    
+
+#    print(projector)    
     rho = projector * rho * projector.dag()
     rho = rho/rho.tr()
     
@@ -87,7 +88,7 @@ def scissor_1NLA(rho_in, kappa, mu_aux):
     return rho
 
 N =5
-kappa = .05
+kappa = .5
 
 a = qt.displace(N,1)
 
@@ -95,6 +96,8 @@ state = qt.basis(N) * qt.basis(N).dag()
 D = qt.displace(N, 1)
 
 state = D * state * D.dag()
+
+#state = qt.rand_dm(N)
 print(state) 
 
 

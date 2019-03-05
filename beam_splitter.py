@@ -63,9 +63,10 @@ def tritter(operators, theta1, theta2, tensor=True):
 
 
 def beam_splitter_Uoperator(N, theta, pos=[0,1], N_modes=2):
+    print(pos)
 #    a = qt.tensor(qt.destroy(N), qt.identity(N))
-    a = tools.tensor(qt.destroy(N), N, pos[0], N_modes-1)
-    b = tools.tensor(qt.destroy(N), N, pos[1], N_modes-1)
+    a = tools.tensor(qt.destroy(N), N, pos[0], N_modes)
+    b = tools.tensor(qt.destroy(N), N, pos[1], N_modes)
 #    b = qt.tensor(qt.identity(N), qt.destroy(N))
     
     

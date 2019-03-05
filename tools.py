@@ -12,13 +12,14 @@ import numpy as np
 import qutip as qt
 
 
-def tensor(operator, N, pos, extraN):
+def tensor(operator, N, pos, Nmodes):
     """
     N:  size of the individual Hilbert space extra dimension
     pos: position of the operator relative to N_list
     
     """
-    N_list = [N]*extraN
+    # The list of extra Hilbert spaces to be tensored
+    N_list = [N]*(Nmodes - 1)
     
     
     if N_list[:pos]:
