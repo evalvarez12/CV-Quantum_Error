@@ -36,7 +36,6 @@ def scissor(rho_in, kappa):
     
     rho = qt.tensor([state_a, state_b, rho_in])
 #    print(rho, rho.tr())
-    print(rho.dims, N_modes)
     rho = bs.tritter_applyU(rho, theta1, theta2)
 #    print(rho, rho.tr())
     
@@ -100,6 +99,8 @@ state = D * state * D.dag()
 #state = qt.rand_dm(N)
 print(state) 
 
+
+result = scissor(state, kappa)
 
 print(scissor(state, kappa))
 #
