@@ -81,5 +81,10 @@ def photon_on_projector(N):
         P += qt.basis(N, i).dag()
     return P 
     
+
+def RCI(rho, pos_keep):
+    rho_a = rho.ptrace(pos_keep)
+    rci = qt.entropy_vn(rho_a) - qt.entropy_vn(rho)
+    return rci
     
 

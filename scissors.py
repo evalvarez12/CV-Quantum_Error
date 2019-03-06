@@ -17,13 +17,15 @@ def scissor(rho_in, kappa):
     """
              D
              |    
-  c=in  >----/-----> D
+  c=in  ->---/-----D
              |
              |
   b=|0> ->---/-----> out
              |
              ^
             a=|1>
+            
+    H = in * in_extra : only applies to the leftmost mode of the in state 
     """
     N = rho_in.dims[0][0]
     N_modes = len(rho_in.dims[0])
@@ -44,7 +46,7 @@ def scissor(rho_in, kappa):
     projector1 = qt.basis(N, 1).dag()
     projector = qt.tensor([projector0, qt.identity(N), projector1])
     if N_modes > 1:
-        projector = tools.tensor(projector, N, 0, N_modes-1)
+        projector = tools.tensor(projector, N, 0, N_modes)
 
 #    print(projector)    
     rho = projector * rho * projector.dag()
@@ -53,6 +55,19 @@ def scissor(rho_in, kappa):
     return rho
 
 def scissor_1NLA(rho_in, kappa, mu_aux):
+    """
+             D
+             |    
+  c=in  ->---/----D
+             |
+             |
+  b=|0> ->--/-----> out
+             |
+             ^
+           a=TMSV ->----D
+            
+    H = in * in_extra : only applies to the leftmost mode of the in state 
+    """
     N = rho_in.dims[0][0]
     N_modes = len(rho_in.dims[0])
     
@@ -79,30 +94,31 @@ def scissor_1NLA(rho_in, kappa, mu_aux):
     projector = qt.tensor([projector_0, projector_on, qt.identity(N), projector_on])
     
     if N_modes > 1:
-        projector = tools.tensor(projector, N, 0, N_modes-1)
+        projector = tools.tensor(projector, N, 0, N_modes)
     
     rho = projector * rho * projector.dag()
     rho = rho/rho.tr()
     
     return rho
 
-N =5
-kappa = .05
-
-a = qt.displace(N,1)
-
-state = qt.basis(N) * qt.basis(N).dag()
-D = qt.displace(N, 1)
-
-state = D * state * D.dag()
-
-#state = qt.rand_dm(N)
-print(state) 
-
-
-result = scissor(state, kappa)
-
-print(scissor(state, kappa))
+#N =5
+#kappa = .05
+#
+#a = qt.displace(N,1)
+#
+#vacuum = qt.basis(N) * qt.basis(N).dag()
+#D = qt.displace(N, 1)
+#
+#rho = D * vacuum * D.dag()
+#
+##state = qt.rand_dm(N)
+#
+##rho = qt.tensor(rho, vacuum)
+#print(rho) 
+#
+#result = scissor(rho, kappa)
+#
+#print(result)
 #
 #mu_aux = 0.1
 #rho1NLA = scissor_1NLA(rho, kappa, mu_aux)

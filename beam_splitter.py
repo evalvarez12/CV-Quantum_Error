@@ -85,10 +85,10 @@ def beam_splitter_Uoperator(N, theta, pos=[0,1], N_modes=2):
     return U
 
 
-def beam_splitter_applyU(rho, theta):
+def beam_splitter_applyU(rho, theta, pos=[0,1], N_modes=2):
 
     # Get unitary opertator
-    U = beam_splitter_Uoperator(rho.dims[0][0], theta)
+    U = beam_splitter_Uoperator(rho.dims[0][0], theta, pos, N_modes)
     
     rho = U * rho * U.dag()
     return rho
@@ -126,3 +126,20 @@ def loss_channel(eta, a_in):
     a_noise =qt.destroy(a_in.dims[0][0])
     
     a_out, _ = beam_splitter([a_in, a_noise], theta)
+    
+
+def loss_channel_applyU(rho_in, pos, eta):
+    N = rho_in.dims[0][0]
+    N_modes = len(rho_in.dims[0])
+    
+    theta = np.arccos(np.sqrt(eta))
+    
+    vacuum = qt.basis(N) * qt.basis(N).dag()
+
+    rho = qt.tensor(rho_in, vacuum)
+    
+    rho = beam_splitter_applyU(rho, theta, [pos, N_modes], N_modes+1)
+    
+    rho = rho.ptrace(range(N_modes))
+    
+    return rho
