@@ -87,7 +87,7 @@ def scissor_1NLA(rho_in, kappa, mu_aux):
     return rho
 
 N =5
-kappa = .5
+kappa = .05
 
 a = qt.displace(N,1)
 

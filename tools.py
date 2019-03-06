@@ -22,12 +22,12 @@ def tensor(operator, N, pos, Nmodes):
     N_list = [N]*(Nmodes - 1)
     
     
-    if N_list[:pos]:
-        identity_right = qt.identity(N_list[:pos])
+    if N_list[pos:]:
+        identity_right = qt.identity(N_list[pos:])
         operator = qt.tensor(operator, identity_right)
 
-    if N_list[pos:]:
-        identity_left = qt.identity(N_list[pos:])    
+    if N_list[:pos]:
+        identity_left = qt.identity(N_list[:pos])    
         operator = qt.tensor(identity_left, operator)
     
     return operator
