@@ -29,9 +29,9 @@ vacuum = qt.tensor(vacuum, vacuum)
 
 results = []
 
-for kappa in np.linspace(0.001, 0.01, 10):
+for kappa in np.linspace(0.001, 0.01, 20):
     r2 = []
-    for mu in np.linspace(0.001, .1, 10):
+    for mu in np.linspace(0.001, .1, 20):
 
         S =  ops.tmsqueeze(N, mu)
         
