@@ -14,7 +14,7 @@ import scissors
 import beam_splitter as bs
 
 # Initial parameters
-N = 10
+N = 5
 
 # Sweep parameters
 kappa = 0.005
