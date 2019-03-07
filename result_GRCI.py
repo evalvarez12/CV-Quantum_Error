@@ -14,7 +14,7 @@ import scissors
 import beam_splitter as bs
 
 # Initial parameters
-N = 5
+N = 10
 
 # Sweep parameters
 kappa = 0.005
@@ -27,14 +27,29 @@ eta = 0.01
 vacuum = qt.basis(N) * qt.basis(N).dag()
 vacuum = qt.tensor(vacuum, vacuum)
 
-S =  ops.tmsqueeze(N, mu)
+results = []
 
-rho_in = S * vacuum * S.dag()
+for kappa in np.linspace(0.001, 0.01, 10):
+    r2 = []
+    for mu in np.linspace(0.001, .1, 10):
 
-rho = bs.loss_channel_applyU(rho_in, 0, eta)
+        S =  ops.tmsqueeze(N, mu)
+        
+        rho_in = S * vacuum * S.dag()
+        
+        rho = bs.loss_channel_applyU(rho_in, 0, eta)
+        
+        rho = scissors.scissor_1NLA(rho, kappa, mu_aux)
+        
+        
+        rci = ops.RCI(rho, 1)
 
-rho = scissors.scissor_1NLA(rho, kappa, mu_aux)
+        r2 +=[rci]
+    results += [r2]
 
 
-rci = ops.RCI(rho, 1)
-print(rci)
+
+filename = "rci_plot_1NLA"
+
+results = np.array(results)
+np.save(filename, results)
