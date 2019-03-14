@@ -2,6 +2,10 @@
 """
 Functions to work on CV systems using covariance matrices
 
+Note  r = (x1, x2, ...,xN, p1, p2, ..., pN) and direct sumation is used
+though the code
+
+
 Created on Wed Mar 13 11:04:05 2019
 
 @author: Eduardo Villasenor
@@ -25,13 +29,15 @@ def direct_sum(matrices, positions, nblocks):
     N = int(np.sqrt(zero_mat.size))
     identity = np.identity(N)
     
+    positions = np.array(positions)
     
     all_rows = []
     # TODO: remove this for
     for i in range(nblocks):
         row = [zero_mat]*nblocks
         if i in positions:
-            row[i] = matrices[np.where(i in positions)[0][0]]
+            pos = np.where(i == positions)[0][0]
+            row[i] = matrices[pos]
         else:
             row[i] = identity
         
@@ -72,6 +78,15 @@ def beam_splitter_symplectic(theta, positions=[0,1], nmodes=2):
     # Apply the direct sum to obtain the full transformation
     S = direct_sum([S, S], positions, nmodes)
     return S
+
+def tmsv(s):
+    # TMSV states are always subsequent in their indices
+    Vp = np.array([[np.cosh(2*s), np.sinh(2*s)], [np.sinh(2*s), np.cosh(2*s)]])
+    Vm = np.array([[np.cosh(2*s), -np.sinh(2*s)], [-np.sinh(2*s), np.cosh(2*s)]])
+    zeros = np.zeros((2, 2))
+    
+    return np.block([[Vp, zeros], [zeros, Vm]])
+    
 
 #a = np.array([[1,2],[3,4]])
 #
