@@ -13,7 +13,7 @@ import operations as ops
 import beam_splitter as bs
 import tools
 
-def scissor(rho_in, kappa):
+def exact(rho_in, kappa):
     """
              D
              |    
@@ -54,7 +54,7 @@ def scissor(rho_in, kappa):
     
     return rho
 
-def scissor_1NLA(rho_in, kappa, mu_aux):
+def NLA(rho_in, kappa, mu_aux):
     """
              D
              |    
@@ -101,25 +101,4 @@ def scissor_1NLA(rho_in, kappa, mu_aux):
     
     return rho
 
-#N =5
-#kappa = .05
-#
-#a = qt.displace(N,1)
-#
-#vacuum = qt.basis(N) * qt.basis(N).dag()
-#D = qt.displace(N, 1)
-#
-#rho = D * vacuum * D.dag()
-#
-##state = qt.rand_dm(N)
-#
-##rho = qt.tensor(rho, vacuum)
-#print(rho) 
-#
-#result = scissor(rho, kappa)
-#
-#print(result)
-#
-#mu_aux = 0.1
-#rho1NLA = scissor_1NLA(rho, kappa, mu_aux)
-#print(rho1NLA)
+

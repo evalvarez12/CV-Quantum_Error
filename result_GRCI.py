@@ -10,7 +10,7 @@ Created on Wed Mar  6 16:19:53 2019
 import qutip as qt
 import numpy as np
 import operations as ops
-import scissors
+import scissor
 import beam_splitter as bs
 
 # Initial parameters
@@ -32,14 +32,15 @@ results = []
 for kappa in np.linspace(0.001, 0.01, 20):
     r2 = []
     for mu in np.linspace(0.001, .1, 20):
-
-        S =  ops.tmsqueeze(N, mu)
+        
+        s = np.arcsinh(np.sqrt(mu))
+        S =  ops.tmsqueeze(N, s)
         
         rho_in = S * vacuum * S.dag()
         
         rho = bs.loss_channel_applyU(rho_in, 0, eta)
         
-        rho = scissors.scissor_1NLA(rho, kappa, mu_aux)
+        rho = scissor.NLA(rho, kappa, mu_aux)
         
         
         rci = ops.RCI(rho, 1)
