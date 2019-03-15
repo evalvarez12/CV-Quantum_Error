@@ -13,62 +13,12 @@ Created on Wed Mar 13 11:04:05 2019
 
 
 import numpy as np
-
+import tools_cm as ts
 
 #
 #a = np.array([[1,2],[2,3]])
 #b = a*0
 #np.block([[a,b],[b,a]])
-
-def direct_sum(matrices, positions, nblocks):
-    # Check if arguments make sense
-    if max(positions) >= nblocks:
-        raise ValueError("direct_sum: postion out ot numbe blocks")
-    
-    zero_mat = np.zeros_like(matrices[0])
-    N = int(np.sqrt(zero_mat.size))
-    identity = np.identity(N)
-    
-    positions = np.array(positions)
-    
-    all_rows = []
-    # TODO: remove this for
-    for i in range(nblocks):
-        row = [zero_mat]*nblocks
-        if i in positions:
-            pos = np.where(i == positions)[0][0]
-            row[i] = matrices[pos]
-        else:
-            row[i] = identity
-        
-        all_rows += [row]
-        
-    return np.block(all_rows)
-        
-
-def kron(matrices):
-    if len(matrices) == 2:
-        return np.kron(matrices[0], matrices[1])
-    else:
-        return np.kron(matrices[0], kron(matrices[1:]))
-
-def kron_sum(matrices, positions, nblocks):
-        # Check if arguments make sense
-    if max(positions) >= nblocks:
-        raise ValueError("direct_sum: postion out ot numbe blocks")
-    
-    N = int(np.sqrt(matrices[0].size))
-    identity = np.identity(N)
-    
-    full_matrix = 0
-    # TODO: remove this for
-    for i in range(len(matrices)):
-        row = [identity]*nblocks
-        row[positions[i]]  = matrices[i]
-        submatrix = kron(row)
-        full_matrix += submatrix
-        
-    return np.block(full_matrix)
 
 
 def beam_splitter_symplectic(theta, positions=[0,1], nmodes=2):
@@ -79,6 +29,7 @@ def beam_splitter_symplectic(theta, positions=[0,1], nmodes=2):
     S = direct_sum([S, S], positions, nmodes)
     return S
 
+
 def tmsv(s):
     # TMSV states are always subsequent in their indices
     Vp = np.array([[np.cosh(2*s), np.sinh(2*s)], [np.sinh(2*s), np.cosh(2*s)]])
@@ -86,7 +37,20 @@ def tmsv(s):
     zeros = np.zeros((2, 2))
     
     return np.block([[Vp, zeros], [zeros, Vm]])
+
+
+def measurement(cm, modes, N, cm_m, r_m):
+    a, b = modes
+    cm_block = cm[a:b, a:b]
     
+    
+    
+    
+
+
+
+
+
 
 #a = np.array([[1,2],[3,4]])
 #
