@@ -8,17 +8,28 @@ Created on Fri Mar 15 12:14:36 2019
 """
 
 import numpy as np
+import scipy.linalg as la
 
-def direct_sum(matrices, positions, nblocks):
-    # Check if arguments make sense
+
+def direct_sum(matrices):
+    return la.block_diag(*matrices)
+
+
+
+def direct_sum_singles(matrices, positions, nblocks):
+     # Check if arguments make sense
     if max(positions) >= nblocks:
         raise ValueError("direct_sum: postion out ot numbe blocks")
     
-    zero_mat = np.zeros_like(matrices[0])
-    N = int(np.sqrt(zero_mat.size))
-    identity = np.identity(N)
-    
+    identity = np.identity(2)
     positions = np.array(positions)
+    all_matrices = [identity] * nblocks
+    for i in range(len(matrices)):
+        pos = positions[i]
+        all_matrices[pos] = matrices[i]
+        
+    return la.block_diag(*all_matrices)
+    
     
     all_rows = []
     # TODO: remove this for
@@ -32,7 +43,33 @@ def direct_sum(matrices, positions, nblocks):
         
         all_rows += [row]
         
-    return np.block(all_rows)
+    return np.block(all_rows)   
+
+
+#def direct_sum(matrices, positions, nblocks):
+#    # Check if arguments make sense
+#    if max(positions) >= nblocks:
+#        raise ValueError("direct_sum: postion out ot numbe blocks")
+#    
+#    zero_mat = np.zeros_like(matrices[0])
+#    N = int(np.sqrt(zero_mat.size))
+#    identity = np.identity(N)
+#    
+#    positions = np.array(positions)
+#    
+#    all_rows = []
+#    # TODO: remove this for
+#    for i in range(nblocks):
+#        row = [zero_mat]*nblocks
+#        if i in positions:
+#            pos = np.where(i == positions)[0][0]
+#            row[i] = matrices[pos]
+#        else:
+#            row[i] = identity
+#        
+#        all_rows += [row]
+#        
+#    return np.block(all_rows)
         
 
 def kron(matrices):
