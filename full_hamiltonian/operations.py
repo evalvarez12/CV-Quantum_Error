@@ -18,15 +18,16 @@ def displace(a, alpha):
 
 
 def squeeze(a, z):
-    return ((z.conjugate()*a**2 - z*(a.dag()**2))/2).expm()
+#    return ((z.conjugate()*a**2 - z*(a.dag()**2))/2).expm()
+    return qt.squeezing(a, a, 2*z)
 
 
 def tmsqueeze(N, z):
     a = qt.tensor(qt.destroy(N), qt.identity(N))
     b = qt.tensor(qt.identity(N), qt.destroy(N))
     
-    S = (z.conjugate()*a*b - z*a.dag()*b.dag()).expm()
-    return S
+#    S = (z.conjugate()*a*b - z*a.dag()*b.dag()).expm()
+    return qt.squeezing(a, b, 2*z)
     
 
 def homodyne_operator2(N, phase, amplitude=1):
@@ -80,7 +81,41 @@ def photon_on_projector(N):
     for i in range(1, N):
         P += qt.basis(N, i).dag()
     return P 
-    
+
+
+#def photon_number_projector(n, N):
+#    P = qt.basis(N, n).dag()
+#    return P
+
+
+def p_detect_photon_number_dm(N, rho, n, pos, Nmodes):
+    P = qt.basis(N, n) * qt.basis(N, n).dag()
+    P = tools.tensor(N, P, pos, Nmodes)
+    return (P * rho).tr()
+
+
+def p_detect_photon_number_ket(N, rho, n, pos, Nmodes):
+    P = qt.basis(N, n).dag()
+    P = tools.tensor(N, P, pos, Nmodes)
+    return (P * rho).norm()
+
+
+def collapse_photon_number(N, rho, n, pos, Nmodes):
+    if rho.isket:
+        return collapse_photon_number_ket(N, rho, n, pos, Nmodes)
+
+
+def  collapse_photon_number_ket(N, rho, n, pos, Nmodes):
+    P = qt.basis(N, n).dag()
+    P = tools.tensor(N, P, pos, Nmodes)
+    rho = (P * rho)/p_detect_photon_number_ket(N, rho, n, pos, Nmodes)
+    return rho
+
+def  collapse_photon_number_dm(N, rho, n, pos, Nmodes):
+    P = qt.basis(N, n).dag()
+    P = tools.tensor(N, P, pos, Nmodes)
+    rho = (P * rho)/p_detect_photon_number_dm(N, rho, n, pos, Nmodes)
+    return rho
 
 def RCI(rho, pos_keep):
     rho_a = rho.ptrace(pos_keep)

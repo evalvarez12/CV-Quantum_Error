@@ -12,7 +12,7 @@ import numpy as np
 import qutip as qt
 
 
-def tensor(operator, N, pos, Nmodes):
+def tensor(N, operator, pos, Nmodes):
     """
     N:  size of the individual Hilbert space extra dimension
     pos: position of the operator relative to N_list

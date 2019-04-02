@@ -80,7 +80,7 @@ def beam_splitter_Uoperator(N, theta, pos=[0,1], N_modes=2):
     H = (a_op.dag()*b_op + a_op*b_op.dag())
     
     # Unitary evolution
-    U = (-1j*theta*H).expm()
+    U = (1j*theta*H).expm()
     
     # If any append extra required H-spaces and permute as required
     if N_modes > 2:
@@ -90,11 +90,11 @@ def beam_splitter_Uoperator(N, theta, pos=[0,1], N_modes=2):
         # TODO improve this list to permute 
         permute_list = list(range(N_modes))
         
-        permute_list[0] = pos[0]
         permute_list[pos[0]] = 0
+        permute_list[0] = pos[0]
         
+        permute_list[pos[1]] = permute_list[1]
         permute_list[1] = pos[1]
-        permute_list[pos[1]] = 1
         U = U.permute(permute_list)
     return U
 
