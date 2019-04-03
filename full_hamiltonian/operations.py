@@ -17,18 +17,25 @@ def displace(a, alpha):
     return (alpha*a.dag() - alpha.conjugate()*a).expm()
 
 
-def squeeze(a, z):
+def squeeze(N, r, pos=0, Nmodes=1):
 #    return ((z.conjugate()*a**2 - z*(a.dag()**2))/2).expm()
+    # TODO: check if factor of 2 is needed for r
+    S = qt.squeeze(N, r)
+    S = tools.tensor(N, S, pos, Nmodes)
     return qt.squeezing(a, a, 2*z)
 
 
-def tmsqueeze(N, z):
+def tmsqueeze(N, r, pos=[0,1], Nmodes=2):
     a = qt.tensor(qt.destroy(N), qt.identity(N))
     b = qt.tensor(qt.identity(N), qt.destroy(N))
     
 #    S = (z.conjugate()*a*b - z*a.dag()*b.dag()).expm()
-    return qt.squeezing(a, b, 2*z)
-    
+    # TODO: check this factor of two
+    S = qt.squeezing(a, b, 2*r)
+    if Nmodes > 2:
+        S = tools.reorder_two_mode_operator(N, S, pos, Nmodes)
+    return S    
+
 
 def homodyne_operator2(N, phase, amplitude=1):
     z = amplitude*np.exp(1j*phase)
@@ -108,8 +115,9 @@ def collapse_photon_number(N, rho, n, pos, Nmodes):
 def  collapse_photon_number_ket(N, rho, n, pos, Nmodes):
     P = qt.basis(N, n).dag()
     P = tools.tensor(N, P, pos, Nmodes)
-    rho = (P * rho)/p_detect_photon_number_ket(N, rho, n, pos, Nmodes)
-    return rho
+    p = p_detect_photon_number_ket(N, rho, n, pos, Nmodes)
+    rho = (P * rho)/p
+    return rho, p
 
 def  collapse_photon_number_dm(N, rho, n, pos, Nmodes):
     P = qt.basis(N, n).dag()

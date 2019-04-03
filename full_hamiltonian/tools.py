@@ -32,3 +32,16 @@ def tensor(N, operator, pos, Nmodes):
     
     return operator
     
+def reorder_two_mode_operator(N, op, pos, Nmodes):
+        op = qt.tensor([op] + [qt.qeye(N)]*(Nmodes-2))
+
+        # TODO improve this list to permute
+        permute_list = list(range(Nmodes))
+
+        permute_list[pos[0]] = 0
+        permute_list[0] = pos[0]
+
+        permute_list[pos[1]] = permute_list[1]
+        permute_list[1] = pos[1]
+        op = op.permute(permute_list)
+        return op

@@ -18,34 +18,68 @@ class System:
     def __init__(self, N, Nmodes):
         self.N = N
         self.state = qt.tensor([qt.basis(self.N, 0)]*Nmodes)
-        self.ket = True
         self.Nmodes = Nmodes
 
 
-    def add_vacuum(self, Nadd):
-        self.state = qt.tensor([self.state] + [qt.basis(self.N, 0)*Nadd])
+    def add_vacuum(self, Nadd=1):
+        self.state = qt.tensor([self.state] + [qt.basis(self.N, 0)]*Nadd)
         self.Nmodes = self.Nmodes + Nadd
 
-    def apply_BS(self, theta, pos):
+    def apply_BS(self, t, pos):
+        theta = np.arccos(np.sqrt(t))
         U = bs.beam_splitter_U(self.N, theta, pos, self.Nmodes)
 
-        if self.ket:
+        if self.state.isket:
             self.state = U * self.state
         else:
             self.state = U * self.state * U.dag()
+       
+        
+    def apply_TMS(self, mphoton, pos):
+        r = np.arcsinh(np.sqrt(mphoton))
+        S = ops.tmsqueeze(self.N, r, pos, self.Nmodes)
+        
+        if self.state.isket:
+            self.state = S * self.state
+        else:
+            self.state = S * self.state * S.dag()
+            
+    
+    def apply_SMS(self, mphoton, pos):
+        r = np.arcsinh(np.sqrt(mphoton))
+        S = ops.tmsqueeze(self.N, r, pos, self.Nmodes)
+        
+        if self.state.isket:
+            self.state = S * self.state
+        else:
+            self.state = S * self.state * S.dag()
+    
+    
+    def add_TMSV(self, mphoton):
+        r = np.arcsinh(np.sqrt(mphoton)) 
+        state_aux = qt.tensor(qt.basis(self.N), qt.basis(self.N))
+        S = ops.tmsqueeze(self.N, r)
+        
+        state_aux = S * state_aux 
+        if not self.state.isket:
+            state_aux = state_aux * state_aux.dag()
+        self.state = qt.tensor(self.state, state_aux)
+        self.Nmodes = self.Nmodes + 2
 
+    
     def collapse_fock_state(self, fock, pos):
         P = qt.basis(self.N, fock).dag()
         P = tools.tensor(self.N, P, pos, self.Nmodes)
 
         # Compute the probability of this collapse when measured
-        if self.ket:
+        if self.state.isket:
             p = (P * self.state).norm()
         else:
             # TODO: Check this
-            p = (P.dag() * P self.state).tr()
+            p = (P.dag() * P * self.state).tr()
 
         self.state = (P * self.state)/p
+        self.Nmodes = self.Nmodes - 1
         return p
 
 
@@ -60,7 +94,7 @@ class System:
     def get_simple_CM_C(self, modes):
         a = qt.destroy(self.N)
         a1 = tools.tensor(self.N, a, modes[0], self.Nmodes)
-        a2 = tools.tensor(self.N, a, modes[0], self.Nmodes)
+        a2 = tools.tensor(self.N, a, modes[1], self.Nmodes)
 
         c = self.state.dag() * (a1*a2 + a1.dag()*a2.dag()) * self.state
         return c
@@ -76,5 +110,6 @@ class System:
             basis += [tools.tensor(self.N, x, i, self.Nmodes),
                       tools.tensor(self.N, p, i, self.Nmodes)]
 
-        cm = qt.covariance_matrix(basis, self.state)
+        # TODO: check this factor of 2
+        cm = 2 * qt.covariance_matrix(basis, self.state)
         return cm
