@@ -33,7 +33,23 @@ class System:
             self.state = U * self.state
         else:
             self.state = U * self.state * U.dag()
-       
+            
+    
+    def save_state(self):
+        self.state_saved = self.state
+        
+    
+    def load_state(self):
+        if self.state_saved is None:
+            raise AttributeError("There is not a saved state")
+        self.state = self.state_saved
+        
+        
+    def load_state_del(self):
+        if self.state_saved is None:
+            raise AttributeError("There is not a saved state")
+        self.state = self.state_saved
+        del self.state_saved
         
     def apply_TMS(self, mphoton, pos):
         r = np.arcsinh(np.sqrt(mphoton))

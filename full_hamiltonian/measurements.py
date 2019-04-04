@@ -10,15 +10,15 @@ import numpy as np
 import scipy.linalg as la
 
 def key_rate(sys, f, p):
-    Va = sys.get_simple_CM_V(0)
-    Vb = sys.get_simple_CM_V(1)
-    Ve = sys.get_simple_CM_V(2)
-    Vf = sys.get_simple_CM_V(3)
+    Va = sys.get_simple_CM_V(0).norm()
+    Vb = sys.get_simple_CM_V(1).norm()
+    Ve = sys.get_simple_CM_V(2).norm()
+    Vf = sys.get_simple_CM_V(3).norm()
     
-    Cab = sys.get_simple_CM_C([0, 1])
-    Cbe = sys.get_simple_CM_C([1, 2])
-    Cbf = sys.get_simple_CM_C([1, 3])
-    Cef = sys.get_simple_CM_C([2, 3])
+    Cab = sys.get_simple_CM_C([0, 1]).norm()
+    Cbe = sys.get_simple_CM_C([1, 2]).norm()
+    Cbf = sys.get_simple_CM_C([1, 3]).norm()
+    Cef = sys.get_simple_CM_C([2, 3]).norm()
 
     I_shared = I(Va, Vb, Cab)
     I_stolen = X(Vb, Ve, Vf, Cbe, Cbf, Cef)
@@ -56,7 +56,7 @@ def g(v):
     
     
 def symplectic_eigenvalues(cm):
-    N = cm.shape[0]/2
+    N = int(cm.shape[0]/2)
     omega = symplectic_form(N)
     eigvals = np.linalg.eigvals(1j*np.dot(omega, cm))
     return eigvals
