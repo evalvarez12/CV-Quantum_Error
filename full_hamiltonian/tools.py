@@ -45,3 +45,19 @@ def reorder_two_mode_operator(N, op, pos, Nmodes):
         permute_list[1] = pos[1]
         op = op.permute(permute_list)
         return op
+    
+    
+def tmsv_bad_method(N, mean_photon_number):
+    r = np.arcsinh(np.sqrt(mean_photon_number))
+    psi_theory = qt.tensor(qt.basis(N), qt.basis(N)) * 0
+
+    for i in range(N):
+    #    psi_theory += alpha_n(i) * r_nkT(i, 1, T) * qt.tensor(qt.basis(N, i), qt.basis(N, i))
+        psi_theory += alpha_n(r, i) * qt.tensor(qt.basis(N, i), qt.basis(N, i))
+#        print(i, alpha_n(r, i))
+    return psi_theory/psi_theory.norm()
+    
+    
+    
+def alpha_n(r, n):
+    return (np.tanh(r)**n)/np.cosh(r)

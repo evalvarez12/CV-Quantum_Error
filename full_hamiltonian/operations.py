@@ -22,7 +22,7 @@ def squeeze(N, r, pos=0, Nmodes=1):
     # TODO: check if factor of 2 is needed for r
     S = qt.squeeze(N, r)
     S = tools.tensor(N, S, pos, Nmodes)
-    return qt.squeezing(a, a, 2*z)
+    return S
 
 
 def tmsqueeze(N, r, pos=[0,1], Nmodes=2):

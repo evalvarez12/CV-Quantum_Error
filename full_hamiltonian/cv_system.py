@@ -129,3 +129,12 @@ class System:
         # TODO: check this factor of 2
         cm = 2 * qt.covariance_matrix(basis, self.state)
         return cm
+
+
+    def replace_current_state_w_bad_TMSV(self, mean_photon_number):
+        self.state = tools.tmsv_bad_method(self.N, mean_photon_number)
+        self.Nmodes = 2
+        
+    def add_bad_TMSV(self, mean_photon_number):
+        self.state = qt.tensor(self.state, tools.tmsv_bad_method(self.N, mean_photon_number))
+        self.Nmodes += 2
