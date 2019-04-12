@@ -72,8 +72,8 @@ def beam_splitter_U(N, theta, pos=[0,1], N_modes=2):
     """
     a_op = qt.tensor(qt.destroy(N), qt.identity(N))
     b_op = qt.tensor(qt.identity(N), qt.destroy(N))
-#    a_op = tools.tensor(qt.destroy(N), N, pos[0], N_modes)
-#    b_op = tools.tensor(qt.destroy(N), N, pos[1], N_modes)
+#    a_op = tools.tensor(N, qt.destroy(N), pos[0], N_modes)
+#    b_op = tools.tensor(N, qt.destroy(N), pos[1], N_modes)
 
 
     # Define the mode-mixing Hamiltonian
@@ -124,9 +124,9 @@ def tritter_applyU(rho, theta1, theta2, pos=[0, 1, 2]):
 
     pos_a, pos_b, pos_c = pos
 
-    U1 = beam_splitter_Uoperator(N, theta1, pos=[pos_a, pos_b], N_modes=N_modes)
+    U1 = beam_splitter_U(N, theta1, pos=[pos_a, pos_b], N_modes=N_modes)
 #    U1 = qt.tensor(U1, qt.identity(N))
-    U2 = beam_splitter_Uoperator(N, theta2, pos=[pos_a, pos_c], N_modes=N_modes)
+    U2 = beam_splitter_U(N, theta2, pos=[pos_a, pos_c], N_modes=N_modes)
 #    U2 = qt.tensor(qt.identity(N), U2)
 
     rho = U1 * rho * U1.dag()

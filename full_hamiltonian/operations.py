@@ -119,11 +119,13 @@ def  collapse_photon_number_ket(N, rho, n, pos, Nmodes):
     rho = (P * rho)/p
     return rho, p
 
+
 def  collapse_photon_number_dm(N, rho, n, pos, Nmodes):
     P = qt.basis(N, n).dag()
     P = tools.tensor(N, P, pos, Nmodes)
     rho = (P * rho)/p_detect_photon_number_dm(N, rho, n, pos, Nmodes)
     return rho
+
 
 def RCI(rho, pos_keep):
     rho_a = rho.ptrace(pos_keep)
