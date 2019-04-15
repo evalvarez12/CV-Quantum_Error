@@ -38,6 +38,7 @@ def key_rate_compare(sys, f, p, mpnA, mpnE, t):
     Cbf = sys.get_simple_CM_C([1, 3])
     Cef = sys.get_simple_CM_C([2, 3])
 
+    # NOPS
     Va2 = 2 * mpnA + 1
     Vf2 = 2 * mpnE + 1
     Vb2 = t * Va2 + (1 - t) * Vf2
@@ -48,12 +49,28 @@ def key_rate_compare(sys, f, p, mpnA, mpnE, t):
     Cbf2 = np.sqrt(1 - t)* 2 * np.sqrt(mpnE**2 + mpnE) 
     Cbe2 = np.sqrt(t * (1 - t)) * (Vf2 - Va2) 
     
-    sys.set_quadratures_basis()
+    # TPS
+#    Va = 1 + 2 * (N * mpnA + N + mpnA * Tbs)/(1 + mpnA - mpnA * Tbs);
+#    Vb1 = 1 + 2 * (N + 1) * mpnA * Tbs / (1 + mpnA - mpnA * Tbs);
+#    Vf = 1 + 2 * mpnE;
+#    Vf = t * Vb1 + (1 - t) * Vf;
+#    Ve = (1 - t) * Vb1 + t * Vf;
+#
+#    Cab = np.sqrt(t) * 2 * np.sqrt(mpnA * Tbs/(1 + mpnA)) * (N + 1) * (1 + mpnA)/(1 + mpnA - mpnA * Tbs);
+#    Cef = np.sqrt(t) * 2 * np.sqrt(mpnE^2 + mpnE);
+#    Cfb = np.sqrt(1 - t) * 2 * np.sqrt(mpnE^2 + mpnE);
+#    Ceb = np.sqrt(t* (1 - t)) * (Vf - Vb1);
+
+    sys.set_quadratures_basis() 
+    Va3 = sys.get_CM_entry([0, 0])
+    Vb3 = sys.get_CM_entry([2, 2])
+    Ve3 = sys.get_CM_entry([4, 4])
+    Vf3 = sys.get_CM_entry([6, 6])
     
-    Cab3 = sys.get_CM_entry([0, 2])*-1
-    Cef3 = sys.get_CM_entry([4, 6])*-1
-    Cbf3 = sys.get_CM_entry([2, 7])*-1
-    Cbe3 = sys.get_CM_entry([2, 5])*-1
+    Cab3 = sys.get_CM_entry([0, 2])
+    Cef3 = sys.get_CM_entry([4, 6])
+    Cbf3 = sys.get_CM_entry([2, 7])
+    Cbe3 = sys.get_CM_entry([2, 5])
 
 
 #    Cab2 = abs(Cab2)
@@ -62,10 +79,10 @@ def key_rate_compare(sys, f, p, mpnA, mpnE, t):
 #    Cbe2 = abs(Cbe2)
 
     print("----------------t---------------", t)
-    print("Va:", Va, Va2)
-    print("Vb:", Vb, Vb2)
-    print("Ve:", Ve, Ve2)
-    print("Vf:", Vf, Vf2)
+    print("Va:", Va, Va2, Va3)
+    print("Vb:", Vb, Vb2, Vb3)
+    print("Ve:", Ve, Ve2, Ve3)
+    print("Vf:", Vf, Vf2, Vf3)
     print("Cab:", Cab, Cab2, Cab3)
     print("Cbe:", Cbe, Cbe2, Cbe3)
     print("Cbf:", Cbf, Cbf2, Cbf3)
@@ -74,13 +91,13 @@ def key_rate_compare(sys, f, p, mpnA, mpnE, t):
 #    CM = sys.get_full_CM()
 #    print("CM:", CM)
 
-    I_shared = I(Va2, Vb2, Cab2)
-    I_stolen = X(Vb2, Ve2, Vf2, Cbe2, Cbf2, Cef2)
+    I_shared = I(Va3, Vb3, Cab3)
+    I_stolen = X(Vb3, Ve3, Vf3, Cbe3, Cbf3, Cef3)
     
     k_rate = p * (f * I_shared - I_stolen)
     
-    print("I_shared:", f*I_shared)
-    print("I_stolen:", I_stolen)
+#    print("I_shared:", f*I_shared)
+#    print("I_stolen:", I_stolen)
     
     return k_rate
 

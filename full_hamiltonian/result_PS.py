@@ -23,7 +23,7 @@ mpn = 1.3
 t = .9
 mpne = 0.001
 f = 0.95
-option = 'nops'
+option = 'rps'
 
 
 ## Initialize state
@@ -54,7 +54,7 @@ sys.save_state()
 
 key_rates = []
 #tes =np.logspace(-2, 0, base=10, num=50)
-tes = np.linspace(.0127, 0.015, 50)
+tes = np.linspace(.005, 1, 100)
 #tes = [1.]
 
 for te in tes:
@@ -65,7 +65,7 @@ for te in tes:
     # Receiver Photon subtraction
     if option == 'rps':
         sys.add_vacuum()
-        sys.apply_BS(t, [1, 3])
+        sys.apply_BS(t, [1, 4])
         p_success = sys.collapse_fock_state(1, 4)
 
 #    key_rates += [measurements.key_rate(sys, f=f, p=p_success)]
@@ -79,6 +79,8 @@ key_rates = np.array(key_rates)
 #print(key_rates)
 np.save(filename, key_rates)
 
+filename_ind = "data/indeces_PS_" + option 
+np.save(filename_ind, tes)
 
 
 ############################################ PLOT
@@ -88,16 +90,21 @@ filename2 = "data/result_PS_tps"
 key_rates2 = np.load(filename2 + ".npy")
 filename3 = "data/result_PS_rps"
 key_rates3 = np.load(filename3 + ".npy")
-
+filename1_ind = "data/indeces_PS_nops"
+indeces1 = np.load(filename1_ind + '.npy')
+filename2_ind = "data/indeces_PS_tps"
+indeces2 = np.load(filename2_ind + '.npy')
+filename3_ind = "data/indeces_PS_rps"
+indeces3 = np.load(filename3_ind + '.npy')
 #tes =np.logspace(-3, 0, base=10, num=50)
 #tes = np.linspace(0, 1)
 
 
 
 fig1, ax = plt.subplots()
-ax.plot(tes, key_rates1, 'k*-')
-#ax.plot(tes, key_rates2, 'b*-')
-#ax.plot(tes, key_rates3, 'r*-')
+ax.plot(indeces1, key_rates1, 'k*-')
+ax.plot(indeces2, key_rates2, 'b*-')
+ax.plot(indeces3, key_rates3, 'r*-')
 
 
 mg_ratesNO = scipy.io.loadmat('data/rate_no.mat')
@@ -115,8 +122,8 @@ mg_indR = mg_indR['indR'][0]
 mg_indT = mg_indT['indT'][0]
 
 ax.plot(mg_indNO, mg_ratesNO, 'ko--')
-#ax.plot(mg_indR, mg_ratesR, 'ro--')
-#ax.plot(mg_indT, mg_ratesT, 'bo--')
+ax.plot(mg_indR, mg_ratesR, 'ro--')
+ax.plot(mg_indT, mg_ratesT, 'bo--')
 
 #key_rates1b = np.load(filename1 + "BAD.npy")
 #key_rates2b = np.load(filename2 + "BAD.npy")
