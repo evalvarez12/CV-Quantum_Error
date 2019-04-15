@@ -51,6 +51,12 @@ sys.set_quadratures_basis()
 CM = sys.get_full_CM()
 print("CM:", CM)
 
+sys = cv.System(N, Nmodes=2)
+sys.apply_SMS(mpn, 0)
+
+sys.set_quadratures_basis()
+CM = sys.get_full_CM()
+print("CM:", CM)
 #a = qt.destroy(N)
 #a1 = tools.tensor(N, a, 1, 3)
 #a2 = tools.tensor(N, a, 2, 3)

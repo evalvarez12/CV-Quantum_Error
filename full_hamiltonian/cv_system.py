@@ -63,7 +63,7 @@ class System:
     
     def apply_SMS(self, mphoton, pos):
         r = np.arcsinh(np.sqrt(mphoton))
-        S = ops.tmsqueeze(self.N, r, pos, self.Nmodes)
+        S = ops.squeeze(self.N, r, pos, self.Nmodes)
         
         if self.state.isket:
             self.state = S * self.state
