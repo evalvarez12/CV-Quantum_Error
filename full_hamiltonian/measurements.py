@@ -47,6 +47,14 @@ def key_rate_compare(sys, f, p, mpnA, mpnE, t):
     Cef2 = np.sqrt(t) * 2 * np.sqrt(mpnE**2 + mpnE)
     Cbf2 = np.sqrt(1 - t)* 2 * np.sqrt(mpnE**2 + mpnE) 
     Cbe2 = np.sqrt(t * (1 - t)) * (Vf2 - Va2) 
+    
+    sys.set_quadratures_basis()
+    
+    Cab3 = sys.get_CM_entry([0, 2])*-1
+    Cef3 = sys.get_CM_entry([4, 6])*-1
+    Cbf3 = sys.get_CM_entry([2, 7])*-1
+    Cbe3 = sys.get_CM_entry([2, 5])*-1
+
 
 #    Cab2 = abs(Cab2)
 #    Cef2 = abs(Cef2)
@@ -58,13 +66,13 @@ def key_rate_compare(sys, f, p, mpnA, mpnE, t):
     print("Vb:", Vb, Vb2)
     print("Ve:", Ve, Ve2)
     print("Vf:", Vf, Vf2)
-    print("Cab:", Cab, Cab2)
-    print("Cbe:", Cbe, Cbe2)
-    print("Cbf:", Cbf, Cbf2)
-    print("Cef:", Cef, Cef2)
+    print("Cab:", Cab, Cab2, Cab3)
+    print("Cbe:", Cbe, Cbe2, Cbe3)
+    print("Cbf:", Cbf, Cbf2, Cbf3)
+    print("Cef:", Cef, Cef2, Cef3)
 
-    CM = sys.get_full_CM()
-    print("CM:", CM)
+#    CM = sys.get_full_CM()
+#    print("CM:", CM)
 
     I_shared = I(Va2, Vb2, Cab2)
     I_stolen = X(Vb2, Ve2, Vf2, Cbe2, Cbf2, Cef2)

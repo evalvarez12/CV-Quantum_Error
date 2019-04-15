@@ -54,7 +54,7 @@ sys.save_state()
 
 key_rates = []
 #tes =np.logspace(-2, 0, base=10, num=50)
-tes = np.linspace(.0127, 0.015)
+tes = np.linspace(.0127, 0.015, 50)
 #tes = [1.]
 
 for te in tes:

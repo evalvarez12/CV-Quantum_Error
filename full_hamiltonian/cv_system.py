@@ -116,7 +116,8 @@ class System:
         return c.norm()
 
 
-    def get_full_CM(self):
+    def set_quadratures_basis(self):
+        # basis = {x1, p1, x2, p2, ....., xn, pn}
         a = qt.destroy(self.N)
         x = (a + a.dag())/np.sqrt(2)
         p = 1j*(-a + a.dag())/np.sqrt(2)
@@ -126,8 +127,21 @@ class System:
             basis += [tools.tensor(self.N, x, i, self.Nmodes),
                       tools.tensor(self.N, p, i, self.Nmodes)]
 
+        self.quad_basis = basis
+
+
+    def get_CM_entry(self, indeces):
+        am = self.quad_basis[indeces[0]]
+        an = self.quad_basis[indeces[1]]
+        a = qt.expect(am * an +  an * am, self.state)/2
+        b = qt.expect(am, self.state) * qt.expect(an, self.state)
+        Vmn = a - b
+        return 2 * Vmn
+    
+
+    def get_full_CM(self):
         # TODO: check this factor of 2
-        cm = 2 * qt.covariance_matrix(basis, self.state)
+        cm = 2 * qt.covariance_matrix(self.quad_basis, self.state)
         return cm
 
 
