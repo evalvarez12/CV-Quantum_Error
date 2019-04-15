@@ -104,7 +104,7 @@ class System:
         a = tools.tensor(self.N, a, mode, self.Nmodes)
 
         v = 1 + 2 * self.state.dag() * a.dag() * a * self.state
-        return v
+        return v.norm()
 
 
     def get_simple_CM_C(self, modes):
@@ -113,7 +113,7 @@ class System:
         a2 = tools.tensor(self.N, a, modes[1], self.Nmodes)
 
         c = self.state.dag() * (a1*a2 + a1.dag()*a2.dag()) * self.state
-        return c
+        return c.norm()
 
 
     def get_full_CM(self):

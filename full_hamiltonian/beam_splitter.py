@@ -84,18 +84,8 @@ def beam_splitter_U(N, theta, pos=[0,1], N_modes=2):
 
     # If any append extra required H-spaces and permute as required
     if N_modes > 2:
-        U = qt.tensor([U] + [qt.qeye(N)]*(N_modes-2))
+        U = tools.reorder_two_mode_operator(N, U, pos, N_modes)
 
-
-        # TODO improve this list to permute
-        permute_list = list(range(N_modes))
-
-        permute_list[pos[0]] = 0
-        permute_list[0] = pos[0]
-
-        permute_list[pos[1]] = permute_list[1]
-        permute_list[1] = pos[1]
-        U = U.permute(permute_list)
     return U
 
 

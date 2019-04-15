@@ -28,36 +28,40 @@ def key_rate(sys, f, p):
     
 
 def key_rate_compare(sys, f, p, mpnA, mpnE, t):
-    Va = sys.get_simple_CM_V(0).norm()
-    Vb = sys.get_simple_CM_V(1).norm()
-    Ve = sys.get_simple_CM_V(2).norm()
-    Vf = sys.get_simple_CM_V(3).norm()
+    Va = sys.get_simple_CM_V(0)
+    Vb = sys.get_simple_CM_V(1)
+    Ve = sys.get_simple_CM_V(2)
+    Vf = sys.get_simple_CM_V(3)
     
-    Cab = sys.get_simple_CM_C([0, 1]).norm()
-    Cbe = sys.get_simple_CM_C([1, 2]).norm()
-    Cbf = sys.get_simple_CM_C([1, 3]).norm()
-    Cef = sys.get_simple_CM_C([2, 3]).norm()
-
+    Cab = sys.get_simple_CM_C([0, 1])
+    Cbe = sys.get_simple_CM_C([1, 2])
+    Cbf = sys.get_simple_CM_C([1, 3])
+    Cef = sys.get_simple_CM_C([2, 3])
 
     Va2 = 2 * mpnA + 1
     Vf2 = 2 * mpnE + 1
-    Vb2 = np.sqrt(t) * Va + np.sqrt(1 - t) * Vf
-    Ve2 = np.sqrt(1 - t) * Va + np.sqrt(t) * Vf
+    Vb2 = t * Va2 + (1 - t) * Vf2
+    Ve2 = (1 - t) * Va2 + t * Vf2
     
     Cab2 = np.sqrt(t) * 2 * np.sqrt(mpnA**2 + mpnA)
     Cef2 = np.sqrt(t) * 2 * np.sqrt(mpnE**2 + mpnE)
-    Cbf2 = np.sqrt(1 - t)* 2 * np.sqrt(mpnE**2 + mpnE)
-    Cbe2 = np.sqrt(t * (1 - t)) * (Vf - Va)
+    Cbf2 = np.sqrt(1 - t)* 2 * np.sqrt(mpnE**2 + mpnE) 
+    Cbe2 = np.sqrt(t * (1 - t)) * (Vf2 - Va2) 
+
+#    Cab2 = abs(Cab2)
+#    Cef2 = abs(Cef2)
+#    Cbf2 = abs(Cbf2)
+#    Cbe2 = abs(Cbe2)
 
     print("----------------t---------------", t)
-    print("Va:",Va, Va2)
-    print("Vb:",Vb, Vb2)
-    print("Ve:",Ve, Ve2)
-    print("Vf:",Vf, Vf2)
-    print("Cab:",Cab, Cab2)
-    print("Cbe:",Cbe, Cbe2)
-    print("Cbf:",Cbf, Cbf2)
-    print("Cef:",Cef, Cef2)
+    print("Va:", Va, Va2)
+    print("Vb:", Vb, Vb2)
+    print("Ve:", Ve, Ve2)
+    print("Vf:", Vf, Vf2)
+    print("Cab:", Cab, Cab2)
+    print("Cbe:", Cbe, Cbe2)
+    print("Cbf:", Cbf, Cbf2)
+    print("Cef:", Cef, Cef2)
 
     CM = sys.get_full_CM()
     print("CM:", CM)
@@ -66,6 +70,10 @@ def key_rate_compare(sys, f, p, mpnA, mpnE, t):
     I_stolen = X(Vb2, Ve2, Vf2, Cbe2, Cbf2, Cef2)
     
     k_rate = p * (f * I_shared - I_stolen)
+    
+    print("I_shared:", f*I_shared)
+    print("I_stolen:", I_stolen)
+    
     return k_rate
 
 def key_rate_NOsimple(mpnA, mpnE, t):
@@ -103,7 +111,11 @@ def X(Vb, Ve, Vf, Cbe, Cbf, Cef):
     vec = np.block([Cbe*I, Cbf*S])
     Mef_b = Mef - np.dot(vec.transpose(), np.dot(np.diag([1/Vb, 0]), vec))
     
+    
     vef = symplectic_eigenvalues(Mef)
+#    vef2 = .5 * np.sqrt((Ve + Vf)**2 - 4 * Cef**2) + .5 * np.array([Ve-Vf, Vf -Ve])
+#    print("Vef:", vef, vef2)
+    
     vef_b = symplectic_eigenvalues(Mef_b)
     
     # Calculate the stolen information

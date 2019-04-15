@@ -45,7 +45,7 @@ if option == 'nops':
 
 
 # Evesdropper collective attack
-sys.add_TMSV(e_mpn)
+sys.add_TMSV(mpne)
 # BAD TMSV
 #sys.add_bad_TMSV(e_mpn)
 
@@ -53,19 +53,19 @@ sys.add_TMSV(e_mpn)
 sys.save_state()
 
 key_rates = []
-tes =np.logspace(-3, 0, base=10, num=10)
-#tes = np.linspace(0, 1)
+#tes =np.logspace(-2, 0, base=10, num=50)
+tes = np.linspace(.0127, 0.015)
 #tes = [1.]
 
 for te in tes:
     sys.load_state()
 
     sys.apply_BS(te, [1, 2])
-    
+    tes
     # Receiver Photon subtraction
     if option == 'rps':
         sys.add_vacuum()
-        sys.apply_BS(t, [1, 4])
+        sys.apply_BS(t, [1, 3])
         p_success = sys.collapse_fock_state(1, 4)
 
 #    key_rates += [measurements.key_rate(sys, f=f, p=p_success)]
@@ -89,7 +89,7 @@ key_rates2 = np.load(filename2 + ".npy")
 filename3 = "data/result_PS_rps"
 key_rates3 = np.load(filename3 + ".npy")
 
-tes =np.logspace(-3, 0, base=10, num=10)
+#tes =np.logspace(-3, 0, base=10, num=50)
 #tes = np.linspace(0, 1)
 
 
@@ -114,7 +114,6 @@ mg_indNO = mg_indNO['indd'][0]
 mg_indR = mg_indR['indR'][0]
 mg_indT = mg_indT['indT'][0]
 
-#mg_ind[mg_ind == 1] = 0
 ax.plot(mg_indNO, mg_ratesNO, 'ko--')
 #ax.plot(mg_indR, mg_ratesR, 'ro--')
 #ax.plot(mg_indT, mg_ratesT, 'bo--')
