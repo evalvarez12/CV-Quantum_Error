@@ -15,10 +15,11 @@ import tools
 
 
 class System:
-    def __init__(self, N, Nmodes):
+    def __init__(self, N, Nmodes=0):
         self.N = N
-        self.state = qt.tensor([qt.basis(self.N, 0)]*Nmodes)
-        self.Nmodes = Nmodes
+        if Nmodes != 0:
+            self.state = qt.tensor([qt.basis(self.N, 0)]*Nmodes)
+            self.Nmodes = Nmodes
 
 
     def add_vacuum(self, Nadd=1):
@@ -120,13 +121,14 @@ class System:
         # basis = {x1, p1, x2, p2, ....., xn, pn}
         a = qt.destroy(self.N)
         x = (a + a.dag())/np.sqrt(2)
-        p = 1j*(-a + a.dag())/np.sqrt(2)
+        p = 1j*(a - a.dag())/np.sqrt(2)
 
         basis = []
+        # TODO: check the order of the basis
         for i in range(self.Nmodes):
             basis += [tools.tensor(self.N, x, i, self.Nmodes),
                       tools.tensor(self.N, p, i, self.Nmodes)]
-
+        
         self.quad_basis = basis
 
 

@@ -18,6 +18,9 @@ def tensor(N, operator, pos, Nmodes):
     pos: position of the operator relative to N_list
     
     """
+    if pos >= Nmodes:
+        raise ValueError("pos is higher than the number of modes")
+    
     # The list of extra Hilbert spaces to be tensored
     N_list = [N]*(Nmodes - 1)
     
