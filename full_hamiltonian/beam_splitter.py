@@ -77,10 +77,10 @@ def beam_splitter_U(N, theta, pos=[0,1], N_modes=2):
 
 
     # Define the mode-mixing Hamiltonian
-    H = (a_op.dag()*b_op + a_op*b_op.dag())
+    H = (a_op.dag()*b_op + b_op.dag()*a_op)
 
     # Unitary evolution
-    U = (-1j*theta*H).expm()
+    U = (1j*theta*H).expm()
 
     # If any append extra required H-spaces and permute as required
     if N_modes > 2:

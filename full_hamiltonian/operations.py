@@ -19,8 +19,8 @@ def displace(a, alpha):
 
 def squeeze(N, r, pos=0, Nmodes=1):
 #    return ((z.conjugate()*a**2 - z*(a.dag()**2))/2).expm()
-    # TODO: check if factor of 2 is needed for r
-    S = qt.squeeze(N, r)
+    # TODO: check if phase of pi is required
+    S = qt.squeeze(N, -r)
     S = tools.tensor(N, S, pos, Nmodes)
     return S
 
@@ -30,8 +30,8 @@ def tmsqueeze(N, r, pos=[0,1], Nmodes=2):
     b = qt.tensor(qt.identity(N), qt.destroy(N))
     
 #    S = (z.conjugate()*a*b - z*a.dag()*b.dag()).expm()
-    # TODO: check this factor of two
-    S = qt.squeezing(a, b, 2*r)
+    # TODO: check this factor of two, and phase of pi
+    S = qt.squeezing(a, b, -2*r)
     if Nmodes > 2:
         S = tools.reorder_two_mode_operator(N, S, pos, Nmodes)
     return S    

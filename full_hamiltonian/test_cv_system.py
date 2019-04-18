@@ -11,10 +11,19 @@ import numpy as np
 import cv_system as cv
 import tools
 import matplotlib.pyplot as plt
+
+
+def expect(operator, state):
+    return (state.dag() * operator * state).norm()
+
+
 # Parameters
 N = 40
 mpn = 1
 t = .5
+
+wx = np.linspace(-5, 5)
+
 
 r = np.arcsinh(np.sqrt(mpn))
 print("Squeezing:", r)
@@ -24,6 +33,8 @@ sys = cv.System(N, Nmodes=2)
 sys.apply_TMS(mpn, [0, 1])
 # BAD TMSV
 #sys.replace_current_state_w_bad_TMSV(mean_photon_number)
+
+W0 = qt.wigner(sys.state.ptrace(0), wx, wx)
 
 
 sys.set_quadratures_basis()
@@ -49,7 +60,7 @@ print("C:", 2*np.sqrt(mpn*(mpn+1)))
 #Cac = sys.get_simple_CM_C([0, 2])
 
 
-statea = sys.state
+#statea = sys.state
 
 
 q1 = sys.quad_basis[0]
@@ -57,15 +68,19 @@ p1 = sys.quad_basis[1]
 q2 = sys.quad_basis[2]
 p2 = sys.quad_basis[3]
 
-print("Computed:", (qt.expect(q2*q1 + q1*q2, sys.state) - 2*qt.expect(q1, sys.state)*qt.expect(q2, sys.state)))
+print("Computed:", (qt.expect(p1*p2 + p2*p1, sys.state) - 2*qt.expect(p1, sys.state)*qt.expect(p2, sys.state)))
 
-print("-----------------> Apply BS")
+print("Apply BS")
 
 sys.apply_BS(t, [0, 1])
 
 sys.set_quadratures_basis()
 CM = sys.get_full_CM()
 print("CM:", CM)
+
+
+W1 = qt.wigner(sys.state.ptrace(0), wx, wx)
+
 
 print("MG simple")
 Va = sys.get_simple_CM_V(0)
@@ -80,7 +95,15 @@ print("V1:", np.exp(2*r))
 print("V2:", np.exp(-2*r))
 
 
-print("-----------------> Sys 2")
+
+sys.apply_BS(t, [0, 1])
+
+sys.set_quadratures_basis()
+CM = sys.get_full_CM()
+print("CM:", CM)
+
+
+print("-----------------> Reference system")
 sys2 = cv.System(N, Nmodes=2)
 #z = mpn*np.exo(1j*np.pi/4)
 sys2.apply_SMS(mpn, 0)
@@ -103,6 +126,28 @@ sys2.apply_BS(t, [0, 1])
 sys2.set_quadratures_basis()
 CM2 = sys2.get_full_CM()
 print("CM:", CM2)
+
+sys2.apply_BS(t, [0, 1])
+sys2.set_quadratures_basis()
+CM2 = sys2.get_full_CM()
+print("CM:", CM2)
+
+
+
+
+W2 = qt.wigner(sys2.state.ptrace(0), wx, wx)
+
+#fig, axes = plt.subplots(1, 3, figsize=(12,3))
+#qt.plot_fock_distribution(statea, fig=fig, ax=axes[0], title="A", unit_y_range=False);
+#qt.plot_fock_distribution(sys.state, fig=fig, ax=axes[1], title="B", unit_y_range=False);
+#qt.plot_fock_distribution(sys2.state, fig=fig, ax=axes[2], title="C", unit_y_range=False);
+#
+##fig.tight_layout()
+#plt.show()
+#
+
+
+
 
 #
 #fig, axes = plt.subplots(1, 3, figsize=(12,3))
