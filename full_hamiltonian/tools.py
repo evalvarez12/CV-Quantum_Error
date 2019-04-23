@@ -67,3 +67,7 @@ def tmsv_bad_method(N, mean_photon_number):
     
 def alpha_n(r, n):
     return (np.tanh(r)**n)/np.cosh(r)
+
+
+def direct_sum(matrices):
+    return la.block_diag(*matrices)
