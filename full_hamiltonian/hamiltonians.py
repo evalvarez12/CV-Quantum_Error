@@ -32,18 +32,18 @@ def H_two_mode_squeeze(z):
     return H
 
 
-def H_beam_splitter(theta):
-    H = np.zeros([4, 4])
-    H[1, 0] = -theta
-    H[0, 1] = -theta
+def H_beam_splitter(z):
+    H = np.zeros([4, 4], dtype=complex)
+    H[1, 0] = -1j * z.conjugate()
+    H[0, 1] = 1j * z
 
-    H[3, 2] = -theta
-    H[2, 3] = -theta
+    H[3, 2] = 1j*z
+    H[2, 3] = -1j*z.conjugate()
     return H
 
 
 def H_phase_shift(theta):
-    H = np.zeros([4, 4])
+    H = np.zeros([4, 4], dtype=complex)
     H[0, 0] = -theta
     H[2, 2] = -theta
     return H

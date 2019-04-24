@@ -7,7 +7,7 @@ Created on Tue Apr 23 16:48:41 2019
 @author: Eduardo Villasenor
 """
 
-from symplectic import *
+from hamiltonians import *
 import numpy as np
 import qutip as qt
 
@@ -37,7 +37,7 @@ print("H == H_ref:", H == H_ref)
 print("U == U_ref:", U_ref == U_qtref)
 
 S = Symplectic(H_mat)
-print(S)
+print(np.round(S, 4))
 
 print('Ref ------')
 ch = np.cosh(-z/2)
@@ -58,7 +58,7 @@ print("H == H_ref:", H == H_ref)
 print("U == U_ref:", U_ref == U_qtref)
 
 S = Symplectic(H_mat)
-print(S)
+print(np.round(S, 4))
 
 print('Ref ------')
 phasee = np.pi/2*0
@@ -82,7 +82,7 @@ print("H == H_ref:", H == H_ref)
 # print(U_ref == U_qtref)
 
 S = Symplectic(H_mat)
-print(S)
+print(np.round(S, 4))
 
 print('Ref ------')
 cc = np.cos(theta)
@@ -92,11 +92,12 @@ print(S_ref)
 
 Sps = S_ref
 print('--------------- BEAM SPLITTER --------------------')
+z = np.pi/4
 
-H_mat = H_beam_splitter(theta)
+H_mat = H_beam_splitter(z)
 H = Hamiltonian(N, H_mat)
 
-H_ref = -theta*(a * b.dag() + a.dag() * b + b * a.dag() + b.dag() * a)
+H_ref = (1j*z.conjugate()*a * b.dag() -1j*z* a.dag() * b + 1j*z.conjugate()*b.dag()*a - 1j*z*b*a.dag())
 # H_ref = -theta*(a * b.dag() + b.dag() * a)
 
 U_ref = (-1j*H_ref).expm()
@@ -106,10 +107,13 @@ print("H == H_ref:", H == H_ref)
 # print(U_ref == U_qtref)
 
 S = Symplectic(H_mat)
-print(S)
+print(np.round(S, 4))
 
 print('Ref ------')
-cc = np.cos(theta)
-ss = np.sin(theta)
-S_ref =np.array([[cc, 0, ss, 0], [0, cc, 0, ss], [ss, 0, -cc, 0], [0, ss, 0, -cc]])
+c1 = np.cos(np.absolute(z))
+s1 = np.sin(np.absolute(z))
+c2 = np.cos(np.angle(z))
+s2 = np.sin(np.angle(z))
+
+S_ref =np.array([[c1, 0, s1*c2, s1*s2], [0, c1, -s1*s2, s1*c2], [-s1*c2, -s1*s2, c1, 0], [s1*s2, -s1*c2, 0, c1]])
 print(S_ref)
