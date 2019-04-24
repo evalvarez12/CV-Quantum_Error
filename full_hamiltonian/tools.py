@@ -10,7 +10,7 @@ Created on Tue Feb 19 11:51:17 2019
 
 import numpy as np
 import qutip as qt
-
+from scipy.linalg import block_diag
 
 def tensor(N, operator, pos, Nmodes):
     """
@@ -70,4 +70,8 @@ def alpha_n(r, n):
 
 
 def direct_sum(matrices):
-    return la.block_diag(*matrices)
+    return block_diag(*matrices)
+
+
+def matrix_sandwich(A, B):
+    return np.dot(A.transpose(), np.dot(B, A))

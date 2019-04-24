@@ -45,9 +45,9 @@ class System:
         else:
             self.state = U * self.state * U.dag()
             
-        if self.cm:
+        if self.cm is not None:
             S = sym.beam_splitter(z)
-            self.cm = np.dot(S, np.dot(self.cm, S))
+            self.cm = tools.matrix_sandwich(S, self.cm)
             
     
     def save_state(self):
@@ -68,7 +68,7 @@ class System:
 
         
     def apply_TMS(self, mphoton, pos):
-        r = np.arcsinh(np.sqrt(mphoton))
+        r = -1*np.arcsinh(np.sqrt(mphoton))
         S = ops.tmsqueeze(self.N, r, pos, self.Nmodes)
         
         if self.state.isket:
@@ -76,6 +76,11 @@ class System:
         else:
             self.state = S * self.state * S.dag()
             
+        if self.cm is not None:
+            S = sym.two_mode_squeeze(r)
+            print(S)
+            self.cm = tools.matrix_sandwich(S, self.cm)
+    
     
     def apply_SMS(self, mphoton, pos):
         r = np.arcsinh(np.sqrt(mphoton))
@@ -160,6 +165,11 @@ class System:
         # TODO: check this factor of 2
         cm = 2 * qt.covariance_matrix(self.quad_basis, self.state)
         return cm
+
+
+    def check_CM(self):
+        cm = self.get_full_CM()
+        return np.array_equal(cm, self.cm)
 
 
     def replace_current_state_w_bad_TMSV(self, mean_photon_number):

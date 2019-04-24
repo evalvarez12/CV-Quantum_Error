@@ -20,8 +20,12 @@ def displace(a, alpha):
 
 def squeeze(N, r, pos=0, Nmodes=1):
 #    return ((z.conjugate()*a**2 - z*(a.dag()**2))/2).expm()
-    # TODO: check if phase of pi is required
+#     TODO: check if phase of pi is required
     S = qt.squeeze(N, -r)
+    
+#    H = hamiltonians.sigle_mode_squeeze(N, r)
+#    S = (-1j * H).expm() 
+
     S = tools.tensor(N, S, pos, Nmodes)
     return S
 
@@ -32,14 +36,18 @@ def tmsqueeze(N, r, pos=[0,1], Nmodes=2):
     
 #    S = (z.conjugate()*a*b - z*a.dag()*b.dag()).expm()
     # TODO: check this factor of two, and phase of pi
-    S = qt.squeezing(a, b, -2*r)
+#    S = qt.squeezing(a, b, -2*r)
+    
+    H = hamiltonians.two_mode_squeeze(N, r)
+    S = (-1j* H).expm()
+    
     if Nmodes > 2:
         S = tools.reorder_two_mode_operator(N, S, pos, Nmodes)
     return S    
 
 
 def beam_splitter(N, z, pos=[0,1], Nmodes=2):
-    print("BS:", z)
+#    print("BS:", z)
     H = hamiltonians.beam_spliter(N, z)
     U = (-1j * H).expm()
     
