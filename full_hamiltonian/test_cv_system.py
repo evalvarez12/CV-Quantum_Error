@@ -18,9 +18,9 @@ def expect(operator, state):
 
 
 # Parameters
-N = 40
+N = 30
 mpn = 1
-t = .5
+t = np.pi/3
 
 wx = np.linspace(-5, 5)
 

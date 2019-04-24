@@ -97,7 +97,7 @@ z = np.pi/4
 H_mat = H_beam_splitter(z)
 H = Hamiltonian(N, H_mat)
 
-H_ref = (1j*z.conjugate()*a * b.dag() -1j*z* a.dag() * b + 1j*z.conjugate()*b.dag()*a - 1j*z*b*a.dag())
+H_ref = (-1j*z.conjugate()*a * b.dag() + 1j*z* a.dag() * b - 1j*z.conjugate()*b.dag()*a + 1j*z*b*a.dag())
 # H_ref = -theta*(a * b.dag() + b.dag() * a)
 
 U_ref = (-1j*H_ref).expm()

@@ -10,30 +10,44 @@ Created on Wed Apr  3 09:29:55 2019
 import qutip as qt
 import numpy as np
 import operations as ops
+import symplectic as sym
 import beam_splitter as bs
 import tools
 
 
+
 class System:
-    def __init__(self, N, Nmodes=0):
+    def __init__(self, N, Nmodes=0, cm=False, cm_only=False):
         self.N = N
-        if Nmodes != 0:
+        if Nmodes != 0 and not cm_only:
             self.state = qt.tensor([qt.basis(self.N, 0)]*Nmodes)
             self.Nmodes = Nmodes
+            
+        if cm:
+            eye = np.eye(2)
+            self.cm = tools.direct_sum([eye]*Nmodes)
+        else:
+            self.cm = None 
 
 
     def add_vacuum(self, Nadd=1):
         self.state = qt.tensor([self.state] + [qt.basis(self.N, 0)]*Nadd)
         self.Nmodes = self.Nmodes + Nadd
 
-    def apply_BS(self, t, pos):
-        theta = np.arccos(np.sqrt(t))
-        U = bs.beam_splitter_U(self.N, theta, pos, self.Nmodes)
+
+    def apply_BS(self, z, pos):
+#        theta = np.arccos(np.sqrt(t))
+#        U = bs.beam_splitter_U(self.N, theta, pos, self.Nmodes)
+        U = ops.beam_splitter(self.N, z, pos, self.Nmodes)
 
         if self.state.isket:
             self.state = U * self.state
         else:
             self.state = U * self.state * U.dag()
+            
+        if self.cm:
+            S = sym.beam_splitter(z)
+            self.cm = np.dot(S, np.dot(self.cm, S))
             
     
     def save_state(self):
@@ -51,6 +65,7 @@ class System:
             raise AttributeError("There is not a saved state")
         self.state = self.state_saved
         del self.state_saved
+
         
     def apply_TMS(self, mphoton, pos):
         r = np.arcsinh(np.sqrt(mphoton))
@@ -150,6 +165,7 @@ class System:
     def replace_current_state_w_bad_TMSV(self, mean_photon_number):
         self.state = tools.tmsv_bad_method(self.N, mean_photon_number)
         self.Nmodes = 2
+
         
     def add_bad_TMSV(self, mean_photon_number):
         self.state = qt.tensor(self.state, tools.tmsv_bad_method(self.N, mean_photon_number))

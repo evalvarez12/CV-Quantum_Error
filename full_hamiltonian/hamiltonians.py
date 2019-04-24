@@ -9,7 +9,22 @@ Created on Tue Apr 23 10:56:50 2019
 
 import numpy as np
 import qutip as qt
-import scipy.linalg as la
+
+
+def beam_spliter(N, z):
+    return Hamiltonian(N, H_beam_splitter(z))
+
+
+def phase_shift(N, theta):
+    return Hamiltonian(N, H_phase_shift(theta))
+
+
+def sigle_mode_squeeze(N, z):
+    return Hamiltonian(N, H_single_mode_squeeze(z))
+
+
+def two_mode_squeeze(N, z):
+    return Hamiltonian(N, H_two_mode_squeeze(z))
 
 
 def H_single_mode_squeeze(z):
@@ -58,27 +73,3 @@ def Hamiltonian(N, H_mat):
     H = np.dot(vec_dag, np.dot(H_mat, vec))
     return H
 
-
-def Symplectic(H_mat):
-    K = np.block([[np.eye(2), np.zeros([2, 2])], [np.zeros([2, 2]), -np.eye(2)]])
-    S = la.expm(-1j*np.dot(K, H_mat))
-
-#    size = H_mat.shape[0]
-    L = quad_basis_transform()
-    T = quad_basis_reorder()
-    S = np.dot(L.transpose().conjugate(), np.dot(S, L))
-#    return S
-    return np.dot(T, np.dot(S, T))
-
-
-def quad_basis_transform():
-#    if modes == 4:
-    L = np.block([[np.eye(2), 1j*np.eye(2)], [np.eye(2), -1j*np.eye(2)]])/np.sqrt(2)
-#    else:
-#    L = np.array([[1, 1j], [1, -1j]])/np.sqrt(2)
-    return L
-
-
-def quad_basis_reorder():
-    T = np.array([[1, 0, 0, 0], [0, 0, 1, 0], [0, 1, 0, 0], [0, 0, 0, 1]])
-    return T

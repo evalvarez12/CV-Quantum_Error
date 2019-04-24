@@ -10,6 +10,7 @@ Created on Fri Feb 15 12:05:43 2019
 import qutip as qt
 import numpy as np
 import tools
+import hamiltonians
 
 
 
@@ -35,6 +36,16 @@ def tmsqueeze(N, r, pos=[0,1], Nmodes=2):
     if Nmodes > 2:
         S = tools.reorder_two_mode_operator(N, S, pos, Nmodes)
     return S    
+
+
+def beam_splitter(N, z, pos=[0,1], Nmodes=2):
+    print("BS:", z)
+    H = hamiltonians.beam_spliter(N, z)
+    U = (-1j * H).expm()
+    
+    if Nmodes > 2:
+        U = tools.reorder_two_mode_operator(N, U, pos, Nmodes)
+    return U
 
 
 def homodyne_operator2(N, phase, amplitude=1):
