@@ -24,7 +24,7 @@ def beam_splitter(z):
     c2 = np.cos(np.angle(z))
     s2 = np.sin(np.angle(z))
 
-    S =np.array([[c1, 0, s1*c2, s1*s2], [0, c1, -s1*s2, s1*c2], [-s1*c2, -s1*s2, c1, 0], [s1*s2, -s1*c2, 0, c1]])
+    S =np.array([[c1, 0, s1*c2, s1*s2], [0, c1, -s1*s2, s1*c2], [-s1*c2, s1*s2, c1, 0], [-s1*s2, -s1*c2, 0, c1]])
     return S
 
 

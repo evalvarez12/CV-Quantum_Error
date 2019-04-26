@@ -22,7 +22,7 @@ b = qt.tensor(qt.qeye(N), qt.destroy(N))
 class TestStringMethods(unittest.TestCase):
 
     def test_two_mode_squeezing(self):
-        z = 2 * np.exp(1j*np.pi/4)
+        z = 2 * np.exp(1j*np.pi/6)
         H_mat = H_two_mode_squeeze(z)
         H = Hamiltonian(N, H_mat)
 
@@ -36,15 +36,15 @@ class TestStringMethods(unittest.TestCase):
         S = symplectic(H_mat)
         S_ref = theory.two_mode_squeeze(z)
 
+#        print(np.round(S, 5))
+#        print(np.round(S_ref, 5))
         self.assertTrue(U_ref == U_qtref)
         self.assertTrue(H == H_ref)
         np.testing.assert_array_almost_equal(S, S_ref)
-        print(np.round(S, 5))
-        print(np.round(S_ref, 5))
 
 
     def test_single_mode_squeezing(self):
-        z = 2 * np.exp(1j*np.pi/4)
+        z = 2 * np.exp(1j*np.pi/6)
         H_mat = H_single_mode_squeeze(z)
         H = Hamiltonian(N, H_mat)
 
@@ -57,8 +57,8 @@ class TestStringMethods(unittest.TestCase):
         S = symplectic(H_mat)
         S_ref = theory.single_mode_squeeze(z)
 
-        print(np.round(S, 5))
-        print(np.round(S_ref, 5))
+#        print(np.round(S, 5))
+#        print(np.round(S_ref, 5))
         self.assertTrue(U_ref == U_qtref)
         self.assertTrue(H == H_ref)
         np.testing.assert_array_almost_equal(S, S_ref)
@@ -75,8 +75,8 @@ class TestStringMethods(unittest.TestCase):
         S = symplectic(H_mat)
         S_ref = theory.phase_shift(theta)
 
-        print(np.round(S, 5))
-        print(np.round(S_ref, 5))
+#        print(np.round(S, 5))
+#        print(np.round(S_ref, 5))
         self.assertTrue(H == H_ref)
         np.testing.assert_array_almost_equal(S, S_ref)
 
@@ -86,13 +86,13 @@ class TestStringMethods(unittest.TestCase):
         H_mat = H_beam_splitter(z)
         H = Hamiltonian(N, H_mat)
 
-        H_ref = (-1j * z.conjugate() * a * b.dag() + 1j * z * a.dag() * b)
+        H_ref = (-1j * z * a * b.dag() + 1j * z.conjugate() * a.dag() * b)
 
         S = symplectic(H_mat)
         S_ref = theory.beam_splitter(z)
 
-        print(np.round(S, 5))
-        print(np.round(S_ref, 5))
+#        print(np.round(S, 5))
+#        print(np.round(S_ref, 5))
         self.assertTrue(H == H_ref)
         np.testing.assert_array_almost_equal(S, S_ref, decimal=5)
 

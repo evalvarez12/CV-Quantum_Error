@@ -46,11 +46,11 @@ def H_two_mode_squeeze(z):
 
 def H_beam_splitter(z):
     H = np.zeros([4, 4], dtype=complex)
-    H[1, 0] = (-1j * z.conjugate())/2
-    H[0, 1] = (1j * z)/2
+    H[1, 0] = (-1j * z)/2
+    H[0, 1] = (1j * z.conjugate())/2
 
-    H[3, 2] = (1j * z)/2
-    H[2, 3] = (-1j*z.conjugate())/2
+    H[3, 2] = (1j * z.conjugate())/2
+    H[2, 3] = (-1j * z)/2
     return H
 
 
