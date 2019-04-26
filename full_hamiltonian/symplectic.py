@@ -47,7 +47,7 @@ def symplectic(H_mat):
     T = quad_basis_reorder()
     S = np.dot(L.transpose().conjugate(), np.dot(S, L))
 #    return S
-    return np.dot(T, np.dot(S, T))
+    return np.dot(T, np.dot(S, T)).real
 
 
 def quad_basis_transform():

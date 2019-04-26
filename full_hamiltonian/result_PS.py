@@ -18,12 +18,12 @@ import scipy.io
 ############################################ CALCULATIONS
 
 # Parameters
-N = 20
+N = 30
 mpn = 1.3
 t = .9
 mpne = 0.001
 f = 0.95
-option = 'rps'
+option = 'nops'
 
 
 ## Initialize state

@@ -20,7 +20,7 @@ def expect(operator, state):
 # Parameters
 N = 30
 mpn = 1
-t = np.pi/3
+t = np.pi/4
 
 wx = np.linspace(-5, 5)
 
@@ -29,8 +29,8 @@ r = np.arcsinh(np.sqrt(mpn))
 print("Squeezing:", r)
 
 ## Initialize state
-sys = cv.System(N, Nmodes=2)
-sys.apply_TMS(mpn, [0, 1])
+sys = cv.System(N, Nmodes=2, cm=True)
+sys.apply_TMS(r, [0, 1])
 # BAD TMSV
 #sys.replace_current_state_w_bad_TMSV(mean_photon_number)
 
@@ -40,6 +40,7 @@ W0 = qt.wigner(sys.state.ptrace(0), wx, wx)
 sys.set_quadratures_basis()
 CM = sys.get_full_CM()
 print("CM:", CM)
+print("Sys CM:", sys.cm)
 
 print("MG simple")
 Va = sys.get_simple_CM_V(0)
@@ -77,7 +78,7 @@ sys.apply_BS(t, [0, 1])
 sys.set_quadratures_basis()
 CM = sys.get_full_CM()
 print("CM:", CM)
-
+print("Sys CM:", sys.cm)
 
 W1 = qt.wigner(sys.state.ptrace(0), wx, wx)
 
@@ -101,17 +102,18 @@ sys.apply_BS(t, [0, 1])
 sys.set_quadratures_basis()
 CM = sys.get_full_CM()
 print("CM:", CM)
+print("Sys CM:", sys.cm)
 
-
-print("-----------------> Reference system")
-sys2 = cv.System(N, Nmodes=2)
+print("----------------------- Inverting the operations -----------------------")
+sys2 = cv.System(N, Nmodes=2, cm=True)
 #z = mpn*np.exo(1j*np.pi/4)
-sys2.apply_SMS(mpn, 0)
-sys2.apply_SMS(mpn, 1)
+sys2.apply_SMS(-r, 0)
+sys2.apply_SMS(r, 1)
 
 sys2.set_quadratures_basis()
 CM2 = sys2.get_full_CM()
 print("CM:", CM2)
+print("Sys CM:", sys2.cm)
 
 
 q1 = sys2.quad_basis[0]
@@ -126,11 +128,13 @@ sys2.apply_BS(t, [0, 1])
 sys2.set_quadratures_basis()
 CM2 = sys2.get_full_CM()
 print("CM:", CM2)
+print("Sys CM:", sys2.cm)
 
 sys2.apply_BS(t, [0, 1])
 sys2.set_quadratures_basis()
 CM2 = sys2.get_full_CM()
 print("CM:", CM2)
+print("Sys CM:", sys2.cm)
 
 
 

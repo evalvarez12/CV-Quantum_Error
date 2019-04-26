@@ -47,7 +47,7 @@ class System:
             
         if self.cm is not None:
             S = sym.beam_splitter(z)
-            print("->", S)
+#            print("->", S)
             self.cm = tools.matrix_sandwich(S, self.cm)
             
     
@@ -68,8 +68,7 @@ class System:
         del self.state_saved
 
         
-    def apply_TMS(self, mphoton, pos):
-        r = -1*np.arcsinh(np.sqrt(mphoton))
+    def apply_TMS(self, r, pos):
         S = ops.tmsqueeze(self.N, r, pos, self.Nmodes)
         
         if self.state.isket:
@@ -78,13 +77,12 @@ class System:
             self.state = S * self.state * S.dag()
             
         if self.cm is not None:
-            S = sym.two_mode_squeeze(2*r)
-            print("->", S)
+            S = sym.two_mode_squeeze(r)
+#            print("->", S)
             self.cm = tools.matrix_sandwich(S, self.cm)
     
     
-    def apply_SMS(self, mphoton, pos):
-        r = np.arcsinh(np.sqrt(mphoton))
+    def apply_SMS(self, r, pos):
         S = ops.squeeze(self.N, r, pos, self.Nmodes)
         
         if self.state.isket:
@@ -93,8 +91,7 @@ class System:
             self.state = S * self.state * S.dag()
     
     
-    def add_TMSV(self, mphoton):
-        r = np.arcsinh(np.sqrt(mphoton)) 
+    def add_TMSV(self, r):
         state_aux = qt.tensor(qt.basis(self.N), qt.basis(self.N))
         S = ops.tmsqueeze(self.N, r)
         

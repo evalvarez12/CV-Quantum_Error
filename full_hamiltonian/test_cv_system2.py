@@ -37,7 +37,7 @@ sys.apply_TMS(mpn, [0, 1])
 
 
 
-print("Sys CM:", sys.cm)
+print("Sys CM:", np.round(sys.cm, 5))
 
 
 
@@ -47,6 +47,6 @@ print("CM:", CM)
 
 
 S_theory = theory.two_mode_squeeze(r)
-print("Theory S:", S_theory)
+print("Theory S:", np.round(S_theory, 2))
 
 print("Theory CM:", tools.matrix_sandwich(S_theory, np.eye(4)))
