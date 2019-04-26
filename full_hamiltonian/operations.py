@@ -31,8 +31,8 @@ def squeeze(N, r, pos=0, Nmodes=1):
 
 
 def tmsqueeze(N, r, pos=[0,1], Nmodes=2):
-    a = qt.tensor(qt.destroy(N), qt.identity(N))
-    b = qt.tensor(qt.identity(N), qt.destroy(N))
+#    a = qt.tensor(qt.destroy(N), qt.identity(N))
+#    b = qt.tensor(qt.identity(N), qt.destroy(N))
     
 #    S = (z.conjugate()*a*b - z*a.dag()*b.dag()).expm()
     # TODO: check this factor of two, and phase of pi

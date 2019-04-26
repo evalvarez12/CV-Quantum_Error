@@ -29,38 +29,35 @@ def two_mode_squeeze(N, z):
 
 def H_single_mode_squeeze(z):
     H = np.zeros([4, 4], dtype=complex)
-    H[2, 0] = (1j * z.conjugate())/2
-    H[0, 2] = (-1j * z)/2
-
-#    H[2, 0] = z.conjugate()
-#    H[0, 2] = z
+    H[2, 0] = (-1j * z.conjugate())/2
+    H[0, 2] = (1j * z)/2
     return H
 
 
 def H_two_mode_squeeze(z):
     H = np.zeros([4, 4], dtype=complex)
-    H[3, 0] = (1j * z.conjugate())/2
-    H[0, 3] = (-1j * z)/2
+    H[3, 0] = (-1j * z.conjugate())/2
+    H[0, 3] = (1j * z)/2
 
-    H[2, 1] = (1j * z.conjugate())/2
-    H[1, 2] = (-1j * z)/2
+    H[2, 1] = (-1j * z.conjugate())/2
+    H[1, 2] = (1j * z)/2
     return H
 
 
 def H_beam_splitter(z):
     H = np.zeros([4, 4], dtype=complex)
-    H[1, 0] = -1j * z.conjugate()
-    H[0, 1] = 1j * z
+    H[1, 0] = (-1j * z.conjugate())/2
+    H[0, 1] = (1j * z)/2
 
-    H[3, 2] = 1j*z
-    H[2, 3] = -1j*z.conjugate()
+    H[3, 2] = (1j * z)/2
+    H[2, 3] = (-1j*z.conjugate())/2
     return H
 
 
 def H_phase_shift(theta):
     H = np.zeros([4, 4], dtype=complex)
-    H[0, 0] = -theta
-    H[2, 2] = -theta
+    H[0, 0] = -theta/2
+    H[2, 2] = -theta/2
     return H
 
 

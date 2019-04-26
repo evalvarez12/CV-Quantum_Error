@@ -26,7 +26,8 @@ def phase_shift(z):
 
 def single_mode_squeeze(z):
     H = ham.H_single_mode_squeeze(z)
-    S = symplectic(H)
+    # Extra factor of 2 requied specifically for this case
+    S = symplectic(2*H)
     return S
 
 
@@ -38,7 +39,8 @@ def two_mode_squeeze(z):
 
 def symplectic(H_mat):
     K = np.block([[np.eye(2), np.zeros([2, 2])], [np.zeros([2, 2]), -np.eye(2)]])
-    S = la.expm(-1j*np.dot(K, H_mat))
+    # Extra factor on the Hamiltonian matrix requied to get correct representation
+    S = la.expm(-1j*np.dot(K, 2 * H_mat))
 
 #    size = H_mat.shape[0]
     L = quad_basis_transform()

@@ -23,23 +23,30 @@ t = np.pi/3
 wx = np.linspace(-5, 5)
 
 
+# Testing two mode squeeze
+
 r = np.arcsinh(np.sqrt(mpn))
 print("Squeezing:", r)
 
 ## Initialize state
 sys = cv.System(N, Nmodes=2, cm=True)
-print(sys.cm)
+print("Initial CM:", sys.cm)
 
 
 sys.apply_TMS(mpn, [0, 1])
-S_theory = theory.two_mode_squeeze(r)
-print("Theory S:", S_theory)
 
 
-print(sys.cm)
+
+print("Sys CM:", sys.cm)
 
 
 
 sys.set_quadratures_basis()
 CM = sys.get_full_CM()
 print("CM:", CM)
+
+
+S_theory = theory.two_mode_squeeze(r)
+print("Theory S:", S_theory)
+
+print("Theory CM:", tools.matrix_sandwich(S_theory, np.eye(4)))

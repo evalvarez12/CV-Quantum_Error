@@ -47,6 +47,7 @@ class System:
             
         if self.cm is not None:
             S = sym.beam_splitter(z)
+            print("->", S)
             self.cm = tools.matrix_sandwich(S, self.cm)
             
     
@@ -77,8 +78,8 @@ class System:
             self.state = S * self.state * S.dag()
             
         if self.cm is not None:
-            S = sym.two_mode_squeeze(r)
-            print(S)
+            S = sym.two_mode_squeeze(2*r)
+            print("->", S)
             self.cm = tools.matrix_sandwich(S, self.cm)
     
     
