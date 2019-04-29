@@ -27,6 +27,24 @@ def key_rate(sys, f, p):
     return k_rate
     
 
+def key_rate_nosimple(sys, f, p):
+    sys.set_quadratures_basis() 
+    Va = sys.get_CM_entry([0, 0])
+    Vb = sys.get_CM_entry([2, 2])
+    Ve = sys.get_CM_entry([4, 4])
+    Vf = sys.get_CM_entry([6, 6])
+    
+    Cab = sys.get_CM_entry([0, 2])
+    Cbe = sys.get_CM_entry([2, 4])
+    Cbf = sys.get_CM_entry([2, 6])
+    Cef = sys.get_CM_entry([4, 6])
+
+    I_shared = I(Va, Vb, Cab)
+    I_stolen = X(Vb, Ve, Vf, Cbe, Cbf, Cef)
+    
+    k_rate = p * (f * I_shared - I_stolen)
+    return k_rate
+
 def key_rate_compare(sys, f, p, mpnA, mpnE, t):
     Va = sys.get_simple_CM_V(0)
     Vb = sys.get_simple_CM_V(1)
@@ -68,9 +86,9 @@ def key_rate_compare(sys, f, p, mpnA, mpnE, t):
     Vf3 = sys.get_CM_entry([6, 6])
     
     Cab3 = sys.get_CM_entry([0, 2])
+    Cbe3 = sys.get_CM_entry([2, 4])
+    Cbf3 = sys.get_CM_entry([2, 6])
     Cef3 = sys.get_CM_entry([4, 6])
-    Cbf3 = sys.get_CM_entry([2, 7])
-    Cbe3 = sys.get_CM_entry([2, 5])
 
 
 #    Cab2 = abs(Cab2)
@@ -79,6 +97,7 @@ def key_rate_compare(sys, f, p, mpnA, mpnE, t):
 #    Cbe2 = abs(Cbe2)
 
     print("----------------t---------------", t)
+    print("Parameter - Simple - Theory NOPS - Calculated")
     print("Va:", Va, Va2, Va3)
     print("Vb:", Vb, Vb2, Vb3)
     print("Ve:", Ve, Ve2, Ve3)
@@ -88,8 +107,8 @@ def key_rate_compare(sys, f, p, mpnA, mpnE, t):
     print("Cbf:", Cbf, Cbf2, Cbf3)
     print("Cef:", Cef, Cef2, Cef3)
 
-#    CM = sys.get_full_CM()
-#    print("CM:", CM)
+    CM = sys.get_full_CM()
+    print("CM:", CM)
 
     I_shared = I(Va3, Vb3, Cab3)
     I_stolen = X(Vb3, Ve3, Vf3, Cbe3, Cbf3, Cef3)

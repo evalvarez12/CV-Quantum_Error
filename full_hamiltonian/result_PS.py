@@ -23,12 +23,16 @@ mpn = 1.3
 t = .9
 mpne = 0.001
 f = 0.95
-option = 'nops'
+option = 'tps'
+
+ps_theta = np.arccos(np.sqrt(t))
+r = np.arcsinh(np.sqrt(mpn))
+r_eve = np.arcsinh(np.sqrt(mpne))
 
 
 ## Initialize state
 sys = cv.System(N, Nmodes=2)
-sys.apply_TMS(mpn, [0, 1])
+sys.apply_TMS(r, [0, 1])
 # BAD TMSV
 #sys.replace_current_state_w_bad_TMSV(mean_photon_number)
 
@@ -36,8 +40,9 @@ sys.apply_TMS(mpn, [0, 1])
 # Transmitter Photon subtraction
 if option == 'tps':
     sys.add_vacuum()
-    sys.apply_BS(t, [1, 2])
+    sys.apply_BS(ps_theta, [1, 2])
     p_success = sys.collapse_fock_state(1, 2)
+    print("P SUCCESS:", p_success)
 
 # No Photon subtraction
 if option == 'nops':
@@ -45,7 +50,7 @@ if option == 'nops':
 
 
 # Evesdropper collective attack
-sys.add_TMSV(mpne)
+sys.add_TMSV(r_eve)
 # BAD TMSV
 #sys.add_bad_TMSV(e_mpn)
 
@@ -53,24 +58,26 @@ sys.add_TMSV(mpne)
 sys.save_state()
 
 key_rates = []
-#tes =np.logspace(-2, 0, base=10, num=50)
-tes = np.linspace(.005, 1, 100)
+tes =np.logspace(-2, 0, base=10, num=100)
+#tes = np.linspace(.005, 1, 10)
 #tes = [1.]
 
 for te in tes:
     sys.load_state()
 
-    sys.apply_BS(te, [1, 2])
+    theta = np.arccos(np.sqrt(te))
+    sys.apply_BS(theta, [1, 2])
     tes
     # Receiver Photon subtraction
     if option == 'rps':
         sys.add_vacuum()
-        sys.apply_BS(t, [1, 4])
+        sys.apply_BS(ps_theta, [1, 4])
         p_success = sys.collapse_fock_state(1, 4)
-
+        print("P SUCCESS:", p_success)
+        
 #    key_rates += [measurements.key_rate(sys, f=f, p=p_success)]
 #    key_rates += [measurements.key_rate_NOsimple(mean_photon_number, e_mpn, te)]
-    key_rates += [measurements.key_rate_compare(sys, f, p_success, mpn, mpne, te)]
+    key_rates += [measurements.key_rate_nosimple(sys, f, p_success)]
 
 
 # Save the resuls
