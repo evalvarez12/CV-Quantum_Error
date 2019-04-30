@@ -7,13 +7,13 @@ Created on Wed Apr  3 09:29:55 2019
 @author: Eduardo Villasenor
 """
 
-import qutip as qt
-import numpy as np
 import operations as ops
 import symplectic as sym
 import beam_splitter as bs
 import tools
 import theory
+import qutip as qt
+import numpy as np
 
 
 
@@ -36,7 +36,7 @@ class System:
         self.Nmodes = self.Nmodes + Nadd
 
 
-    def apply_BS(self, z, pos):
+    def apply_BS(self, z, pos=[0,1]):
 #        theta = np.arccos(np.sqrt(t))
 #        U = bs.beam_splitter_U(self.N, theta, pos, self.Nmodes)
         U = ops.beam_splitter(self.N, z, pos, self.Nmodes)
@@ -47,13 +47,11 @@ class System:
             self.state = U * self.state * U.dag()
 
         if self.cm is not None:
-            S = sym.beam_splitter(z)
-            S = tools.reorder_symplectic(S, pos, self.Nmodes)
-#            print("->", S)
+            S = sym.beam_splitter(z, pos, self.Nmodes)
             self.cm = tools.matrix_sandwich(S, self.cm)
 
 
-    def apply_TMS(self, r, pos):
+    def apply_TMS(self, r, pos=[0,1]):
         S = ops.tmsqueeze(self.N, r, pos, self.Nmodes)
 
         if self.state.isket:
@@ -62,19 +60,21 @@ class System:
             self.state = S * self.state * S.dag()
 
         if self.cm is not None:
-            S = sym.two_mode_squeeze(r)
-            S = tools.reorder_symplectic(S, pos, self.Nmodes)
-#            print("->", S)
+            S = sym.two_mode_squeeze(r, pos, self.Nmodes)
             self.cm = tools.matrix_sandwich(S, self.cm)
 
 
-    def apply_SMS(self, r, pos):
+    def apply_SMS(self, r, pos=0):
         S = ops.squeeze(self.N, r, pos, self.Nmodes)
 
         if self.state.isket:
             self.state = S * self.state
         else:
             self.state = S * self.state * S.dag()
+            
+        if self.cm is not None:
+            S = sym.single_mode_squeeze(r, pos, self.Nmodes)
+            self.cm = tools.matrix_sandwich(S, self.cm)
 
 
     def add_TMSV(self, r):
@@ -86,6 +86,12 @@ class System:
             state_aux = state_aux * state_aux.dag()
         self.state = qt.tensor(self.state, state_aux)
         self.Nmodes = self.Nmodes + 2
+        
+        if self.cm is not None:
+            S = sym.two_mode_squeeze(r)
+            cm_add = np.dot(S.transpose(), S)
+            self.cm =tools.block_diag([self.cm, cm_add])
+
 
 
     def collapse_fock_state(self, fock, pos):

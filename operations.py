@@ -48,7 +48,7 @@ def tmsqueeze(N, r, pos=[0,1], Nmodes=2):
 
 def beam_splitter(N, z, pos=[0,1], Nmodes=2):
 #    print("BS:", z)
-    H = hamiltonians.beam_spliter(N, z)
+    H = hamiltonians.beam_splitter(N, z)
     U = (-1j * H).expm()
     
     if Nmodes > 2:

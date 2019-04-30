@@ -59,6 +59,10 @@ def matrix_sandwich(A, B):
     return np.dot(A.transpose(), np.dot(B, A))
 
 
+def direct_sum(matrices):
+    return block_diag(*matrices)
+    
+
 def direct_sum_singles(matrices, positions, Nmodes):
      # Check if arguments make sense
     if max(positions) >= Nmodes:
