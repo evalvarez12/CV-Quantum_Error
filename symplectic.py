@@ -9,31 +9,50 @@ Created on Wed Apr 24 14:54:56 2019
 import numpy as np
 import scipy.linalg as la
 import hamiltonians as ham
+import tools
 
 
 
-def beam_splitter(z):
+def beam_splitter(z, pos=[0, 1], Nmodes=2):
     H = ham.H_beam_splitter(z)
     S = symplectic(H)
+    
+    if Nmodes > 2:
+        S = tools.reorder_two_mode_symplectic(S, pos, Nmodes)
     return S
     
 
-def phase_shift(z):
+def phase_shift(z, pos=0, Nmodes=1):
     H = ham.H_phase_shift(z)
     S = symplectic(H)
+    
+    # Keep only the first mode on which the phase shift acts
+    S = S[0:2, 0:2]
+    
+    if Nmodes > 1:
+        S = tools.direct_sum_singles([S], [pos], Nmodes)
     return S
 
 
-def single_mode_squeeze(z):
+def single_mode_squeeze(z, pos=0, Nmodes=1):
     H = ham.H_single_mode_squeeze(z)
     # Extra factor of 2 requied specifically for this case
-    S = symplectic(2*H)
+    S = symplectic(H)
+
+    # Keep only the first mode on which the squeezing acts
+    S = S[0:2, 0:2]
+    
+    if Nmodes > 1:
+        S = tools.direct_sum_singles([S], [pos], Nmodes)
     return S
 
 
-def two_mode_squeeze(z):
+def two_mode_squeeze(z, pos=[0,1], Nmodes=2):
     H = ham.H_two_mode_squeeze(z)
     S = symplectic(H)
+    
+    if Nmodes > 2:
+        S = tools.reorder_two_mode_symplectic(S, pos, Nmodes)
     return S
 
 

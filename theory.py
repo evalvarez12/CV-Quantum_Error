@@ -11,7 +11,7 @@ Created on Wed Apr 24 16:39:28 2019
 import numpy as np
 
 
-def phase_shift(theta):
+def phase_shift_2modes(theta):
     cc = np.cos(theta)
     ss = np.sin(theta)
     S =np.array([[cc, -ss, 0, 0], [ss, cc, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]])
@@ -28,7 +28,7 @@ def beam_splitter(z):
     return S
 
 
-def single_mode_squeeze(z):
+def single_mode_squeeze_2modes(z):
     cc = np.cos(np.angle(z))
     ss = np.sin(np.angle(z))
     ch = np.cosh(np.absolute(z))
@@ -43,6 +43,22 @@ def two_mode_squeeze(z):
     ch = np.cosh(np.absolute(z))
     sh = np.sinh(np.absolute(z))
     S =np.array([[ch, 0, sh*cc, sh*ss], [0, ch, sh*ss, -sh*cc], [sh*cc, sh*ss, ch, 0], [sh*ss, -sh*cc, 0, ch]])
+    return S
+
+
+def phase_shift(theta):
+    cc = np.cos(theta)
+    ss = np.sin(theta)
+    S =np.array([[cc, -ss], [ss, cc]])
+    return S
+
+
+def single_mode_squeeze(z):
+    cc = np.cos(np.angle(z))
+    ss = np.sin(np.angle(z))
+    ch = np.cosh(np.absolute(z))
+    sh = np.sinh(np.absolute(z))
+    S =np.array([[ch + cc*sh, ss*sh], [ss*sh, ch- cc*sh]])
     return S
 
 

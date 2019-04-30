@@ -12,6 +12,7 @@ import numpy as np
 import qutip as qt
 from scipy.linalg import block_diag
 
+
 def tensor(N, operator, pos, Nmodes):
     """
     N:  size of the individual Hilbert space extra dimension
@@ -58,14 +59,14 @@ def matrix_sandwich(A, B):
     return np.dot(A.transpose(), np.dot(B, A))
 
 
-def direct_sum_singles(matrices, positions, nblocks):
+def direct_sum_singles(matrices, positions, Nmodes):
      # Check if arguments make sense
-    if max(positions) >= nblocks:
+    if max(positions) >= Nmodes:
         raise ValueError("direct_sum: postion out ot numbe blocks")
 
     identity = np.identity(2)
     positions = np.array(positions)
-    all_matrices = [identity] * nblocks
+    all_matrices = [identity] * Nmodes
     for i in range(len(matrices)):
         pos = positions[i]
         all_matrices[pos] = matrices[i]
@@ -99,9 +100,9 @@ def kron(matrices):
         return np.kron(matrices[0], kron(matrices[1:]))
 
 
-def kron_sum(matrices, positions, nblocks):
+def kron_sum(matrices, positions, Nmodes):
         # Check if arguments make sense
-    if max(positions) >= nblocks:
+    if max(positions) >= Nmodes:
         raise ValueError("direct_sum: postion out ot numbe blocks")
 
     N = int(np.sqrt(matrices[0].size))
@@ -110,7 +111,7 @@ def kron_sum(matrices, positions, nblocks):
     full_matrix = 0
     # TODO: remove this for
     for i in range(len(matrices)):
-        row = [identity]*nblocks
+        row = [identity]*Nmodes
         row[positions[i]]  = matrices[i]
         submatrix = kron(row)
         full_matrix += submatrix

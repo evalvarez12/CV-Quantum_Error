@@ -7,8 +7,8 @@ Created on Tue Apr 23 16:48:41 2019
 @author: Eduardo Villasenor
 """
 
-from hamiltonians import *
-from symplectic import *
+import hamiltonians as ham
+import symplectic as sym
 import theory
 import numpy as np
 import qutip as qt
@@ -23,8 +23,8 @@ class TestSymplecticMethods(unittest.TestCase):
 
     def test_two_mode_squeezing(self):
         z = 2 * np.exp(1j*np.pi/6)
-        H_mat = H_two_mode_squeeze(z)
-        H = Hamiltonian(N, H_mat)
+        H_mat = ham.H_two_mode_squeeze(z)
+        H = ham.Hamiltonian(N, H_mat)
 
 
         H_ref = -1j * z.conjugate() * a * b  + 1j * z * a.dag() * b.dag()
@@ -33,11 +33,9 @@ class TestSymplecticMethods(unittest.TestCase):
         # Qutip needs a -1 and in TMS a factor of 2 in squeezing parameter
         U_qtref = qt.squeezing(a, b, -2*z)
 
-        S = symplectic(H_mat)
+        S = sym.symplectic(H_mat)
         S_ref = theory.two_mode_squeeze(z)
 
-#        print(np.round(S, 5))
-#        print(np.round(S_ref, 5))
         self.assertTrue(U_ref == U_qtref)
         self.assertTrue(H == H_ref)
         np.testing.assert_array_almost_equal(S, S_ref)
@@ -45,20 +43,18 @@ class TestSymplecticMethods(unittest.TestCase):
 
     def test_single_mode_squeezing(self):
         z = 2 * np.exp(1j*np.pi/6)
-        H_mat = H_single_mode_squeeze(z)
-        H = Hamiltonian(N, H_mat)
+        H_mat = ham.H_single_mode_squeeze(z)
+        H = ham.Hamiltonian(N, H_mat)
 
         H_ref = (-1j * z.conjugate() * a**2 + 1j * z * a.dag()**2)/2
         U_ref = (-1j * H_ref).expm()
 
-        # Qutip need a -1 in squeezing paramenter
+        # Qutip needs a -1 in squeezing paramenter
         U_qtref = qt.squeezing(a, a, -z)
 
-        S = symplectic(H_mat)
-        S_ref = theory.single_mode_squeeze(z)
+        S = sym.symplectic(H_mat)
+        S_ref = theory.single_mode_squeeze_2modes(z)
 
-#        print(np.round(S, 5))
-#        print(np.round(S_ref, 5))
         self.assertTrue(U_ref == U_qtref)
         self.assertTrue(H == H_ref)
         np.testing.assert_array_almost_equal(S, S_ref)
@@ -67,35 +63,58 @@ class TestSymplecticMethods(unittest.TestCase):
 
     def test_phase_shift(self):
         theta = np.pi/6
-        H_mat = H_phase_shift(theta)
-        H = Hamiltonian(N, H_mat)
+        H_mat = ham.H_phase_shift(theta)
+        H = ham.Hamiltonian(N, H_mat)
 
         H_ref = -theta*(a * a.dag() + a.dag() * a)/2
 
-        S = symplectic(H_mat)
-        S_ref = theory.phase_shift(theta)
+        S = sym.symplectic(H_mat)
+        S_ref = theory.phase_shift_2modes(theta)
 
-#        print(np.round(S, 5))
-#        print(np.round(S_ref, 5))
         self.assertTrue(H == H_ref)
         np.testing.assert_array_almost_equal(S, S_ref)
 
 
     def test_beam_splitter(self):
         z = np.pi/4 * np.exp(1j*np.pi/4)
-        H_mat = H_beam_splitter(z)
-        H = Hamiltonian(N, H_mat)
+        H_mat = ham.H_beam_splitter(z)
+        H = ham.Hamiltonian(N, H_mat)
 
         H_ref = (-1j * z * a * b.dag() + 1j * z.conjugate() * a.dag() * b)
 
-        S = symplectic(H_mat)
+        S = sym.symplectic(H_mat)
         S_ref = theory.beam_splitter(z)
 
-#        print(np.round(S, 5))
-#        print(np.round(S_ref, 5))
         self.assertTrue(H == H_ref)
         np.testing.assert_array_almost_equal(S, S_ref, decimal=5)
 
+
+    def test_single_mode_squeezing_S(self):
+         z = 2 * np.exp(1j*np.pi/6)
+         S = sym.single_mode_squeeze(z)
+         S_ref = theory.single_mode_squeeze(z)
+         np.testing.assert_array_almost_equal(S, S_ref, decimal=5)
+         
+
+    def test_two_mode_squeezing_S(self):
+         z = 2 * np.exp(1j*np.pi/6)
+         S = sym.two_mode_squeeze(z)
+         S_ref = theory.two_mode_squeeze(z)
+         np.testing.assert_array_almost_equal(S, S_ref, decimal=5)
+         
+
+    def test_phase_shift_S(self):
+         theta = np.pi/6
+         S = sym.phase_shift(theta)
+         S_ref = theory.phase_shift(theta)
+         np.testing.assert_array_almost_equal(S, S_ref, decimal=5)
+         
+         
+    def test_beam_splitter_S(self):
+         z = 2 * np.exp(1j*np.pi/6)
+         S = sym.beam_splitter(z)
+         S_ref = theory.beam_splitter(z)
+         np.testing.assert_array_almost_equal(S, S_ref, decimal=5)
 
 if __name__ == '__main__':
     unittest.main()

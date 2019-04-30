@@ -11,7 +11,7 @@ import numpy as np
 import qutip as qt
 
 
-def beam_spliter(N, z):
+def beam_splitter(N, z):
     return Hamiltonian(N, H_beam_splitter(z))
 
 
