@@ -10,178 +10,71 @@ Created on Tue Apr 30 10:59:11 2019
 from tools import *
 import numpy as np
 import qutip as qt
+from scipy.linalg import block_diag
 import unittest
 
 
-N = 10
-a = qt.tensor(qt.destroy(N), qt.qeye(N))
-b = qt.tensor(qt.qeye(N), qt.destroy(N))
 
-class TestStringMethods(unittest.TestCase):
+class TestTools(unittest.TestCase):
 
-    def test_two_mode_squeezing(self):
-        z = 2 * np.exp(1j*np.pi/6)
-        H_mat = H_two_mode_squeeze(z)
-        H = Hamiltonian(N, H_mat)
+    def test_tensor(self):
+        N = 5
+        U1 = qt.create(N)
+        
+        U = tensor(N, U1, 3, 8)
 
-
-        H_ref = -1j * z.conjugate() * a * b  + 1j * z * a.dag() * b.dag()
-        U_ref = (-1j * H_ref).expm()
-
-        # Qutip needs a -1 and in TMS a factor of 2 in squeezing parameter
-        U_qtref = qt.squeezing(a, b, -2*z)
-
-        S = symplectic(H_mat)
-        S_ref = theory.two_mode_squeeze(z)
-
-#        print(np.round(S, 5))
-#        print(np.round(S_ref, 5))
-        self.assertTrue(U_ref == U_qtref)
-        self.assertTrue(H == H_ref)
-        np.testing.assert_array_almost_equal(S, S_ref)
+        U_ref = qt.tensor([qt.qeye(N)]*3 + [U1] + [qt.qeye(N)]*4)
+        
+        self.assertTrue(U == U_ref)
 
 
-    def test_single_mode_squeezing(self):
-        z = 2 * np.exp(1j*np.pi/6)
-        H_mat = H_single_mode_squeeze(z)
-        H = Hamiltonian(N, H_mat)
-
-        H_ref = (-1j * z.conjugate() * a**2 + 1j * z * a.dag()**2)/2
-        U_ref = (-1j * H_ref).expm()
-
-        # Qutip need a -1 in squeezing paramenter
-        U_qtref = qt.squeezing(a, a, -z)
-
-        S = symplectic(H_mat)
-        S_ref = theory.single_mode_squeeze(z)
-
-#        print(np.round(S, 5))
-#        print(np.round(S_ref, 5))
-        self.assertTrue(U_ref == U_qtref)
-        self.assertTrue(H == H_ref)
-        np.testing.assert_array_almost_equal(S, S_ref)
+    def test_reorder_two_mode_operator(self):
+        N = 2
+        z = 3 + 1j
+        a = qt.destroy(N)
+        qid = qt.qeye(N)
+        
+        a1 = qt.tensor(a, qid)
+        b1 = qt.tensor(qid, a)
+        U = qt.squeezing(a1, b1, z)
+        U = reorder_two_mode_operator(N, U, pos=[1,3], Nmodes=4)
+        
+        a2 = qt.tensor(qid, a, qid, qid)
+        b2 = qt.tensor(qid, qid, qid, a)
+        U_ref = qt.squeezing(a2, b2, z)
+        
+        self.assertTrue(U == U_ref)
 
 
-
-    def test_phase_shift(self):
-        theta = np.pi/6
-        H_mat = H_phase_shift(theta)
-        H = Hamiltonian(N, H_mat)
-
-        H_ref = -theta*(a * a.dag() + a.dag() * a)/2
-
-        S = symplectic(H_mat)
-        S_ref = theory.phase_shift(theta)
-
-#        print(np.round(S, 5))
-#        print(np.round(S_ref, 5))
-        self.assertTrue(H == H_ref)
-        np.testing.assert_array_almost_equal(S, S_ref)
-
-
-    def test_beam_splitter(self):
-        z = np.pi/4 * np.exp(1j*np.pi/4)
-        H_mat = H_beam_splitter(z)
-        H = Hamiltonian(N, H_mat)
-
-        H_ref = (-1j * z * a * b.dag() + 1j * z.conjugate() * a.dag() * b)
-
-        S = symplectic(H_mat)
-        S_ref = theory.beam_splitter(z)
-
-#        print(np.round(S, 5))
-#        print(np.round(S_ref, 5))
-        self.assertTrue(H == H_ref)
-        np.testing.assert_array_almost_equal(S, S_ref, decimal=5)
+    def test_direct_sum_singles(self):
+        a = np.random.rand(2, 2)
+        b = np.random.rand(4, 4)
+        
+        S = direct_sum_singles([a, b], [2, 4], 6)
+            
+        idd = np.eye(2)
+        S_ref = block_diag(idd, idd, a, idd, b, idd)
+        
+        np.testing.assert_array_equal(S, S_ref)
+        
+    
+    def test_reorder_two_mode_symplectic(self):
+        S1 = np.random.rand(4,4)
+        
+        S = reorder_two_mode_symplectic(S1, pos=[1,3], Nmodes=5)
+        
+        A = S1[0:2, 0:2]
+        B = S1[0:2, 2:4]
+        C = S1[2:4, 0:2]
+        D = S1[2:4, 2:4]
+        
+        idd = np.eye(2)
+        z = np.zeros((2, 2))
+        
+        S_ref = np.block([[idd, z, z, z, z], [z, A, z, B, z], [z, z, idd, z, z], [z, C, z, D, z], [z, z, z, z, idd]])
+        
+        np.testing.assert_array_equal(S, S_ref)
 
 
 if __name__ == '__main__':
     unittest.main()
-
-#############################
-# print('-------------- TWO MODE SQUEEZING ---------------------')
-#
-# z = 2 * np.exp(1j*np.pi/4)
-# H_mat = H_two_mode_squeeze(z)
-# H = Hamiltonian(N, H_mat)
-#
-#
-# H_ref = -1j * z.conjugate() * a * b  + 1j * z * a.dag() * b.dag()
-# U_ref = (-1j * H_ref).expm()
-#
-# # Qutip needs a -1 and in TMS a factor of 2 in squeezing parameter
-# U_qtref = qt.squeezing(a, b, -2*z)
-# print("H == H_ref:", H == H_ref)
-# print("U2 == U_ref:", U_ref == U_qtref)
-#
-# S = symplectic(H_mat)
-# print(np.round(S, 5))
-#
-# print('Ref ------')
-# S_ref = theory.two_mode_squeeze(z)
-# print(np.round(S_ref, 5))
-#
-#
-# print('--------------- SINGLE MODE SQUEEZING --------------------')
-#
-# H_mat = H_single_mode_squeeze(z)
-# H = Hamiltonian(N, H_mat)
-#
-# H_ref = (-1j * z.conjugate() * a**2 + 1j * z * a.dag()**2)/2
-# U_ref = (-1j * H_ref).expm()
-#
-# # Qutip need a -1 in squeezing paramenter
-# U_qtref = qt.squeezing(a, a, -z)
-# print("H == H_ref:", H == H_ref)
-# print("U == U_ref:", U_ref == U_qtref)
-#
-# S = symplectic(H_mat)
-# print(np.round(S, 4))
-#
-# print('Ref ------')
-# S_ref = theory.single_mode_squeeze(z)
-# print(np.round(S_ref, 5))
-#
-#
-# print('--------------- PHASE SHIFT --------------------')
-#
-# theta = np.pi/6
-# H_mat = H_phase_shift(theta)
-# H = Hamiltonian(N, H_mat)
-#
-# H_ref = -theta*(a * a.dag() + a.dag() * a)/2
-# U_ref = (-1j * H_ref).expm()
-#
-# # U_qtref = qt.phase_gate(N, theta)
-# print("H == H_ref:", H == H_ref)
-# # print(U_ref == U_qtref)
-#
-# S = symplectic(H_mat)
-# print(np.round(S, 4))
-#
-# print('Ref ------')
-# S_ref = theory.phase_shift(theta)
-# print(np.round(S_ref, 5))
-#
-# Sps = S_ref
-#
-#
-# print('--------------- BEAM SPLITTER --------------------')
-# z = np.pi/4
-#
-# H_mat = H_beam_splitter(z)
-# H = Hamiltonian(N, H_mat)
-#
-# H_ref = (-1j * z.conjugate() * a * b.dag() + 1j * z * a.dag() * b)
-# U_ref = (-1j * H_ref).expm()
-#
-# # U_qtref = qt.phase_gate(N, theta)
-# print("H == H_ref:", H == H_ref)
-# # print(U_ref == U_qtref)
-#
-# S = symplectic(H_mat)
-# print(np.round(S, 4))
-#
-# print('Ref ------')
-# S_ref = theory.beam_splitter(z)
-# print(np.round(S_ref, 5))

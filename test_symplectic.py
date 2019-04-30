@@ -19,7 +19,7 @@ N = 10
 a = qt.tensor(qt.destroy(N), qt.qeye(N))
 b = qt.tensor(qt.qeye(N), qt.destroy(N))
 
-class TestStringMethods(unittest.TestCase):
+class TestSymplecticMethods(unittest.TestCase):
 
     def test_two_mode_squeezing(self):
         z = 2 * np.exp(1j*np.pi/6)

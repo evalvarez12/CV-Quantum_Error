@@ -15,8 +15,8 @@ from scipy.linalg import block_diag
 def tensor(N, operator, pos, Nmodes):
     """
     N:  size of the individual Hilbert space extra dimension
-    pos: position of the operator relative to N_list
-
+    pos: position of the operator relative to N_list, starts at 0
+    Nmodes: number of modes used in the full operator
     """
     if pos >= Nmodes:
         raise ValueError("pos is higher than the number of modes")
@@ -70,8 +70,27 @@ def direct_sum_singles(matrices, positions, nblocks):
         pos = positions[i]
         all_matrices[pos] = matrices[i]
 
-    return la.block_diag(*all_matrices)
+    return block_diag(*all_matrices)
 
+
+def reorder_two_mode_symplectic(S, pos, Nmodes):
+    # Create first the full S as a list of blocks z
+    S_full = np.zeros((2*Nmodes, 2*Nmodes))
+    
+    # Set diagonal equal to 1
+    np.fill_diagonal(S_full, 1)
+
+    p1 = pos[0]*2
+    p2 = pos[1]*2
+
+    # Take the blocks of S
+    S_full[p1:p1+2, p1:p1+2] = S[0:2, 0:2]
+    S_full[p1:p1+2, p2:p2+2] = S[0:2, 2:4]
+    S_full[p2:p2+2, p1:p1+2] = S[2:4, 0:2]
+    S_full[p2:p2+2, p2:p2+2] = S[2:4, 2:4]
+    
+    return S_full
+    
 
 def kron(matrices):
     if len(matrices) == 2:
