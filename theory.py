@@ -15,7 +15,7 @@ def phase_shift(theta):
     cc = np.cos(theta)
     ss = np.sin(theta)
     S =np.array([[cc, -ss, 0, 0], [ss, cc, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]])
-    return S    
+    return S
 
 
 def beam_splitter(z):
@@ -44,3 +44,23 @@ def two_mode_squeeze(z):
     sh = np.sinh(np.absolute(z))
     S =np.array([[ch, 0, sh*cc, sh*ss], [0, ch, sh*ss, -sh*cc], [sh*cc, sh*ss, ch, 0], [sh*ss, -sh*cc, 0, ch]])
     return S
+
+
+def tmsv_state(N, mean_photon_number):
+    r = np.arcsinh(np.sqrt(mean_photon_number))
+    psi_theory = qt.tensor(qt.basis(N), qt.basis(N)) * 0
+
+    for i in range(N):
+    #    psi_theory += alpha_n(i) * r_nkT(i, 1, T) * qt.tensor(qt.basis(N, i), qt.basis(N, i))
+        psi_theory += alpha_n(r, i) * qt.tensor(qt.basis(N, i), qt.basis(N, i))
+#        print(i, alpha_n(r, i))
+    return psi_theory/psi_theory.norm()
+
+
+
+def alpha_n(r, n):
+    return (np.tanh(r)**n)/np.cosh(r)
+
+
+def direct_sum(matrices):
+    return block_diag(*matrices)

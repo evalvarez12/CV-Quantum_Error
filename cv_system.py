@@ -13,6 +13,7 @@ import operations as ops
 import symplectic as sym
 import beam_splitter as bs
 import tools
+import theory
 
 
 
@@ -22,12 +23,12 @@ class System:
         if Nmodes != 0 and not cm_only:
             self.state = qt.tensor([qt.basis(self.N, 0)]*Nmodes)
             self.Nmodes = Nmodes
-            
+
         if cm:
             eye = np.eye(2)
             self.cm = tools.direct_sum([eye]*Nmodes)
         else:
-            self.cm = None 
+            self.cm = None
 
 
     def add_vacuum(self, Nadd=1):
@@ -44,64 +45,49 @@ class System:
             self.state = U * self.state
         else:
             self.state = U * self.state * U.dag()
-            
+
         if self.cm is not None:
             S = sym.beam_splitter(z)
+            S = tools.reorder_symplectic(S, pos, self.Nmodes)
 #            print("->", S)
             self.cm = tools.matrix_sandwich(S, self.cm)
-            
-    
-    def save_state(self):
-        self.state_saved = self.state
-        
-    
-    def load_state(self):
-        if self.state_saved is None:
-            raise AttributeError("There is not a saved state")
-        self.state = self.state_saved
-        
-        
-    def load_state_del(self):
-        if self.state_saved is None:
-            raise AttributeError("There is not a saved state")
-        self.state = self.state_saved
-        del self.state_saved
 
-        
+
     def apply_TMS(self, r, pos):
         S = ops.tmsqueeze(self.N, r, pos, self.Nmodes)
-        
+
         if self.state.isket:
             self.state = S * self.state
         else:
             self.state = S * self.state * S.dag()
-            
+
         if self.cm is not None:
             S = sym.two_mode_squeeze(r)
+            S = tools.reorder_symplectic(S, pos, self.Nmodes)
 #            print("->", S)
             self.cm = tools.matrix_sandwich(S, self.cm)
-    
-    
+
+
     def apply_SMS(self, r, pos):
         S = ops.squeeze(self.N, r, pos, self.Nmodes)
-        
+
         if self.state.isket:
             self.state = S * self.state
         else:
             self.state = S * self.state * S.dag()
-    
-    
+
+
     def add_TMSV(self, r):
         state_aux = qt.tensor(qt.basis(self.N), qt.basis(self.N))
         S = ops.tmsqueeze(self.N, r)
-        
-        state_aux = S * state_aux 
+
+        state_aux = S * state_aux
         if not self.state.isket:
             state_aux = state_aux * state_aux.dag()
         self.state = qt.tensor(self.state, state_aux)
         self.Nmodes = self.Nmodes + 2
 
-    
+
     def collapse_fock_state(self, fock, pos):
         P = qt.basis(self.N, fock).dag()
         P = tools.tensor(self.N, P, pos, self.Nmodes)
@@ -146,7 +132,7 @@ class System:
         for i in range(self.Nmodes):
             basis += [tools.tensor(self.N, x, i, self.Nmodes),
                       tools.tensor(self.N, p, i, self.Nmodes)]
-        
+
         self.quad_basis = basis
 
 
@@ -157,7 +143,7 @@ class System:
         b = qt.expect(am, self.state) * qt.expect(an, self.state)
         Vmn = a - b
         return 2 * Vmn
-    
+
 
     def get_full_CM(self):
         # TODO: check this factor of 2
@@ -174,7 +160,25 @@ class System:
         self.state = tools.tmsv_bad_method(self.N, mean_photon_number)
         self.Nmodes = 2
 
-        
+
     def add_bad_TMSV(self, mean_photon_number):
-        self.state = qt.tensor(self.state, tools.tmsv_bad_method(self.N, mean_photon_number))
+        # NOTE: just for comparisson - shuold delete
+        self.state = qt.tensor(self.state, theory.tmsv_state(self.N, mean_photon_number))
         self.Nmodes += 2
+
+
+    def save_state(self):
+        self.state_saved = self.state
+
+
+    def load_state(self):
+        if self.state_saved is None:
+            raise AttributeError("There is not a saved state")
+        self.state = self.state_saved
+
+
+    def load_state_del(self):
+        if self.state_saved is None:
+            raise AttributeError("There is not a saved state")
+        self.state = self.state_saved
+        del self.state_saved
