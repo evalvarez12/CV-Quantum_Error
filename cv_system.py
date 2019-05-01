@@ -52,12 +52,12 @@ class System:
 
 
     def apply_TMS(self, r, pos=[0,1]):
-        S = ops.tmsqueeze(self.N, r, pos, self.Nmodes)
+        U = ops.tmsqueeze(self.N, r, pos, self.Nmodes)
 
         if self.state.isket:
-            self.state = S * self.state
+            self.state = U * self.state
         else:
-            self.state = S * self.state * S.dag()
+            self.state = U * self.state * U.dag()
 
         if self.cm is not None:
             S = sym.two_mode_squeeze(r, pos, self.Nmodes)
@@ -65,12 +65,12 @@ class System:
 
 
     def apply_SMS(self, r, pos=0):
-        S = ops.squeeze(self.N, r, pos, self.Nmodes)
+        U = ops.squeeze(self.N, r, pos, self.Nmodes)
 
         if self.state.isket:
-            self.state = S * self.state
+            self.state = U * self.state
         else:
-            self.state = S * self.state * S.dag()
+            self.state = U * self.state * U.dag()
             
         if self.cm is not None:
             S = sym.single_mode_squeeze(r, pos, self.Nmodes)
@@ -90,7 +90,7 @@ class System:
         if self.cm is not None:
             S = sym.two_mode_squeeze(r)
             cm_add = np.dot(S.transpose(), S)
-            self.cm =tools.block_diag([self.cm, cm_add])
+            self.cm = tools.direct_sum([self.cm, cm_add])
 
 
 
@@ -175,12 +175,18 @@ class System:
 
     def save_state(self):
         self.state_saved = self.state
+        
+        if self.cm is not None:
+            self.cm_saved = self.cm
 
 
     def load_state(self):
         if self.state_saved is None:
             raise AttributeError("There is not a saved state")
         self.state = self.state_saved
+        
+        if self.cm is not None:
+            self.cm = self.cm_saved
 
 
     def load_state_del(self):
@@ -188,3 +194,7 @@ class System:
             raise AttributeError("There is not a saved state")
         self.state = self.state_saved
         del self.state_saved
+
+        if self.cm is not None:
+            self.cm = self.cm_saved
+            del self.cm_saved

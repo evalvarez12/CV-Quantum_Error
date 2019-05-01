@@ -107,8 +107,8 @@ def key_rate_compare(sys, f, p, mpnA, mpnE, t):
     print("Cbf:", Cbf, Cbf2, Cbf3)
     print("Cef:", Cef, Cef2, Cef3)
 
-    CM = sys.get_full_CM()
-    print("CM:", CM)
+#    CM = sys.get_full_CM()
+#    print("CM:", CM)
 
     I_shared = I(Va3, Vb3, Cab3)
     I_stolen = X(Vb3, Ve3, Vf3, Cbe3, Cbf3, Cef3)

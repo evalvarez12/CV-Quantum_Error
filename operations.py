@@ -56,6 +56,10 @@ def beam_splitter(N, z, pos=[0,1], Nmodes=2):
     return U
 
 
+
+#####################################################################################################
+
+
 def homodyne_operator2(N, phase, amplitude=1):
     z = amplitude*np.exp(1j*phase)
     print(z)

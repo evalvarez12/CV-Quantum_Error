@@ -23,7 +23,7 @@ mpn = 1.3
 t = .9
 mpne = 0.001
 f = 0.95
-option = 'tps'
+option = 'nops'
 
 ps_theta = np.arccos(np.sqrt(t))
 r = np.arcsinh(np.sqrt(mpn))
@@ -31,7 +31,7 @@ r_eve = np.arcsinh(np.sqrt(mpne))
 
 
 ## Initialize state
-sys = cv.System(N, Nmodes=2)
+sys = cv.System(N, Nmodes=2, cm=True)
 sys.apply_TMS(r, [0, 1])
 # BAD TMSV
 #sys.replace_current_state_w_bad_TMSV(mean_photon_number)
@@ -54,11 +54,14 @@ sys.add_TMSV(r_eve)
 # BAD TMSV
 #sys.add_bad_TMSV(e_mpn)
 
+sys.set_quadratures_basis()
+
+
 # Save current state of the system
 sys.save_state()
 
 key_rates = []
-tes =np.logspace(-2, 0, base=10, num=100)
+tes =np.logspace(-2, 0, base=10, num=5)
 #tes = np.linspace(.005, 1, 10)
 #tes = [1.]
 
@@ -76,18 +79,22 @@ for te in tes:
         print("P SUCCESS:", p_success)
         
 #    key_rates += [measurements.key_rate(sys, f=f, p=p_success)]
-#    key_rates += [measurements.key_rate_NOsimple(mean_photon_number, e_mpn, te)]
-    key_rates += [measurements.key_rate_nosimple(sys, f, p_success)]
+    
+    print("------------------------------------------", te)
+    print(sys.cm)
+    print(sys.get_full_CM())
+#    key_rates += [measurements.key_rate_nosimple(sys, f, p_success)]
+    key_rates += [measurements.key_rate_compare(sys, f, p_success, mpn, mpne, te)]
 
 
 # Save the resuls
 filename = "data/result_PS_" + option 
 key_rates = np.array(key_rates)
 #print(key_rates)
-np.save(filename, key_rates)
+#np.save(filename, key_rates)
 
 filename_ind = "data/indeces_PS_" + option 
-np.save(filename_ind, tes)
+#np.save(filename_ind, tes)
 
 
 ############################################ PLOT

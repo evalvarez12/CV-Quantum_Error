@@ -36,6 +36,7 @@ def tensor(N, operator, pos, Nmodes):
 
     return operator
 
+
 def reorder_two_mode_operator(N, op, pos, Nmodes):
         op = qt.tensor([op] + [qt.qeye(N)]*(Nmodes-2))
 
