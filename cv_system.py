@@ -110,6 +110,50 @@ class System:
         return p
 
 
+    def apply_scissor_exact(self, kappa, pos=0):
+        # Tritter parameters
+        theta1 = np.arccos(np.sqrt(kappa))
+        theta2 = np.pi/4
+        
+        # Add extra state |10>
+        extra_psi = qt.tensor(qt.basis(self.N, 0), qt.basis(self.N, 1))
+        if not self.state.isket:
+            extra_psi = extra_psi * extra_psi.dag()
+        self.state = qt.tensor(self.state, extra_psi)
+        Nmodes = self.Nmodes + 2
+        
+        # Apply tritter operator
+        pos=[self.Nmodes+1, self.Nmodes, self.Nmodes-1]
+        U = ops.tritter(self.N, theta1, theta2, pos)
+        if self.state.isket:
+            self.state = U * self.state
+        else:
+            self.state = U * self.state * U.dag()
+            
+        # Define the proyectors, in this case to |10>    
+        projector0 = qt.basis(self.N, 0).dag()
+        projector1 = qt.basis(self.N, 1).dag()
+        
+        projector0 = tools.tensor(projector0, self.N, self.Nmodes, Nmodes)
+        projector1 = tools.tensor(projector1, self.N, self.Nmodes+1, Nmodes)
+        projector = projector0 * projector1
+        
+        if self.sate.isket:
+            self.state = projector * self.state
+        else:
+            self.state = projector * self.state * projector.dag()
+            
+        # Normalize the state
+        if self.sate.isket:
+            p_success = self.state.norm()
+        else:
+            p_success = self.state.tr()
+        p_success = self.state.tr()
+        
+        self.state = self.state/p_success
+        return p_success
+
+
     def get_simple_CM_V(self, mode):
         a = qt.destroy(self.N)
         a = tools.tensor(self.N, a, mode, self.Nmodes)
