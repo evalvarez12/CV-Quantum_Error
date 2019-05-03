@@ -41,31 +41,32 @@ def tensor_singles(N, operators, positions, Nmodes):
     operator_list = [qt.qeye(N)]*Nmodes
     for i in range(len(operators)):
         operator_list[positions[i]] = operators[i]
-        
+
     return qt.tensor(operator_list)
 
 
 def reorder_two_mode_operator(N, op, pos, Nmodes):
-        op = qt.tensor([op] + [qt.qeye(N)]*(Nmodes-2))
+    op = qt.tensor([op] + [qt.qeye(N)]*(Nmodes-2))
 
-        permute = get_permutation_list(pos, Nmodes)
-        op = op.permute(permute)
-        return op
+    permute = get_permutation_list(pos, Nmodes)
+    op = op.permute(permute)
+    return op
 
 
-def get_permutation_list(pos, Nmodes):
-        permute_list = np.arange(Nmodes)
+def get_permutation_list(pos, N):
+    # First swap 0 to pos[0]
+    permute_list = np.arange(N)
+    permute_list[pos[0]] = 0
+    permute_list[0] = pos[0]
 
-        # Swap first element
-        permute_list[pos[0]] = 0
-        permute_list[0] = pos[0]
-
-        # Find where the value 1 is
-        ind1 = np.where(permute_list == 1)[0][0]
-        # Swap this index with pos[1]
-        permute_list[pos[1]] = 1
-        permute_list[ind1] = pos[1]    
-        return permute_list
+    # Now desired swap with pos[1]
+    # Find the index of the desired value is
+    ind = np.where(permute_list == pos[1])[0][0]
+    # Swap the desired value with whatever is in spot 1
+    permute_list[ind] = permute_list[1]
+    # Place pos[1] in spot 1
+    permute_list[1] = pos[1]
+    return permute_list
 
 
 def matrix_sandwich(A, B):
@@ -75,7 +76,7 @@ def matrix_sandwich(A, B):
 
 def direct_sum(matrices):
     return block_diag(*matrices)
-    
+
 
 def direct_sum_singles(matrices, positions, Nmodes):
      # Check if arguments make sense
@@ -95,7 +96,7 @@ def direct_sum_singles(matrices, positions, Nmodes):
 def reorder_two_mode_symplectic(S, pos, Nmodes):
     # Create first the full S as a list of blocks z
     S_full = np.zeros((2*Nmodes, 2*Nmodes))
-    
+
     # Set diagonal equal to 1
     np.fill_diagonal(S_full, 1)
 
@@ -107,9 +108,9 @@ def reorder_two_mode_symplectic(S, pos, Nmodes):
     S_full[p1:p1+2, p2:p2+2] = S[0:2, 2:4]
     S_full[p2:p2+2, p1:p1+2] = S[2:4, 0:2]
     S_full[p2:p2+2, p2:p2+2] = S[2:4, 2:4]
-    
+
     return S_full
-    
+
 
 def kron(matrices):
     if len(matrices) == 2:
