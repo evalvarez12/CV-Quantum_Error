@@ -110,10 +110,10 @@ class System:
         return p
 
 
-    def apply_scissor_exact(self, kappa, pos=0):
+    def apply_scissor_exact(self, t, pos=0):
         # Tritter parameters
-        theta1 = np.arccos(np.sqrt(kappa))
-        theta2 = np.pi/4
+        theta1 = np.pi/4
+        theta2 = np.arccos(np.sqrt(t))
         
         # Add extra state |10>
         extra_psi = qt.tensor(qt.basis(self.N, 0), qt.basis(self.N, 1))
@@ -123,8 +123,8 @@ class System:
         Nmodes = self.Nmodes + 2
         
         # Apply tritter operator
-        pos=[self.Nmodes+1, self.Nmodes, self.Nmodes-1]
-        U = ops.tritter(self.N, theta1, theta2, pos)
+        tritter_pos=[Nmodes-1, Nmodes-2, pos]
+        U = ops.tritter(self.N, theta1, theta2, tritter_pos)
         if self.state.isket:
             self.state = U * self.state
         else:
@@ -133,23 +133,22 @@ class System:
         # Define the proyectors, in this case to |10>    
         projector0 = qt.basis(self.N, 0).dag()
         projector1 = qt.basis(self.N, 1).dag()
+        collapse_pos = [pos, Nmodes-1]
+        projector = tools.tensor_singles(self.N, [projector0, projector1], collapse_pos, Nmodes)
         
-        projector0 = tools.tensor(projector0, self.N, self.Nmodes, Nmodes)
-        projector1 = tools.tensor(projector1, self.N, self.Nmodes+1, Nmodes)
-        projector = projector0 * projector1
-        
-        if self.sate.isket:
+        if self.state.isket:
             self.state = projector * self.state
         else:
             self.state = projector * self.state * projector.dag()
             
         # Normalize the state
-        if self.sate.isket:
+        if self.state.isket:
             p_success = self.state.norm()
         else:
             p_success = self.state.tr()
-        p_success = self.state.tr()
         
+        if p_success == 0:
+            p_success = 1
         self.state = self.state/p_success
         return p_success
 

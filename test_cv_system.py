@@ -11,14 +11,27 @@ import numpy as np
 import cv_system as cv
 import tools
 import matplotlib.pyplot as plt
+import unittest
+
+N = 2
+sys = cv.System(N, Nmodes=1)
+r = 2
+sys.apply_SMS(r)
 
 
-N = 10
-a = qt.tensor(qt.destroy(N), qt.qeye(N))
-b = qt.tensor(qt.qeye(N), qt.destroy(N))
+print(sys.state)
+t = 1
+sys.apply_scissor_exact(t)
+print(sys.state)
 
-class TestCVSystemsMethods(unittest.TestCase):
-    
 
-if __name__ == '__main__':
-    unittest.main()
+#class TestCVSystemsMethods(unittest.TestCase):
+#    
+#    def test_apply_scissor_exact(self):
+#        kappa = .4
+#        sys.apply_scissor_exact(kappa)
+#        print(sys.state)
+#    
+#
+#if __name__ == '__main__':
+#    unittest.main()

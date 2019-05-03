@@ -37,9 +37,23 @@ def tensor(N, operator, pos, Nmodes):
     return operator
 
 
+def tensor_singles(N, operators, positions, Nmodes):
+    operator_list = [qt.qeye(N)]*Nmodes
+    for i in range(len(operators)):
+        operator_list[positions[i]] = operators[i]
+        
+    return qt.tensor(operator_list)
+
+
 def reorder_two_mode_operator(N, op, pos, Nmodes):
         op = qt.tensor([op] + [qt.qeye(N)]*(Nmodes-2))
 
+        permute = get_permutation_list(pos, Nmodes)
+        op = op.permute(permute)
+        return op
+
+
+def get_permutation_list(pos, Nmodes):
         permute_list = np.arange(Nmodes)
 
         # Swap first element
@@ -50,9 +64,8 @@ def reorder_two_mode_operator(N, op, pos, Nmodes):
         ind1 = np.where(permute_list == 1)[0][0]
         # Swap this index with pos[1]
         permute_list[pos[1]] = 1
-        permute_list[ind1] = pos[1]
-        op = op.permute(permute_list)
-        return op
+        permute_list[ind1] = pos[1]    
+        return permute_list
 
 
 def matrix_sandwich(A, B):

@@ -45,6 +45,14 @@ class TestTools(unittest.TestCase):
         
         self.assertTrue(U == U_ref)
 
+    
+    def test_get_permutation_list(self):
+        N = 3
+        pos = [2, 0]
+        l = get_permutation_list(pos, N)
+        print(l)
+        self.assertEqual([1, 2, 0], l)
+
 
     def test_direct_sum_singles(self):
         a = np.random.rand(2, 2)

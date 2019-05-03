@@ -58,14 +58,14 @@ def beam_splitter(N, z, pos=[0,1], Nmodes=2):
 
 def tritter(N, theta1, theta2, pos=[0, 1, 2], Nmodes=3):
     """
-           |
-    c ->---/----->
-           |
-           |
-    b ->---/----->
-           |
-           ^
-           a
+              |theta2
+    |c>  ->---/----->
+              |
+              |theta1
+    |b>  ->---/----->
+              |
+              ^
+             |a>
     """
  
     pos_a, pos_b, pos_c = pos
