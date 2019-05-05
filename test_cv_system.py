@@ -13,35 +13,33 @@ import tools
 import matplotlib.pyplot as plt
 import unittest
 
-N = 10
-sys = cv.System(N, Nmodes=1)
-r = .6
-sys.apply_SMD(r)
-
-statei = sys.state
-print(statei)
-k = .1
 
 
-g = np.sqrt(1/k - 1)
-sys.apply_scissor_exact(k)
-print(sys.state)
+class TestCVSystemsMethods(unittest.TestCase):
 
-print("Gain:", g)
-data = statei.data.toarray()
-data[1] = g * data[1]
-data[2:] = 0
-A = np.linalg.norm(data)
-data = data/A
-print(data)
+   def test_apply_scissor_exact(self):
+       N = 10
+       sys = cv.System(N, Nmodes=1)
+       r = .6
+       sys.apply_SMD(r)
 
-#class TestCVSystemsMethods(unittest.TestCase):
-#
-#    def test_apply_scissor_exact(self):
-#        kappa = .4
-#        sys.apply_scissor_exact(kappa)
-#        print(sys.state)
-#
-#
-#if __name__ == '__main__':
-#    unittest.main()
+       ref_state = sys.state
+       # print(ref_state)
+       k = .05
+       sys.apply_scissor_exact(k)
+       # print(sys.state)
+
+       g = np.sqrt(1/k - 1)
+       # print("Gain:", g)
+       ref_state = ref_state.data.toarray()
+       ref_state[1] = g * ref_state[1]
+       ref_state[2:] = 0
+       A = np.linalg.norm(ref_state)
+       ref_state = ref_state/A
+       # print(ref_state)
+       ref_state = qt.Qobj(ref_state)
+       self.assertTrue(sys.state == ref_state)
+
+
+if __name__ == '__main__':
+   unittest.main()
