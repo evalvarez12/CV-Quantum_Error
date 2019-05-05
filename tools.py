@@ -49,6 +49,7 @@ def reorder_two_mode_operator(N, op, pos, Nmodes):
     op = qt.tensor([op] + [qt.qeye(N)]*(Nmodes-2))
 
     permute = get_permutation_list(pos, Nmodes)
+    # print("permute list:", permute)
     op = op.permute(permute)
     return op
 

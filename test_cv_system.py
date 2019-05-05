@@ -15,16 +15,18 @@ import unittest
 
 N = 10
 sys = cv.System(N, Nmodes=1)
-r = 2
-sys.apply_SMS(r)
+r = .6
+sys.apply_SMD(r)
 
+statei = sys.state
+print(statei)
+k = .1
 
+g = np.sqrt(1/k - 1)
+sys.apply_scissor_exact(k)
 print(sys.state)
-t = .5
-sys.apply_scissor_exact(t)
-print(sys.state)
 
-
+print(g)
 #class TestCVSystemsMethods(unittest.TestCase):
 #
 #    def test_apply_scissor_exact(self):

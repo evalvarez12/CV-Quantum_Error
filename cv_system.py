@@ -64,18 +64,27 @@ class System:
             self.cm = tools.matrix_sandwich(S, self.cm)
 
 
-    def apply_SMS(self, r, pos=0):
-        U = ops.squeeze(self.N, r, pos, self.Nmodes)
+    def apply_SMD(self, alpha, pos=0):
+        U = qt.displace(self.N, alpha)
+        U = tools.tensor(self.N, U, pos, self.Nmodes)
 
         if self.state.isket:
             self.state = U * self.state
         else:
             self.state = U * self.state * U.dag()
-            
+
+
+    def apply_SMS(self, alpha, pos=0):
+        U = ops.displace(self.N, r, pos, self.Nmodes)
+
+        if self.state.isket:
+            self.state = U * self.state
+        else:
+            self.state = U * self.state * U.dag()
+
         if self.cm is not None:
             S = sym.single_mode_squeeze(r, pos, self.Nmodes)
             self.cm = tools.matrix_sandwich(S, self.cm)
-
 
     def add_TMSV(self, r):
         state_aux = qt.tensor(qt.basis(self.N), qt.basis(self.N))
@@ -86,7 +95,7 @@ class System:
             state_aux = state_aux * state_aux.dag()
         self.state = qt.tensor(self.state, state_aux)
         self.Nmodes = self.Nmodes + 2
-        
+
         if self.cm is not None:
             S = sym.two_mode_squeeze(r)
             cm_add = np.dot(S.transpose(), S)
@@ -114,39 +123,40 @@ class System:
         # Tritter parameters
         theta1 = np.pi/4
         theta2 = np.arccos(np.sqrt(t))
-        
+
         # Add extra state |10>
         extra_psi = qt.tensor(qt.basis(self.N, 0), qt.basis(self.N, 1))
         if not self.state.isket:
             extra_psi = extra_psi * extra_psi.dag()
         self.state = qt.tensor(self.state, extra_psi)
         Nmodes = self.Nmodes + 2
-        
+
         # Apply tritter operator
         tritter_pos=[Nmodes-1, Nmodes-2, pos]
         U = ops.tritter(self.N, theta1, theta2, tritter_pos)
+        # print(Nmodes, theta1, theta2, U)
         if self.state.isket:
             self.state = U * self.state
         else:
             self.state = U * self.state * U.dag()
-            
-        # Define the proyectors, in this case to |10>    
+
+        # Define the proyectors, in this case to |10>
         projector0 = qt.basis(self.N, 0).dag()
         projector1 = qt.basis(self.N, 1).dag()
         collapse_pos = [pos, Nmodes-1]
         projector = tools.tensor_singles(self.N, [projector0, projector1], collapse_pos, Nmodes)
-        
+
         if self.state.isket:
             self.state = projector * self.state
         else:
             self.state = projector * self.state * projector.dag()
-            
+
         # Normalize the state
         if self.state.isket:
             p_success = self.state.norm()
         else:
             p_success = self.state.tr()
-        
+
         if p_success == 0:
             p_success = 1
         self.state = self.state/p_success
@@ -218,7 +228,7 @@ class System:
 
     def save_state(self):
         self.state_saved = self.state
-        
+
         if self.cm is not None:
             self.cm_saved = self.cm
 
@@ -227,7 +237,7 @@ class System:
         if self.state_saved is None:
             raise AttributeError("There is not a saved state")
         self.state = self.state_saved
-        
+
         if self.cm is not None:
             self.cm = self.cm_saved
 
