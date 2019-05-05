@@ -74,8 +74,8 @@ class System:
             self.state = U * self.state * U.dag()
 
 
-    def apply_SMS(self, alpha, pos=0):
-        U = ops.displace(self.N, r, pos, self.Nmodes)
+    def apply_SMS(self, r, pos=0):
+        U = ops.squeeze(self.N, r, pos, self.Nmodes)
 
         if self.state.isket:
             self.state = U * self.state

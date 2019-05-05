@@ -22,11 +22,19 @@ statei = sys.state
 print(statei)
 k = .1
 
+
 g = np.sqrt(1/k - 1)
 sys.apply_scissor_exact(k)
 print(sys.state)
 
-print(g)
+print("Gain:", g)
+data = statei.data.toarray()
+data[1] = g * data[1]
+data[2:] = 0
+A = np.linalg.norm(data)
+data = data/A
+print(data)
+
 #class TestCVSystemsMethods(unittest.TestCase):
 #
 #    def test_apply_scissor_exact(self):
