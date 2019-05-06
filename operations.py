@@ -71,8 +71,8 @@ def tritter(N, theta1, theta2, pos=[0, 1, 2], Nmodes=3):
 
     pos_a, pos_b, pos_c = pos
 
-    U1 = beam_splitter(N, theta1, pos=[pos_a, pos_b], Nmodes=Nmodes)
-    U2 = beam_splitter(N, theta2, pos=[pos_c, pos_a], Nmodes=Nmodes)
+    U1 = beam_splitter(N, theta1, pos=[pos_b, pos_a], Nmodes=Nmodes)
+    U2 = beam_splitter(N, theta2, pos=[pos_a, pos_c], Nmodes=Nmodes)
     # print("pos:", pos)
     U = U2 * U1
     return U

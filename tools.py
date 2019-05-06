@@ -50,6 +50,8 @@ def tensor_singles(N, operators, positions, Nmodes):
 def reorder_two_mode_operator(N, op, pos, Nmodes):
     op = qt.tensor([op] + [qt.qeye(N)]*(Nmodes-2))
 
+    # Bring positions from lso on right to normal for permute
+    pos = Nmodes - 1 - np.array(pos)
     permute = get_permutation_list(pos, Nmodes)
     # print("permute list:", permute)
     op = op.permute(permute)

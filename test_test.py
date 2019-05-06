@@ -20,13 +20,8 @@ sys.apply_SMD(r, 1)
 ref_state = sys.state
 print(ref_state)
    
-k = .1
+k = .01
 sys.apply_scissor_exact(k, 1)
 print(sys.state)
 
 
-
-state0 = qt.basis(N)
-state1 = qt.basis(N, 1)
-state = qt.tensor(state0, state1)
-print(state)

@@ -20,10 +20,11 @@ class TestTools(unittest.TestCase):
     def test_tensor(self):
         N = 5
         U1 = qt.create(N)
+        pos = 3
 
-        U = tools.tensor(N, U1, 3, 8)
+        U = tools.tensor(N, U1, pos, 8)
 
-        U_ref = qt.tensor([qt.qeye(N)]*3 + [U1] + [qt.qeye(N)]*4)
+        U_ref = qt.tensor([qt.qeye(N)]*4 + [U1] + [qt.qeye(N)]*3)
 
         self.assertTrue(U == U_ref)
 
@@ -39,8 +40,8 @@ class TestTools(unittest.TestCase):
         U = qt.squeezing(a1, b1, z)
         U = tools.reorder_two_mode_operator(N, U, pos=[3,1], Nmodes=4)
 
-        a2 = qt.tensor(qid, a, qid, qid)
-        b2 = qt.tensor(qid, qid, qid, a)
+        a2 = qt.tensor(a, qid, qid, qid)
+        b2 = qt.tensor(qid, qid, a, qid)
         U_ref = qt.squeezing(a2, b2, z)
 
         self.assertTrue(U == U_ref)

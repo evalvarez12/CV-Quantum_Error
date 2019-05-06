@@ -18,25 +18,21 @@ import unittest
 class TestCVSystemsMethods(unittest.TestCase):
 
    def test_apply_scissor_exact(self):
-       N = 10
+       N = 3
        sys = cv.System(N, Nmodes=1)
        r = .6
        sys.apply_SMD(r)
 
        ref_state = sys.state
-       # print(ref_state)
        k = .05
        sys.apply_scissor_exact(k)
-       # print(sys.state)
 
        g = np.sqrt(1/k - 1)
-       # print("Gain:", g)
        ref_state = ref_state.data.toarray()
        ref_state[1] = g * ref_state[1]
        ref_state[2:] = 0
        A = np.linalg.norm(ref_state)
        ref_state = ref_state/A
-       # print(ref_state)
        ref_state = qt.Qobj(ref_state)
        self.assertTrue(sys.state == ref_state)
 
@@ -48,22 +44,22 @@ class TestCVSystemsMethods(unittest.TestCase):
        sys.apply_SMD(r, 1)
 
        ref_state = sys.state
-       print(ref_state)
+#       print(ref_state)
        
        k = .05
        sys.apply_scissor_exact(k, 1)
-       print(sys.state)
+#       print(sys.state)
 
        g = np.sqrt(1/k - 1)
-       # print("Gain:", g)
+#       print("Gain:", g)
        ref_state = ref_state.data.toarray()
-       ref_state[1] = g * ref_state[1]
-       ref_state[2:] = 0
+       ref_state[3] = g * ref_state[3]
+       ref_state[6] = 0
        A = np.linalg.norm(ref_state)
        ref_state = ref_state/A
-       # print(ref_state)
-       ref_state = qt.Qobj(ref_state)
-#       self.assertTrue(sys.state == ref_state)
+       ref_state = qt.Qobj(ref_state, dims=[[3, 3], [1, 1]])
+#       print(ref_state)
+       self.assertTrue(sys.state == ref_state)
 
 if __name__ == '__main__':
    unittest.main()

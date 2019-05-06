@@ -125,10 +125,10 @@ class System:
         theta2 = np.arccos(np.sqrt(t))
 
         # Add extra state |10>
-        extra_psi = qt.tensor(qt.basis(self.N, 0), qt.basis(self.N, 1))
+        extra_psi = qt.tensor(qt.basis(self.N, 1), qt.basis(self.N, 0))
         if not self.state.isket:
             extra_psi = extra_psi * extra_psi.dag()
-        self.state = qt.tensor(self.state, extra_psi)
+        self.state = qt.tensor(extra_psi, self.state)
         Nmodes = self.Nmodes + 2
 
         # Apply tritter operator
