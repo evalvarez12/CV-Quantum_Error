@@ -160,6 +160,12 @@ class System:
         if p_success == 0:
             p_success = 1
         self.state = self.state/p_success
+        
+        # Permute the state to return it to its original ordering
+        p_list = np.arange(self.Nmodes)
+        p_list[pos] = self.Nmodes - 1
+        p_list[-1] = pos
+        self.state = self.state.permute(p_list)
         return p_success
 
 

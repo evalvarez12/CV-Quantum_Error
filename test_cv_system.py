@@ -41,5 +41,29 @@ class TestCVSystemsMethods(unittest.TestCase):
        self.assertTrue(sys.state == ref_state)
 
 
+   def test_apply_scissor_exact2(self):
+       N = 3
+       sys = cv.System(N, Nmodes=2)
+       r = .6
+       sys.apply_SMD(r, 1)
+
+       ref_state = sys.state
+       print(ref_state)
+       
+       k = .05
+       sys.apply_scissor_exact(k, 1)
+       print(sys.state)
+
+       g = np.sqrt(1/k - 1)
+       # print("Gain:", g)
+       ref_state = ref_state.data.toarray()
+       ref_state[1] = g * ref_state[1]
+       ref_state[2:] = 0
+       A = np.linalg.norm(ref_state)
+       ref_state = ref_state/A
+       # print(ref_state)
+       ref_state = qt.Qobj(ref_state)
+#       self.assertTrue(sys.state == ref_state)
+
 if __name__ == '__main__':
    unittest.main()

@@ -25,14 +25,14 @@ def tensor(N, operator, pos, Nmodes):
     # The list of extra Hilbert spaces to be tensored
     N_list = [N]*(Nmodes - 1)
 
-
+    # do the full tensor, care for using least significant on the right order
     if N_list[pos:]:
-        identity_right = qt.identity(N_list[pos:])
-        operator = qt.tensor(operator, identity_right)
+        identity_left = qt.identity(N_list[pos:])
+        operator = qt.tensor(identity_left, operator)
 
     if N_list[:pos]:
-        identity_left = qt.identity(N_list[:pos])
-        operator = qt.tensor(identity_left, operator)
+        identity_right = qt.identity(N_list[:pos])
+        operator = qt.tensor(operator, identity_right)
 
     return operator
 
@@ -40,7 +40,9 @@ def tensor(N, operator, pos, Nmodes):
 def tensor_singles(N, operators, positions, Nmodes):
     operator_list = [qt.qeye(N)]*Nmodes
     for i in range(len(operators)):
-        operator_list[positions[i]] = operators[i]
+        # Change pos to math lsro
+        pos = Nmodes - 1 - positions[i]
+        operator_list[pos] = operators[i]
 
     return qt.tensor(operator_list)
 
