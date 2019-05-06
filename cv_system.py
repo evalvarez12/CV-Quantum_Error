@@ -32,7 +32,7 @@ class System:
 
 
     def add_vacuum(self, Nadd=1):
-        self.state = qt.tensor([self.state] + [qt.basis(self.N, 0)]*Nadd)
+        self.state = qt.tensor([qt.basis(self.N, 0)]*Nadd + [self.state])
         self.Nmodes = self.Nmodes + Nadd
 
 
@@ -93,7 +93,7 @@ class System:
         state_aux = S * state_aux
         if not self.state.isket:
             state_aux = state_aux * state_aux.dag()
-        self.state = qt.tensor(self.state, state_aux)
+        self.state = qt.tensor(state_aux, self.state)
         self.Nmodes = self.Nmodes + 2
 
         if self.cm is not None:

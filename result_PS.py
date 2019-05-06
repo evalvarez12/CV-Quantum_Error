@@ -23,7 +23,8 @@ mpn = 1.3
 t = .9
 mpne = 0.001
 f = 0.95
-option = 'tsc'
+k = 0.01
+option = 'rsc'
 
 ps_theta = np.arccos(np.sqrt(t))
 r = np.arcsinh(np.sqrt(mpn))
@@ -51,10 +52,9 @@ if option == 'nops':
 
 # Transmitter Scissors
 if option == 'tsc':
-    k = 0.01
-    p_success = sys.apply_scissor_exact(k, 0)
+    p_success = sys.apply_scissor_exact(k, 1)
     print("P SUCCESS:", p_success)
-    print(sys.state)
+#    print(sys.state)
 
 
 # Evesdropper collective attack
@@ -69,8 +69,8 @@ sys.set_quadratures_basis()
 sys.save_state()
 
 key_rates = []
-tes =np.logspace(-1, 0, base=10, num=100)
-#tes = np.linspace(.005, 1, 10)
+#tes =np.logspace(-1, 0, base=10, num=100)
+tes = np.linspace(.9, 1, 10)
 #tes = [1.]
 
 for te in tes:
@@ -78,7 +78,7 @@ for te in tes:
 
     theta = np.arccos(np.sqrt(te))
     sys.apply_BS(theta, [1, 2])
-    tes
+
     # Receiver Photon subtraction
     if option == 'rps':
         sys.add_vacuum()
@@ -86,6 +86,9 @@ for te in tes:
         p_success = sys.collapse_fock_state(1, 4)
         print("P SUCCESS:", p_success)
         
+    if option == 'rsc':
+        p_success = sys.apply_scissor_exact(k, 1)
+        print("P SUCCESS:", p_success)   
 #    key_rates += [measurements.key_rate(sys, f=f, p=p_success)]
     
 #    print(sys.cm)
@@ -124,11 +127,6 @@ fig1, ax = plt.subplots()
 lines_types = ['k*-', 'b*-', 'r*-', 'y*-']
 for i in range(len(key_rates)):
     ax.plot(indeces[i], key_rates[i], lines_types[i])
-
-
-ax.plot(indeces1, key_rates1, 'k*-')
-ax.plot(indeces2, key_rates2, 'b*-')
-ax.plot(indeces3, key_rates3, 'r*-')
 
 
 mg_ratesNO = scipy.io.loadmat('data/rate_no.mat')
