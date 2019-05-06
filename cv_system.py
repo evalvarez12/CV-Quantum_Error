@@ -133,7 +133,7 @@ class System:
 
         # Apply tritter operator
         tritter_pos=[Nmodes-1, Nmodes-2, pos]
-        U = ops.tritter(self.N, theta1, theta2, tritter_pos)
+        U = ops.tritter(self.N, theta1, theta2, tritter_pos, Nmodes)
         # print(Nmodes, theta1, theta2, U)
         if self.state.isket:
             self.state = U * self.state

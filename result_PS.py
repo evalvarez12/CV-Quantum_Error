@@ -18,12 +18,12 @@ import scipy.io
 ############################################ CALCULATIONS
 
 # Parameters
-N = 30
+N = 10
 mpn = 1.3
 t = .9
 mpne = 0.001
 f = 0.95
-option = 'nops'
+option = 'tsc'
 
 ps_theta = np.arccos(np.sqrt(t))
 r = np.arcsinh(np.sqrt(mpn))
@@ -49,6 +49,14 @@ if option == 'nops':
     p_success = 1
 
 
+# Transmitter Scissors
+if option == 'tsc':
+    k = 0.01
+    p_success = sys.apply_scissor_exact(k, 0)
+    print("P SUCCESS:", p_success)
+    print(sys.state)
+
+
 # Evesdropper collective attack
 sys.add_TMSV(r_eve)
 # BAD TMSV
@@ -61,7 +69,7 @@ sys.set_quadratures_basis()
 sys.save_state()
 
 key_rates = []
-tes =np.logspace(-2, 0, base=10, num=5)
+tes =np.logspace(-1, 0, base=10, num=100)
 #tes = np.linspace(.005, 1, 10)
 #tes = [1.]
 
@@ -80,42 +88,44 @@ for te in tes:
         
 #    key_rates += [measurements.key_rate(sys, f=f, p=p_success)]
     
-    print("------------------------------------------", te)
-    print(sys.cm)
-    print(sys.get_full_CM())
-#    key_rates += [measurements.key_rate_nosimple(sys, f, p_success)]
-    key_rates += [measurements.key_rate_compare(sys, f, p_success, mpn, mpne, te)]
+#    print(sys.cm)
+#    print(sys.get_full_CM())
+    kr = measurements.key_rate_nosimple(sys, f, p_success)
+    key_rates += [kr]
+#    key_rates += [measurements.key_rate_compare(sys, f, p_success, mpn, mpne, te)]
+    print("--->", te, kr)
 
 
 # Save the resuls
 filename = "data/result_PS_" + option 
 key_rates = np.array(key_rates)
 #print(key_rates)
-#np.save(filename, key_rates)
+np.save(filename, key_rates)
 
 filename_ind = "data/indeces_PS_" + option 
-#np.save(filename_ind, tes)
+np.save(filename_ind, tes)
 
 
 ############################################ PLOT
-filename1 = "data/result_PS_nops"
-key_rates1 = np.load(filename1 + ".npy")
-filename2 = "data/result_PS_tps"
-key_rates2 = np.load(filename2 + ".npy")
-filename3 = "data/result_PS_rps"
-key_rates3 = np.load(filename3 + ".npy")
-filename1_ind = "data/indeces_PS_nops"
-indeces1 = np.load(filename1_ind + '.npy')
-filename2_ind = "data/indeces_PS_tps"
-indeces2 = np.load(filename2_ind + '.npy')
-filename3_ind = "data/indeces_PS_rps"
-indeces3 = np.load(filename3_ind + '.npy')
-#tes =np.logspace(-3, 0, base=10, num=50)
-#tes = np.linspace(0, 1)
 
-
+key_rates = []
+indeces = []
+for ext in ['nops', 'tps', 'rps', 'tsc']:
+    f_name = "data/result_PS_" + ext
+    k_rate = np.load(f_name + ".npy")
+    key_rates += [k_rate]
+    
+    i_name = "data/indeces_PS_" + ext 
+    inds = np.load(i_name + '.npy')
+    indeces += [inds]
+    
 
 fig1, ax = plt.subplots()
+lines_types = ['k*-', 'b*-', 'r*-', 'y*-']
+for i in range(len(key_rates)):
+    ax.plot(indeces[i], key_rates[i], lines_types[i])
+
+
 ax.plot(indeces1, key_rates1, 'k*-')
 ax.plot(indeces2, key_rates2, 'b*-')
 ax.plot(indeces3, key_rates3, 'r*-')
