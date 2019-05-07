@@ -156,7 +156,7 @@ def collapse_photon_number(N, rho, n, pos, Nmodes):
         return collapse_photon_number_ket(N, rho, n, pos, Nmodes)
 
 
-def  collapse_photon_number_ket(N, rho, n, pos, Nmodes):
+def collapse_photon_number_ket(N, rho, n, pos, Nmodes):
     P = qt.basis(N, n).dag()
     P = tools.tensor(N, P, pos, Nmodes)
     p = p_detect_photon_number_ket(N, rho, n, pos, Nmodes)
@@ -164,7 +164,7 @@ def  collapse_photon_number_ket(N, rho, n, pos, Nmodes):
     return rho, p
 
 
-def  collapse_photon_number_dm(N, rho, n, pos, Nmodes):
+def collapse_photon_number_dm(N, rho, n, pos, Nmodes):
     P = qt.basis(N, n).dag()
     P = tools.tensor(N, P, pos, Nmodes)
     rho = (P * rho)/p_detect_photon_number_dm(N, rho, n, pos, Nmodes)

@@ -167,6 +167,57 @@ class System:
         p_list[-1] = pos
         self.state = self.state.permute(p_list)
         return p_success
+    
+    
+    def apply_scissor(self, t, r_aux, pos=0):
+        # Tritter parameters
+        theta1 = np.pi/4
+        theta2 = np.arccos(np.sqrt(t))
+
+        # Add extra vacuum and TMSV states
+        self.add_TMSV(r_aux)
+        self.state = qt.tensor(qt.basis(self.N), self.state)
+        Nmodes = self.Nmodes + 1
+        
+        # Apply tritter operator
+        tritter_pos=[Nmodes-1, Nmodes-2, pos]
+        U = ops.tritter(self.N, theta1, theta2, tritter_pos, Nmodes)
+        # print(Nmodes, theta1, theta2, U)
+        if self.state.isket:
+            self.state = U * self.state
+        else:
+            self.state = U * self.state * U.dag()
+
+        # Define the proyectors, in this case to |10>
+        projectorOFF = qt.basis(self.N, 0).dag()
+        projectorON = ops.photon_on_projector(self.N)
+        collapse_pos = [pos, Nmodes-1, Nmodes-3]
+        projector = tools.tensor_singles(self.N, [projectorOFF, projectorON, projectorON], collapse_pos, Nmodes)
+
+        if self.state.isket:
+            self.state = projector * self.state
+        else:
+            self.state = projector * self.state * projector.dag()
+
+        # Return Nmodes to original value
+        self.Nmodes = self.Nmodes - 2
+        
+        # Normalize the state
+        if self.state.isket:
+            p_success = self.state.norm()
+        else:
+            p_success = self.state.tr()
+
+        if p_success == 0:
+            p_success = 1
+        self.state = self.state/p_success
+        
+        # Permute the state to return it to its original ordering
+        p_list = np.arange(self.Nmodes)
+        p_list[pos] = self.Nmodes - 1
+        p_list[-1] = pos
+        self.state = self.state.permute(p_list)
+        return p_success
 
 
     def get_simple_CM_V(self, mode):
