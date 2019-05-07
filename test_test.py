@@ -37,7 +37,8 @@ ref_state = sys.state
 print(ref_state)
    
 k = .01
-r_aux = np.arcsinh(np.sqrt(0.5))
+m_aux = .1
+r_aux = np.arcsinh(np.sqrt(m_aux))
 p = sys.apply_scissor(k, r_aux, 1)
 print("P:", p)
 print(sys.state)

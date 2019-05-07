@@ -284,27 +284,19 @@ class System:
 
 
     def save_state(self):
-        self.state_saved = self.state
-
-        if self.cm is not None:
-            self.cm_saved = self.cm
+        self.saved = [self.state, self.Nmodes, self.cm]
 
 
     def load_state(self):
-        if self.state_saved is None:
+        if self.saved is None:
             raise AttributeError("There is not a saved state")
-        self.state = self.state_saved
+        self.state = self.saved[0]
+        self.Nmodes = self.saved[1]
 
         if self.cm is not None:
-            self.cm = self.cm_saved
+            self.cm = self.saved[2]
 
 
     def load_state_del(self):
-        if self.state_saved is None:
-            raise AttributeError("There is not a saved state")
-        self.state = self.state_saved
-        del self.state_saved
-
-        if self.cm is not None:
-            self.cm = self.cm_saved
-            del self.cm_saved
+        self.load_state()
+        del self.saved
