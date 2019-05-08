@@ -35,6 +35,11 @@ class System:
         self.state = qt.tensor([qt.basis(self.N, 0)]*Nadd + [self.state])
         self.Nmodes = self.Nmodes + Nadd
 
+    
+    def add_state(self, state):
+        N_add = state.dims[0][0]
+        self.state = qt.tensor(state, self.state)
+        self.Nmodes += N_add
 
     def apply_BS(self, z, pos=[0,1]):
 #        theta = np.arccos(np.sqrt(t))

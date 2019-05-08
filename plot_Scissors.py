@@ -22,7 +22,7 @@ from matplotlib.ticker import LinearLocator, FormatStrFormatter
 #mpn = 1.3
 #mpne = 0.001
 #f = 0.95
-#option = 'tsc'
+#option = 'rsc'
 #eta = 0.5
 #
 #
@@ -40,8 +40,8 @@ from matplotlib.ticker import LinearLocator, FormatStrFormatter
 #
 #key_rates = []
 #ps = []
-#ks = np.arange(0.01, 1, 0.01)
-#m_auxs = np.arange(0.01, 1, 0.01)
+#ks = np.arange(0.001, 1, 0.1)
+#m_auxs = np.arange(0.001, 1, 0.1)
 #
 #for k in ks:
 #    k_temp = []
@@ -100,7 +100,7 @@ from matplotlib.ticker import LinearLocator, FormatStrFormatter
 option = 'tsc'
 
 filename = "data/result_SCpspace_" + option 
-data = data2 = np.load(filename + '.npy') * 10
+data = data2 = np.load(filename + '.npy')
 
 filename = "data/result_SCpspace_p_" + option
 data2 = np.load(filename + '.npy')
@@ -116,17 +116,23 @@ X, Y = np.meshgrid(X, Y)
 fig = plt.figure()
 ax = fig.gca(projection='3d')
 
+ax.set_title(r"Transmitter side Scissors")
+ax.set_xlabel(r'$\kappa$', size=15)
+ax.set_ylabel(r'$\mu_{aux}$', size=15)
+ax.set_zlabel(r'Key rate', size=10)
+
+
 # Plot the surface.
 surf = ax.plot_surface(X, Y, data, cmap=cm.coolwarm,
                        linewidth=0, antialiased=False)
 
-surf2 = ax.plot_surface(X, Y, data2,
-                       linewidth=0, antialiased=False)
+#surf2 = ax.plot_surface(X, Y, data2,
+#                       linewidth=0, antialiased=False)
 #ax.set_zscale('log')
 
 
-# Customize the z axis.
-ax.set_zlim(-1.01, 1.01)
+# Customize the z axis.a
+#ax.set_zlim(-1.01, 1.01)
 ax.zaxis.set_major_locator(LinearLocator(10))
 ax.zaxis.set_major_formatter(FormatStrFormatter('%.02f'))
 

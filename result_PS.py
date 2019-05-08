@@ -16,122 +16,122 @@ import scipy.io
 
 
 ############################################ CALCULATIONS
-
-# Parameters
-N = 20
-mpn = 1.3
-mpne = 0.001
-f = 0.95
-option = 'nops'
-
-# Photon subtraction options
-t = .9
-
-# Scissors options
-k = .6
-m_aux = .01
-
-
-
-ps_theta = np.arccos(np.sqrt(t))
-r = np.arcsinh(np.sqrt(mpn))
-r_eve = np.arcsinh(np.sqrt(mpne))
-r_aux = np.arcsinh(np.sqrt(m_aux))
-
-## Initialize state
-sys = cv.System(N, Nmodes=2, cm=False)
-sys.apply_TMS(r, [0, 1])
-# BAD TMSV
-#sys.replace_current_state_w_bad_TMSV(mean_photon_number)
-
-
-# Transmitter Photon subtraction
-if option == 'tps':
-    sys.add_vacuum()
-    sys.apply_BS(ps_theta, [1, 2])
-    p_success = sys.collapse_fock_state(1, 2)
-    print("P SUCCESS:", p_success)
-
-# No Photon subtraction
-if option == 'nops':
-    p_success = 1
-
-# Transmitter Scissors
-if option == 'tsc':
-    p_success = sys.apply_scissor(k, r_aux, 1)
-    print("P SUCCESS:", p_success)
-#    print(sys.state)
-
-# Transmitter Scissors Exact
-if option == 'tsc_e':
-    p_success = sys.apply_scissor_exact(k, 1)
-    print("P SUCCESS:", p_success)
-#    print(sys.state)
-
-
-# Evesdropper collective attack
-sys.add_TMSV(r_eve)
-# BAD TMSV
-#sys.add_bad_TMSV(e_mpn)
-
-sys.set_quadratures_basis()
-
-
-# Save current state of the system
-sys.save_state()
-
-key_rates = []
-tes =np.logspace(-2, 0, base=10, num=50)
-#tes = np.linspace(.9, 1, 10)
-#tes = [1.]
-
-for te in tes:
-    sys.load_state()
-
-    theta = np.arccos(np.sqrt(te))
-    sys.apply_BS(theta, [1, 2])
-
-    # Receiver Photon subtraction
-    if option == 'rps':
-        sys.add_vacuum()
-        sys.apply_BS(ps_theta, [1, 4])
-        p_success = sys.collapse_fock_state(1, 4)
-        print("P SUCCESS:", p_success)
-        
-    # Receiver Scissors
-    if option == 'rsc':
-        p_success = sys.apply_scissor(k, r_aux, 1)
-        print("P SUCCESS:", p_success) 
-        
-    # Receiver Scissors Exact
-    if option == 'rsc_e':
-        p_success = sys.apply_scissor_exact(k, 1)
-        print("P SUCCESS:", p_success)   
-#    key_rates += [measurements.key_rate(sys, f=f, p=p_success)]
-    
-#    print(sys.cm)
-#    print(sys.get_full_CM())
-    kr = measurements.key_rate_nosimple(sys, f, p_success)
-    key_rates += [kr]
-#    key_rates += [measurements.key_rate_compare(sys, f, p_success, mpn, mpne, te)]
-    print("--->", te, kr)
-
-
-# Save the resuls
-filename = "data/result_PS_" + option 
-key_rates = np.array(key_rates)
-#print(key_rates)
-np.save(filename, key_rates)
-
-filename_ind = "data/indeces_PS_" + option 
-np.save(filename_ind, tes)
+#
+## Parameters
+#N = 10
+#mpn = 1.3
+#mpne = 0.001
+#f = 0.95
+#option = 'rsc'
+#
+## Photon subtraction options
+#t = .9
+#
+## Scissors options
+#k = .01
+#m_aux = .001
+#
+#
+#
+#ps_theta = np.arccos(np.sqrt(t))
+#r = np.arcsinh(np.sqrt(mpn))
+#r_eve = np.arcsinh(np.sqrt(mpne))
+#r_aux = np.arcsinh(np.sqrt(m_aux))
+#
+### Initialize state
+#sys = cv.System(N, Nmodes=2, cm=False)
+#sys.apply_TMS(r, [0, 1])
+## BAD TMSV
+##sys.replace_current_state_w_bad_TMSV(mean_photon_number)
+#
+#
+## Transmitter Photon subtraction
+#if option == 'tps':
+#    sys.add_vacuum()
+#    sys.apply_BS(ps_theta, [1, 2])
+#    p_success = sys.collapse_fock_state(1, 2)
+#    print("P SUCCESS:", p_success)
+#
+## No Photon subtraction
+#if option == 'nops':
+#    p_success = 1
+#
+## Transmitter Scissors
+#if option == 'tsc':
+#    p_success = sys.apply_scissor(k, r_aux, 1)
+#    print("P SUCCESS:", p_success)
+##    print(sys.state)
+#
+## Transmitter Scissors Exact
+#if option == 'tsc_e':
+#    p_success = sys.apply_scissor_exact(k, 1)
+#    print("P SUCCESS:", p_success)
+##    print(sys.state)
+#
+#
+## Evesdropper collective attack
+#sys.add_TMSV(r_eve)
+## BAD TMSV
+##sys.add_bad_TMSV(e_mpn)
+#
+#sys.set_quadratures_basis()
+#
+#
+## Save current state of the system
+#sys.save_state()
+#
+#key_rates = []
+#tes =np.logspace(-1, 0, base=10, num=50)
+##tes = np.linspace(.9, 1, 10)
+##tes = [1.]
+#
+#for te in tes:
+#    sys.load_state()
+#
+#    theta = np.arccos(np.sqrt(te))
+#    sys.apply_BS(theta, [1, 2])
+#
+#    # Receiver Photon subtraction
+#    if option == 'rps':
+#        sys.add_vacuum()
+#        sys.apply_BS(ps_theta, [1, 4])
+#        p_success = sys.collapse_fock_state(1, 4)
+#        print("P SUCCESS:", p_success)
+#        
+#    # Receiver Scissors
+#    if option == 'rsc':
+#        p_success = sys.apply_scissor(k, r_aux, 1)
+#        print("P SUCCESS:", p_success) 
+#        
+#    # Receiver Scissors Exact
+#    if option == 'rsc_e':
+#        p_success = sys.apply_scissor_exact(k, 1)
+#        print("P SUCCESS:", p_success)   
+##    key_rates += [measurements.key_rate(sys, f=f, p=p_success)]
+#    
+##    print(sys.cm)
+##    print(sys.get_full_CM())
+#    kr = measurements.key_rate_nosimple(sys, f, p_success)
+#    key_rates += [kr]
+##    key_rates += [measurements.key_rate_compare(sys, f, p_success, mpn, mpne, te)]
+#    print("--->", te, kr)
+#
+#
+## Save the resuls
+#filename = "data/result_PS_" + option 
+#key_rates = np.array(key_rates)
+##print(key_rates)
+#np.save(filename, key_rates)
+#
+#filename_ind = "data/indeces_PS_" + option 
+#np.save(filename_ind, tes)
 
 
 ############################################ PLOT
 
 key_rates = []
 indeces = []
-for ext in ['nops', 'tps', 'rps', 'tsc', 'rsc']:
+for ext in ['nops', 'tps', 'rps', 'tsc']:
     f_name = "data/result_PS_" + ext
     k_rate = np.load(f_name + ".npy")
     key_rates += [k_rate]
@@ -161,9 +161,14 @@ mg_indNO = mg_indNO['indd'][0]
 mg_indR = mg_indR['indR'][0]
 mg_indT = mg_indT['indT'][0]
 
-ax.plot(mg_indNO, mg_ratesNO, 'ko--')
-ax.plot(mg_indR, mg_ratesR, 'ro--')
-ax.plot(mg_indT, mg_ratesT, 'bo--')
+ax.plot(mg_indNO, mg_ratesNO, 'k--')
+ax.plot(mg_indR, mg_ratesR, 'r--')
+ax.plot(mg_indT, mg_ratesT, 'b--')
+
+ax.set_xlabel(r"$\eta$")
+ax.set_ylabel("Key rate")
+#ax.legend(["No PS", "Transmitter PS", "Receiver PS", "Transmitter SC", "Mg no PS", "Mg r-PS", "Mg t-PS"])
+
 
 #key_rates1b = np.load(filename1 + "BAD.npy")
 #key_rates2b = np.load(filename2 + "BAD.npy")
