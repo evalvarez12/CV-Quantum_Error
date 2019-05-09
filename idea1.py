@@ -14,39 +14,102 @@ import tools
 import matplotlib.pyplot as plt
 
 
-N = 5
-sys = cv.System(N, )
+#N = 5
+#sys = cv.System(N, 1)
+#
+#r = .6
+#sys.apply_SMD(r, 0)
+#statei = sys.state
+#print(statei)
+#   
+#
+#k = 1
+#s0 = qt.tensor(qt.basis(N), qt.basis(N))
+#s1 = qt.tensor(qt.basis(N, 1), qt.basis(N, 1))
+#
+##state = (s0 + k*s1)
+##state = state/state.norm()
+#state = (qt.basis(N) + qt.basis(N, 1))/np.sqrt(2)
+#sys.add_state(state)
+#
+#print(state)
+#
+#print(sys.state)
+#
+#t = 0.5
+#theta = np.arccos(np.sqrt(t))
+#sys.apply_BS(theta, pos=[0, 1])
+#
+#print(sys.state)
+#
+#sys.collapse_fock_state(0, 1)
+#
+#print(sys.state)
+#print(statei)
 
-r = .6
+
+
+
+N = 10
+sys = cv.System(N, 1)
+
+r = .5
 sys.apply_SMD(r, 0)
-
-print(sys.state)
+statei = sys.state
+print(statei)
    
-state = (qt.basis(N) + qt.basis(N, 1))/np.sqrt(2)
+
+k = 1
+s0 = qt.tensor(qt.basis(N), qt.basis(N))
+s1 = qt.tensor(qt.basis(N, 1), qt.basis(N, 1))
+
+state = (s0 + k*s1)
+state = state/state.norm()
 sys.add_state(state)
 
+print(state)
 
-
-k = .01
-sys.apply_scissor_exact(k, 1)
 print(sys.state)
 
+t = 0.5
+theta = np.arccos(np.sqrt(t))
+sys.apply_BS(theta, pos=[0, 1])
 
+focks = [1, 1]
 
-### SCISSOR NOT EXACT
-
-N = 3
-sys = cv.System(N, Nmodes=2)
-r = .6
-sys.apply_SMD(r, 1)
-
-ref_state = sys.state
-print(ref_state)
-   
-k = .01
-m_aux = .1
-r_aux = np.arcsinh(np.sqrt(m_aux))
-p = sys.apply_scissor(k, r_aux, 1)
-print("P:", p)
+sys.collapse_fock_state(focks[0], 1)
 print(sys.state)
+
+sys.collapse_fock_state(focks[1], 1)
+
+print(statei)
+print(sys.state)
+
+x = np.linspace(-3, 5, 100)
+y = np.linspace(-4, 4, 100)
+
+w1 = qt.wigner(sys.state, x, y)
+cmap1 = qt.wigner_cmap(w1)
+
+w2 = qt.wigner(statei, x, y)
+cmap2 = qt.wigner_cmap(w2)
+
+#fig, axes = plt.subplots(1, 2, figsize=(12,3))
+#axes[1].imshow(w1, cmap1)
+#axes[1].set_title("Out")
+#axes[0].imshow(w2, cmap2)
+#axes[0].set_title("In")
+#fig.colorbar(axes[0], ax=axes.ravel().tolist(), shrink=0.5)
+#plt.show()
+
+
+
+plt.subplot(1, 4, 1)
+plt.imshow(w1, cmap1)
+plt.colorbar()
+plt.subplot(1, 4, 2)
+plt.imshow(w2, cmap2)
+plt.colorbar()
+
+plt.show()
 

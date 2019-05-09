@@ -37,7 +37,7 @@ class System:
 
     
     def add_state(self, state):
-        N_add = state.dims[0][0]
+        N_add = len(state.dims[0])
         self.state = qt.tensor(state, self.state)
         self.Nmodes += N_add
 
