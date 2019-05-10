@@ -61,5 +61,22 @@ class TestCVSystemsMethods(unittest.TestCase):
 #       print(ref_state)
        self.assertTrue(sys.state == ref_state)
 
+
+   def test_apply_loss_channel(self):
+       N = 2
+       sys = cv.System(N, Nmodes=2)
+       r = .6
+       sys.apply_SMD(r, 1)
+
+       ref_state = sys.state
+       print(ref_state)
+       
+       eta = 1
+       
+       sys.apply_loss_channel(eta, 1)
+       print(sys.state)
+       
+       print(ref_state * ref_state.dag())
+       
 if __name__ == '__main__':
    unittest.main()

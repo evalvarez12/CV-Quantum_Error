@@ -91,6 +91,16 @@ class System:
             S = sym.single_mode_squeeze(r, pos, self.Nmodes)
             self.cm = tools.matrix_sandwich(S, self.cm)
 
+
+    def apply_loss_channel(self, eta, pos):
+        eta_theta = np.arccos(np.sqrt(eta))
+        self.add_vacuum()
+        self.apply_BS(eta_theta, [pos, self.Nmodes-1])
+        
+        # Trace out loss channel mode - NOTE in qutip the last one is index 0
+        self.state = self.state.ptrace(range(1, self.Nmodes))
+        self.Nmodes = self.Nmodes - 1
+
     def add_TMSV(self, r):
         state_aux = qt.tensor(qt.basis(self.N), qt.basis(self.N))
         S = ops.tmsqueeze(self.N, r)
@@ -105,6 +115,7 @@ class System:
             S = sym.two_mode_squeeze(r)
             cm_add = np.dot(S.transpose(), S)
             self.cm = tools.direct_sum([self.cm, cm_add])
+
 
 
 
