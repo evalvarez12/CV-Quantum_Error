@@ -32,7 +32,11 @@ class System:
 
 
     def add_vacuum(self, Nadd=1):
-        self.state = qt.tensor([qt.basis(self.N, 0)]*Nadd + [self.state])
+        state_add = qt.tensor([qt.basis(self.N, 0)]*Nadd)
+        if not self.state.isket:
+            state_add = state_add * state_add.dag()
+            
+        self.state = qt.tensor(state_add, self.state)
         self.Nmodes = self.Nmodes + Nadd
 
     
@@ -192,12 +196,11 @@ class System:
 
         # Add extra vacuum and TMSV states
         self.add_TMSV(r_aux)
-        self.state = qt.tensor(qt.basis(self.N), self.state)
-        Nmodes = self.Nmodes + 1
+        self.add_vacuum()
         
         # Apply tritter operator
-        tritter_pos=[Nmodes-1, Nmodes-2, pos]
-        U = ops.tritter(self.N, theta1, theta2, tritter_pos, Nmodes)
+        tritter_pos=[self.Nmodes-1, self.Nmodes-2, pos]
+        U = ops.tritter(self.N, theta1, theta2, tritter_pos, self.Nmodes)
         # print(Nmodes, theta1, theta2, U)
         if self.state.isket:
             self.state = U * self.state
@@ -207,8 +210,8 @@ class System:
         # Define the proyectors, in this case to |10>
         projectorOFF = qt.basis(self.N, 0).dag()
         projectorON = ops.photon_on_projector(self.N)
-        collapse_pos = [pos, Nmodes-1, Nmodes-3]
-        projector = tools.tensor_singles(self.N, [projectorOFF, projectorON, projectorON], collapse_pos, Nmodes)
+        collapse_pos = [pos, self.Nmodes-1, self.Nmodes-3]
+        projector = tools.tensor_singles(self.N, [projectorOFF, projectorON, projectorON], collapse_pos, self.Nmodes)
 
         if self.state.isket:
             self.state = projector * self.state
@@ -216,7 +219,7 @@ class System:
             self.state = projector * self.state * projector.dag()
 
         # Return Nmodes to original value
-        self.Nmodes = self.Nmodes - 2
+        self.Nmodes = self.Nmodes - 3
         
         # Normalize the state
         if self.state.isket:
@@ -316,3 +319,11 @@ class System:
     def load_state_del(self):
         self.load_state()
         del self.saved
+        
+        
+    def reset_state(self):
+        self.state = qt.tensor([qt.basis(self.N, 0)]*self.Nmodes)
+
+        if self.cm is not None:
+            eye = np.eye(2)
+            self.cm = tools.direct_sum([eye]*self.Nmodes)

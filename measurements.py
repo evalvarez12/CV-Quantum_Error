@@ -184,3 +184,7 @@ def symplectic_form(N):
 
     # Use direct sum to calculate the symplectic form
     return la.block_diag(*[w]*N)
+
+
+def is_pos_def(x):
+    return np.all(np.linalg.eigvals(x) > 0)
