@@ -30,6 +30,7 @@ class System:
         else:
             self.cm = None
 
+        self.quad_basis = None
 
     def add_vacuum(self, Nadd=1):
         state_add = qt.tensor([qt.basis(self.N, 0)]*Nadd)
@@ -239,6 +240,11 @@ class System:
         return p_success
 
 
+    def ptrace(self, pos_keep):
+        self.Nmodes = len(pos_keep)
+        self.state = self.state.ptrace(pos_keep)
+        
+
     def get_simple_CM_V(self, mode):
         a = qt.destroy(self.N)
         a = tools.tensor(self.N, a, mode, self.Nmodes)
@@ -281,9 +287,12 @@ class System:
 
 
     def get_full_CM(self):
+        if self.quad_basis is None:
+            self.set_quadratures_basis()
+        
         # TODO: check this factor of 2
         cm = 2 * qt.covariance_matrix(self.quad_basis, self.state)
-        return cm
+        return cm.astype(float)
 
 
     def check_CM(self):

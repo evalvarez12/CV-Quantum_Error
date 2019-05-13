@@ -171,7 +171,3 @@ def collapse_photon_number_dm(N, rho, n, pos, Nmodes):
     return rho
 
 
-def RCI(rho, pos_keep):
-    rho_a = rho.ptrace(pos_keep)
-    rci = qt.entropy_vn(rho_a) - qt.entropy_vn(rho)
-    return rci

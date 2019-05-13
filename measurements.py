@@ -8,6 +8,7 @@ Created on Tue Apr  2 15:27:20 2019
 
 import numpy as np
 import scipy.linalg as la
+import qutip as qt
 
 def key_rate(sys, f, p):
     Va = sys.get_simple_CM_V(0).norm()
@@ -188,3 +189,27 @@ def symplectic_form(N):
 
 def is_pos_def(x):
     return np.all(np.linalg.eigvals(x) > 0)
+
+
+def RCI_simple(rho, pos_keep):
+    rho_a = rho.ptrace(pos_keep)
+    rci = qt.entropy_vn(rho_a, base=2) - qt.entropy_vn(rho, base=2)
+    return rci
+
+
+def RCI(sys, pos_keep):
+    # Get both covariance matrices
+    sys.set_quadratures_basis()
+    CM1 = sys.get_full_CM()
+    
+    sys.ptrace(pos_keep)
+    sys.set_quadratures_basis()
+    CM2 = sys.get_full_CM()
+    
+    
+    vef1 = symplectic_eigenvalues(CM1)
+    vef2 = symplectic_eigenvalues(CM2)
+    
+    rci = sum(g(vef2)) - sum(g(vef1))
+    rci = rci.real/2
+    return rci

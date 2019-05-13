@@ -8,13 +8,11 @@ Created on Wed Mar  6 16:19:53 2019
 """
 
 import cv_system as cv
-import matplotlib.pyplot as plt
 import numpy as np
-import operations as ops
-
+import measurements
 
 # Initial parameters
-N = 10
+N = 15
 
 # Sweep parameters
 kappa = 0.005
@@ -27,12 +25,13 @@ eta = 0.01
 
 
 sys = cv.System(N, Nmodes=2, cm=False)
-
+sys.save_state()
 results = []
-
-for kappa in np.linspace(0.001, 0.03, 20):
+results2 = []
+for kappa in np.linspace(0.0001, 0.01, 30):
     r2 = []
-    for mu in np.linspace(0.001, .1, 20):
+    r22 = []
+    for mu in np.linspace(0.0001, .1, 30):
         
         r = np.arcsinh(np.sqrt(mu))
         sys.apply_TMS(r, pos=[0, 1])
@@ -42,11 +41,15 @@ for kappa in np.linspace(0.001, 0.03, 20):
         
         sys.apply_scissor(kappa, r_aux, 1)
         
-        rci = ops.RCI(sys.state, 1)
-        print(mu, kappa, rci)
+        rci2 = measurements.RCI_simple(sys.state, [0])
+        rci = measurements.RCI(sys, [0])
+        print(mu, kappa, rci, rci2)
         r2 +=[rci]
+        r22 += [rci2]
+        
+        sys.load_state()
     results += [r2]
-
+    results2 += [r22]
 
 
 filename = "data/rci_plot_1NLA"
@@ -55,7 +58,10 @@ results = np.array(results)
 np.save(filename, results)
 
 
+filename2 = "data/rci_plot_1NLA2"
 
+results2 = np.array(results2)
+np.save(filename2, results2)
 
 
 
