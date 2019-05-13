@@ -50,7 +50,7 @@ import matplotlib.pyplot as plt
 
 
 
-N = 10
+N = 20
 sys = cv.System(N, 1)
 
 r = .5
@@ -94,22 +94,25 @@ cmap1 = qt.wigner_cmap(w1)
 w2 = qt.wigner(statei, x, y)
 cmap2 = qt.wigner_cmap(w2)
 
-#fig, axes = plt.subplots(1, 2, figsize=(12,3))
-#axes[1].imshow(w1, cmap1)
-#axes[1].set_title("Out")
-#axes[0].imshow(w2, cmap2)
-#axes[0].set_title("In")
-#fig.colorbar(axes[0], ax=axes.ravel().tolist(), shrink=0.5)
+fig, axes = plt.subplots(1, 2, figsize=(12,3))
+im1 = axes[1].imshow(w1)
+axes[1].set_title("Out")
+
+norm = im1.norm
+
+im0 = axes[0].imshow(w2, norm=norm)
+axes[0].set_title("In")
+fig.colorbar(im1)
+fig.show()
+
+
+
+#plt.subplot(1, 4, 1)
+#plt.imshow(w1, cmap1)
+#plt.colorbar()
+#plt.subplot(1, 4, 2)
+#plt.imshow(w2, cmap2)
+#plt.colorbar()
+
 #plt.show()
-
-
-
-plt.subplot(1, 4, 1)
-plt.imshow(w1, cmap1)
-plt.colorbar()
-plt.subplot(1, 4, 2)
-plt.imshow(w2, cmap2)
-plt.colorbar()
-
-plt.show()
 

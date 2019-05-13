@@ -20,21 +20,21 @@ ax = fig.gca(projection='3d')
 
 # Make data.
 #X = np.arange(-5, 5, 0.25)
-X = np.linspace(0.0001, .1, 20)
+X = np.linspace(0.0001, .1, 30)
 
 #Y = np.arange(-5, 5, 0.25)
-Y = np.linspace(0.0001, 0.01, 20)
+Y = np.linspace(0.0001, 0.01, 30)
 
 X, Y = np.meshgrid(X, Y)
 
-filename = "data/rci_plot_1NLA2.npy"
+filename = "data/rci_plot_1NLA.npy"
 Z = np.load(filename)
 
 eta = 0.01
 floorval = -np.log2(1 - eta)
 floor = floorval * np.ones_like(Z)
 
-Z[Z < 0] = 0
+Z[Z < floorval] = 0
 
 # Plot the surface.
 surf = ax.plot_surface(X, Y, Z, cmap=cm.coolwarm,
@@ -43,8 +43,8 @@ surf = ax.plot_surface(X, Y, Z, cmap=cm.coolwarm,
 norm = surf.norm
 
 
-#floor = ax.plot_surface(X, Y, floor,
-#                       linewidth=0, antialiased=False)
+#floor = ax.plot_surface(X, Y, floor, cmap=cm.coolwarm,
+#                       linewidth=0, antialiased=False, norm=norm)
 
 # Customize the z axis.
 #ax.set_zlim(-1.01, 1.01)

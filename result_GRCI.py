@@ -12,7 +12,7 @@ import numpy as np
 import measurements
 
 # Initial parameters
-N = 15
+N = 10
 
 # Sweep parameters
 kappa = 0.005
