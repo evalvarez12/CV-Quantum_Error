@@ -18,18 +18,18 @@ import scipy.io
 ############################################ CALCULATIONS
 
 # Parameters
-N = 20
+N = 10
 mpn = 1.3
 mpne = 0.001
 f = 0.95
-option = 'tps'
+option = 'rsc'
 
 # Photon subtraction options
 t = .9
 
 # Scissors options
 k = .01
-m_aux = .001
+m_aux = .1
 
 
 
@@ -81,7 +81,7 @@ sys.set_quadratures_basis()
 sys.save_state()
 
 key_rates = []
-tes =np.logspace(-3, 0, base=10, num=50)
+tes =np.logspace(-3, 0, base=10, num=15)
 #tes = np.linspace(.9, 1, 10)
 #tes = [1.]
 
@@ -131,7 +131,7 @@ np.save(filename_ind, tes)
 
 key_rates = []
 indeces = []
-for ext in ['nops', 'tps', 'rps', 'tsc']:
+for ext in ['nops', 'tps', 'rps', 'tsc', 'rsc']:
     f_name = "data/result_PS_" + ext
     k_rate = np.load(f_name + ".npy")
     key_rates += [k_rate]

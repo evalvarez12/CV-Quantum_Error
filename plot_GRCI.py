@@ -43,7 +43,7 @@ surf = ax.plot_surface(X, Y, Z, cmap=cm.coolwarm,
 norm = surf.norm
 
 
-#floor = ax.plot_surface(X, Y, floor, cmap=cm.coolwarm,
+#floor = ax.plot_surface(X, YZ, floor, cmap=cm.coolwarm,
 #                       linewidth=0, antialiased=False, norm=norm)
 
 # Customize the z axis.

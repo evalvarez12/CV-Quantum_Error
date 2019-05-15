@@ -15,13 +15,14 @@ import qutip as qt
 import unittest
 
 
-N = 10
-a = qt.tensor(qt.destroy(N), qt.qeye(N))
-b = qt.tensor(qt.qeye(N), qt.destroy(N))
+
 
 class TestSymplecticMethods(unittest.TestCase):
 
     def test_two_mode_squeezing(self):
+        N = 10
+        a = qt.tensor(qt.destroy(N), qt.qeye(N))
+        b = qt.tensor(qt.qeye(N), qt.destroy(N))
         z = 2 * np.exp(1j*np.pi/6)
         H_mat = ham.H_two_mode_squeeze(z)
         H = ham.Hamiltonian(N, H_mat)
@@ -42,6 +43,8 @@ class TestSymplecticMethods(unittest.TestCase):
 
 
     def test_single_mode_squeezing(self):
+        N = 10
+        a = qt.tensor(qt.destroy(N), qt.qeye(N))
         z = 2 * np.exp(1j*np.pi/6)
         H_mat = ham.H_single_mode_squeeze(z)
         H = ham.Hamiltonian(N, H_mat)
@@ -62,6 +65,8 @@ class TestSymplecticMethods(unittest.TestCase):
 
 
     def test_phase_shift(self):
+        N = 10
+        a = qt.tensor(qt.destroy(N), qt.qeye(N))
         theta = np.pi/6
         H_mat = ham.H_phase_shift(theta)
         H = ham.Hamiltonian(N, H_mat)
@@ -76,6 +81,9 @@ class TestSymplecticMethods(unittest.TestCase):
 
 
     def test_beam_splitter(self):
+        N = 10
+        a = qt.tensor(qt.destroy(N), qt.qeye(N))
+        b = qt.tensor(qt.qeye(N), qt.destroy(N))
         z = np.pi/4 * np.exp(1j*np.pi/4)
         H_mat = ham.H_beam_splitter(z)
         H = ham.Hamiltonian(N, H_mat)
@@ -90,31 +98,32 @@ class TestSymplecticMethods(unittest.TestCase):
 
 
     def test_single_mode_squeezing_S(self):
-         z = 2 * np.exp(1j*np.pi/6)
-         S = sym.single_mode_squeeze(z)
-         S_ref = theory.single_mode_squeeze(z)
-         np.testing.assert_array_almost_equal(S, S_ref, decimal=5)
+        z = 2 * np.exp(1j*np.pi/6)
+        S = sym.single_mode_squeeze(z)
+        S_ref = theory.single_mode_squeeze(z)
+        np.testing.assert_array_almost_equal(S, S_ref, decimal=5)
          
 
     def test_two_mode_squeezing_S(self):
-         z = 2 * np.exp(1j*np.pi/6)
-         S = sym.two_mode_squeeze(z)
-         S_ref = theory.two_mode_squeeze(z)
-         np.testing.assert_array_almost_equal(S, S_ref, decimal=5)
+        z = 2 * np.exp(1j*np.pi/6)
+        S = sym.two_mode_squeeze(z)
+        S_ref = theory.two_mode_squeeze(z)
+        np.testing.assert_array_almost_equal(S, S_ref, decimal=5)
          
 
     def test_phase_shift_S(self):
-         theta = np.pi/6
-         S = sym.phase_shift(theta)
-         S_ref = theory.phase_shift(theta)
-         np.testing.assert_array_almost_equal(S, S_ref, decimal=5)
+        theta = np.pi/6
+        S = sym.phase_shift(theta)
+        S_ref = theory.phase_shift(theta)
+        np.testing.assert_array_almost_equal(S, S_ref, decimal=5)
          
          
     def test_beam_splitter_S(self):
-         z = 2 * np.exp(1j*np.pi/6)
-         S = sym.beam_splitter(z)
-         S_ref = theory.beam_splitter(z)
-         np.testing.assert_array_almost_equal(S, S_ref, decimal=5)
+
+        z = 2 * np.exp(1j*np.pi/6)
+        S = sym.beam_splitter(z)
+        S_ref = theory.beam_splitter(z)
+        np.testing.assert_array_almost_equal(S, S_ref, decimal=5)
 
 if __name__ == '__main__':
     unittest.main()
