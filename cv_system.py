@@ -135,6 +135,8 @@ class System:
             # TODO: Check this
             p = (P.dag() * P * self.state).tr()
 
+#        if p == 0:
+#            p = 1
         self.state = (P * self.state)/p
         self.Nmodes = self.Nmodes - 1
         return p

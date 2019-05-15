@@ -13,16 +13,16 @@ import measurements
 import matplotlib.pyplot as plt
 
 # Initial parameters
-N = 10
+N = 20
 
 # Sweep parameters
 kappa = 0.005
-mu = 0.05
+mu = 1.8
 r = np.arcsinh(np.sqrt(mu))
-
+print("r:", r)
 # Fixed parameters
-mu_aux = 0.01
-r_aux = np.arcsinh(np.sqrt(mu_aux))
+#mu_aux = 0.01
+#r_aux = np.arcsinh(np.sqrt(mu_aux))
 
 
 sys = cv.System(N, Nmodes=2, cm=False)
