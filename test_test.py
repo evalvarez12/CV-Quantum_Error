@@ -5,42 +5,31 @@ Dummy file to test stuff
 @author: Eduardo Villasenor
 """
 
-import tools
 import cv_system as cv
-import numpy as np
 import qutip as qt
-from scipy.linalg import block_diag
+import numpy as np
 
-
-N = 2
-sys = cv.System(N, Nmodes=2)
-r = .6
-sys.apply_SMD(r, 1)
-
-ref_state = sys.state
-print(ref_state)
-   
-k = .01
-sys.apply_scissor_exact(k, 1)
-print(sys.state)
-
-
-
-### SCISSOR NOT EXACT
-
+# Define some initail parameters
 N = 3
-sys = cv.System(N, Nmodes=2)
-r = .6
-sys.apply_SMD(r, 1)
 
-ref_state = sys.state
-print(ref_state)
-   
-k = .01
-m_aux = .1
-r_aux = np.arcsinh(np.sqrt(m_aux))
-p = sys.apply_scissor(k, r_aux, 1)
-print("P:", p)
+sys = cv.System(N, 1)
+
+state = qt.tensor(qt.basis(N, 1), qt.basis(N, 1))
+sys.add_state(state)
+print(sys.state)
+# Appl BS
+theta = np.pi/4
+posBS = [0, 1]
+sys.apply_BS(theta, posBS)
+
 print(sys.state)
 
 
+
+sys2 = cv.System(N, 1)
+
+sys2.add_state(state)
+print(sys2.state)
+posBS = [1, 0]
+sys2.apply_BS(theta, posBS)
+print(sys2.state)

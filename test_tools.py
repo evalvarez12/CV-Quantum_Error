@@ -53,6 +53,14 @@ class TestTools(unittest.TestCase):
         l = tools.get_permutation_list(pos, N)
         ref = np.array([3, 1, 2, 0])
         np.testing.assert_array_equal(l, ref)
+        
+        
+    def test_get_permutation_list2(self):
+        N = 3
+        pos = [1, 0]
+        l = tools.get_permutation_list(pos, N)
+        ref = np.array([1, 0, 2])
+        np.testing.assert_array_equal(l, ref)
 
 
     def test_direct_sum_singles(self):

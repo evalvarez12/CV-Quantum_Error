@@ -48,12 +48,15 @@ def tensor_singles(N, operators, positions, Nmodes):
 
 
 def reorder_two_mode_operator(N, op, pos, Nmodes):
-    op = qt.tensor([op] + [qt.qeye(N)]*(Nmodes-2))
+#    op = qt.tensor([op] + [qt.qeye(N)]*(Nmodes-2))
+    op = qt.tensor([qt.qeye(N)]*(Nmodes-2) + [op])
 
     # Bring positions from lso on right to normal for permute
-    pos = Nmodes - 1 - np.array(pos)
+#    pos = Nmodes - 1 - np.array(pos)
     permute = get_permutation_list(pos, Nmodes)
-    # print("permute list:", permute)
+    print("permute list:", pos, permute)
+    permute = Nmodes - 1 - permute
+    print("permute list transformed:", permute)
     op = op.permute(permute)
     return op
 
@@ -86,7 +89,7 @@ def direct_sum(matrices):
 def direct_sum_singles(matrices, positions, Nmodes):
      # Check if arguments make sense
     if max(positions) >= Nmodes:
-        raise ValueError("direct_sum: postion out ot numbe blocks")
+        raise ValueError("direct_sum: postion out of number of blocks")
 
     identity = np.identity(2)
     positions = np.array(positions)

@@ -23,6 +23,9 @@ class System:
         if Nmodes != 0 and not cm_only:
             self.state = qt.tensor([qt.basis(self.N, 0)]*Nmodes)
             self.Nmodes = Nmodes
+        elif Nmodes == 0:
+            self.state = None
+            self.Nmodes = 0
 
         if cm:
             eye = np.eye(2)
@@ -43,8 +46,11 @@ class System:
     
     def add_state(self, state):
         N_add = len(state.dims[0])
-        self.state = qt.tensor(state, self.state)
         self.Nmodes += N_add
+        if self.state is None:
+            self.state = state
+        else:
+            self.state = qt.tensor(state, self.state)
 
     def apply_BS(self, z, pos=[0,1]):
 #        theta = np.arccos(np.sqrt(t))

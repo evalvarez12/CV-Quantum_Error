@@ -34,6 +34,8 @@ class TestCVSystemsMethods(unittest.TestCase):
        A = np.linalg.norm(ref_state)
        ref_state = ref_state/A
        ref_state = qt.Qobj(ref_state)
+#       print(sys.state)
+#       print(ref_state)
        self.assertTrue(sys.state == ref_state)
 
 
