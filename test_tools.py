@@ -48,18 +48,54 @@ class TestTools(unittest.TestCase):
 
 
     def test_get_permutation_list(self):
-        N = 4
-        pos = [3, 1]
-        l = tools.get_permutation_list(pos, N)
-        ref = np.array([3, 1, 2, 0])
+        l = tools.get_permutation_list([0,1], 3)
+        ref = [2, 1, 0]
+        np.testing.assert_array_equal(l, ref)
+        
+        l = tools.get_permutation_list([1,0], 3)
+        ref = [1, 2, 0]
+        np.testing.assert_array_equal(l, ref)
+        
+        l = tools.get_permutation_list([1,2], 3)
+        ref = [0, 2, 1]
+        np.testing.assert_array_equal(l, ref)
+        
+        l = tools.get_permutation_list([2,1], 3)
+        ref = [0, 1, 2]
+        np.testing.assert_array_equal(l, ref)
+        
+        l = tools.get_permutation_list([0,2], 3)
+        ref = [2, 0, 1]
+        np.testing.assert_array_equal(l, ref)
+        
+        l = tools.get_permutation_list([2,0], 3)
+        ref = [1, 0, 2]
         np.testing.assert_array_equal(l, ref)
         
         
     def test_get_permutation_list2(self):
-        N = 3
-        pos = [1, 0]
-        l = tools.get_permutation_list(pos, N)
-        ref = np.array([1, 0, 2])
+        l = tools.get_permutation_list([2, 0], 4)
+        ref = [2, 1, 3, 0]
+        np.testing.assert_array_equal(l, ref)
+
+        l = tools.get_permutation_list([0, 2], 4)
+        ref = [3, 1, 2, 0]
+        np.testing.assert_array_equal(l, ref)
+
+        l = tools.get_permutation_list([2, 3], 4)
+        ref = [0, 1, 3, 2]
+        np.testing.assert_array_equal(l, ref)
+        
+        l = tools.get_permutation_list([3, 2], 4)
+        ref = [0, 1, 2, 3]
+        np.testing.assert_array_equal(l, ref)
+        
+        l = tools.get_permutation_list([3, 1], 4)
+        ref = [0, 2, 1, 3]
+        np.testing.assert_array_equal(l, ref)
+
+        l = tools.get_permutation_list([0, 3], 4)
+        ref = [3, 1, 0, 2]
         np.testing.assert_array_equal(l, ref)
 
 

@@ -52,30 +52,30 @@ def reorder_two_mode_operator(N, op, pos, Nmodes):
     op = qt.tensor([qt.qeye(N)]*(Nmodes-2) + [op])
 
     # Bring positions from lso on right to normal for permute
-#    pos = Nmodes - 1 - np.array(pos)
+    pos = Nmodes - 1 - np.array(pos)
     permute = get_permutation_list(pos, Nmodes)
-    print("permute list:", pos, permute)
-    permute = Nmodes - 1 - permute
-    print("permute list transformed:", permute)
+#    print("permute list:", pos, permute)
+#    permute = Nmodes - 1 - permute
+#    print("permute list transformed:", permute)
     op = op.permute(permute)
     return op
 
 
 def get_permutation_list(pos, N):
-    # First swap 0 to pos[0]
+    # First swap with pos[0]
     permute_list = np.arange(N)
-    permute_list[pos[0]] = 0
-    permute_list[0] = pos[0]
-
-    # Now desired swap with pos[1]
+    permute_list[pos[0]] = N-1
+    permute_list[N-1] = pos[0]
+    
+    # Now desired swap with N-2
     # Find the index of the desired value is
-    ind = np.where(permute_list == pos[1])[0][0]
-    # Swap the desired value with whatever is in spot 1
-    permute_list[ind] = permute_list[1]
-    # Place pos[1] in spot 1
-    permute_list[1] = pos[1]
+    ind1 = np.where(permute_list == N-2)[0][0]
+    # Set desired value to whatever is in spot pos1
+    permute_list[ind1] = permute_list[pos[1]]
+    # Set N-2 in spot pos1
+    permute_list[pos[1]] = N-2
     return permute_list
-
+    
 
 def matrix_sandwich(A, B):
     # Returns A.transpose * B * A
