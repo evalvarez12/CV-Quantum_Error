@@ -24,7 +24,7 @@ class TestCVSystemsMethods(unittest.TestCase):
        sys.apply_SMD(r)
 
        ref_state = sys.state
-       k = .05
+       k = .1
        sys.apply_scissor_exact(k)
 
        g = np.sqrt(1/k - 1)
@@ -48,7 +48,7 @@ class TestCVSystemsMethods(unittest.TestCase):
        ref_state = sys.state
 #       print(ref_state)
        
-       k = .05
+       k = .1
        sys.apply_scissor_exact(k, 1)
 #       print(sys.state)
 
@@ -76,18 +76,18 @@ class TestCVSystemsMethods(unittest.TestCase):
        sys.apply_SMD(r, 1)
 
        ref_state = sys.state
-       print(ref_state)
+#       print(ref_state)
        
        eta = 1
        
        sys.apply_loss_channel(eta, 1)
-       print(sys.state)
+#       print(sys.state)
        
-       print(ref_state * ref_state.dag())
+#       print(ref_state * ref_state.dag())
        
        
    def test_tmsv_to_smsvs(self):
-       N = 40
+       N = 30
        mpn = 1
        t = np.pi/4
         
@@ -99,25 +99,25 @@ class TestCVSystemsMethods(unittest.TestCase):
                       
        sys.set_quadratures_basis()
        CM = sys.get_full_CM()
-       np.testing.assert_almost_equal(sys.cm, CM, decimal=4)
+       np.testing.assert_almost_equal(sys.cm, CM, decimal=3)
         
        # Apply BS operation
        sys.apply_BS(t, [0, 1])
         
 #       sys.set_quadratures_basis()
        CM = sys.get_full_CM()
-       np.testing.assert_almost_equal(sys.cm, CM, decimal=4)
+       np.testing.assert_almost_equal(sys.cm, CM, decimal=3)
         
        # Second BS to revert to TMSV
        sys.apply_BS(t, [0, 1])
         
        sys.set_quadratures_basis()
        CM = sys.get_full_CM()
-       np.testing.assert_almost_equal(sys.cm, CM, decimal=4)
+       np.testing.assert_almost_equal(sys.cm, CM, decimal=3)
        
        
    def test_smsvs_to_tmsv(self):
-       N = 40
+       N = 30
        mpn = 1
        t = np.pi/4
         
@@ -129,15 +129,63 @@ class TestCVSystemsMethods(unittest.TestCase):
         
        sys.set_quadratures_basis()
        CM = sys.get_full_CM()
-       np.testing.assert_almost_equal(sys.cm, CM, decimal=4)
+       np.testing.assert_almost_equal(sys.cm, CM, decimal=3)
         
        sys.apply_BS(t, [0, 1])
        CM = sys.get_full_CM()
-       np.testing.assert_almost_equal(sys.cm, CM, decimal=4)
+       np.testing.assert_almost_equal(sys.cm, CM, decimal=3)
         
        sys.apply_BS(t, [0, 1])
        sys.set_quadratures_basis()
        CM = sys.get_full_CM()
-       np.testing.assert_almost_equal(sys.cm, CM, decimal=4)
+       np.testing.assert_almost_equal(sys.cm, CM, decimal=3)
+       
+       
+   def test_beam_splitter(self):
+       N = 3
+       state = qt.tensor(qt.basis(N, 1), qt.basis(N, 1))
+       theta = np.pi/4
+       
+       sys = cv.System(N, 1)
+       sys.add_state(state)
+       posBS = [1, 2]
+       sys.apply_BS(theta, posBS)
+        
+       statearr = sys.state.data.toarray()
+       inds = np.where(statearr != 0)[0]
+       np.testing.assert_array_equal(inds, [6, 18])   
+        
+       sys = cv.System(N, 1)
+       sys.add_state(state)
+       posBS = [2, 1]
+       sys.apply_BS(theta, posBS)
+        
+       statearr = sys.state.data.toarray()
+       inds = np.where(statearr != 0)[0]
+       np.testing.assert_array_equal(inds, [6, 18])       
+       
+       sys = cv.System(N, 1)
+       sys.add_state(state)
+       posBS = [2, 0]
+       sys.apply_BS(theta, posBS)
+        
+       statearr = sys.state.data.toarray()
+       inds = np.where(statearr != 0)[0]
+       np.testing.assert_array_equal(inds, [4, 12])  
+       
+       
+       sys = cv.System(N, 1)
+       sys.add_state(state)
+       posBS = [0, 2]
+       sys.apply_BS(theta, posBS)
+        
+       statearr = sys.state.data.toarray()
+       inds = np.where(statearr != 0)[0]
+       np.testing.assert_array_equal(inds, [4, 12])  
+       
+       
+       
+           
+       
 if __name__ == '__main__':
    unittest.main()

@@ -18,18 +18,18 @@ import scipy.io
 ############################################ CALCULATIONS
 
 # Parameters
-N = 10
+N = 15
 mpn = 1.3
 mpne = 0.001
 f = 0.95
-option = 'rsc'
+option = 'tsc'
 
 # Photon subtraction options
 t = .9
 
 # Scissors options
-k = .01
-m_aux = .1
+k = .9
+m_aux = .3
 
 
 
@@ -81,7 +81,7 @@ sys.set_quadratures_basis()
 sys.save_state()
 
 key_rates = []
-tes =np.logspace(-3, 0, base=10, num=15)
+tes =np.logspace(-3, 0, base=10, num=50)
 #tes = np.linspace(.9, 1, 10)
 #tes = [1.]
 
