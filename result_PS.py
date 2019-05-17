@@ -18,18 +18,19 @@ import scipy.io
 ############################################ CALCULATIONS
 
 # Parameters
-N = 15
+N = 10
 mpn = 1.3
 mpne = 0.001
 f = 0.95
-option = 'tsc'
+option = 'rsc'
 
 # Photon subtraction options
 t = .9
 
 # Scissors options
-k = .9
-m_aux = .3
+# Best  k=0.5 m_aux=0.6
+k = .5
+m_aux = .6
 
 
 
@@ -58,7 +59,7 @@ if option == 'nops':
 
 # Transmitter Scissors
 if option == 'tsc':
-    p_success = sys.apply_scissor(k, r_aux, 1)
+    p_success = sys.apply_scissors_inverted(k, r_aux, 1)
     print("P SUCCESS:", p_success)
 #    print(sys.state)
 
@@ -81,7 +82,7 @@ sys.set_quadratures_basis()
 sys.save_state()
 
 key_rates = []
-tes =np.logspace(-3, 0, base=10, num=50)
+tes =np.logspace(-2, 0, base=10, num=20)
 #tes = np.linspace(.9, 1, 10)
 #tes = [1.]
 
@@ -100,12 +101,12 @@ for te in tes:
         
     # Receiver Scissors
     if option == 'rsc':
-        p_success = sys.apply_scissor(k, r_aux, 1)
+        p_success = sys.apply_scissors_inverted(k, r_aux, 1)
         print("P SUCCESS:", p_success) 
         
     # Receiver Scissors Exact
     if option == 'rsc_e':
-        p_success = sys.apply_scissor_exact(k, 1)
+        p_success = sys.apply_scissors_exact(k, 1)
         print("P SUCCESS:", p_success)   
 #    key_rates += [measurements.key_rate(sys, f=f, p=p_success)]
     

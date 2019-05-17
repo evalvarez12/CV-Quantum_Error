@@ -18,80 +18,80 @@ from matplotlib.ticker import LinearLocator, FormatStrFormatter
 ############################################ CALCULATIONS
 
 ## Parameters
-#N = 10
-#mpn = 1.3
-#mpne = 0.001
-#f = 0.95
-#option = 'rsc'
-#eta = 0.5
-#
-#
-#theta = np.arccos(np.sqrt(eta))
-#r = np.arcsinh(np.sqrt(mpn))
-#r_eve = np.arcsinh(np.sqrt(mpne))
-#r_aux = np.arcsinh(np.sqrt(m_aux))
-#
-### Initialize system
-#sys = cv.System(N, Nmodes=2, cm=False)
-#sys.apply_TMS(r, [0, 1])
-#
-## Save current state of the system
-#sys.save_state()
-#
-#key_rates = []
-#ps = []
-#ks = np.arange(0.001, 1, 0.1)
-#m_auxs = np.arange(0.001, 1, 0.1)
-#
-#for k in ks:
-#    k_temp = []
-#    p_temp = []
-#    for m_aux in m_auxs:
-#        r_aux = np.arcsinh(np.sqrt(m_aux))
-#        print("--->", k, m_aux)
-#        
-#        sys.load_state()
-#    
-#        # Transmitter Scissors
-#        if option == 'tsc':
-#            p_success = sys.apply_scissor(k, r_aux, 1)
-#            print("P SUCCESS:", p_success)
-#        #    print(sys.state)
-#    
-#        sys.add_TMSV(r_eve)
-#
-#    
-#        sys.apply_BS(theta, [1, 2])
-#    
-#    
-#        # Receiver Scissors
-#        if option == 'rsc':
-#            p_success = sys.apply_scissor(k, r_aux, 1)
-#            print("P SUCCESS:", p_success) 
-#            
-#
-#        kr = measurements.key_rate_nosimple(sys, f, p_success)
-#        print("Key rate:", kr)
-#        k_temp += [kr]
-#        p_temp += [p_success]
-#    key_rates += [k_temp]
-#    ps += [p_temp]
-#
-#
-## Save the resuls
-#filename = "data/result_SCpspace_" + option 
-#key_rates = np.array(key_rates)
-#np.save(filename, key_rates)
-#
-#filename = "data/result_SCpspace_p_" + option 
-#key_rates = np.array(ps)
-#np.save(filename, ps)
-#
-#filename_ind1 = "data/indeces_SCpspace_k_" + option 
-#np.save(filename_ind1, ks)
-#
-#filename_ind2 = "data/indeces_SCpspace_m_" + option 
-#np.save(filename_ind2, m_auxs)
+N = 10
+mpn = 1.3
+mpne = 0.001
+f = 0.95
+option = 'tsc'
+eta = 0.5
+
+
+theta = np.arccos(np.sqrt(eta))
+r = np.arcsinh(np.sqrt(mpn))
+r_eve = np.arcsinh(np.sqrt(mpne))
+r_aux = np.arcsinh(np.sqrt(m_aux))
+
+## Initialize system
+sys = cv.System(N, Nmodes=2, cm=False)
+sys.apply_TMS(r, [0, 1])
+
+# Save current state of the system
+sys.save_state()
+
+key_rates = []
+ps = []
+ks = np.linspace(0.001, 1, 20)
+m_auxs = np.linspace(0.001, 1, 20)
+
+for k in ks:
+    k_temp = []
+    p_temp = []
+    for m_aux in m_auxs:
+        r_aux = np.arcsinh(np.sqrt(m_aux))
+        print("--->", k, m_aux)
+        
+        sys.load_state()
+    
+        # Transmitter Scissors
+        if option == 'tsc':
+            p_success = sys.apply_scissors_inverted(k, r_aux, 1)
+            print("P SUCCESS:", p_success)
+        #    print(sys.state)
+    
+        sys.add_TMSV(r_eve)
+
+    
+        sys.apply_BS(theta, [1, 2])
+    
+    
+        # Receiver Scissors
+        if option == 'rsc':
+            p_success = sys.apply_scissors(k, r_aux, 1)
+            print("P SUCCESS:", p_success) 
+            
+
+        kr = measurements.key_rate_nosimple(sys, f, p_success)
+        print("Key rate:", kr)
+        k_temp += [kr]
+        p_temp += [p_success]
+    key_rates += [k_temp]
+    ps += [p_temp]
+
+
+# Save the resuls
+filename = "data/result_SCpspace_" + option 
+key_rates = np.array(key_rates)
+np.save(filename, key_rates)
+
+filename = "data/result_SCpspace_p_" + option 
+key_rates = np.array(ps)
+np.save(filename, ps)
+
+filename_ind1 = "data/indeces_SCpspace_k_" + option 
+np.save(filename_ind1, ks)
+
+filename_ind2 = "data/indeces_SCpspace_m_" + option 
+np.save(filename_ind2, m_auxs)
 
 
 ############################################ PLOT

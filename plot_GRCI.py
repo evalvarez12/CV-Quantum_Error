@@ -20,10 +20,10 @@ ax = fig.gca(projection='3d')
 
 # Make data.
 #X = np.arange(-5, 5, 0.25)
-X = np.linspace(0.0001, .1, 30)
+X = np.linspace(0.0001, .1, 20)
 
 #Y = np.arange(-5, 5, 0.25)
-Y = np.linspace(0.0001, 0.01, 30)
+Y = np.linspace(0.0001, 0.01, 20)
 
 X, Y = np.meshgrid(X, Y)
 
@@ -50,6 +50,9 @@ norm = surf.norm
 #ax.set_zlim(-1.01, 1.01)
 ax.zaxis.set_major_locator(LinearLocator(10))
 ax.zaxis.set_major_formatter(FormatStrFormatter('%.02f'))
+
+ax.set_ylabel(r"$\kappa$")
+ax.set_xlabel(r"$\mu_{aux}$")
 
 # Add a color bar which maps values to colors.
 fig.colorbar(surf, shrink=0.5, aspect=5)

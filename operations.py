@@ -47,6 +47,13 @@ def tmsqueeze(N, r, pos=[0,1], Nmodes=2):
 
 
 def beam_splitter(N, z, pos=[0,1], Nmodes=2):
+    """
+              |theta2
+    |c>  ->---/----->
+              |
+              ^
+             |a>
+    """
     # print("BS:", pos, z)
     H = hamiltonians.beam_splitter(N, z)
     U = (-1j * H).expm()
@@ -81,6 +88,30 @@ def tritter(N, theta1, theta2, pos=[0, 1, 2], Nmodes=3):
     U = U2 * U1
     return U
 
+
+def tritter_inverted(N, theta1, theta2, pos=[0, 1, 2], Nmodes=3):
+    """
+              |theta2
+    |c>  ->---/----->
+              |
+              |theta1
+    |b>  ->---/----->
+              |
+              ^
+             |a>
+    """
+
+    pos_a, pos_b, pos_c = pos
+
+#    U1 = beam_splitter(N, theta1, pos=[pos_b, pos_a], Nmodes=Nmodes)
+    U1 = beam_splitter(N, theta1, pos=[pos_a, pos_b], Nmodes=Nmodes)
+    
+#    U2 = beam_splitter(N, theta2, pos=[pos_a, pos_c], Nmodes=Nmodes)
+    U2 = beam_splitter(N, theta2, pos=[pos_c, pos_a], Nmodes=Nmodes)
+    
+    # print("pos:", pos)
+    U = U2 * U1
+    return U
 
 #####################################################################################################
 

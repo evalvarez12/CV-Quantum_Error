@@ -112,6 +112,7 @@ class System:
         self.state = self.state.ptrace(range(1, self.Nmodes))
         self.Nmodes = self.Nmodes - 1
 
+
     def add_TMSV(self, r):
         state_aux = qt.tensor(qt.basis(self.N), qt.basis(self.N))
         S = ops.tmsqueeze(self.N, r)
@@ -126,8 +127,6 @@ class System:
             S = sym.two_mode_squeeze(r)
             cm_add = np.dot(S.transpose(), S)
             self.cm = tools.direct_sum([self.cm, cm_add])
-
-
 
 
     def collapse_fock_state(self, fock, pos):
@@ -148,7 +147,7 @@ class System:
         return p
 
 
-    def apply_scissor_exact(self, t, pos=0):
+    def apply_scissors_exact(self, t, pos=0):
         # Tritter parameters
         theta1 = np.pi/4
         theta2 = np.arccos(np.sqrt(t))
@@ -202,10 +201,10 @@ class System:
         return p_success
     
     
-    def apply_scissor(self, t, r_aux, pos=0):
+    def apply_scissors(self, k, r_aux, pos=0):
         # Tritter parameters
         theta1 = np.pi/4
-        theta2 = np.arccos(np.sqrt(t))
+        theta2 = np.arccos(np.sqrt(k))
 
         # Add extra vacuum and TMSV states
         self.add_TMSV(r_aux)
@@ -214,6 +213,56 @@ class System:
         # Apply tritter operator
         tritter_pos=[self.Nmodes-1, self.Nmodes-2, pos]
         U = ops.tritter(self.N, theta1, theta2, tritter_pos, self.Nmodes)
+        # print(Nmodes, theta1, theta2, U)
+        if self.state.isket:
+            self.state = U * self.state
+        else:
+            self.state = U * self.state * U.dag()
+
+        # Define the proyectors, in this case to |10>
+        projectorOFF = qt.basis(self.N, 0).dag()
+        projectorON = ops.photon_on_projector(self.N)
+        collapse_pos = [pos, self.Nmodes-1, self.Nmodes-3]
+        projector = tools.tensor_singles(self.N, [projectorOFF, projectorON, projectorON], collapse_pos, self.Nmodes)
+
+        if self.state.isket:
+            self.state = projector * self.state
+        else:
+            self.state = projector * self.state * projector.dag()
+
+        # Return Nmodes to original value
+        self.Nmodes = self.Nmodes - 3
+        
+        # Normalize the state
+        if self.state.isket:
+            p_success = self.state.norm()
+        else:
+            p_success = self.state.tr()
+
+        if p_success == 0:
+            p_success = 1
+        self.state = self.state/p_success
+        
+        # Permute the state to return it to its original ordering
+        p_list = np.arange(self.Nmodes)
+        p_list[pos] = self.Nmodes - 1
+        p_list[-1] = pos
+        self.state = self.state.permute(p_list)
+        return p_success
+
+
+    def apply_scissors_inverted(self, k, r_aux, pos=0):
+        # Tritter parameters
+        theta1 = np.pi/4
+        theta2 = np.arccos(np.sqrt(k))
+
+        # Add extra vacuum and TMSV states
+        self.add_TMSV(r_aux)
+        self.add_vacuum()
+        
+        # Apply tritter operator
+        tritter_pos=[self.Nmodes-1, self.Nmodes-2, pos]
+        U = ops.tritter_inverted(self.N, theta1, theta2, tritter_pos, self.Nmodes)
         # print(Nmodes, theta1, theta2, U)
         if self.state.isket:
             self.state = U * self.state

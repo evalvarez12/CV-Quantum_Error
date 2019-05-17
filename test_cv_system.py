@@ -25,7 +25,7 @@ class TestCVSystemsMethods(unittest.TestCase):
 
        ref_state = sys.state
        k = .1
-       sys.apply_scissor_exact(k)
+       sys.apply_scissors_exact(k)
 
        g = np.sqrt(1/k - 1)
        ref_state = ref_state.data.toarray()
@@ -49,7 +49,7 @@ class TestCVSystemsMethods(unittest.TestCase):
 #       print(ref_state)
        
        k = .1
-       sys.apply_scissor_exact(k, 1)
+       sys.apply_scissors_exact(k, 1)
 #       print(sys.state)
 
        # Set up reference state
@@ -124,20 +124,26 @@ class TestCVSystemsMethods(unittest.TestCase):
        r = np.arcsinh(np.sqrt(mpn))       
        sys = cv.System(N, Nmodes=2, cm=True)
        #z = mpn*np.exo(1j*np.pi/4)
-       sys.apply_SMS(-r, 0)
-       sys.apply_SMS(r, 1)
+       sys.apply_SMS(r, 0)
+       sys.apply_SMS(-r, 1)
         
        sys.set_quadratures_basis()
        CM = sys.get_full_CM()
+#       print(CM)
+#       print(sys.cm)
        np.testing.assert_almost_equal(sys.cm, CM, decimal=3)
         
        sys.apply_BS(t, [0, 1])
        CM = sys.get_full_CM()
+#       print(CM)
+#       print(sys.cm)
        np.testing.assert_almost_equal(sys.cm, CM, decimal=3)
         
        sys.apply_BS(t, [0, 1])
        sys.set_quadratures_basis()
        CM = sys.get_full_CM()
+#       print(CM)
+#       print(sys.cm)
        np.testing.assert_almost_equal(sys.cm, CM, decimal=3)
        
        
