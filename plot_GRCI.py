@@ -20,10 +20,10 @@ ax = fig.gca(projection='3d')
 
 # Make data.
 #X = np.arange(-5, 5, 0.25)
-X = np.linspace(0.0001, .1, 20)
+X = np.linspace(0.0001, .1, 50)
 
 #Y = np.arange(-5, 5, 0.25)
-Y = np.linspace(0.0001, 0.01, 20)
+Y = np.linspace(0.0001, 0.01, 50)
 
 X, Y = np.meshgrid(X, Y)
 

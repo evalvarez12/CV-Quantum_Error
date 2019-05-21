@@ -16,9 +16,10 @@ import matplotlib.pyplot as plt
 from matplotlib import cm
 import matplotlib as mpl
 from matplotlib.ticker import LinearLocator, FormatStrFormatter
+import copy
 
 # Initial parameters
-N = 5
+N = 10
 
 # Sweep parameters
 kappa = 0.005
@@ -33,9 +34,12 @@ eta = 0.01
 sys = cv.System(N, Nmodes=2, cm=False)
 sys.save_state()
 results = []
-for kappa in np.linspace(0.0001, 0.01, 50):
+results2 = []
+
+for kappa in np.linspace(0.0001, 0.01, 20):
     res = []
-    for mu in np.linspace(0.0001, .1, 50):
+    res2 = []
+    for mu in np.linspace(0.0001, .1, 20):
         
         r = np.arcsinh(np.sqrt(mu))
         sys.apply_TMS(r, pos=[0, 1])
@@ -43,14 +47,19 @@ for kappa in np.linspace(0.0001, 0.01, 50):
         
         sys.apply_loss_channel(eta, 1)
         
-        sys.apply_scissors_inverted(kappa, r_aux, 1)
+        sys.apply_scissors(kappa, r_aux, 1)
+        sys2 = copy.deepcopy(sys)
         
         rci = measurements.RCI(sys, [0])
-        print(mu, kappa, rci)
+        ci = measurements.RCI(sys2, [1])
+
+        print(mu, kappa, rci, ci)
         
         sys.load_state()
         res += [rci]
+        res2 += [ci]
     results += [res]
+    results2 += [res2]
 
 
 filename = "data/rci_plot_1NLA"
@@ -59,7 +68,10 @@ results = np.array(results)
 np.save(filename, results)
 
 
+filename2 = "data/rci_plot_1NLA2"
 
+results2 = np.array(results2)
+np.save(filename2, results2)
 
 #################
 
@@ -68,24 +80,31 @@ ax = fig.gca(projection='3d')
 
 # Make data.
 #X = np.arange(-5, 5, 0.25)
-X = np.linspace(0.0001, .1, 50)
+X = np.linspace(0.0001, .1, 20)
 
 #Y = np.arange(-5, 5, 0.25)
-Y = np.linspace(0.0001, 0.01, 50)
+Y = np.linspace(0.0001, 0.01, 20)
 
 X, Y = np.meshgrid(X, Y)
 
 filename = "data/rci_plot_1NLA.npy"
 Z = np.load(filename)
 
+filename2 = "data/rci_plot_1NLA2.npy"
+Z2 = np.load(filename2)
+
 eta = 0.01
 floorval = -np.log2(1 - eta)
 floor = floorval * np.ones_like(Z)
 
 Z[Z < floorval] = 0
+Z2[Z2 < floorval] = 0
 
 # Plot the surface.
 surf = ax.plot_surface(X, Y, Z, cmap=cm.coolwarm,
+                       linewidth=0, antialiased=False)
+
+surf = ax.plot_surface(X, Y, Z2, cmap=cm.coolwarm,
                        linewidth=0, antialiased=False)
 
 norm = surf.norm
