@@ -18,11 +18,11 @@ import scipy.io
 ############################################ CALCULATIONS
 
 # Parameters
-N = 10
+N = 20
 mpn = 1.3
 mpne = 0.001
 f = 0.95
-option = 'rsc'
+option = 'nops'
 
 # Photon subtraction options
 t = .9
@@ -112,9 +112,9 @@ for te in tes:
     
 #    print(sys.cm)
 #    print(sys.get_full_CM())
-    kr = measurements.key_rate_nosimple(sys, f, p_success)
+#    kr = measurements.key_rate_nosimple(sys, f, p_success)
+    kr = measurements.key_rate_compare(sys, f, p_success, mpn, mpne, te)
     key_rates += [kr]
-#    key_rates += [measurements.key_rate_compare(sys, f, p_success, mpn, mpne, te)]
     print("--->", te, kr)
 
 
