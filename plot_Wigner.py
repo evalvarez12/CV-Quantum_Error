@@ -20,7 +20,7 @@ sys.apply_SMD(r, 0)
 statei = sys.state
 #statei = qt.basis(N, 1)   
 
-k = .1
+k = .5
 m_aux = .01
 r_aux = np.arcsinh(np.sqrt(m_aux))
 print(r_aux)
@@ -33,10 +33,18 @@ sys.apply_scissors(k, r_aux)
 sys2 = cv.System(N, 1)
 
 sys2.apply_SMD(r, 0)
-sys2.apply_scissors_inverted(k, r_aux)
+sys2.apply_scissors_inverted(k, r_aux, 0, 'a')
 
 
+sys3 = cv.System(N, 1)
 
+sys3.apply_SMD(r, 0)
+sys3.apply_scissors_inverted(k, r_aux, 0, 'b')
+
+sys4 = cv.System(N, 1)
+
+sys4.apply_SMD(r, 0)
+sys4.apply_scissors_inverted(k, r_aux, 0, 'c')
 
 
 x = np.linspace(-4, 4, 100)
@@ -51,7 +59,13 @@ cmap2 = qt.wigner_cmap(w2)
 w3 = qt.wigner(sys2.state, x, y)
 cmap3 = qt.wigner_cmap(w3)
 
-fig, axes = plt.subplots(1, 3, figsize=(12,3))
+w4 = qt.wigner(sys3.state, x, y)
+cmap4 = qt.wigner_cmap(w4)
+
+w5 = qt.wigner(sys4.state, x, y)
+cmap5 = qt.wigner_cmap(w5)
+
+fig, axes = plt.subplots(1, 5, figsize=(12,3))
 im1 = axes[1].imshow(w1)
 axes[1].set_title("Out")
 
@@ -60,8 +74,14 @@ norm = im1.norm
 im0 = axes[0].imshow(w2, norm=norm)
 axes[0].set_title("In")
 
-im0 = axes[2].imshow(w3, norm=norm)
-axes[2].set_title("Compare")
+im2 = axes[2].imshow(w3, norm=norm)
+axes[2].set_title("a")
 
-fig.colorbar(im1)
+im3 = axes[3].imshow(w4, norm=norm)
+axes[3].set_title("b")
+
+im4 = axes[4].imshow(w5, norm=norm)
+axes[4].set_title("c")
+
+#fig.colorbar(im1)
 fig.show()

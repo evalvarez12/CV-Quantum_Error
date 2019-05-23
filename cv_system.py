@@ -251,7 +251,7 @@ class System:
         return p_success
 
 
-    def apply_scissors_inverted(self, k, r_aux, pos=0):
+    def apply_scissors_inverted(self, k, r_aux, pos=0, option='a'):
         # Tritter parameters
         theta1 = np.pi/4
         theta2 = np.arccos(np.sqrt(k))
@@ -262,7 +262,7 @@ class System:
         
         # Apply tritter operator
         tritter_pos=[self.Nmodes-1, self.Nmodes-2, pos]
-        U = ops.tritter_inverted(self.N, theta1, theta2, tritter_pos, self.Nmodes)
+        U = ops.tritter_inverted(self.N, theta1, theta2, tritter_pos, self.Nmodes, option)
         # print(Nmodes, theta1, theta2, U)
         if self.state.isket:
             self.state = U * self.state

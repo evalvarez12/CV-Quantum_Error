@@ -36,6 +36,8 @@ sys.save_state()
 results = []
 results2 = []
 
+marker = 0
+
 for kappa in np.linspace(0.0001, 0.01, 20):
     res = []
     res2 = []
@@ -47,13 +49,21 @@ for kappa in np.linspace(0.0001, 0.01, 20):
         
         sys.apply_loss_channel(eta, 1)
         
+#        sys.apply_scissors_inverted(kappa, r_aux, 1, 'a')
         sys.apply_scissors(kappa, r_aux, 1)
+
         sys2 = copy.deepcopy(sys)
         
-        rci = measurements.RCI(sys, [0])
-        ci = measurements.RCI(sys2, [1])
+        print("Reversed")
+        rci = measurements.CI(sys, [0])
+        print("Coherent")
+        ci = measurements.CI(sys2, [1])
 
         print(mu, kappa, rci, ci)
+        
+        print(rci > ci)
+        if rci > ci:
+            marker += 1
         
         sys.load_state()
         res += [rci]
@@ -100,18 +110,20 @@ floor = floorval * np.ones_like(Z)
 Z[Z < floorval] = 0
 Z2[Z2 < floorval] = 0
 
+Z = Z/2
+
 # Plot the surface.
 surf = ax.plot_surface(X, Y, Z, cmap=cm.coolwarm,
                        linewidth=0, antialiased=False)
 
-surf = ax.plot_surface(X, Y, Z2, cmap=cm.coolwarm,
-                       linewidth=0, antialiased=False)
+#surf = ax.plot_surface(X, Y, Z2, cmap=cm.bwr,
+#                       linewidth=0, antialiased=False)
 
 norm = surf.norm
 
 
-#floor = ax.plot_surface(X, YZ, floor, cmap=cm.coolwarm,
-#                       linewidth=0, antialiased=False, norm=norm)
+floor = ax.plot_surface(X, Y, floor, cmap=cm.coolwarm,
+                       linewidth=0, antialiased=False, norm=norm)
 
 # Customize the z axis.
 #ax.set_zlim(-1.01, 1.01)

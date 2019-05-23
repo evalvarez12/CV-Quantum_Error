@@ -178,8 +178,7 @@ def X(Vb, Ve, Vf, Cbe, Cbf, Cef):
     vef_b = symplectic_eigenvalues(Mef_b)
     
     # Calculate the stolen information
-    si = sum(g(vef)) - sum(g(vef_b))
-    si = si.real/2
+    si = np.sum(g(vef)) - np.sum(g(vef_b))
     return si
     
         
@@ -190,7 +189,8 @@ def g(v):
 def symplectic_eigenvalues(cm):
     N = int(cm.shape[0]/2)
     omega = symplectic_form(N)
-    eigvals = np.linalg.eigvals(1j*np.dot(omega, cm))
+    eigvals = np.linalg.eigvals(1j*np.dot(omega, cm)).real
+    eigvals = eigvals[eigvals > 0]
     return eigvals
 
 
@@ -211,7 +211,7 @@ def RCI_simple(rho, pos_keep):
     return rci
 
 
-def RCI(sys, pos_keep):
+def CI(sys, pos_keep):
     # Get both covariance matrices
     sys.set_quadratures_basis()
     CM1 = sys.get_full_CM()
@@ -220,10 +220,11 @@ def RCI(sys, pos_keep):
     sys.set_quadratures_basis()
     CM2 = sys.get_full_CM()
     
-    
+#    vef1 = np.max(symplectic_eigenvalues(CM1))
+#    vef2 = np.max(symplectic_eigenvalues(CM2))
     vef1 = symplectic_eigenvalues(CM1)
     vef2 = symplectic_eigenvalues(CM2)
     
-    rci = sum(g(vef2)) - sum(g(vef1))
-    rci = rci.real/2
-    return rci
+    ci = np.sum(g(vef2)) - np.sum(g(vef1))
+#    ci = sum(g(vef2)) - sum(g(vef1))
+    return ci
