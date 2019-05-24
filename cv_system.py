@@ -147,6 +147,14 @@ class System:
         return p
 
 
+    def apply_photon_subtraction(self, t, pos=0):
+        ps_theta = np.arccos(np.sqrt(t))
+        self.add_vacuum()
+        self.apply_BS(ps_theta, [self.Nmodes-1, pos])
+        p_success = self.collapse_fock_state(1, self.Nmodes-1)
+        return p_success
+
+
     def apply_scissors_exact(self, t, pos=0):
         # Tritter parameters
         theta1 = np.arccos(np.sqrt(t))

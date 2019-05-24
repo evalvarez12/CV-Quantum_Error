@@ -18,11 +18,11 @@ import scipy.io
 ############################################ CALCULATIONS
 
 # Parameters
-N = 10
+N = 15
 mpn = 1.3
 mpne = 0.001
 f = 0.95
-option = 'tsc'
+option = 'tps'
 
 # Photon subtraction options
 t = .9
@@ -48,9 +48,10 @@ sys.apply_TMS(r, [0, 1])
 
 # Transmitter Photon subtraction
 if option == 'tps':
-    sys.add_vacuum()
-    sys.apply_BS(ps_theta, [2, 1])
-    p_success = sys.collapse_fock_state(1, 2)
+#    sys.add_vacuum()
+#    sys.apply_BS(ps_theta, [2, 1])
+#    p_success = sys.collapse_fock_state(1, 2)
+    p_success = sys.apply_photon_subtraction(t, 1)
     print("P SUCCESS:", p_success)
 
 # No Photon subtraction
