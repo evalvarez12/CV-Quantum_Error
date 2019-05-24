@@ -89,7 +89,7 @@ def tritter(N, theta1, theta2, pos=[0, 1, 2], Nmodes=3):
     return U
 
 
-def tritter_inverted(N, theta1, theta2, pos=[0, 1, 2], Nmodes=3, option='a'):
+def tritter_options(N, theta1, theta2, pos=[0, 1, 2], Nmodes=3, option='a'):
     """
               |theta2
     |c>  ->---/----->

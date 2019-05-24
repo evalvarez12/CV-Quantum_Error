@@ -15,13 +15,13 @@ import matplotlib.pyplot as plt
 N = 20
 sys = cv.System(N, 1)
 
-r = .8
+r = 1
 sys.apply_SMD(r, 0)
 statei = sys.state
 #statei = qt.basis(N, 1)   
 
-k = .5
-m_aux = .01
+k = .6
+m_aux = .2
 r_aux = np.arcsinh(np.sqrt(m_aux))
 print(r_aux)
 sys.apply_scissors(k, r_aux)
@@ -33,18 +33,22 @@ sys.apply_scissors(k, r_aux)
 sys2 = cv.System(N, 1)
 
 sys2.apply_SMD(r, 0)
-sys2.apply_scissors_inverted(k, r_aux, 0, 'a')
+sys2.apply_scissors_options(1-k, r_aux, 0, 'a')
+#sys2.apply_scissors_exact_options(k, 0, 'a')
 
 
 sys3 = cv.System(N, 1)
 
 sys3.apply_SMD(r, 0)
-sys3.apply_scissors_inverted(k, r_aux, 0, 'b')
+sys3.apply_scissors_options(1-k, r_aux, 0, 'b')
+#sys3.apply_scissors_exact_options(k, 0, 'b')
+
 
 sys4 = cv.System(N, 1)
 
 sys4.apply_SMD(r, 0)
-sys4.apply_scissors_inverted(k, r_aux, 0, 'c')
+sys4.apply_scissors_options(1-k, r_aux, 0, 'c')
+#sys4.apply_scissors_exact_options(k, 0, 'c')
 
 
 x = np.linspace(-4, 4, 100)
@@ -85,3 +89,16 @@ axes[4].set_title("c")
 
 #fig.colorbar(im1)
 fig.show()
+
+
+
+
+fig, axes = plt.subplots(1, 5, figsize=(12,3))
+qt.plot_fock_distribution(statei, fig=fig, ax=axes[0], title="In", unit_y_range=False);
+qt.plot_fock_distribution(sys.state, fig=fig, ax=axes[1], title="Out", unit_y_range=False);
+qt.plot_fock_distribution(sys2.state, fig=fig, ax=axes[2], title="a", unit_y_range=False);
+qt.plot_fock_distribution(sys3.state, fig=fig, ax=axes[3], title="b", unit_y_range=False);
+qt.plot_fock_distribution(sys4.state, fig=fig, ax=axes[4], title="c", unit_y_range=False);
+fig.tight_layout()
+plt.show()
+

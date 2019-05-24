@@ -10,7 +10,7 @@ import numpy as np
 import scipy.linalg as la
 import qutip as qt
 
-def key_rate(sys, f, p):
+def key_rate_simple(sys, f, p):
     Va = sys.get_simple_CM_V(0).norm()
     Vb = sys.get_simple_CM_V(1).norm()
     Ve = sys.get_simple_CM_V(2).norm()
@@ -28,7 +28,7 @@ def key_rate(sys, f, p):
     return k_rate
     
 
-def key_rate_nosimple(sys, f, p):
+def key_rate(sys, f, p):
     sys.set_quadratures_basis() 
     Va = sys.get_CM_entry([0, 0])
     Vb = sys.get_CM_entry([2, 2])
@@ -44,6 +44,8 @@ def key_rate_nosimple(sys, f, p):
     I_stolen = X(Vb, Ve, Vf, Cbe, Cbf, Cef)
     
     k_rate = p * (f * I_shared - I_stolen)
+    print("I_shared:", I_shared)
+    print("I_stolen:", I_stolen)
     return k_rate
 
 def key_rate_compare(sys, f, p, mpnA, mpnE, t):
@@ -183,9 +185,12 @@ def X(Vb, Ve, Vf, Cbe, Cbf, Cef):
     
         
 def g(v):
-    return ((v+1)/2)*(np.log2((v+1)/2)) - ((v-1)/2)*(np.log2((v-1)/2))    
+    return ((v+1)/2)*(np.log2((v+1)/2)) - ((v-1)/2)*(safe_log2((v-1)/2))    
     
     
+def safe_log2(x, minval=0.0000000001):
+    return np.log2(x.clip(min=minval))
+
 def symplectic_eigenvalues(cm):
     N = int(cm.shape[0]/2)
     omega = symplectic_form(N)

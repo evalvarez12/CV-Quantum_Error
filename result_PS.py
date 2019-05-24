@@ -18,19 +18,19 @@ import scipy.io
 ############################################ CALCULATIONS
 
 # Parameters
-N = 15
+N = 10
 mpn = 1.3
 mpne = 0.001
 f = 0.95
-option = 'tps'
+option = 'tsc'
 
 # Photon subtraction options
 t = .9
 
 # Scissors options
 # Best  k=0.5 m_aux=0.6
-k = .5
-m_aux = .6
+k = .6
+m_aux = .2
 
 
 
@@ -59,7 +59,8 @@ if option == 'nops':
 
 # Transmitter Scissors
 if option == 'tsc':
-    p_success = sys.apply_scissors_inverted(k, r_aux, 1, 'c')
+#    p_success = sys.apply_scissors(k, r_aux, 1)
+    p_success = sys.apply_scissors_options(k, r_aux, 1, 'c')
     print("P SUCCESS:", p_success)
 #    print(sys.state)
 
@@ -112,7 +113,7 @@ for te in tes:
     
 #    print(sys.cm)
 #    print(sys.get_full_CM())
-    kr = measurements.key_rate_nosimple(sys, f, p_success)
+    kr = measurements.key_rate(sys, f, p_success)
 #    kr = measurements.key_rate_compare(sys, f, p_success, mpn, mpne, te)
     key_rates += [kr]
     print("--->", te, kr)

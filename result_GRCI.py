@@ -110,7 +110,7 @@ floor = floorval * np.ones_like(Z)
 Z[Z < floorval] = 0
 Z2[Z2 < floorval] = 0
 
-Z = Z/2
+#Z = Z/2
 
 # Plot the surface.
 surf = ax.plot_surface(X, Y, Z, cmap=cm.coolwarm,
@@ -122,8 +122,8 @@ surf = ax.plot_surface(X, Y, Z, cmap=cm.coolwarm,
 norm = surf.norm
 
 
-floor = ax.plot_surface(X, Y, floor, cmap=cm.coolwarm,
-                       linewidth=0, antialiased=False, norm=norm)
+#floor = ax.plot_surface(X, Y, floor, cmap=cm.coolwarm,
+#                       linewidth=0, antialiased=False, norm=norm)
 
 # Customize the z axis.
 #ax.set_zlim(-1.01, 1.01)
