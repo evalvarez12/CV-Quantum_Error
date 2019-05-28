@@ -20,11 +20,11 @@ sys.apply_SMD(r, 0)
 statei = sys.state
 #statei = qt.basis(N, 1)   
 
-k = .6
-m_aux = .2
+k = .01
+m_aux = .1
 r_aux = np.arcsinh(np.sqrt(m_aux))
 print(r_aux)
-sys.apply_scissors(k, r_aux)
+p1 = sys.apply_scissors(k, r_aux)
 #sys.apply_scissors_exact(k)
 
 
@@ -32,24 +32,29 @@ sys.apply_scissors(k, r_aux)
 
 sys2 = cv.System(N, 1)
 
-sys2.apply_SMD(r, 0)
-sys2.apply_scissors_options(1-k, r_aux, 0, 'a')
+sys2.set_state(statei)
+p2 = sys2.apply_scissors_options(1-k, r_aux, 0, 'a')
 #sys2.apply_scissors_exact_options(k, 0, 'a')
 
 
 sys3 = cv.System(N, 1)
 
-sys3.apply_SMD(r, 0)
-sys3.apply_scissors_options(1-k, r_aux, 0, 'b')
+sys3.set_state(statei)
+p3 = sys3.apply_scissors_options(1-k, r_aux, 0, 'b')
 #sys3.apply_scissors_exact_options(k, 0, 'b')
 
 
 sys4 = cv.System(N, 1)
 
-sys4.apply_SMD(r, 0)
-sys4.apply_scissors_options(1-k, r_aux, 0, 'c')
+sys4.set_state(statei)
+p4 = sys4.apply_scissors_options(1-k, r_aux, 0, 'c')
 #sys4.apply_scissors_exact_options(k, 0, 'c')
 
+
+print("P1:", p1)
+print("p2:", p2)
+print("p3:", p3)
+print("p4:", p4)
 
 x = np.linspace(-4, 4, 100)
 y = np.linspace(-4, 4, 100)

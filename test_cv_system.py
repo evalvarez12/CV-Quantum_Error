@@ -20,12 +20,12 @@ class TestCVSystemsMethods(unittest.TestCase):
    def test_apply_scissor_exact(self):
        N = 10
        sys = cv.System(N, Nmodes=1)
-       r = .6
+       r = .5
        sys.apply_SMD(r)
 
        ref_state = sys.state
-       k = .1
-       sys.apply_scissors_exact(k)
+       k = .01
+       p = sys.apply_scissors_exact(k)
 
        g = np.sqrt(1/k - 1)
        ref_state = ref_state.data.toarray()
@@ -66,6 +66,36 @@ class TestCVSystemsMethods(unittest.TestCase):
        ref_state = ref_state/A
        ref_state = qt.Qobj(ref_state, dims=[[N, N], [1, 1]])
 #       print(ref_state)
+       self.assertTrue(sys.state == ref_state)
+
+
+   def test_apply_scissor_exact3(self):
+       N = 10
+       sys = cv.System(N, Nmodes=1)
+       alpha = 0.01
+       state = qt.basis(N) + alpha*qt.basis(N, 1)
+       state = state/state.norm()
+       sys.set_state(state)
+
+       k = .1
+       p = sys.apply_scissors_exact(k)
+#       p = sys.apply_scissors_exact_options(k, 0, 'c')
+
+       g = np.sqrt(1/k - 1)
+       
+       ref_state = state.data.toarray()
+       ref_state[1] = g * ref_state[1]
+       ref_state[2:] = 0
+       A = np.linalg.norm(ref_state)
+       ref_state = ref_state/A
+       ref_state = qt.Qobj(ref_state)
+       print(sys.state)
+       print(ref_state)
+       
+       p_ref = k + (1-k)*alpha**2
+       print("g:", g)
+       print("p:", p)
+       print("p_ref:", p_ref)
        self.assertTrue(sys.state == ref_state)
 
 
@@ -147,7 +177,7 @@ class TestCVSystemsMethods(unittest.TestCase):
        np.testing.assert_almost_equal(sys.cm, CM, decimal=3)
        
        
-   def test_beam_splitter(self):
+   def test_beam_splitter_Hong_Ou_Mandel(self):
        N = 3
        state = qt.tensor(qt.basis(N, 1), qt.basis(N, 1))
        theta = np.pi/4
@@ -190,7 +220,7 @@ class TestCVSystemsMethods(unittest.TestCase):
        np.testing.assert_array_equal(inds, [4, 12])  
        
        
-       
+      
            
        
 if __name__ == '__main__':

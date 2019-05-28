@@ -52,6 +52,13 @@ class System:
         else:
             self.state = qt.tensor(state, self.state)
 
+
+    def set_state(self, state):
+        N_add = len(state.dims[0])
+        self.Nmodes = N_add
+        self.state = state
+        
+        
     def apply_BS(self, z, pos=[0,1]):
 #        theta = np.arccos(np.sqrt(t))
 #        U = bs.beam_splitter_U(self.N, theta, pos, self.Nmodes)
@@ -134,16 +141,27 @@ class System:
         P = tools.tensor(self.N, P, pos, self.Nmodes)
 
         # Compute the probability of this collapse when measured
+        self.Nmodes = self.Nmodes - 1
+        return self.collapse_project(P)
+    
+    
+    def collapse_project(self, P):
+        if self.state.isket:
+            p = (P * self.state).norm()
+            self.state = (P * self.state)/p
+        else:
+            # TODO: Check this
+            p = (P * self.state * P.dag()).tr()
+            self.state = (P * self.state * P.dag())/p
+        return p
+    
+    
+    def collapse_p(self, P):
         if self.state.isket:
             p = (P * self.state).norm()
         else:
             # TODO: Check this
-            p = (P.dag() * P * self.state).tr()
-
-#        if p == 0:
-#            p = 1
-        self.state = (P * self.state)/p
-        self.Nmodes = self.Nmodes - 1
+            p = (P * self.state * P.dag()).tr()
         return p
 
 
@@ -184,23 +202,12 @@ class System:
         projector0 = qt.basis(self.N, 0).dag()
         projector1 = qt.basis(self.N, 1).dag()
         collapse_pos = [pos, Nmodes-1]
-        projector = tools.tensor_singles(self.N, [projector0, projector1], collapse_pos, Nmodes)
+        projectorA = tools.tensor_singles(self.N, [projector0, projector1], collapse_pos, Nmodes)
+        projectorB = tools.tensor_singles(self.N, [projector1, projector0], collapse_pos, Nmodes)
 
-        if self.state.isket:
-            self.state = projector * self.state
-        else:
-            self.state = projector * self.state * projector.dag()
+        p_success = self.collapse_p(projectorB)
+        p_success += self.collapse_project(projectorA)
 
-        # Normalize the state
-        if self.state.isket:
-            p_success = self.state.norm()
-        else:
-            p_success = self.state.tr()
-
-        if p_success == 0:
-            p_success = 1
-        self.state = self.state/p_success
-        
         # Permute the state to return it to its original ordering
         p_list = np.arange(self.Nmodes)
         p_list[pos] = self.Nmodes - 1
@@ -238,22 +245,11 @@ class System:
         projector0 = qt.basis(self.N, 0).dag()
         projector1 = qt.basis(self.N, 1).dag()
         collapse_pos = [pos, Nmodes-1]
-        projector = tools.tensor_singles(self.N, [projector0, projector1], collapse_pos, Nmodes)
+        projectorA = tools.tensor_singles(self.N, [projector0, projector1], collapse_pos, Nmodes)
+        projectorB = tools.tensor_singles(self.N, [projector1, projector0], collapse_pos, Nmodes)
 
-        if self.state.isket:
-            self.state = projector * self.state
-        else:
-            self.state = projector * self.state * projector.dag()
-
-        # Normalize the state
-        if self.state.isket:
-            p_success = self.state.norm()
-        else:
-            p_success = self.state.tr()
-
-        if p_success == 0:
-            p_success = 1
-        self.state = self.state/p_success
+        p_success = self.collapse_p(projectorB)
+        p_success += self.collapse_project(projectorA)
         
         # Permute the state to return it to its original ordering
         p_list = np.arange(self.Nmodes)
@@ -286,25 +282,17 @@ class System:
         projectorOFF = qt.basis(self.N, 0).dag()
         projectorON = ops.photon_on_projector(self.N)
         collapse_pos = [pos, self.Nmodes-1, self.Nmodes-3]
-        projector = tools.tensor_singles(self.N, [projectorOFF, projectorON, projectorON], collapse_pos, self.Nmodes)
+        projectorA = tools.tensor_singles(self.N, [projectorOFF, projectorON, projectorON], collapse_pos, self.Nmodes)
+        projectorB = tools.tensor_singles(self.N, [projectorON, projectorOFF, projectorON], collapse_pos, self.Nmodes)
 
-        if self.state.isket:
-            self.state = projector * self.state
-        else:
-            self.state = projector * self.state * projector.dag()
+        # Compute the probability of the alternate click in the detectors        
+        p_success = self.collapse_p(projectorB)
+
+        # Collapse the state
+        p_success += self.collapse_project(projectorA)
 
         # Return Nmodes to original value
         self.Nmodes = self.Nmodes - 3
-        
-        # Normalize the state
-        if self.state.isket:
-            p_success = self.state.norm()
-        else:
-            p_success = self.state.tr()
-
-        if p_success == 0:
-            p_success = 1
-        self.state = self.state/p_success
         
         # Permute the state to return it to its original ordering
         p_list = np.arange(self.Nmodes)
@@ -338,23 +326,10 @@ class System:
         collapse_pos = [pos, self.Nmodes-1, self.Nmodes-3]
         projector = tools.tensor_singles(self.N, [projectorOFF, projectorON, projectorON], collapse_pos, self.Nmodes)
 
-        if self.state.isket:
-            self.state = projector * self.state
-        else:
-            self.state = projector * self.state * projector.dag()
+        p_success = self.collapse_project(projector)
 
         # Return Nmodes to original value
         self.Nmodes = self.Nmodes - 3
-        
-        # Normalize the state
-        if self.state.isket:
-            p_success = self.state.norm()
-        else:
-            p_success = self.state.tr()
-
-        if p_success == 0:
-            p_success = 1
-        self.state = self.state/p_success
         
         # Permute the state to return it to its original ordering
         p_list = np.arange(self.Nmodes)
