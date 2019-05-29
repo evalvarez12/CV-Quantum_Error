@@ -81,10 +81,12 @@ for kappa in np.linspace(0.0001, 0.01, 20):
 #            marker += 1
         
         sys1.load_state()
+        
         res_sc += [rci_sc]
         res_ps += [rci_ps]
         ps_sc += [p_sc]
         ps_ps += [p_ps]
+    
     results_sc += [res_sc]
     results_ps += [res_ps]
     probabilities_sc += [ps_sc]

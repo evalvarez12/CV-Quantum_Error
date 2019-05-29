@@ -261,7 +261,6 @@ class System:
     
     def apply_scissors(self, k, r_aux, pos=0):
         # Tritter parameters
-        # NOTE k -> 1-k
         theta1 = np.arccos(np.sqrt(k))
         theta2 = np.pi/4
 
