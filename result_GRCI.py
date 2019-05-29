@@ -22,10 +22,6 @@ from matplotlib.ticker import LinearLocator, FormatStrFormatter
 # Initial parameters
 N = 8
 
-# Sweep parameters
-kappa = 0.005
-mu = 0.05
-
 # Fixed parameters
 mu_aux = 0.01
 r_aux = np.arcsinh(np.sqrt(mu_aux))
@@ -43,11 +39,13 @@ probabilities_sc = []
 probabilities_ps = []
 
 for kappa in np.linspace(0.0001, 0.01, 20):
+#for kappa in np.linspace(0.0001, 0.03, 20):
     res_sc = []
     res_ps = []
     ps_sc = []
     ps_ps = []
     for mu in np.linspace(0.0001, .1, 20):
+#    for mu in np.linspace(0.0001, .6, 20):
         
         r = np.arcsinh(np.sqrt(mu))
         sys1.apply_TMS(r, pos=[0, 1])
@@ -60,6 +58,8 @@ for kappa in np.linspace(0.0001, 0.01, 20):
         
         # Quantum scissors 
         p_sc = sys1.apply_scissors(kappa, r_aux, 1)
+#        p_sc = sys1.apply_scissors(kappa, r_aux, 1)
+
 #        p_sc = sys1.apply_scissors_options(kappa, r_aux, 1, 'b')
 
         # Photon substraction
@@ -71,7 +71,8 @@ for kappa in np.linspace(0.0001, 0.01, 20):
 #        print("Coherent")
 #        ci = measurements.CI(sys2, [1])
 
-        rci_ps = measurements.CI(sys2, [0])
+#        rci_ps = measurements.CI(sys2, [0])
+        rci_ps = 0
 
         print(mu, kappa, p_sc, rci_sc)
 #        
@@ -117,11 +118,12 @@ fig = plt.figure()
 ax = fig.gca(projection='3d')
 
 # Make data.
-#X = np.arange(-5, 5, 0.25)
 X = np.linspace(0.0001, .1, 20)
+#X = np.linspace(0.0001, .6, 20)
 
-#Y = np.arange(-5, 5, 0.25)
 Y = np.linspace(0.0001, 0.01, 20)
+#Y = np.linspace(0.0001, 0.03, 20)
+
 
 X, Y = np.meshgrid(X, Y)
 

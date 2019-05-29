@@ -262,7 +262,7 @@ class System:
     def apply_scissors(self, k, r_aux, pos=0):
         # Tritter parameters
         # NOTE k -> 1-k
-        theta1 = np.arccos(np.sqrt(1-k))
+        theta1 = np.arccos(np.sqrt(k))
         theta2 = np.pi/4
 
         # Add extra vacuum and TMSV states
@@ -270,7 +270,7 @@ class System:
         self.add_vacuum()
         
         # Apply tritter operator
-        tritter_pos=[self.Nmodes-1, self.Nmodes-2, pos]
+        tritter_pos=[self.Nmodes-2, self.Nmodes-1, pos]
         U = ops.tritter(self.N, theta1, theta2, tritter_pos, self.Nmodes)
         # print(Nmodes, theta1, theta2, U)
         if self.state.isket:
@@ -281,15 +281,15 @@ class System:
         # Define the proyectors, in this case to |10>
         projectorOFF = qt.basis(self.N, 0).dag()
         projectorON = ops.photon_on_projector(self.N)
-        collapse_pos = [pos, self.Nmodes-1, self.Nmodes-3]
+        collapse_pos = [pos, self.Nmodes-2, self.Nmodes-3]
         projectorA = tools.tensor_singles(self.N, [projectorOFF, projectorON, projectorON], collapse_pos, self.Nmodes)
         projectorB = tools.tensor_singles(self.N, [projectorON, projectorOFF, projectorON], collapse_pos, self.Nmodes)
 
         # Compute the probability of the alternate click in the detectors        
-        p_success = self.collapse_p(projectorB)
+        p_success = self.collapse_p(projectorA)
 
         # Collapse the state
-        p_success += self.collapse_project(projectorA)
+        p_success += self.collapse_project(projectorB)
 
         # Return Nmodes to original value
         self.Nmodes = self.Nmodes - 3
@@ -304,7 +304,7 @@ class System:
 
     def apply_scissors_options(self, k, r_aux, pos=0, option='a'):
         # Tritter parameters
-        theta1 = np.arccos(np.sqrt(1-k))
+        theta1 = np.arccos(np.sqrt(k))
         theta2 = np.pi/4
 
         # Add extra vacuum and TMSV states
@@ -312,7 +312,7 @@ class System:
         self.add_vacuum()
         
         # Apply tritter operator
-        tritter_pos=[self.Nmodes-1, self.Nmodes-2, pos]
+        tritter_pos=[self.Nmodes-2, self.Nmodes-1, pos]
         U = ops.tritter_options(self.N, theta1, theta2, tritter_pos, self.Nmodes, option)
         # print(Nmodes, theta1, theta2, U)
         if self.state.isket:
@@ -323,10 +323,15 @@ class System:
         # Define the proyectors, in this case to |10>
         projectorOFF = qt.basis(self.N, 0).dag()
         projectorON = ops.photon_on_projector(self.N)
-        collapse_pos = [pos, self.Nmodes-1, self.Nmodes-3]
-        projector = tools.tensor_singles(self.N, [projectorOFF, projectorON, projectorON], collapse_pos, self.Nmodes)
+        collapse_pos = [pos, self.Nmodes-2, self.Nmodes-3]
+        projectorA = tools.tensor_singles(self.N, [projectorOFF, projectorON, projectorON], collapse_pos, self.Nmodes)
+        projectorB = tools.tensor_singles(self.N, [projectorON, projectorOFF, projectorON], collapse_pos, self.Nmodes)
 
-        p_success = self.collapse_project(projector)
+        # Compute the probability of the alternate click in the detectors        
+        p_success = self.collapse_p(projectorA)
+
+        # Collapse the state
+        p_success += self.collapse_project(projectorB)
 
         # Return Nmodes to original value
         self.Nmodes = self.Nmodes - 3
@@ -391,7 +396,7 @@ class System:
         
         # TODO: check this factor of 2
         cm = 2 * qt.covariance_matrix(self.quad_basis, self.state)
-        return cm.astype(float)
+        return cm.astype(complex).real
 
 
     def check_CM(self):
