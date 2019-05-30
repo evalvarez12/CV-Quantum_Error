@@ -18,11 +18,11 @@ import scipy.io
 ############################################ CALCULATIONS
 
 # Parameters
-N = 15
+N = 18
 mpn = 1.3
 mpne = 0.001
 f = 0.95
-option = 'tps'
+option = 'rps'
 
 # Photon subtraction options
 t = .9
@@ -96,9 +96,10 @@ for te in tes:
 
     # Receiver Photon subtraction
     if option == 'rps':
-        sys.add_vacuum()
-        sys.apply_BS(ps_theta, [4, 1])
-        p_success = sys.collapse_fock_state(1, 4)
+#        sys.add_vacuum()
+#        sys.apply_BS(ps_theta, [4, 1])
+#        p_success = sys.collapse_fock_state(1, 4)
+        p_success = sys.apply_photon_subtraction(t, 1)
         print("P SUCCESS:", p_success)
         
     # Receiver Scissors

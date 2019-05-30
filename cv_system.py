@@ -149,6 +149,7 @@ class System:
         if self.state.isket:
             p = (P * self.state).norm()
             self.state = (P * self.state)/p
+            p = p**2
         else:
             # TODO: Check this
             p = (P * self.state * P.dag()).tr()
@@ -156,9 +157,10 @@ class System:
         return p
     
     
-    def collapse_p(self, P):
+    def collapse_prob(self, P):
         if self.state.isket:
             p = (P * self.state).norm()
+            p = p**2
         else:
             # TODO: Check this
             p = (P * self.state * P.dag()).tr()
@@ -205,7 +207,7 @@ class System:
         projectorA = tools.tensor_singles(self.N, [projector0, projector1], collapse_pos, Nmodes)
         projectorB = tools.tensor_singles(self.N, [projector1, projector0], collapse_pos, Nmodes)
 
-        p_success = self.collapse_p(projectorB)
+        p_success = self.collapse_prob(projectorB)
         p_success += self.collapse_project(projectorA)
 
         # Permute the state to return it to its original ordering
@@ -248,7 +250,7 @@ class System:
         projectorA = tools.tensor_singles(self.N, [projector0, projector1], collapse_pos, Nmodes)
         projectorB = tools.tensor_singles(self.N, [projector1, projector0], collapse_pos, Nmodes)
 
-        p_success = self.collapse_p(projectorB)
+        p_success = self.collapse_prob(projectorB)
         p_success += self.collapse_project(projectorA)
         
         # Permute the state to return it to its original ordering
@@ -265,11 +267,11 @@ class System:
         theta2 = np.pi/4
 
         # Add extra vacuum and TMSV states
-        self.add_TMSV(r_aux)
         self.add_vacuum()
+        self.add_TMSV(r_aux)
         
         # Apply tritter operator
-        tritter_pos=[self.Nmodes-2, self.Nmodes-1, pos]
+        tritter_pos=[self.Nmodes-1, self.Nmodes-3, pos]
         U = ops.tritter(self.N, theta1, theta2, tritter_pos, self.Nmodes)
         # print(Nmodes, theta1, theta2, U)
         if self.state.isket:
@@ -280,12 +282,12 @@ class System:
         # Define the proyectors, in this case to |10>
         projectorOFF = qt.basis(self.N, 0).dag()
         projectorON = ops.photon_on_projector(self.N)
-        collapse_pos = [pos, self.Nmodes-2, self.Nmodes-3]
+        collapse_pos = [pos, self.Nmodes-1, self.Nmodes-2]
         projectorA = tools.tensor_singles(self.N, [projectorOFF, projectorON, projectorON], collapse_pos, self.Nmodes)
         projectorB = tools.tensor_singles(self.N, [projectorON, projectorOFF, projectorON], collapse_pos, self.Nmodes)
 
         # Compute the probability of the alternate click in the detectors        
-        p_success = self.collapse_p(projectorA)
+        p_success = self.collapse_prob(projectorA)
 
         # Collapse the state
         p_success += self.collapse_project(projectorB)
@@ -307,11 +309,11 @@ class System:
         theta2 = np.pi/4
 
         # Add extra vacuum and TMSV states
-        self.add_TMSV(r_aux)
         self.add_vacuum()
+        self.add_TMSV(r_aux)
         
         # Apply tritter operator
-        tritter_pos=[self.Nmodes-2, self.Nmodes-1, pos]
+        tritter_pos=[self.Nmodes-1, self.Nmodes-3, pos]
         U = ops.tritter_options(self.N, theta1, theta2, tritter_pos, self.Nmodes, option)
         # print(Nmodes, theta1, theta2, U)
         if self.state.isket:
@@ -322,12 +324,12 @@ class System:
         # Define the proyectors, in this case to |10>
         projectorOFF = qt.basis(self.N, 0).dag()
         projectorON = ops.photon_on_projector(self.N)
-        collapse_pos = [pos, self.Nmodes-2, self.Nmodes-3]
+        collapse_pos = [pos, self.Nmodes-1, self.Nmodes-2]
         projectorA = tools.tensor_singles(self.N, [projectorOFF, projectorON, projectorON], collapse_pos, self.Nmodes)
         projectorB = tools.tensor_singles(self.N, [projectorON, projectorOFF, projectorON], collapse_pos, self.Nmodes)
 
         # Compute the probability of the alternate click in the detectors        
-        p_success = self.collapse_p(projectorA)
+        p_success = self.collapse_prob(projectorA)
 
         # Collapse the state
         p_success += self.collapse_project(projectorB)

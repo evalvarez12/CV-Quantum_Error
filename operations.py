@@ -128,6 +128,13 @@ def tritter_options(N, theta1, theta2, pos=[0, 1, 2], Nmodes=3, option='a'):
     U = U2 * U1
     return U
 
+
+def photon_on_projector(N):
+    P = 0
+    for i in range(1, N):
+        P += qt.basis(N, i).dag()
+    return P
+
 #####################################################################################################
 
 
@@ -176,12 +183,6 @@ def purify(rho):
 
     return sum(eigenstates)
 
-
-def photon_on_projector(N):
-    P = 0
-    for i in range(1, N):
-        P += qt.basis(N, i).dag()
-    return P
 
 
 #def photon_number_projector(n, N):

@@ -57,8 +57,8 @@ for kappa in np.linspace(0.0001, 0.01, 20):
         
         
         # Quantum scissors 
-        p_sc = sys1.apply_scissors(kappa, r_aux, 1)
 #        p_sc = sys1.apply_scissors(kappa, r_aux, 1)
+        p_sc = sys1.apply_scissors_exact(kappa, 1)
 
 #        p_sc = sys1.apply_scissors_options(kappa, r_aux, 1, 'b')
 
