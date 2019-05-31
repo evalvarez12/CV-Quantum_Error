@@ -20,7 +20,7 @@ from matplotlib.ticker import LinearLocator, FormatStrFormatter
 ################################## CALCULATIONS
 
 # Initial parameters
-N = 8
+N = 5
 
 # Fixed parameters
 mu_aux = 0.01
@@ -57,8 +57,9 @@ for kappa in np.linspace(0.0001, 0.01, 20):
         
         
         # Quantum scissors 
-#        p_sc = sys1.apply_scissors(kappa, r_aux, 1)
-        p_sc = sys1.apply_scissors_exact(kappa, 1)
+        p_sc = sys1.apply_scissors(kappa, r_aux, 1)
+#        p_sc = sys1.apply_scissors_options(kappa, r_aux, 1, 'c')
+#        p_sc = sys1.apply_scissors_exact(kappa, 1)
 
 #        p_sc = sys1.apply_scissors_options(kappa, r_aux, 1, 'b')
 
@@ -139,8 +140,8 @@ eta = 0.01
 floorval = -np.log2(1 - eta)
 floor = floorval * np.ones_like(Z)
 
-Z[Z < floorval] = 0
-Z2[Z2 < floorval] = 0
+Z[Z < 0] = 0
+Z2[Z2 < 0] = 0
 
 #Z = Z/2
 

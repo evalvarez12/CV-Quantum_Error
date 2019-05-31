@@ -18,7 +18,7 @@ import scipy.io
 ############################################ CALCULATIONS
 
 # Parameters
-N = 18
+N = 15
 mpn = 1.3
 mpne = 0.001
 f = 0.95

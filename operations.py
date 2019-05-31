@@ -129,10 +129,16 @@ def tritter_options(N, theta1, theta2, pos=[0, 1, 2], Nmodes=3, option='a'):
     return U
 
 
-def photon_on_projector(N):
+def photon_on_projector2(N):
     P = 0
     for i in range(1, N):
         P += qt.basis(N, i).dag()
+    return P
+
+
+def photon_on_projector(N):
+    P = qt.identity(N)
+    P = P - qt.basis(N)*qt.basis(N).dag()
     return P
 
 #####################################################################################################

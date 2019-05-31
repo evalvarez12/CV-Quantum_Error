@@ -14,23 +14,26 @@ import hamiltonians as ham
 import symplectic as sym
 import theory
 
-N = 2
-a = qt.tensor(qt.destroy(N), qt.qeye(N))
-b = qt.tensor(qt.qeye(N), qt.destroy(N))
-z = np.pi/3
-H_mat = ham.H_beam_splitter2(z)
-print("H_mat")
-print(H_mat)
+N = 6
 
-H = ham.Hamiltonian(N, H_mat)
-
-H_ref = (-1j * z * a * b.dag() + 1j * z.conjugate() * a.dag() * b)
-print("H")
-print(H)
+a = np.random.rand(N)
+a = a/np.linalg.norm(a)
 
 
-S = sym.symplectic(H_mat)
-S_ref = theory.beam_splitter(z)
-print("-----------------")
-print(S)
-print(S_ref)
+statei = qt.basis(N)*0
+for i in range(N):
+    statei += a[i]*qt.basis(N, i)
+
+sys = cv.System(N)
+sys.set_state(statei)
+sys.add_TMSV(.1)
+
+
+p = sys.collapse_ON_OFF(measurement=0, pos=2)
+print(statei)
+
+print("p:", p, np.sum(a[1:]**2))
+print(sys.state)
+
+if not sys.state.isket:
+    print("purity:", (sys.state* sys.state).tr())

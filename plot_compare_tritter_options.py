@@ -14,7 +14,7 @@ import matplotlib.pyplot as plt
 import measurements
 
 
-N = 10
+N = 8
 sys = cv.System(N, 2)
 
 eta = 0.01
@@ -34,8 +34,8 @@ statei = sys.state
 
 r_aux = np.arcsinh(np.sqrt(m_aux))
 #print(r_aux)
-#p = sys.apply_scissors(k, r_aux, 1)
-p = sys.apply_scissors_exact(k, 1)
+p = sys.apply_scissors(k, r_aux, 1)
+#p = sys.apply_scissors_exact(k, 1)
 #p11 = sys.apply_scissors(k, r_aux, 1)
 #p = p*p11
 #sys.apply_scissors_exact(k)
@@ -46,22 +46,22 @@ p = sys.apply_scissors_exact(k, 1)
 sys2 = cv.System(N, 1)
 
 sys2.set_state(statei)
-#pa = sys2.apply_scissors_options(k, r_aux, 1, 'a')
-pa = sys2.apply_scissors_exact_options(k, 1, 'a')
+pa = sys2.apply_scissors_options(k, r_aux, 1, 'a')
+#pa = sys2.apply_scissors_exact_options(k, 1, 'a')
 
 
 sys3 = cv.System(N, 1)
 
 sys3.set_state(statei)
-#pb = sys3.apply_scissors_options(k, r_aux, 1, 'b')
-pb = sys3.apply_scissors_exact_options(k, 1, 'b')
+pb = sys3.apply_scissors_options(k, r_aux, 1, 'b')
+#pb = sys3.apply_scissors_exact_options(k, 1, 'b')
 
 
 sys4 = cv.System(N, 1)
 
 sys4.set_state(statei)
-#pc = sys4.apply_scissors_options(k, r_aux, 1, 'c')
-pc = sys4.apply_scissors_exact_options(k, 1, 'c')
+pc = sys4.apply_scissors_options(k, r_aux, 1, 'c')
+#pc = sys4.apply_scissors_exact_options(k, 1, 'c')
 
 
 sys_initial = cv.System(N, 2)

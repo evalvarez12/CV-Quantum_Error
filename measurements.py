@@ -216,12 +216,12 @@ def RCI_simple(rho, pos_keep):
     return rci
 
 
-def CI(sys, pos_keep):
+def CI(sys, pos_trace_out):
     # Get both covariance matrices
     sys.set_quadratures_basis()
     CM1 = sys.get_full_CM()
     
-    sys.ptrace(pos_keep)
+    sys.ptrace(pos_trace_out)
     sys.set_quadratures_basis()
     CM2 = sys.get_full_CM()
     

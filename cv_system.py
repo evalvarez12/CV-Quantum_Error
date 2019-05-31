@@ -36,12 +36,16 @@ class System:
         self.quad_basis = None
 
     def add_vacuum(self, Nadd=1):
-        state_add = qt.tensor([qt.basis(self.N, 0)]*Nadd)
-        if not self.state.isket:
-            state_add = state_add * state_add.dag()
-            
-        self.state = qt.tensor(state_add, self.state)
+        state_add = qt.tensor([qt.basis(self.N, 0)]*Nadd)        
         self.Nmodes = self.Nmodes + Nadd
+
+        if self.state == None:
+            self.state = state_add
+        else: 
+            if not self.state.isket:
+                state_add = state_add * state_add.dag()
+            
+            self.state = qt.tensor(state_add, self.state)
 
     
     def add_state(self, state):
@@ -125,10 +129,15 @@ class System:
         S = ops.tmsqueeze(self.N, r)
 
         state_aux = S * state_aux
-        if not self.state.isket:
-            state_aux = state_aux * state_aux.dag()
-        self.state = qt.tensor(state_aux, self.state)
         self.Nmodes = self.Nmodes + 2
+        
+        if self.state == None:
+            self.state = state_aux
+        else:
+            if not self.state.isket:
+                state_aux = state_aux * state_aux.dag()
+                
+            self.state = qt.tensor(state_aux, self.state)
 
         if self.cm is not None:
             S = sym.two_mode_squeeze(r)
@@ -147,22 +156,50 @@ class System:
     
     def collapse_project(self, P):
         if self.state.isket:
-            p = (P * self.state).norm()
-            self.state = (P * self.state)/p
+            self.state = P * self.state
+            p = self.state.norm()
+            if p != 0:
+                self.state = self.state/p
             p = p**2
         else:
-            # TODO: Check this
-            p = (P * self.state * P.dag()).tr()
-            self.state = (P * self.state * P.dag())/p
+            self.state = P * self.state * P.dag()
+            p = self.state.tr()
+            if p != 0:
+                self.state = self.state/p
         return p
     
+    
+    def collapse_ON_OFF(self, measurement, pos):
+        if measurement == 0:
+            return self.collapse_fock_state(0, pos)
+        
+        P = ops.photon_on_projector(self.N)
+        P = tools.tensor(self.N, P, pos, self.Nmodes)
+        
+        p = self.collapse_project(P)
+        
+        if self.Nmodes != 1:
+            self.ptrace([pos])
+        return p
+        
+    
+    def collapse_ON_OFF_multiple(self, measurements, positions):
+        P_ON = ops.photon_on_projector(self.N)
+        P_OFF = qt.basis(self.N) * qt.basis(self.N).dag()
+        
+        operators = [P_OFF if i==0 else P_ON for i in measurements]
+        P = tools.tensor_singles(self.N, operators, positions, self.Nmodes)
+        p = self.collapse_project(P)
+        self.ptrace(positions)
+        
+        return p
+
     
     def collapse_prob(self, P):
         if self.state.isket:
             p = (P * self.state).norm()
             p = p**2
         else:
-            # TODO: Check this
             p = (P * self.state * P.dag()).tr()
         return p
 
@@ -280,20 +317,28 @@ class System:
             self.state = U * self.state * U.dag()
 
         # Define the proyectors, in this case to |10>
-        projectorOFF = qt.basis(self.N, 0).dag()
+        projectorOFF = qt.basis(self.N,0) * qt.basis(self.N, 0).dag()
         projectorON = ops.photon_on_projector(self.N)
         collapse_pos = [pos, self.Nmodes-1, self.Nmodes-2]
         projectorA = tools.tensor_singles(self.N, [projectorOFF, projectorON, projectorON], collapse_pos, self.Nmodes)
-        projectorB = tools.tensor_singles(self.N, [projectorON, projectorOFF, projectorON], collapse_pos, self.Nmodes)
+#        projectorB = tools.tensor_singles(self.N, [projectorON, projectorOFF, projectorON], collapse_pos, self.Nmodes)
 
         # Compute the probability of the alternate click in the detectors        
         p_success = self.collapse_prob(projectorA)
+#        p_success += self.collapse_prob(projectorB)
+#        print("p:", p_success)
 
         # Collapse the state
-        p_success += self.collapse_project(projectorB)
+#        p_aux = self.collapse_ON_OFF(0, self.Nmodes-1)
+#        p_aux = p_aux * self.collapse_ON_OFF(1, pos)
+#        p_aux = p_aux * self.collapse_ON_OFF(1, self.Nmodes-2)
+        p_aux = self.collapse_ON_OFF_multiple([1,0,1], collapse_pos)
+        
+#        p_success += self.collapse_project(projectorB)
+        p_success += p_aux
+#        print("p_aux:", p_aux)
 
-        # Return Nmodes to original value
-        self.Nmodes = self.Nmodes - 3
+        # Nmodes returns to original value by the funcs
         
         # Permute the state to return it to its original ordering
         p_list = np.arange(self.Nmodes)
@@ -314,7 +359,8 @@ class System:
         
         # Apply tritter operator
         tritter_pos=[self.Nmodes-1, self.Nmodes-3, pos]
-        U = ops.tritter_options(self.N, theta1, theta2, tritter_pos, self.Nmodes, option)
+#        U = ops.tritter_options(self.N, theta1, theta2, tritter_pos, self.Nmodes, option)
+        U = ops.tritter(self.N, theta1, theta2, tritter_pos, self.Nmodes)
         # print(Nmodes, theta1, theta2, U)
         if self.state.isket:
             self.state = U * self.state
@@ -324,6 +370,58 @@ class System:
         # Define the proyectors, in this case to |10>
         projectorOFF = qt.basis(self.N, 0).dag()
         projectorON = ops.photon_on_projector(self.N)
+        collapse_pos = [pos, self.Nmodes-1, self.Nmodes-2]
+        projectorA = tools.tensor_singles(self.N, [projectorOFF, projectorON, projectorON], collapse_pos, self.Nmodes)
+#        projectorB = tools.tensor_singles(self.N, [projectorON, projectorOFF, projectorON], collapse_pos, self.Nmodes)
+
+        # Compute the probability of the alternate click in the detectors        
+        p_success = self.collapse_prob(projectorA)
+        
+        # Collapse the state
+        if option == 'a':
+            p_aux = self.collapse_ON_OFF(1, pos)
+            p_aux = p_aux * self.collapse_ON_OFF(0, self.Nmodes-1)
+            p_aux = p_aux * self.collapse_ON_OFF(1, self.Nmodes-2)
+        elif option == 'b':
+            p_aux = self.collapse_ON_OFF(0, self.Nmodes-1)
+            p_aux = p_aux * self.collapse_ON_OFF(1, self.Nmodes-2)
+            p_aux = p_aux * self.collapse_ON_OFF(1, pos)
+        elif option == 'c':
+            p_aux = self.collapse_ON_OFF(1, self.Nmodes-2)
+            p_aux = p_aux * self.collapse_ON_OFF(1, pos)            
+            p_aux = p_aux * self.collapse_ON_OFF(0, self.Nmodes-1)
+        
+        p_success += p_aux
+
+        # Permute the state to return it to its original ordering
+        p_list = np.arange(self.Nmodes)
+        p_list[pos] = self.Nmodes - 1
+        p_list[-1] = pos
+        self.state = self.state.permute(p_list)
+        return p_success    
+    
+    
+    def apply_scissors2(self, k, r_aux, pos=0):
+        # Tritter parameters
+        theta1 = np.arccos(np.sqrt(k))
+        theta2 = np.pi/4
+
+        # Add extra vacuum and TMSV states
+        self.add_vacuum()
+        self.add_TMSV(r_aux)
+        
+        # Apply tritter operator
+        tritter_pos=[self.Nmodes-1, self.Nmodes-3, pos]
+        U = ops.tritter(self.N, theta1, theta2, tritter_pos, self.Nmodes)
+        # print(Nmodes, theta1, theta2, U)
+        if self.state.isket:
+            self.state = U * self.state
+        else:
+            self.state = U * self.state * U.dag()
+
+        # Define the proyectors, in this case to |10>
+        projectorOFF = qt.basis(self.N, 0).dag()
+        projectorON = ops.photon_on_projector2(self.N)
         collapse_pos = [pos, self.Nmodes-1, self.Nmodes-2]
         projectorA = tools.tensor_singles(self.N, [projectorOFF, projectorON, projectorON], collapse_pos, self.Nmodes)
         projectorB = tools.tensor_singles(self.N, [projectorON, projectorOFF, projectorON], collapse_pos, self.Nmodes)
@@ -345,9 +443,63 @@ class System:
         return p_success
 
 
-    def ptrace(self, pos_keep):
-        self.Nmodes = len(pos_keep)
+    def apply_scissors2_options(self, k, r_aux, pos=0, option='a'):
+        # Tritter parameters
+        theta1 = np.arccos(np.sqrt(k))
+        theta2 = np.pi/4
+
+        # Add extra vacuum and TMSV states
+        self.add_vacuum()
+        self.add_TMSV(r_aux)
+        
+        # Apply tritter operator
+        tritter_pos=[self.Nmodes-1, self.Nmodes-3, pos]
+        U = ops.tritter_options(self.N, theta1, theta2, tritter_pos, self.Nmodes, option)
+        # print(Nmodes, theta1, theta2, U)
+        if self.state.isket:
+            self.state = U * self.state
+        else:
+            self.state = U * self.state * U.dag()
+
+        # Define the proyectors, in this case to |10>
+        projectorOFF = qt.basis(self.N, 0).dag()
+        projectorON = ops.photon_on_projector2(self.N)
+        collapse_pos = [pos, self.Nmodes-1, self.Nmodes-2]
+        projectorA = tools.tensor_singles(self.N, [projectorOFF, projectorON, projectorON], collapse_pos, self.Nmodes)
+        projectorB = tools.tensor_singles(self.N, [projectorON, projectorOFF, projectorON], collapse_pos, self.Nmodes)
+
+        # Compute the probability of the alternate click in the detectors        
+        p_success = self.collapse_prob(projectorA)
+
+        # Collapse the state
+        p_success += self.collapse_project(projectorB)
+
+        # Return Nmodes to original value
+        self.Nmodes = self.Nmodes - 3
+        
+        # Permute the state to return it to its original ordering
+        p_list = np.arange(self.Nmodes)
+        p_list[pos] = self.Nmodes - 1
+        p_list[-1] = pos
+        self.state = self.state.permute(p_list)
+        return p_success
+
+
+    def ptrace(self, pos):
+        # Argument is positions to partially trace out
+        
+        # List to perform parcial trace
+        pos_keep = list(range(self.Nmodes)) 
+        pos_keep.reverse()
+        
+        for i in pos:
+            pos_keep.remove(i)
+        
+        # Invert pos_keep to match qutip inverted modes
+        pos_keep = self.Nmodes - 1 - np.array(pos_keep)
+        
         self.state = self.state.ptrace(pos_keep)
+        self.Nmodes = len(pos_keep)
         
 
     def get_simple_CM_V(self, mode):
