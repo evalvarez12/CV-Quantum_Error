@@ -18,46 +18,48 @@ from matplotlib.ticker import LinearLocator, FormatStrFormatter
 ############################################ CALCULATIONS
 
 ## Parameters
-N = 4
+N = 15
 mpne = 0.001
+mu = 1.2 
 f = 0.95
-option = 'none'
-eta = 0.5
+option = 'tsc'
 
-
-theta = np.arccos(np.sqrt(eta))
+r = np.arcsinh(np.sqrt(mu))
 r_eve = np.arcsinh(np.sqrt(mpne))
 
 ## Initialize system
 sys = cv.System(N, Nmodes=2, cm=False)
+sys.apply_TMS(r, [0, 1])
+sys.save_state()
 
 key_rates = []
 ps = []
-ks = np.linspace(0000.1, 1, 20)
-mus = np.linspace(0000.1, 1.5, 20)
+etas = np.logspace(-3, -1, base=10, num=20)
+ks = np.linspace(0000.1, .999, 20)
 
 for k in ks:
     k_temp = []
     p_temp = []
-    for mu in mus:
+    for eta in etas:
         print("--->", k, mu)
-        sys.reset_state(2)
-        r = np.arcsinh(np.sqrt(mu))
-        sys.apply_TMS(r, [0, 1])
-                
+        sys.load_state()
+        
     
         # Transmitter Scissors
         if option == 'tsc':
             p_success = sys.apply_scissors_exact(k, 1)
             print("P SUCCESS:", p_success)
-        #    print(sys.state)
+        
+        if option == 'tps':
+            p_success = sys.apply_photon_subtraction(k, 1)
+            print("P SUCCESS:", p_success)
         
         if option == 'none':
             p_success = 1
     
         sys.add_TMSV(r_eve)
 
-    
+        theta = np.arccos(np.sqrt(eta))
         sys.apply_BS(theta, [1, 2])
     
     
@@ -66,6 +68,10 @@ for k in ks:
             p_success = sys.apply_scissors_exact(k, 1)
             print("P SUCCESS:", p_success) 
             
+            
+        if option == 'rps':
+            p_success = sys.apply_photon_subtraction(k, 1)
+            print("P SUCCESS:", p_success)
 
         kr = measurements.key_rate(sys, f, p_success)
         print("Key rate:", kr)
@@ -76,19 +82,19 @@ for k in ks:
 
 
 # Save the resuls
-filename = "data/result_SCpspace_" + option 
+filename = "data/result_SCpspace2_" + option 
 key_rates = np.array(key_rates)
 np.save(filename, key_rates)
 
-filename = "data/result_SCpspace_p_" + option 
+filename = "data/result_SCpspace2_p_" + option 
 key_rates = np.array(ps)
 np.save(filename, ps)
 
-filename_ind1 = "data/indeces_SCpspace_k_" + option 
+filename_ind1 = "data/indeces_SCpspace2_k_" + option 
 np.save(filename_ind1, ks)
 
-filename_ind2 = "data/indeces_SCpspace_m_" + option 
-np.save(filename_ind2, mus)
+filename_ind2 = "data/indeces_SCpspace2_eta_" + option 
+np.save(filename_ind2, etas)
 
 
 ############################################ PLOT
@@ -96,20 +102,26 @@ np.save(filename_ind2, mus)
 
 #option = 'tsc'
 
-filename = "data/result_SCpspace_" + option 
+filename = "data/result_SCpspace2_" + option 
 data = data2 = np.load(filename + '.npy')
 
-filename = "data/result_SCpspace_p_" + option
+filename = "data/result_SCpspace2_p_" + option
 data2 = np.load(filename + '.npy')
 
-filename_ind1 = "data/indeces_SCpspace_k_" + option 
+filename_ind1 = "data/indeces_SCpspace2_k_" + option 
 ks = np.load(filename_ind1 + '.npy')
 
-filename_ind2 = "data/indeces_SCpspace_m_" + option 
-mus = np.load(filename_ind2 + '.npy')
+filename_ind2 = "data/indeces_SCpspace2_eta_" + option 
+etas = np.load(filename_ind2 + '.npy')
+
+
+filename = "data/result_SCpspace2_none"
+baseline = np.load(filename + '.npy')
+
+
 
 #ks, mus = np.meshgrid(ks, mus)
-mus, ks = np.meshgrid(mus, ks)
+etas, ks = np.meshgrid(etas, ks)
 
 
 #fig = mlab.figure()
@@ -118,15 +130,17 @@ fig = plt.figure()
 ax = fig.gca(projection='3d')
 ax.set_title(r"Transmitter side Scissors")
 ax.set_xlabel(r'$\kappa$', size=15)
-ax.set_ylabel(r'$\mu$', size=15)
+ax.set_ylabel(r'$\eta$', size=15)
 ax.set_zlabel(r'Key rate', size=10)
-
+#ax.set_zscale('log')
 
 # Plot the surface.
 #surf = mlab.surf(X, Y, data, colormap='Blues')
 #surf.actor.property.opacity = 0.5
 
-surf = ax.plot_surface(ks, mus, data, cmap=cm.coolwarm,
+#data = np.log(data)
+
+surf = ax.plot_surface(ks, etas, data, cmap=cm.coolwarm,
                        linewidth=0, antialiased=False)
 
 #surf2 = ax.plot_surface(X, Y, data2,

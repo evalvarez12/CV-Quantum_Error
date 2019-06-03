@@ -18,13 +18,13 @@ from matplotlib.ticker import LinearLocator, FormatStrFormatter
 ############################################ CALCULATIONS
 
 ## Parameters
-N = 4
+N = 15
 mpne = 0.001
 f = 0.95
 option = 'none'
 eta = 0.5
 
-k = 0.2
+k = 0.6
 
 theta = np.arccos(np.sqrt(eta))
 r_eve = np.arcsinh(np.sqrt(mpne))
@@ -34,7 +34,7 @@ sys = cv.System(N, Nmodes=2, cm=False)
 
 key_rates = []
 ps = []
-mus = np.linspace(0.001, 12, 20)
+mus = np.linspace(0.001, 2, 20)
 
 for mu in mus:
     print("--->", mu)
@@ -88,15 +88,15 @@ np.save(filename_ind1, mus)
 ############################################ PLOT
 
 
-option = 'tsc'
+#option = 'tsc'
 
-filename = "data/result_SCepspace_" + option 
+filename = "data/result_SCe_pline_kr_" + option 
 krs = np.load(filename + '.npy')
 
-filename = "data/result_SCepspace_p_" + option
+filename = "data/result_SCe_plinemu_p_" + option
 ps = np.load(filename + '.npy')
 
-filename_ind1 = "data/indeces_SCepspace_k_" + option 
+filename_ind1 = "data/indeces_SCe_plinemu_mu_" + option 
 inds = np.load(filename_ind1 + '.npy')
 
 
@@ -105,13 +105,13 @@ inds = np.load(filename_ind1 + '.npy')
 fig = plt.figure()
 plt.plot(inds, krs)
 plt.title(r"Transmitter side Scissors")
-plt.xlabel(r'$\kappa$', size=15)
+plt.xlabel(r'$\mu$', size=15)
 plt.ylabel(r'Key rate', size=10)
 
-fig = plt.figure()
-plt.plot(inds, ps)
-plt.title(r"P success Scissors")
-plt.xlabel(r'$p_{success}$', size=15)
-plt.ylabel(r'Key rate', size=10)
+#fig = plt.figure()
+#plt.plot(inds, ps)
+#plt.title(r"P success Scissors")
+#plt.xlabel(r'$p_{success}$', size=15)
+#plt.ylabel(r'Key rate', size=10)
 
 plt.show()
