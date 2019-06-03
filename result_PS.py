@@ -18,11 +18,11 @@ import scipy.io
 ############################################ CALCULATIONS
 
 # Parameters
-N = 10
+N = 15
 mpn = 1.3
 mpne = 0.001
 f = 0.95
-option = 'tsc_e'
+option = 'tps'
 
 # Photon subtraction options
 t = .9
