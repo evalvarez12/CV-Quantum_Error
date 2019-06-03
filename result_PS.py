@@ -18,18 +18,18 @@ import scipy.io
 ############################################ CALCULATIONS
 
 # Parameters
-N = 15
+N = 10
 mpn = 1.3
 mpne = 0.001
 f = 0.95
-option = 'rps'
+option = 'tsc_e'
 
 # Photon subtraction options
 t = .9
 
 # Scissors options
 # Best  k=0.5 m_aux=0.6
-k = .6
+k = .001
 m_aux = .2
 
 
@@ -67,7 +67,7 @@ if option == 'tsc':
 
 # Transmitter Scissors Exact
 if option == 'tsc_e':
-    p_success = sys.apply_scissor_exact(k, 1)
+    p_success = sys.apply_scissors_exact(k, 1)
     print("P SUCCESS:", p_success)
 #    print(sys.state)
 
@@ -96,23 +96,19 @@ for te in tes:
 
     # Receiver Photon subtraction
     if option == 'rps':
-#        sys.add_vacuum()
-#        sys.apply_BS(ps_theta, [4, 1])
-#        p_success = sys.collapse_fock_state(1, 4)
         p_success = sys.apply_photon_subtraction(t, 1)
         print("P SUCCESS:", p_success)
-        
+
     # Receiver Scissors
     if option == 'rsc':
-        p_success = sys.apply_scissors_inverted(k, r_aux, 1)
-        print("P SUCCESS:", p_success) 
-        
+        p_success = sys.apply_scissors(k, r_aux, 1)
+        print("P SUCCESS:", p_success)
+
     # Receiver Scissors Exact
     if option == 'rsc_e':
         p_success = sys.apply_scissors_exact(k, 1)
-        print("P SUCCESS:", p_success)   
-#    key_rates += [measurements.key_rate(sys, f=f, p=p_success)]
-    
+        print("P SUCCESS:", p_success)
+
 #    print(sys.cm)
 #    print(sys.get_full_CM())
     kr = measurements.key_rate(sys, f, p_success)
@@ -122,12 +118,12 @@ for te in tes:
 
 
 # Save the resuls
-filename = "data/result_PS_" + option 
+filename = "data/result_PS_" + option
 key_rates = np.array(key_rates)
 #print(key_rates)
 np.save(filename, key_rates)
 
-filename_ind = "data/indeces_PS_" + option 
+filename_ind = "data/indeces_PS_" + option
 np.save(filename_ind, tes)
 
 
@@ -135,15 +131,15 @@ np.save(filename_ind, tes)
 
 key_rates = []
 indeces = []
-for ext in ['nops', 'tps', 'rps', 'tsc', 'rsc']:
+for ext in ['nops', 'tps', 'rps', 'tsc_e', 'rsc_e']:
     f_name = "data/result_PS_" + ext
     k_rate = np.load(f_name + ".npy")
     key_rates += [k_rate]
-    
-    i_name = "data/indeces_PS_" + ext 
+
+    i_name = "data/indeces_PS_" + ext
     inds = np.load(i_name + '.npy')
     indeces += [inds]
-    
+
 
 fig1, ax = plt.subplots()
 lines_types = ['k*-', 'b*-', 'r*-', 'y*-', 'm*-']
@@ -184,7 +180,7 @@ ax.set_ylabel("Key rate")
 ax.set_yscale('log')
 
 
-locmaj = matplotlib.ticker.LogLocator(base=10,numticks=10) 
+locmaj = matplotlib.ticker.LogLocator(base=10,numticks=10)
 ax.yaxis.set_major_locator(locmaj)
 locmin = matplotlib.ticker.LogLocator(base=10.0,subs=(0.2,0.4,0.6,0.8),numticks=12)
 ax.yaxis.set_minor_locator(locmin)

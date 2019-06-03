@@ -23,7 +23,7 @@ from matplotlib.ticker import LinearLocator, FormatStrFormatter
 N = 5
 
 # Fixed parameters
-mu_aux = 0.01
+mu_aux = 0.1
 r_aux = np.arcsinh(np.sqrt(mu_aux))
 eta = 0.01
 
@@ -38,27 +38,27 @@ results_ps = []
 probabilities_sc = []
 probabilities_ps = []
 
-for kappa in np.linspace(0.0001, 0.01, 20):
+for kappa in np.linspace(0.0, 0.01, 20):
 #for kappa in np.linspace(0.0001, 0.03, 20):
     res_sc = []
     res_ps = []
     ps_sc = []
     ps_ps = []
-    for mu in np.linspace(0.0001, .1, 20):
+    for mu in np.linspace(0.0, .1, 20):
 #    for mu in np.linspace(0.0001, .6, 20):
-        
+
         r = np.arcsinh(np.sqrt(mu))
         sys1.apply_TMS(r, pos=[0, 1])
-        
-        
+
+
         sys1.apply_loss_channel(eta, 1)
-        
+
 #        sys2.set_state(sys1.state)
-        
-        
-        # Quantum scissors 
-        p_sc = sys1.apply_scissors(kappa, r_aux, 1)
-#        p_sc = sys1.apply_scissors_options(kappa, r_aux, 1, 'c')
+
+
+        # Quantum scissors
+        # p_sc = sys1.apply_scissors(kappa, r_aux, 1)
+        p_sc = sys1.apply_scissors_options(kappa, r_aux, 1, 'b')
 #        p_sc = sys1.apply_scissors_exact(kappa, 1)
 
 #        p_sc = sys1.apply_scissors_options(kappa, r_aux, 1, 'b')
@@ -66,7 +66,7 @@ for kappa in np.linspace(0.0001, 0.01, 20):
         # Photon substraction
 #        p_ps = sys2.apply_photon_subtraction(1- kappa, 1)
         p_ps = 1
-        
+
 #        print("Reversed")
         rci_sc = measurements.CI(sys1, [0])
 #        print("Coherent")
@@ -76,18 +76,18 @@ for kappa in np.linspace(0.0001, 0.01, 20):
         rci_ps = 0
 
         print(mu, kappa, p_sc, rci_sc)
-#        
+#
 #        print(rci > ci)
 #        if rci > ci:
 #            marker += 1
-        
+
         sys1.load_state()
-        
+
         res_sc += [rci_sc]
         res_ps += [rci_ps]
         ps_sc += [p_sc]
         ps_ps += [p_ps]
-    
+
     results_sc += [res_sc]
     results_ps += [res_ps]
     probabilities_sc += [ps_sc]
@@ -216,13 +216,3 @@ fig.colorbar(surf, shrink=0.5, aspect=5)
 
 
 plt.show()
-
-
-
-
-
-
-
-
-
-

@@ -14,11 +14,12 @@ import matplotlib.pyplot as plt
 import measurements
 
 
-N = 8
+N = 5
 sys = cv.System(N, 2)
 
 eta = 0.01
 m_aux = .01
+r_aux = np.arcsinh(np.sqrt(m_aux))
 
 k = 0.002
 mu = 0.01
@@ -30,74 +31,31 @@ sys.apply_TMS(r)
 sys.apply_loss_channel(eta, 1)
 
 statei = sys.state
-#statei = qt.basis(N, 1)   
+#statei = qt.basis(N, 1)
 
-r_aux = np.arcsinh(np.sqrt(m_aux))
-#print(r_aux)
-p = sys.apply_scissors(k, r_aux, 1)
-#p = sys.apply_scissors_exact(k, 1)
-#p11 = sys.apply_scissors(k, r_aux, 1)
-#p = p*p11
-#sys.apply_scissors_exact(k)
+##### 1
+p = sys.apply_scissors_exact(k, 1)
 
-
-
-
+##### 2
 sys2 = cv.System(N, 1)
-
 sys2.set_state(statei)
-pa = sys2.apply_scissors_options(k, r_aux, 1, 'a')
-#pa = sys2.apply_scissors_exact_options(k, 1, 'a')
+pa = sys2.apply_photon_subtraction(.9, 1)
 
-
+##### 3
 sys3 = cv.System(N, 1)
-
 sys3.set_state(statei)
 pb = sys3.apply_scissors_options(k, r_aux, 1, 'b')
-#pb = sys3.apply_scissors_exact_options(k, 1, 'b')
 
-
+##### 4
 sys4 = cv.System(N, 1)
-
 sys4.set_state(statei)
 pc = sys4.apply_scissors_options(k, r_aux, 1, 'c')
-#pc = sys4.apply_scissors_exact_options(k, 1, 'c')
 
 
 sys_initial = cv.System(N, 2)
 sys_initial.set_state(statei)
 
 
-rci = measurements.CI(sys, [0])
-rci_a = measurements.CI(sys2, [0])
-rci_b = measurements.CI(sys3, [0])
-rci_c = measurements.CI(sys4, [0])
-
-rci_i = measurements.CI(sys_initial, [0])
-
-
-#kr = measurements.key_rate(sys, 1, p)
-#kra = measurements.key_rate(sys2, 1, pa)
-#krb = measurements.key_rate(sys3, 1, pb)
-#krc = measurements.key_rate(sys4, 1, pc)
-
-print("rci:", rci)
-print("rci_a:", rci_a)
-print("rci_b:", rci_b)
-print("rci_c:", rci_c)
-print("rci_initial:", rci_i)
-
-
-
-print("p:", p)
-print("pa:", pa)
-print("pb:", pb)
-print("pc:", pc)
-
-#print("KR:", kr)
-#print("KRa:", kra)
-#print("KRb:", krb)
-#print("KRc:", krc)
 
 
 x = np.linspace(-4, 4, 100)
@@ -151,3 +109,38 @@ fig.show()
 #fig.tight_layout()
 #plt.show()
 #
+
+
+
+
+
+rci = measurements.CI(sys, [0])
+rci_a = measurements.CI(sys2, [0])
+rci_b = measurements.CI(sys3, [0])
+rci_c = measurements.CI(sys4, [0])
+
+rci_i = measurements.CI(sys_initial, [0])
+
+
+#kr = measurements.key_rate(sys, 1, p)
+#kra = measurements.key_rate(sys2, 1, pa)
+#krb = measurements.key_rate(sys3, 1, pb)
+#krc = measurements.key_rate(sys4, 1, pc)
+
+print("rci:", rci)
+print("rci_a:", rci_a)
+print("rci_b:", rci_b)
+print("rci_c:", rci_c)
+print("rci_initial:", rci_i)
+
+
+
+print("p:", p)
+print("pa:", pa)
+print("pb:", pb)
+print("pc:", pc)
+
+#print("KR:", kr)
+#print("KRa:", kra)
+#print("KRb:", krb)
+#print("KRc:", krc)
