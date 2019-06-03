@@ -587,9 +587,13 @@ class System:
         del self.saved
         
         
-    def reset_state(self):
-        self.state = qt.tensor([qt.basis(self.N, 0)]*self.Nmodes)
-
+    def reset_state(self, Nmodes=None):
+        if Nmodes == None:
+            self.state = qt.tensor([qt.basis(self.N, 0)]*self.Nmodes)
+        else:
+            self.state = qt.tensor([qt.basis(self.N, 0)]*Nmodes)
+            self.Nmodes = Nmodes
+            
         if self.cm is not None:
             eye = np.eye(2)
             self.cm = tools.direct_sum([eye]*self.Nmodes)
