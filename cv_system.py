@@ -120,9 +120,9 @@ class System:
 
 
     def apply_loss_channel(self, eta, pos):
-        eta_theta = np.arccos(np.sqrt(eta))
+        theta = np.arccos(np.sqrt(eta))
         self.add_vacuum()
-        self.apply_BS(eta_theta, [pos, self.Nmodes-1])
+        self.apply_BS(theta, [pos, self.Nmodes-1])
 
         # Trace out loss channel mode - NOTE in qutip the last one is index 0
         self.state = self.state.ptrace(range(1, self.Nmodes))
