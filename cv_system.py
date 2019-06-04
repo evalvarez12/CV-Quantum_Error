@@ -58,8 +58,8 @@ class System:
 
 
     def set_state(self, state):
-        N_add = len(state.dims[0])
-        self.Nmodes = N_add
+        Nmodes = len(state.dims[0])
+        self.Nmodes = Nmodes
         self.state = state
 
 

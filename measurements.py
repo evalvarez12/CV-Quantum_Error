@@ -183,13 +183,31 @@ def X(Vb, Ve, Vf, Cbe, Cbf, Cef):
     si = np.sum(g(vef)) - np.sum(g(vef_b))
     return si
     
-        
+ 
+def log_neg(rho, pos_transp):
+    if rho.isket:
+        rho = rho * rho.dag()
+    
+    # State with partial transpose
+    rho = qt.partial_transpose(rho, pos_transp)
+
+    norm = rho.norm()
+    return np.log2(norm)
+       
+
 def g(v):
     return ((v+1)/2)*(np.log2((v+1)/2)) - ((v-1)/2)*(safe_log2((v-1)/2))    
     
     
 def safe_log2(x, minval=0.0000000001):
     return np.log2(x.clip(min=minval))
+
+
+def safe_log(x, minval=0.0000000001):
+    res_array = -np.log(x.clip(min=minval))
+    res_array[x >= 1] = 0
+    return res_array
+
 
 def symplectic_eigenvalues(cm):
     N = int(cm.shape[0]/2)
@@ -198,6 +216,11 @@ def symplectic_eigenvalues(cm):
     eigvals = eigvals[eigvals > 0]
     return eigvals
 
+#def symplectic_eigenvalues_full(cm):
+#    N = int(cm.shape[0]/2)
+#    omega = symplectic_form(N)
+#    eigvals = np.linalg.eigvals(1j*np.dot(omega, cm)).real
+#    return eigvals
 
 def symplectic_form(N):
     w = np.array([[0, 1], [-1, 0]])
