@@ -16,7 +16,7 @@ import theory
 import measurements
 
 
-N = 30
+N = 10
 mu = 2
 
 sys = cv.System(N, 2)
@@ -26,7 +26,7 @@ sys.apply_TMS(r)
 
 psi0 = sys.state
 
-if psi.isket:
+if psi0.isket:
     rho0 = psi0 * psi0.dag()
     
 rho = qt.partial_transpose(rho0, [0, 1])

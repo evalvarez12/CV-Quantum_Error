@@ -11,7 +11,7 @@ import numpy as np
 import measurements
 
 
-N = 40
+N = 5
 # Ref value for mu = 1.2 - EL = 2.7332
 mu = 1.2
 

@@ -35,8 +35,13 @@ class System:
 
         self.quad_basis = None
 
+
     def add_vacuum(self, Nadd=1):
-        state_add = qt.tensor([qt.basis(self.N, 0)]*Nadd)
+        self.add_fock(0, Nadd)
+
+
+    def add_fock(self, l, Nadd=1):
+        state_add = qt.tensor([qt.basis(self.N, l)]*Nadd)
         self.Nmodes = self.Nmodes + Nadd
 
         if self.state == None:
@@ -205,12 +210,20 @@ class System:
 
 
     def apply_photon_subtraction(self, t, pos=0):
-        ps_theta = np.arccos(np.sqrt(t))
+        theta = np.arccos(np.sqrt(t))
         self.add_vacuum()
-        self.apply_BS(ps_theta, [self.Nmodes-1, pos])
+        self.apply_BS(theta, [self.Nmodes-1, pos])
         p_success = self.collapse_fock_state(1, self.Nmodes-1)
         return p_success
 
+
+    def apply_photon_catalysis(self, l, t, pos=0):
+        theta = np.arccos(np.sqrt(t))
+        self.add_fock(l)
+        self.apply_BS(theta, [self.Nmodes-1, pos])
+        p_success = self.collapse_fock_state(l, self.Nmodes-1)
+        return p_success
+        
 
     def apply_scissors_exact(self, t, pos=0):
         # Tritter parameters
