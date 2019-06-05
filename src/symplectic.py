@@ -8,8 +8,8 @@ Created on Wed Apr 24 14:54:56 2019
 
 import numpy as np
 import scipy.linalg as la
-import hamiltonians as ham
-import tools
+from . import hamiltonians as ham
+from . import tools
 
 
 

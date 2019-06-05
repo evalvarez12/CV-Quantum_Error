@@ -11,24 +11,31 @@ import src.cv_system as cv
 import src.measurements as measurements
 import numpy as np
 
+#from mayavi import mlab
+
 ############################################ CALCULATIONS
 
 ## Parameters
-N = 20
-option = 'rps'
+N = 3
+mpne = 0.001
+f = 0.95
+option = 'none'
 eta = 0.01
 
+
+theta = np.arccos(np.sqrt(eta))
+r_eve = np.arcsinh(np.sqrt(mpne))
 
 ## Initialize system
 sys = cv.System(N, Nmodes=2, cm=False)
 
-els = []
+key_rates = []
 ps = []
 ks = np.linspace(0000.1, .999, 20)
 mus = np.linspace(0000.1, 1.5, 20)
 
 for k in ks:
-    el_temp = []
+    k_temp = []
     p_temp = []
     for mu in mus:
         print("--->", k, mu)
@@ -42,19 +49,17 @@ for k in ks:
             p_success = sys.apply_scissors_exact(k, 1)
             print("P SUCCESS:", p_success)
         
-        elif option == 'tps':
+        if option == 'tps':
             p_success = sys.apply_photon_subtraction(k, 1)
             print("P SUCCESS:", p_success)
         
-        elif option == 'none':
+        if option == 'none':
             p_success = 1
     
-        elif option == 'tct':
-            p_success = sys.apply_photon_catalysis(1, k, 1)
-            print("P SUCCESS:", p_success)
+        sys.add_TMSV(r_eve)
+
     
-    
-        sys.apply_loss_channel(eta, 1)
+        sys.apply_BS(theta, [1, 2])
     
     
         # Receiver Scissors
@@ -62,40 +67,38 @@ for k in ks:
             p_success = sys.apply_scissors_exact(k, 1)
             print("P SUCCESS:", p_success) 
             
-        elif option == 'rps':
+            
+        if option == 'rps':
             p_success = sys.apply_photon_subtraction(k, 1)
             print("P SUCCESS:", p_success)
-            
-        elif option == 'rct':
-            p_success = sys.apply_photon_catalysis(1, k, 1)
-            print("P SUCCESS:", p_success)
 
-        el = measurements.log_neg(sys.state, [0, 1])
-        print("Logarithmic Negativity:", el)
-        el_temp += [el]
+        kr = measurements.key_rate(sys, f, p_success)
+        print("Key rate:", kr)
+        k_temp += [kr]
         p_temp += [p_success]
-    els += [el_temp]
+    key_rates += [k_temp]
     ps += [p_temp]
 
 
 # Save the resuls
-filename = "data/result_ENpspace_" + option 
-els = np.array(els)
-np.save(filename, els)
+filename = "data/result_SCpspace_" + option 
+key = np.array(key_rates)
+np.save(filename, key_rates)
 
-filename = "data/result_ENpspace_p_" + option 
+filename = "data/result_SCpspace_p_" + option 
 key_rates = np.array(ps)
 np.save(filename, ps)
 
-filename_ind1 = "data/indeces_ENpspace_k_" + option 
+filename_ind1 = "data/indeces_SCpspace_k_" + option 
 np.save(filename_ind1, ks)
 
-filename_ind2 = "data/indeces_ENpspace_m_" + option 
+filename_ind2 = "data/indeces_SCpspace_m_" + option 
 np.save(filename_ind2, mus)
 
 
 ############################################ PLOT
 
-import plot_EN as plt
+import plot_pspace as plt
 
 plt.plot(option)
+

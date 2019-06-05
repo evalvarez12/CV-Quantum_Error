@@ -14,47 +14,49 @@ import numpy as np
 ############################################ CALCULATIONS
 
 ## Parameters
-N = 20
-option = 'rps'
-eta = 0.01
+N = 4
+mpne = 0.001
+mu = 1.2 
+f = 0.95
+option = 'none'
 
+r = np.arcsinh(np.sqrt(mu))
+r_eve = np.arcsinh(np.sqrt(mpne))
 
 ## Initialize system
 sys = cv.System(N, Nmodes=2, cm=False)
+sys.apply_TMS(r, [0, 1])
+sys.save_state()
 
-els = []
+key_rates = []
 ps = []
+etas = np.logspace(-3, -1, base=10, num=20)
 ks = np.linspace(0000.1, .999, 20)
-mus = np.linspace(0000.1, 1.5, 20)
 
 for k in ks:
-    el_temp = []
+    k_temp = []
     p_temp = []
-    for mu in mus:
+    for eta in etas:
         print("--->", k, mu)
-        sys.reset_state(2)
-        r = np.arcsinh(np.sqrt(mu))
-        sys.apply_TMS(r, [0, 1])
-                
+        sys.load_state()
+        
     
         # Transmitter Scissors
         if option == 'tsc':
             p_success = sys.apply_scissors_exact(k, 1)
             print("P SUCCESS:", p_success)
         
-        elif option == 'tps':
+        if option == 'tps':
             p_success = sys.apply_photon_subtraction(k, 1)
             print("P SUCCESS:", p_success)
         
-        elif option == 'none':
+        if option == 'none':
             p_success = 1
     
-        elif option == 'tct':
-            p_success = sys.apply_photon_catalysis(1, k, 1)
-            print("P SUCCESS:", p_success)
-    
-    
-        sys.apply_loss_channel(eta, 1)
+        sys.add_TMSV(r_eve)
+
+        theta = np.arccos(np.sqrt(eta))
+        sys.apply_BS(theta, [1, 2])
     
     
         # Receiver Scissors
@@ -62,40 +64,37 @@ for k in ks:
             p_success = sys.apply_scissors_exact(k, 1)
             print("P SUCCESS:", p_success) 
             
-        elif option == 'rps':
+            
+        if option == 'rps':
             p_success = sys.apply_photon_subtraction(k, 1)
             print("P SUCCESS:", p_success)
-            
-        elif option == 'rct':
-            p_success = sys.apply_photon_catalysis(1, k, 1)
-            print("P SUCCESS:", p_success)
 
-        el = measurements.log_neg(sys.state, [0, 1])
-        print("Logarithmic Negativity:", el)
-        el_temp += [el]
+        kr = measurements.key_rate(sys, f, p_success)
+        print("Key rate:", kr)
+        k_temp += [kr]
         p_temp += [p_success]
-    els += [el_temp]
+    key_rates += [k_temp]
     ps += [p_temp]
 
 
 # Save the resuls
-filename = "data/result_ENpspace_" + option 
-els = np.array(els)
-np.save(filename, els)
+filename = "data/result_SCpspace2_" + option 
+key_rates = np.array(key_rates)
+np.save(filename, key_rates)
 
-filename = "data/result_ENpspace_p_" + option 
+filename = "data/result_SCpspace2_p_" + option 
 key_rates = np.array(ps)
 np.save(filename, ps)
 
-filename_ind1 = "data/indeces_ENpspace_k_" + option 
+filename_ind1 = "data/indeces_SCpspace2_k_" + option 
 np.save(filename_ind1, ks)
 
-filename_ind2 = "data/indeces_ENpspace_m_" + option 
-np.save(filename_ind2, mus)
+filename_ind2 = "data/indeces_SCpspace2_eta_" + option 
+np.save(filename_ind2, etas)
 
 
 ############################################ PLOT
 
-import plot_EN as plt
+import plot_pspace2 as plt
 
 plt.plot(option)

@@ -1,60 +1,48 @@
 # -*- coding: utf-8 -*-
 """
-Surface plot of key rate for scissors parameter space
+Created on Wed Jun  5 11:59:19 2019
 
-Created on Tue May  7 15:02:55 2019
-
-@author: Eduardo Villasenor 
+@author: Eduardo Villasenor
 """
-
-import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib import cm
-#from matplotlib.ticker import LinearLocator, FormatStrFormatter
-
+from matplotlib.ticker import LinearLocator, FormatStrFormatter
+import numpy as np
 
 
 def plot(option):
     
-    filename = "data/result_SCpspace2_" + option 
+    filename = "data/result_ENpspace_" + option 
     data = data2 = np.load(filename + '.npy')
     
-    filename = "data/result_SCpspace2_p_" + option
+    filename = "data/result_ENpspace_p_" + option
     data2 = np.load(filename + '.npy')
     
-    filename_ind1 = "data/indeces_SCpspace2_k_" + option 
+    filename_ind1 = "data/indeces_ENpspace_k_" + option 
     ks = np.load(filename_ind1 + '.npy')
     
-    filename_ind2 = "data/indeces_SCpspace2_eta_" + option 
-    etas = np.load(filename_ind2 + '.npy')
-    
-    
-    filename = "data/result_SCpspace2_none"
-    baseline = np.load(filename + '.npy')
-    
-    
+    filename_ind2 = "data/indeces_ENpspace_m_" + option 
+    mus = np.load(filename_ind2 + '.npy')
     
     #ks, mus = np.meshgrid(ks, mus)
-    etas, ks = np.meshgrid(etas, ks)
+    mus, ks = np.meshgrid(mus, ks)
     
     
     #fig = mlab.figure()
     
     fig = plt.figure()
     ax = fig.gca(projection='3d')
-    ax.set_title(r"Transmitter side Scissors")
+    ax.set_title(r"Logarithmic Negativity")
     ax.set_xlabel(r'$\kappa$', size=15)
-    ax.set_ylabel(r'$\eta$', size=15)
-    ax.set_zlabel(r'Key rate', size=10)
-    #ax.set_zscale('log')
+    ax.set_ylabel(r'$\mu$', size=15)
+    ax.set_zlabel(r'$E_N$', size=10)
+    
     
     # Plot the surface.
     #surf = mlab.surf(X, Y, data, colormap='Blues')
     #surf.actor.property.opacity = 0.5
     
-    #data = np.log(data)
-    
-    surf = ax.plot_surface(ks, etas, data, cmap=cm.coolwarm,
+    surf = ax.plot_surface(ks, mus, data, cmap=cm.coolwarm,
                            linewidth=0, antialiased=False)
     
     #surf2 = ax.plot_surface(X, Y, data2,

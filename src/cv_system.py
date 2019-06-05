@@ -7,11 +7,10 @@ Created on Wed Apr  3 09:29:55 2019
 @author: Eduardo Villasenor
 """
 
-import operations as ops
-import symplectic as sym
-import beam_splitter as bs
-import tools
-import theory
+from . import operations as ops
+from . import symplectic as sym
+from . import tools
+from . import theory
 import qutip as qt
 import numpy as np
 

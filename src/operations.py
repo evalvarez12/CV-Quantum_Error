@@ -9,8 +9,8 @@ Created on Fri Feb 15 12:05:43 2019
 
 import qutip as qt
 import numpy as np
-import tools
-import hamiltonians
+from . import tools
+from . import hamiltonians
 
 
 
