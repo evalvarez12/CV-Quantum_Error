@@ -5,10 +5,10 @@ Dummy file to test stuff
 @author: Eduardo Villasenor
 """
 
-import cv_system as cv
+import src.cv_system as cv
 import qutip as qt
 import numpy as np
-import measurements
+import src.measurements as measurements
 
 
 N = 5

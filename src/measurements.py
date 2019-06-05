@@ -195,6 +195,21 @@ def log_neg(rho, pos_transp):
     return np.log2(norm)
        
 
+def log_neg_Gauss(sys, pos_transp):
+    if sys.state.isket:
+        rho = sys.state * sys.state.dag()
+    else:
+        rho = sys.state
+        
+    rho = qt.partial_transpose(rho, pos_transp)
+    sys.set_state(rho) 
+    sys.set_quadratures_basis()
+    cm = sys.get_full_CM()
+    sym_eig = symplectic_eigenvalues(cm)
+    eig_ = np.min(sym_eig)
+    log_neg = max([0, -np.log2(eig_)])
+    return log_neg
+
 def g(v):
     return ((v+1)/2)*(np.log2((v+1)/2)) - ((v-1)/2)*(safe_log2((v-1)/2))    
     
