@@ -15,7 +15,7 @@ import numpy as np
 
 ## Parameters
 N = 20
-option = 'rps'
+option = 'rct'
 eta = 0.01
 
 
@@ -79,18 +79,18 @@ for k in ks:
 
 
 # Save the resuls
-filename = "data/result_ENpspace_" + option 
+filename = "data/result_EN_" + option 
 els = np.array(els)
 np.save(filename, els)
 
-filename = "data/result_ENpspace_p_" + option 
+filename = "data/result_EN_p_" + option 
 key_rates = np.array(ps)
 np.save(filename, ps)
 
-filename_ind1 = "data/indeces_ENpspace_k_" + option 
+filename_ind1 = "data/indeces_EN_k_" + option 
 np.save(filename_ind1, ks)
 
-filename_ind2 = "data/indeces_ENpspace_m_" + option 
+filename_ind2 = "data/indeces_EN_m_" + option 
 np.save(filename_ind2, mus)
 
 

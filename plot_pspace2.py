@@ -16,29 +16,22 @@ from matplotlib import cm
 
 def plot(option):
     
-    filename = "data/result_SCpspace2_" + option 
+    filename = "data/result_pspace2_" + option 
     data = data2 = np.load(filename + '.npy')
     
-    filename = "data/result_SCpspace2_p_" + option
+    filename = "data/result_pspace2_p_" + option
     data2 = np.load(filename + '.npy')
     
-    filename_ind1 = "data/indeces_SCpspace2_k_" + option 
+    filename_ind1 = "data/indeces_pspace2_k_" + option 
     ks = np.load(filename_ind1 + '.npy')
     
-    filename_ind2 = "data/indeces_SCpspace2_eta_" + option 
+    filename_ind2 = "data/indeces_pspace2_eta_" + option 
     etas = np.load(filename_ind2 + '.npy')
     
-    
-    filename = "data/result_SCpspace2_none"
+    filename = "data/result_pspace2_none"
     baseline = np.load(filename + '.npy')
     
-    
-    
-    #ks, mus = np.meshgrid(ks, mus)
-    etas, ks = np.meshgrid(etas, ks)
-    
-    
-    #fig = mlab.figure()
+    ks, etas = np.meshgrid(ks, etas)
     
     fig = plt.figure()
     ax = fig.gca(projection='3d')
@@ -47,10 +40,6 @@ def plot(option):
     ax.set_ylabel(r'$\eta$', size=15)
     ax.set_zlabel(r'Key rate', size=10)
     #ax.set_zscale('log')
-    
-    # Plot the surface.
-    #surf = mlab.surf(X, Y, data, colormap='Blues')
-    #surf.actor.property.opacity = 0.5
     
     #data = np.log(data)
     
@@ -72,6 +61,3 @@ def plot(option):
     
     plt.show()
     
-    #v1_matplotlib()
-    #v2_mayavi(False)
-    #v2_mayavi(True)

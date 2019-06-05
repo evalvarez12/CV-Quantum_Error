@@ -15,103 +15,81 @@ import numpy as np
 ################################## CALCULATIONS
 
 # Initial parameters
-N = 5
-
-# Fixed parameters
+N = 20
 mu_aux = 0.1
 r_aux = np.arcsinh(np.sqrt(mu_aux))
 eta = 0.01
+option = 'rct'
+
+sys = cv.System(N, Nmodes=2, cm=False)
 
 
-sys1 = cv.System(N, Nmodes=2, cm=False)
-
-sys2 = cv.System(N, Nmodes=2, cm=False)
-
-sys1.save_state()
-results_sc = []
-results_ps = []
+sys.save_state()
+rcis = []
+ps = []
 probabilities_sc = []
 probabilities_ps = []
 
-for kappa in np.linspace(0.0, 0.01, 20):
+ks = np.linspace(0.0, 0.01, 20)
+mus = np.linspace(0.0, .1, 20)
+
+for k in ks:
 #for kappa in np.linspace(0.0001, 0.03, 20):
-    res_sc = []
-    res_ps = []
-    ps_sc = []
-    ps_ps = []
-    for mu in np.linspace(0.0, .1, 20):
+    rci_temp = []
+    p_temp = []
+    for mu in mus:
 #    for mu in np.linspace(0.0001, .6, 20):
 
         r = np.arcsinh(np.sqrt(mu))
-        sys1.apply_TMS(r, pos=[0, 1])
+        sys.apply_TMS(r, pos=[0, 1])
 
 
-        sys1.apply_loss_channel(eta, 1)
-
-#        sys2.set_state(sys1.state)
+        sys.apply_loss_channel(eta, 1)
 
 
         # Quantum scissors
-        # p_sc = sys1.apply_scissors(kappa, r_aux, 1)
-        p_sc = sys1.apply_scissors_options(kappa, r_aux, 1, 'b')
-#        p_sc = sys1.apply_scissors_exact(kappa, 1)
-
-#        p_sc = sys1.apply_scissors_options(kappa, r_aux, 1, 'b')
+        if option == 'rsc':
+            p = sys.apply_scissors_exact(k, 1)
+#            p = sys1.apply_scissors(kappa, r_aux, 1)
 
         # Photon substraction
-#        p_ps = sys2.apply_photon_subtraction(1- kappa, 1)
-        p_ps = 1
+        elif option == 'rps':
+           p = sys.apply_photon_subtraction(k, 1)
+        
+        elif option == 'rct':
+           p = sys.apply_photon_catalysis(1, k, 1) 
+        
+        elif option == 'none':
+           p = 1
 
-#        print("Reversed")
-        rci_sc = measurements.CI(sys1, [0])
-#        print("Coherent")
-#        ci = measurements.CI(sys2, [1])
+        rci = measurements.CI(sys, [0])
 
-#        rci_ps = measurements.CI(sys2, [0])
-        rci_ps = 0
+        print(mu, k, p, rci)
+        sys.load_state()
 
-        print(mu, kappa, p_sc, rci_sc)
-#
-#        print(rci > ci)
-#        if rci > ci:
-#            marker += 1
+        rci_temp += [rci]
+        p_temp += [p]
 
-        sys1.load_state()
+    rcis += [rci_temp]
+    ps += [p_temp]
 
-        res_sc += [rci_sc]
-        res_ps += [rci_ps]
-        ps_sc += [p_sc]
-        ps_ps += [p_ps]
+filename_rci = "data/result_GRCI_" + option
+rcis = np.array(rcis)
+np.save(filename_rci, rcis)
 
-    results_sc += [res_sc]
-    results_ps += [res_ps]
-    probabilities_sc += [ps_sc]
-    probabilities_ps += [ps_ps]
-
-filename_sc = "data/rci_plot_SC"
-
-results_sc = np.array(results_sc)
-np.save(filename_sc, results_sc)
-
-filename_p_sc = "data/p_plot_SC"
-
-probabilities_sc = np.array(probabilities_sc)
-np.save(filename_p_sc, probabilities_sc)
+filename_p = "data/result_GRCI_p_" + option
+ps = np.array(ps)
+np.save(filename_p, ps)
 
 
+filename_ind1 = "data/indeces_GRCI_k_" + option 
+np.save(filename_ind1, ks)
 
-filename_ps = "data/rci_plot_PS"
-
-results_ps = np.array(results_ps)
-np.save(filename_ps, results_ps)
-
-filename_p_ps = "data/p_plot_PS"
-
-probabilities_ps = np.array(probabilities_ps)
-np.save(filename_p_ps, probabilities_ps)
+filename_ind2 = "data/indeces_GRCI_m_" + option 
+np.save(filename_ind2, mus)
 
 #################
 
-import plt_GRCI as plt
+import plot_GRCI as plt
 
-plt.plot()
+plt.plot(option)

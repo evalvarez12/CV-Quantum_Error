@@ -78,18 +78,18 @@ for k in ks:
 
 
 # Save the resuls
-filename = "data/result_SCpspace2_" + option 
+filename = "data/result_pspace2_" + option 
 key_rates = np.array(key_rates)
 np.save(filename, key_rates)
 
-filename = "data/result_SCpspace2_p_" + option 
+filename = "data/result_pspace2_p_" + option 
 key_rates = np.array(ps)
 np.save(filename, ps)
 
-filename_ind1 = "data/indeces_SCpspace2_k_" + option 
+filename_ind1 = "data/indeces_pspace2_k_" + option 
 np.save(filename_ind1, ks)
 
-filename_ind2 = "data/indeces_SCpspace2_eta_" + option 
+filename_ind2 = "data/indeces_pspace2_eta_" + option 
 np.save(filename_ind2, etas)
 
 
