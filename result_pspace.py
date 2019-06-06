@@ -16,10 +16,10 @@ import numpy as np
 ############################################ CALCULATIONS
 
 ## Parameters
-N = 3
+N = 20
 mpne = 0.001
 f = 0.95
-option = 'none'
+option = 'rct'
 eta = 0.01
 
 
@@ -49,12 +49,16 @@ for k in ks:
             p_success = sys.apply_scissors_exact(k, 1)
             print("P SUCCESS:", p_success)
         
-        if option == 'tps':
+        elif option == 'tps':
             p_success = sys.apply_photon_subtraction(k, 1)
             print("P SUCCESS:", p_success)
         
-        if option == 'none':
+        elif option == 'none':
             p_success = 1
+    
+        elif option == 'tct':
+            p_success = sys.apply_photon_catalysis(1, k, 1)
+            print("P_SUCCESS:", p_success)
     
         sys.add_TMSV(r_eve)
 
@@ -67,11 +71,14 @@ for k in ks:
             p_success = sys.apply_scissors_exact(k, 1)
             print("P SUCCESS:", p_success) 
             
-            
-        if option == 'rps':
+        elif option == 'rps':
             p_success = sys.apply_photon_subtraction(k, 1)
             print("P SUCCESS:", p_success)
 
+        elif option == 'rct':
+            p_success = sys.apply_photon_catalysis(1, k, 1)
+            print("P_SUCCESS:", p_success)
+            
         kr = measurements.key_rate(sys, f, p_success)
         print("Key rate:", kr)
         k_temp += [kr]
