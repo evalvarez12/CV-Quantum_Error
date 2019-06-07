@@ -36,8 +36,8 @@ def plot(option):
     fig = plt.figure()
     ax = fig.gca(projection='3d')
     ax.set_title(r"Transmitter side Scissors")
-    ax.set_xlabel(r'$\kappa$', size=15)
-    ax.set_ylabel(r'$\eta$', size=15)
+    ax.set_ylabel(r'$\kappa$', size=15)
+    ax.set_xlabel(r'$\eta$', size=15)
     ax.set_zlabel(r'Key rate', size=10)
     #ax.set_zscale('log')
     

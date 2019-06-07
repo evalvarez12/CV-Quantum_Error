@@ -9,22 +9,22 @@ import numpy as np
 from mayavi import mlab
 
 
-option = 'rps'
+option = 'rsc'
 
-filename = "data/result_SCpspace_" + option 
+filename = "data/result_pspace2_" + option 
 data = data2 = np.load(filename + '.npy')
 
-filename = "data/result_SCpspace_p_" + option
+filename = "data/result_pspace2_p_" + option
 data2 = np.load(filename + '.npy')
 
-filename_ind1 = "data/indeces_SCpspace_k_" + option 
+filename_ind1 = "data/indeces_pspace2_k_" + option 
 X = np.load(filename_ind1 + '.npy')
 
-filename_ind2 = "data/indeces_SCpspace_m_" + option 
+filename_ind2 = "data/indeces_pspace2_eta_" + option 
 Y = np.load(filename_ind2 + '.npy')
 
 
-filename = "data/result_SCpspace_none"
+filename = "data/result_pspace2_none"
 baseline = np.load(filename + '.npy')
 
 

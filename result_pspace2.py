@@ -14,11 +14,11 @@ import numpy as np
 ############################################ CALCULATIONS
 
 ## Parameters
-N = 4
+N = 10
 mpne = 0.001
-mu = 1.2 
+mu = .01
 f = 0.95
-option = 'none'
+option = 'rct'
 
 r = np.arcsinh(np.sqrt(mu))
 r_eve = np.arcsinh(np.sqrt(mpne))
@@ -46,11 +46,11 @@ for k in ks:
             p_success = sys.apply_scissors_exact(k, 1)
             print("P SUCCESS:", p_success)
         
-        if option == 'tps':
+        elif option == 'tps':
             p_success = sys.apply_photon_subtraction(k, 1)
             print("P SUCCESS:", p_success)
         
-        if option == 'none':
+        elif option == 'none':
             p_success = 1
     
         sys.add_TMSV(r_eve)
@@ -64,9 +64,12 @@ for k in ks:
             p_success = sys.apply_scissors_exact(k, 1)
             print("P SUCCESS:", p_success) 
             
-            
-        if option == 'rps':
+        elif option == 'rps':
             p_success = sys.apply_photon_subtraction(k, 1)
+            print("P SUCCESS:", p_success)
+            
+        elif option == 'rct':
+            p_success = sys.apply_photon_catalysis(1, k, 1)
             print("P SUCCESS:", p_success)
 
         kr = measurements.key_rate(sys, f, p_success)

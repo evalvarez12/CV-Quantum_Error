@@ -19,7 +19,7 @@ import numpy as np
 N = 20
 mpne = 0.001
 f = 0.95
-option = 'rct'
+option = 'none'
 eta = 0.01
 
 
