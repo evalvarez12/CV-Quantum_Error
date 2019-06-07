@@ -9,13 +9,14 @@ Created on Tue May  7 15:02:55 2019
 
 import src.cv_system as cv
 import src.measurements as measurements
+import src.names as names
 import numpy as np
 
 ############################################ CALCULATIONS
 
 ## Parameters
-N = 20
-option = 'rct'
+N = 2
+option = 'none'
 eta = 0.01
 
 
@@ -78,24 +79,32 @@ for k in ks:
     ps += [p_temp]
 
 
+# File name parameters
+k_name = 'var'
+mu_name = 'var'
+eta_name = eta
+measurement = "EN"
+measurementp = "EN_p"
+
 # Save the resuls
-filename = "data/result_EN_" + option 
+filename = names.measurements(N=N, eta=eta_name, k=k_name, mu=mu_name, measurement=measurement, protocol=option)
 els = np.array(els)
 np.save(filename, els)
 
-filename = "data/result_EN_p_" + option 
-key_rates = np.array(ps)
-np.save(filename, ps)
+filenamep = names.measurements(N=N, eta=eta_name, k=k_name, mu=mu_name, measurement=measurementp, protocol=option)
+ps = np.array(ps)
+np.save(filenamep, ps)
 
-filename_ind1 = "data/indeces_EN_k_" + option 
+filename_ind1 = names.indeces(N=N, eta=eta_name, k=k_name, mu=mu_name, measurement=measurement, protocol=option, index='k')
 np.save(filename_ind1, ks)
 
-filename_ind2 = "data/indeces_EN_m_" + option 
+filename_ind2 = names.indeces(N=N, eta=eta_name, k=k_name, mu=mu_name, measurement=measurement, protocol=option, index='mu')
 np.save(filename_ind2, mus)
+
 
 
 ############################################ PLOT
 
-import plot_EN as plt
+import plots as plt
 
-plt.plot(option)
+plt.EN(option, N, eta)

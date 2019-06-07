@@ -9,40 +9,38 @@ Created on Tue May  7 15:02:55 2019
 
 import src.cv_system as cv
 import src.measurements as measurements
+import src.names as names
 import numpy as np
-
-#from mayavi import mlab
 
 ############################################ CALCULATIONS
 
 ## Parameters
-N = 20
+N = 2
 mpne = 0.001
+mu = .01
 f = 0.95
-option = 'none'
-eta = 0.01
+option = 'rct'
 
-
-theta = np.arccos(np.sqrt(eta))
+r = np.arcsinh(np.sqrt(mu))
 r_eve = np.arcsinh(np.sqrt(mpne))
 
 ## Initialize system
 sys = cv.System(N, Nmodes=2, cm=False)
+sys.apply_TMS(r, [0, 1])
+sys.save_state()
 
 key_rates = []
 ps = []
+etas = np.logspace(-3, -1, base=10, num=20)
 ks = np.linspace(0000.1, .999, 20)
-mus = np.linspace(0000.1, 1.5, 20)
 
 for k in ks:
     k_temp = []
     p_temp = []
-    for mu in mus:
+    for eta in etas:
         print("--->", k, mu)
-        sys.reset_state(2)
-        r = np.arcsinh(np.sqrt(mu))
-        sys.apply_TMS(r, [0, 1])
-                
+        sys.load_state()
+        
     
         # Transmitter Scissors
         if option == 'tsc':
@@ -56,13 +54,9 @@ for k in ks:
         elif option == 'none':
             p_success = 1
     
-        elif option == 'tct':
-            p_success = sys.apply_photon_catalysis(1, k, 1)
-            print("P_SUCCESS:", p_success)
-    
         sys.add_TMSV(r_eve)
 
-    
+        theta = np.arccos(np.sqrt(eta))
         sys.apply_BS(theta, [1, 2])
     
     
@@ -74,11 +68,11 @@ for k in ks:
         elif option == 'rps':
             p_success = sys.apply_photon_subtraction(k, 1)
             print("P SUCCESS:", p_success)
-
+            
         elif option == 'rct':
             p_success = sys.apply_photon_catalysis(1, k, 1)
-            print("P_SUCCESS:", p_success)
-            
+            print("P SUCCESS:", p_success)
+
         kr = measurements.key_rate(sys, f, p_success)
         print("Key rate:", kr)
         k_temp += [kr]
@@ -87,25 +81,32 @@ for k in ks:
     ps += [p_temp]
 
 
+# File name parameters
+k_name = 'var'
+mu_name = mu
+eta_name = 'var'
+measurement = "KR"
+measurementp = "KR_p"
+
+
 # Save the resuls
-filename = "data/result_pspace_" + option 
+filename = names.measurements(N=N, eta=eta_name, k=k_name, mu=mu_name, measurement=measurement, protocol=option)
 key = np.array(key_rates)
 np.save(filename, key_rates)
 
-filename = "data/result_pspace_p_" + option 
+filenamep = names.measurements(N=N, eta=eta_name, k=k_name, mu=mu_name, measurement=measurementp, protocol=option)
 key_rates = np.array(ps)
-np.save(filename, ps)
+np.save(filenamep, ps)
 
-filename_ind1 = "data/indeces_pspace_k_" + option 
+filename_ind1 = names.indeces(N=N, eta=eta_name, k=k_name, mu=mu_name, measurement=measurement, protocol=option, index='k')
 np.save(filename_ind1, ks)
 
-filename_ind2 = "data/indeces_pspace_m_" + option 
-np.save(filename_ind2, mus)
+filename_ind2 = names.indeces(N=N, eta=eta_name, k=k_name, mu=mu_name, measurement=measurement, protocol=option, index='eta')
+np.save(filename_ind2, etas)
 
 
 ############################################ PLOT
 
-import plot_pspace as plt
+import plots as plt
 
-plt.plot(option)
-
+plt.KR2(option, N, mu)

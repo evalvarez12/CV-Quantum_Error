@@ -25,7 +25,7 @@ def measurements(N, eta, k, mu, measurement, protocol):
     return file_name
 
 
-def indeces(N, eta, k, mu, measurement, protocol):
+def indeces(N, eta, k, mu, measurement, protocol, index):
     """Name generator for measurement data files."""
     param_names = ["N=" + str(N), "eta=" + str(eta), "k=" + str(k),
                    "mu=" + str(mu)]
@@ -39,4 +39,4 @@ def indeces(N, eta, k, mu, measurement, protocol):
                  + "_" + param_names)
     return file_name
 
-
+#print(measurements(N=1, eta=2, k=1, mu=2, measurement='prueba', protocol='bueno'))

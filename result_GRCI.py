@@ -9,17 +9,18 @@ Created on Wed Mar  6 16:19:53 2019
 
 import src.cv_system as cv
 import src.measurements as measurements
+import src.names as names
 import numpy as np
 
 
 ################################## CALCULATIONS
 
 # Initial parameters
-N = 20
+N = 2
 mu_aux = 0.1
 r_aux = np.arcsinh(np.sqrt(mu_aux))
 eta = 0.01
-option = 'rct'
+option = 'none'
 
 sys = cv.System(N, Nmodes=2, cm=False)
 
@@ -73,23 +74,32 @@ for k in ks:
     rcis += [rci_temp]
     ps += [p_temp]
 
-filename_rci = "data/result_GRCI_" + option
+
+
+# File name parameters
+k_name = 'var'
+mu_name = 'var'
+eta_name = eta
+measurement = "GRCI"
+measurementp = "GRCI_p"
+
+# Save the resuls
+filename = names.measurements(N=N, eta=eta_name, k=k_name, mu=mu_name, measurement=measurement, protocol=option)
 rcis = np.array(rcis)
-np.save(filename_rci, rcis)
+np.save(filename, rcis)
 
-filename_p = "data/result_GRCI_p_" + option
+filenamep = names.measurements(N=N, eta=eta_name, k=k_name, mu=mu_name, measurement=measurementp, protocol=option)
 ps = np.array(ps)
-np.save(filename_p, ps)
+np.save(filenamep, ps)
 
-
-filename_ind1 = "data/indeces_GRCI_k_" + option 
+filename_ind1 = names.indeces(N=N, eta=eta_name, k=k_name, mu=mu_name, measurement=measurement, protocol=option, index='k')
 np.save(filename_ind1, ks)
 
-filename_ind2 = "data/indeces_GRCI_m_" + option 
+filename_ind2 = names.indeces(N=N, eta=eta_name, k=k_name, mu=mu_name, measurement=measurement, protocol=option, index='mu')
 np.save(filename_ind2, mus)
 
 #################
 
-import plot_GRCI as plt
+import plots as plt
 
-plt.plot(option)
+plt.GRCI(option, N, eta)
