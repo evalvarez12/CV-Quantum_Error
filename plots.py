@@ -34,11 +34,11 @@ def KR(option, N, eta):
     filename_ind2 = names.indeces(N=N, eta=eta_name, k=k_name, mu=mu_name, measurement=measurement, protocol=option, index='mu')
     mus = np.load(filename_ind2 + '.npy')
     
-    ks, mus = np.meshgrid(ks, mus)
+    mus, ks = np.meshgrid(mus, ks)
     
     fig = plt.figure()
     ax = fig.gca(projection='3d')
-    ax.set_title(r"Transmitter side Scissors")
+    ax.set_title(option)
     ax.set_xlabel(r'$\kappa$', size=15)
     ax.set_ylabel(r'$\mu$', size=15)
     ax.set_zlabel(r'Key rate', size=10)
@@ -65,7 +65,7 @@ def KR(option, N, eta):
 def KR2(option, N, mu):
     # File name parameters
     k_name = 'var'
-    mu_name = mu
+    mu_name = .01
     eta_name = 'var'
     measurement = "KR"
     measurementp = "KR_p"
@@ -81,18 +81,18 @@ def KR2(option, N, mu):
     ks = np.load(filename_ind1 + '.npy')
     
     filename_ind2 = names.indeces(N=N, eta=eta_name, k=k_name, mu=mu_name, measurement=measurement, protocol=option, index='eta')
-    mus = np.load(filename_ind2 + '.npy')
+    etas = np.load(filename_ind2 + '.npy')
     
-    ks, mus = np.meshgrid(ks, mus)
+    etas, ks = np.meshgrid(etas, ks)
     
     fig = plt.figure()
     ax = fig.gca(projection='3d')
-    ax.set_title(r"Transmitter side Scissors")
+    ax.set_title(option)
     ax.set_xlabel(r'$\kappa$', size=15)
     ax.set_ylabel(r'$\mu$', size=15)
     ax.set_zlabel(r'Key rate', size=10)
     
-    surf = ax.plot_surface(ks, mus, data, cmap=cm.coolwarm,
+    surf = ax.plot_surface(ks, etas, data, cmap=cm.coolwarm,
                            linewidth=0, antialiased=False)
     
     #surf2 = ax.plot_surface(X, Y, data2,
@@ -116,8 +116,8 @@ def EN(option, N, eta):
     k_name = 'var'
     mu_name = 'var'
     eta_name = eta
-    measurement = "KR"
-    measurementp = "KR_p"
+    measurement = "EN"
+    measurementp = "EN_p"
     
     # Load the resuls
     filename = names.measurements(N=N, eta=eta_name, k=k_name, mu=mu_name, measurement=measurement, protocol=option)
@@ -132,7 +132,7 @@ def EN(option, N, eta):
     filename_ind2 = names.indeces(N=N, eta=eta_name, k=k_name, mu=mu_name, measurement=measurement, protocol=option, index='mu')
     mus = np.load(filename_ind2 + '.npy')
     
-    ks, mus = np.meshgrid(ks, mus)
+    mus, ks = np.meshgrid(mus, ks)
       
     fig = plt.figure()
     ax = fig.gca(projection='3d')
@@ -166,8 +166,8 @@ def GRCI(option, N, eta):
     k_name = 'var'
     mu_name = 'var'
     eta_name = eta
-    measurement = "KR"
-    measurementp = "KR_p"
+    measurement = "GRCI"
+    measurementp = "GRCI_p"
     
     # Load the resuls
     filename = names.measurements(N=N, eta=eta_name, k=k_name, mu=mu_name, measurement=measurement, protocol=option)
@@ -186,7 +186,7 @@ def GRCI(option, N, eta):
       
     fig = plt.figure()
     ax = fig.gca(projection='3d')
-    ax.set_title(r"Gaussian Reversed Coherent Information")
+    ax.set_title(option)
     ax.set_xlabel(r'$\kappa$', size=15)
     ax.set_ylabel(r'$\mu$', size=15)
     ax.set_zlabel(r'$GRCI$', size=10)
@@ -211,3 +211,10 @@ def GRCI(option, N, eta):
     fig.colorbar(surf, shrink=0.5, aspect=5)
     
     plt.show()
+    
+    
+    
+#KR('rps', 20, 0.01, )
+KR2('rsc', 10, 0.01)
+#GRCI('rct', 20, 0.01)
+#EN('rsc', 20, 0.01)

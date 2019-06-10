@@ -15,8 +15,8 @@ import numpy as np
 ############################################ CALCULATIONS
 
 ## Parameters
-N = 2
-option = 'none'
+N = 20
+option = 'rct'
 eta = 0.01
 
 

@@ -7,8 +7,8 @@ Created on Mon Apr  1 14:12:46 2019
 @author: Eduardo Villasenor
 """
 
-import cv_system as cv
-import measurements
+import src.cv_system as cv
+import src.measurements as measurements
 import numpy as np
 
 
@@ -21,12 +21,10 @@ mpne = 0.001
 f = 0.95
 option = 'rps'
 
-# Photon subtraction options
+# Operation options
 t = .9
 
-# Scissors options
-# Best  k=0.5 m_aux=0.6
-k = .4
+# Modified Scissors options
 m_aux = .2
 
 
@@ -59,13 +57,13 @@ elif option == 'none':
 # Transmitter Scissors
 elif option == 'tsc':
 #    p_success = sys.apply_scissors(k, r_aux, 1)
-    p_success = sys.apply_scissors_options(k, r_aux, 1, 'c')
+    p_success = sys.apply_scissors_options(t, r_aux, 1, 'c')
     print("P SUCCESS:", p_success)
 #    print(sys.state)
 
 # Transmitter Scissors Exact
 elif option == 'tsc_e':
-    p_success = sys.apply_scissors_exact(k, 1)
+    p_success = sys.apply_scissors_exact(t, 1)
     print("P SUCCESS:", p_success)
 #    print(sys.state)
 
@@ -103,12 +101,12 @@ for te in tes:
 
     # Receiver Scissors
     elif option == 'rsc':
-        p_success = sys.apply_scissors(k, r_aux, 1)
+        p_success = sys.apply_scissors(t, r_aux, 1)
         print("P SUCCESS:", p_success)
 
     # Receiver Scissors Exact
     elif option == 'rsc_e':
-        p_success = sys.apply_scissors_exact(k, 1)
+        p_success = sys.apply_scissors_exact(t, 1)
         print("P SUCCESS:", p_success)
 
 #    print(sys.cm)
@@ -130,6 +128,6 @@ np.save(filename_ind, tes)
 
 
 ############################################ PLOT
-import plot_PS as plt
+import plot_PS as plot
 
-plt.plot()
+plot.plot()

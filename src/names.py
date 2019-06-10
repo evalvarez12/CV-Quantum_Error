@@ -31,7 +31,7 @@ def indeces(N, eta, k, mu, measurement, protocol, index):
                    "mu=" + str(mu)]
 
     param_names = "_".join(param_names)
-    file_name = ["indeces", measurement, protocol]
+    file_name = ["indeces", index, measurement, protocol]
     file_name = "_".join(file_name)
     # The address of the parent parent directory
     script_path = dirname(dirname(realpath(__file__)))

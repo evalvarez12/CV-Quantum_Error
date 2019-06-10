@@ -17,10 +17,10 @@ import numpy as np
 ############################################ CALCULATIONS
 
 ## Parameters
-N = 2
+N = 20
 mpne = 0.001
 f = 0.95
-option = 'none'
+option = 'rct'
 eta = 0.01
 
 
@@ -115,7 +115,7 @@ np.save(filename_ind2, mus)
 
 ############################################ PLOT
 
-import plots as plt
+import plots 
 
-plt.KR(option, N, eta)
+plots.KR(option, N, eta)
 

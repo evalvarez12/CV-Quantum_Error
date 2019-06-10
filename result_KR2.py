@@ -15,11 +15,11 @@ import numpy as np
 ############################################ CALCULATIONS
 
 ## Parameters
-N = 2
+N = 10
 mpne = 0.001
 mu = .01
 f = 0.95
-option = 'rct'
+option = 'none'
 
 r = np.arcsinh(np.sqrt(mu))
 r_eve = np.arcsinh(np.sqrt(mpne))
@@ -38,7 +38,7 @@ for k in ks:
     k_temp = []
     p_temp = []
     for eta in etas:
-        print("--->", k, mu)
+        print("--->", k, eta)
         sys.load_state()
         
     
