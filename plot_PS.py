@@ -4,21 +4,26 @@ Created on Wed Jun  5 12:04:09 2019
 
 @author: Eduardo Villasenor
 """
+
+import src.names as names
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib
 import scipy.io
 
-def plot():
+
+def plot(N, params):
     key_rates = []
     indeces = []
-    for ext in ['none', 'tps', 'rps', 'tsc_e', 'rsc_e', 'tct', 'rct']:
-        f_name = "data/result_PS_" + ext
-        k_rate = np.load(f_name + ".npy")
+    for option in ['none', 'tps', 'rps', 'tsc', 'rsc', 'tct', 'rct']:
+        filename = names.measurements_line(N, 'KR', params, option)
+        k_rate = np.load(filename + ".npy")
+        
         key_rates += [k_rate]
     
-        i_name = "data/indeces_PS_" + ext
-        inds = np.load(i_name + '.npy')
+
+        filename_ind = names.indeces_line(N, 'KR', params, option, 'eta')
+        inds = np.load(filename_ind + '.npy')
         indeces += [inds]
     
     

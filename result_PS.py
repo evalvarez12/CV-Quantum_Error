@@ -9,17 +9,18 @@ Created on Mon Apr  1 14:12:46 2019
 
 import src.cv_system as cv
 import src.measurements as measurements
+import src.names as names
 import numpy as np
 
 
 ############################################ CALCULATIONS
 
 # Parameters
-N = 20
-mpn = 1.3
+N = 10
+mpn = .01
 mpne = 0.001
 f = 0.95
-option = 'rps'
+option = 'tsc'
 
 # Operation options
 t = .9
@@ -54,16 +55,16 @@ elif option == 'tct':
 elif option == 'none':
     p_success = 1
 
-# Transmitter Scissors
+# Transmitter Scissors Exact
 elif option == 'tsc':
-#    p_success = sys.apply_scissors(k, r_aux, 1)
-    p_success = sys.apply_scissors_options(t, r_aux, 1, 'c')
+    p_success = sys.apply_scissors_exact(t, 1)
     print("P SUCCESS:", p_success)
 #    print(sys.state)
+# Transmitter Scissors
 
-# Transmitter Scissors Exact
-elif option == 'tsc_e':
-    p_success = sys.apply_scissors_exact(t, 1)
+elif option == 'tsc_mod':
+#    p_success = sys.apply_scissors(k, r_aux, 1)
+    p_success = sys.apply_scissors_options(t, r_aux, 1, 'c')
     print("P SUCCESS:", p_success)
 #    print(sys.state)
 
@@ -99,15 +100,16 @@ for te in tes:
         p_success = sys.apply_photon_catalysis(1, t, 1)
         print("P SUCCESS:", p_success)
 
-    # Receiver Scissors
+    # Receiver Scissors Exact
     elif option == 'rsc':
+        p_success = sys.apply_scissors_exact(t, 1)
+        print("P SUCCESS:", p_success)
+
+    # Receiver Scissors
+    elif option == 'rsc_mod':
         p_success = sys.apply_scissors(t, r_aux, 1)
         print("P SUCCESS:", p_success)
 
-    # Receiver Scissors Exact
-    elif option == 'rsc_e':
-        p_success = sys.apply_scissors_exact(t, 1)
-        print("P SUCCESS:", p_success)
 
 #    print(sys.cm)
 #    print(sys.get_full_CM())
@@ -117,17 +119,18 @@ for te in tes:
     print("--->", te, kr)
 
 
+params = ["mpn=" + str(mpn), "mpne=" + str(mpne), "f=" + str(f) , "t=" + str(t)]
 # Save the resuls
-filename = "data/result_PS_" + option
+filename = names.measurements_line(N, 'KR', params, option)
 key_rates = np.array(key_rates)
 #print(key_rates)
 np.save(filename, key_rates)
 
-filename_ind = "data/indeces_PS_" + option
+filename_ind = names.indeces_line(N, 'KR', params, option, 'eta')
 np.save(filename_ind, tes)
 
 
 ############################################ PLOT
 import plot_PS as plot
 
-plot.plot()
+plot.plot(N, params)

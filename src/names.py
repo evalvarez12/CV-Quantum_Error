@@ -39,4 +39,33 @@ def indeces(N, eta, k, mu, measurement, protocol, index):
                  + "_" + param_names)
     return file_name
 
+
+def measurements_line(N, measurement, params, protocol):
+    """Name generator for measurement data files."""
+    param_names = ["N=" + str(N)] + params 
+    param_names = "_".join(param_names)
+    
+    file_name = ["measurement", measurement, protocol]
+    file_name = "_".join(file_name)
+    # The address of the parent parent directory
+    script_path = dirname(dirname(realpath(__file__)))
+    file_name = (script_path + "/data/" + file_name
+                 + "_" + param_names)
+    return file_name
+
+
+def indeces_line(N, measurement, params, protocol, var_name):
+    """Name generator for measurement data files."""
+    param_names = ["N=" + str(N)] + params 
+    param_names = "_".join(param_names)
+    
+    file_name = ["indeces", measurement, protocol, var_name]
+    file_name = "_".join(file_name)
+    # The address of the parent parent directory
+    script_path = dirname(dirname(realpath(__file__)))
+    file_name = (script_path + "/data/" + file_name
+                 + "_" + param_names)
+    return file_name
+
+
 #print(measurements(N=1, eta=2, k=1, mu=2, measurement='prueba', protocol='bueno'))
