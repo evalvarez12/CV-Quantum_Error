@@ -15,14 +15,20 @@ import scipy.io
 def plot(N, params):
     key_rates = []
     indeces = []
-    for option in ['none', 'tps', 'rps', 'tsc', 'rsc', 'tct', 'rct']:
-        filename = names.measurements_line(N, 'KR', params, option)
-        k_rate = np.load(filename + ".npy")
+    options = ['none', 'tps', 'rps', 'tsc', 'rsc', 'tct', 'rct']
+    for option in options:
         
+        if option == 'rsc':
+            filename = names.measurements_line(10, 'KR', params, option)
+            filename_ind = names.indeces_line(10, 'KR', params, option, 'eta')
+        else:
+            filename = names.measurements_line(N, 'KR', params, option)
+            filename_ind = names.indeces_line(N, 'KR', params, option, 'eta')
+       
+        
+        k_rate = np.load(filename + ".npy")
         key_rates += [k_rate]
     
-
-        filename_ind = names.indeces_line(N, 'KR', params, option, 'eta')
         inds = np.load(filename_ind + '.npy')
         indeces += [inds]
     
@@ -30,7 +36,7 @@ def plot(N, params):
     fig1, ax = plt.subplots()
     lines_types = ['k*-', 'b*-', 'r*-', 'y*-', 'm*-', 'c*-', 'g*-']
     for i in range(len(key_rates)):
-        ax.plot(indeces[i], key_rates[i], lines_types[i])
+        ax.plot(indeces[i], key_rates[i], lines_types[i], label=options[i])
     
     
     mg_ratesNO = scipy.io.loadmat('data/rate_no.mat')
@@ -73,4 +79,26 @@ def plot(N, params):
     ax.yaxis.set_minor_formatter(matplotlib.ticker.NullFormatter())
     
     #ax.minorticks_on()
+    plt.legend()
     plt.show()
+
+
+# Parameters
+N = 20
+mpn = 1.3
+mpne = 0.001
+f = 0.95
+option = 'tsc'
+# Operations options
+t = .1
+k_ps = 0.9
+k_sc = 0.1
+k_ct = 0.5
+
+#params = ["mpn=" + str(mpn), "mpne=" + str(mpne), "f=" + str(f) , "t=" + str(t)]
+params = ["mpn=" + str(mpn), "mpne=" + str(mpne), "f=" + str(f) , "k_ps=" + str(k_ps),
+          "k_sc=" + str(k_sc), "k_ct=" + str(k_ct)]
+
+plot(N, params)
+
+

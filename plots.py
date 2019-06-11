@@ -212,7 +212,11 @@ def GRCI(option, N, eta):
     
     plt.show()
     
-    
+
+
+
+
+
     
 #KR('rps', 20, 0.01, )
 KR2('rsc', 10, 0.01)

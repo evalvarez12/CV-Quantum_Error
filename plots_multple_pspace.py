@@ -123,4 +123,4 @@ def plotGRCI(option):
     
     
 #plotKR('rps', N=20)
-plotKR2('rsc', N=10)
+plotKR2('rps', N=20)
