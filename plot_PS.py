@@ -15,7 +15,9 @@ import scipy.io
 def plot(N, params):
     key_rates = []
     indeces = []
-    options = ['none', 'tps', 'rps', 'tsc', 'rsc', 'tct', 'rct']
+#    options = ['none', 'tps', 'rps', 'tsc', 'rsc', 'tct', 'rct']
+    options = ['none', 'tps', 'rps']
+
     for option in options:
         
         if option == 'rsc':
@@ -101,4 +103,22 @@ params = ["mpn=" + str(mpn), "mpne=" + str(mpne), "f=" + str(f) , "k_ps=" + str(
 
 plot(N, params)
 
+
+# Parameters
+N = 20
+mpn = 1.3
+mpne = 0.001
+f = 0.95
+option = 'tsc'
+# Operations options
+t = .1
+k_ps = 0.5
+k_sc = 0.1
+k_ct = 0.5
+
+#params = ["mpn=" + str(mpn), "mpne=" + str(mpne), "f=" + str(f) , "t=" + str(t)]
+params = ["mpn=" + str(mpn), "mpne=" + str(mpne), "f=" + str(f) , "k_ps=" + str(k_ps),
+          "k_sc=" + str(k_sc), "k_ct=" + str(k_ct)]
+
+plot(N, params)
 

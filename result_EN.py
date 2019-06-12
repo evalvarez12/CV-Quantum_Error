@@ -16,7 +16,7 @@ import numpy as np
 
 ## Parameters
 N = 20
-option = 'rct'
+option = 'rps'
 eta = 0.01
 
 

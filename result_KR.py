@@ -20,7 +20,7 @@ import numpy as np
 N = 20
 mpne = 0.001
 f = 0.95
-option = 'rct'
+option = 'rps'
 eta = 0.01
 
 
@@ -99,11 +99,11 @@ measurementp = "KR_p"
 
 # Save the resuls
 filename = names.measurements(N=N, eta=eta_name, k=k_name, mu=mu_name, measurement=measurement, protocol=option)
-key = np.array(key_rates)
+key_rates = np.array(key_rates)
 np.save(filename, key_rates)
 
 filenamep = names.measurements(N=N, eta=eta_name, k=k_name, mu=mu_name, measurement=measurementp, protocol=option)
-key_rates = np.array(ps)
+ps = np.array(ps)
 np.save(filenamep, ps)
 
 filename_ind1 = names.indeces(N=N, eta=eta_name, k=k_name, mu=mu_name, measurement=measurement, protocol=option, index='k')

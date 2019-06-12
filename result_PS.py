@@ -14,8 +14,10 @@ import numpy as np
 
 
 ############################################ CALCULATIONS
+#options = ['none', 'tps', 'rps', 'tsc', 'rsc', 'tct', 'rct']
+options = ['none', 'tps', 'rps']
 
-for option in ['none', 'tps', 'rps', 'tsc', 'rsc', 'tct', 'rct']:
+for option in options:
 #for i in [0]:
     # Parameters
     N = 20
@@ -28,7 +30,7 @@ for option in ['none', 'tps', 'rps', 'tsc', 'rsc', 'tct', 'rct']:
         N = 10
     
     # Operations options
-    k_ps = 0.9
+    k_ps = 0.5
     k_sc = 0.1
     k_ct = 0.5
     

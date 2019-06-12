@@ -17,9 +17,9 @@ import numpy as np
 ## Parameters
 N = 10
 mpne = 0.001
-mu = .01
+mu = 0.1
 f = 0.95
-option = 'none'
+option = 'rsc'
 
 r = np.arcsinh(np.sqrt(mu))
 r_eve = np.arcsinh(np.sqrt(mpne))
@@ -31,7 +31,7 @@ sys.save_state()
 
 key_rates = []
 ps = []
-etas = np.logspace(-3, -1, base=10, num=20)
+etas = np.logspace(-2, -1, base=10, num=20)
 ks = np.linspace(0000.1, .999, 20)
 
 for k in ks:
@@ -91,11 +91,11 @@ measurementp = "KR_p"
 
 # Save the resuls
 filename = names.measurements(N=N, eta=eta_name, k=k_name, mu=mu_name, measurement=measurement, protocol=option)
-key = np.array(key_rates)
+key_rates = np.array(key_rates)
 np.save(filename, key_rates)
 
 filenamep = names.measurements(N=N, eta=eta_name, k=k_name, mu=mu_name, measurement=measurementp, protocol=option)
-key_rates = np.array(ps)
+ps = np.array(ps)
 np.save(filenamep, ps)
 
 filename_ind1 = names.indeces(N=N, eta=eta_name, k=k_name, mu=mu_name, measurement=measurement, protocol=option, index='k')

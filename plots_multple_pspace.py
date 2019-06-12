@@ -10,10 +10,10 @@ from mayavi import mlab
 import src.names as names
 
 
-def plotKR(option, N):
+def plotKR(option, N, eta):
     k_name = 'var'
     mu_name = 'var'
-    eta_name = 0.01
+    eta_name = eta
     measurement = "KR"
     measurementp = "KR_p"
 
@@ -33,27 +33,34 @@ def plotKR(option, N):
     
     
 
-    filename_base =  names.measurements(N=20, eta=eta_name, k=k_name, mu=mu_name, measurement=measurement, protocol='none')
+    filename_base =  names.measurements(N=N, eta=eta_name, k=k_name, mu=mu_name, measurement=measurement, protocol='none')
     baseline = np.load(filename_base + '.npy')
    
-    Y, X = np.meshgrid(Y, X)
+#    Y, X = np.meshgrid(Y, X)
+    X, Y = np.mgrid[-1:1:20j, -1:1:20j]
 
     fig = mlab.figure()
 
-    surf2 = mlab.surf(X, Y, data, colormap='Oranges', warp_scale="auto")
-    surf1 = mlab.surf(X, Y, baseline, colormap='Blues', warp_scale="auto")
+    zero = np.zeros_like(data)
+
+    data = 100* data
+    baseline = 10* baseline
+
+    surf2 = mlab.surf(X, Y, data, colormap='Oranges')
+    surf1 = mlab.surf(X, Y, baseline, colormap='Blues')
+    surf3 = mlab.surf(X, Y, zero, colormap='bone', opacity=1)
+
 
     mlab.axes(surf1, color=(1, 1, 1),xlabel='$\kappa$', ylabel='$\mu$', zlabel='z')
 
 
 
-def plotKR2(option, N):
+def plotKR2(option, N, mu):
     k_name = 'var'
-    mu_name = 0.01
+    mu_name = mu
     eta_name = 'var'
     measurement = "KR"
     measurementp = "KR_p"
-    N = 10
     
     # Save the resuls
     filename = names.measurements(N=N, eta=eta_name, k=k_name, mu=mu_name, measurement=measurement, protocol=option)
@@ -73,14 +80,26 @@ def plotKR2(option, N):
     filename_base =  names.measurements(N=N, eta=eta_name, k=k_name, mu=mu_name, measurement=measurement, protocol='none')
     baseline = np.load(filename_base + '.npy')
    
-    Y, X = np.meshgrid(Y, X)
+    
+    zero = np.zeros_like(data)
+    
+#    Y, X = np.meshgrid(Y, X)
+    X, Y = np.mgrid[-1:1:20j, -1:1:20j]
 
     fig = mlab.figure()
-
-    surf2 = mlab.surf(X, Y, data, colormap='Oranges', warp_scale="auto")
-    surf1 = mlab.surf(X, Y, baseline, colormap='Blues', warp_scale="auto")
-
-    mlab.axes(surf1, color=(1, 1, 1),xlabel='$\kappa$', ylabel='$\eta$', zlabel='z')
+#
+    
+#    data = np.log(data)
+#    baseline = np.log(baseline)
+    
+    data = 100* data
+    baseline = 10* baseline
+    
+    surf2 = mlab.surf(X, Y, data, colormap='Oranges')
+    surf1 = mlab.surf(X, Y, baseline, colormap='Blues')
+    surf3 = mlab.surf(X, Y, zero, colormap='bone', opacity=1)
+#    
+#    mlab.axes(surf1, color=(1, 1, 1),xlabel='$\kappa$', ylabel='$\eta$', zlabel='z')
     
     
     
@@ -120,7 +139,44 @@ def plotGRCI(option):
     mlab.axes(surf1, color=(1, 1, 1),xlabel='$\kappa$', ylabel='$\mu$', zlabel='z')
     
     
+def plotEN(option, N, eta):
+    k_name = 'var'
+    mu_name = 'var'
+    eta_name = eta
+    measurement = "EN"
+    measurementp = "EN_p"
+    
+    # Save the resuls
+    filename = names.measurements(N=N, eta=eta_name, k=k_name, mu=mu_name, measurement=measurement, protocol=option)
+    data = np.load(filename + '.npy')
+    
+    filenamep = names.measurements(N=N, eta=eta_name, k=k_name, mu=mu_name, measurement=measurementp, protocol=option)
+    datap = np.load(filenamep + '.npy')
+    
+    filename_ind1 = names.indeces(N=N, eta=eta_name, k=k_name, mu=mu_name, measurement=measurement, protocol=option, index='k')
+    X = np.load(filename_ind1 + '.npy')
+    
+    filename_ind2 = names.indeces(N=N, eta=eta_name, k=k_name, mu=mu_name, measurement=measurement, protocol=option, index='mu')
+    Y = np.load(filename_ind2 + '.npy')
     
     
-#plotKR('rps', N=20)
-plotKR2('rps', N=20)
+
+    filename_base =  names.measurements(N=N, eta=eta_name, k=k_name, mu=mu_name, measurement=measurement, protocol='none')
+    baseline = np.load(filename_base + '.npy')
+   
+#    Y, X = np.meshgrid(Y, X)
+    X, Y = np.mgrid[-1:1:20j, -1:1:20j]
+    
+    fig = mlab.figure()
+
+    surf2 = mlab.surf(X, Y, data, colormap='Oranges')
+    surf1 = mlab.surf(X, Y, baseline, colormap='Blues')
+
+    mlab.axes(surf1, color=(1, 1, 1),xlabel='$\kappa$', ylabel='$\mu$', zlabel='z')
+    
+    
+    
+    
+#plotKR('rps', N=20, eta=0.01)
+#plotKR2('rps', N=20, mu=1.3)
+plotEN('rsc', N=20, eta=0.01)

@@ -8,6 +8,7 @@ Created on Wed Jun  5 11:51:31 2019
 import matplotlib.pyplot as plt
 from matplotlib import cm
 from matplotlib.ticker import LinearLocator, FormatStrFormatter
+from mpl_toolkits.mplot3d import Axes3D
 import numpy as np
 import src.names as names
 
@@ -65,7 +66,7 @@ def KR(option, N, eta):
 def KR2(option, N, mu):
     # File name parameters
     k_name = 'var'
-    mu_name = .01
+    mu_name = mu
     eta_name = 'var'
     measurement = "KR"
     measurementp = "KR_p"
@@ -83,13 +84,15 @@ def KR2(option, N, mu):
     filename_ind2 = names.indeces(N=N, eta=eta_name, k=k_name, mu=mu_name, measurement=measurement, protocol=option, index='eta')
     etas = np.load(filename_ind2 + '.npy')
     
+    
+    
     etas, ks = np.meshgrid(etas, ks)
     
     fig = plt.figure()
     ax = fig.gca(projection='3d')
     ax.set_title(option)
     ax.set_xlabel(r'$\kappa$', size=15)
-    ax.set_ylabel(r'$\mu$', size=15)
+    ax.set_ylabel(r'$\eta$', size=15)
     ax.set_zlabel(r'Key rate', size=10)
     
     surf = ax.plot_surface(ks, etas, data, cmap=cm.coolwarm,
@@ -192,7 +195,7 @@ def GRCI(option, N, eta):
     ax.set_zlabel(r'$GRCI$', size=10)
     
     
-    data[data < 0] = 0
+#    data[data < 0] = 0
     
     surf = ax.plot_surface(ks, mus, data, cmap=cm.coolwarm,
                            linewidth=0, antialiased=False)
@@ -219,6 +222,6 @@ def GRCI(option, N, eta):
 
     
 #KR('rps', 20, 0.01, )
-KR2('rsc', 10, 0.01)
-#GRCI('rct', 20, 0.01)
-#EN('rsc', 20, 0.01)
+#KR2('none', 20, 1.3)
+#GRCI('rps', 20, 0.01)
+EN('rps', 20, 0.01)
