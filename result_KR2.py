@@ -17,9 +17,9 @@ import numpy as np
 ## Parameters
 N = 10
 mpne = 0.001
-mu = 0.1
+mu = 1.3
 f = 0.95
-option = 'rsc'
+option = 'rps'
 
 r = np.arcsinh(np.sqrt(mu))
 r_eve = np.arcsinh(np.sqrt(mpne))
@@ -31,7 +31,7 @@ sys.save_state()
 
 key_rates = []
 ps = []
-etas = np.logspace(-2, -1, base=10, num=20)
+etas = np.logspace(-2, 0, base=10, num=20)
 ks = np.linspace(0000.1, .999, 20)
 
 for k in ks:

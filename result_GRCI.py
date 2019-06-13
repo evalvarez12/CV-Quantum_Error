@@ -16,16 +16,16 @@ import numpy as np
 ################################## CALCULATIONS
 
 # Initial parameters
-N = 10
+N = 5
 mu_aux = 0.1
 r_aux = np.arcsinh(np.sqrt(mu_aux))
 eta = 0.01
-option = 'rsc'
+option = 'none'
 
+## Initialize system
 sys = cv.System(N, Nmodes=2, cm=False)
 
 
-sys.save_state()
 rcis = []
 ps = []
 probabilities_sc = []
@@ -35,7 +35,7 @@ probabilities_ps = []
 #mus = np.linspace(0.0, .1, 20)
 
 ks = np.linspace(0, 1, 20)
-mus = np.linspace(0, .1, 20)
+mus = np.linspace(0, 1.5, 20)
 
 for k in ks:
 #for kappa in np.linspace(0.0001, 0.03, 20):
@@ -44,7 +44,7 @@ for k in ks:
     for mu in mus:
         print("--->", k, mu)
 #    for mu in np.linspace(0.0001, .6, 20):
-
+        sys.reset_state(2)
         r = np.arcsinh(np.sqrt(mu))
         sys.apply_TMS(r, pos=[0, 1])
 
@@ -70,7 +70,6 @@ for k in ks:
         rci = measurements.CI(sys, [0])
 
         print(rci)
-        sys.load_state()
 
         rci_temp += [rci]
         p_temp += [p]

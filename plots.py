@@ -39,7 +39,7 @@ def KR(option, N, eta):
     
     fig = plt.figure()
     ax = fig.gca(projection='3d')
-    ax.set_title(option)
+    ax.set_title(option + str(N))
     ax.set_xlabel(r'$\kappa$', size=15)
     ax.set_ylabel(r'$\mu$', size=15)
     ax.set_zlabel(r'Key rate', size=10)
@@ -90,7 +90,7 @@ def KR2(option, N, mu):
     
     fig = plt.figure()
     ax = fig.gca(projection='3d')
-    ax.set_title(option)
+    ax.set_title(option + str(N))
     ax.set_xlabel(r'$\kappa$', size=15)
     ax.set_ylabel(r'$\eta$', size=15)
     ax.set_zlabel(r'Key rate', size=10)
@@ -139,7 +139,7 @@ def EN(option, N, eta):
       
     fig = plt.figure()
     ax = fig.gca(projection='3d')
-    ax.set_title(r"Logarithmic Negativity")
+    ax.set_title(option + str(N))
     ax.set_xlabel(r'$\kappa$', size=15)
     ax.set_ylabel(r'$\mu$', size=15)
     ax.set_zlabel(r'$E_N$', size=10)
@@ -185,17 +185,17 @@ def GRCI(option, N, eta):
     filename_ind2 = names.indeces(N=N, eta=eta_name, k=k_name, mu=mu_name, measurement=measurement, protocol=option, index='mu')
     mus = np.load(filename_ind2 + '.npy')
     
-    ks, mus = np.meshgrid(ks, mus)
+    mus, ks = np.meshgrid(mus, ks)
       
     fig = plt.figure()
     ax = fig.gca(projection='3d')
-    ax.set_title(option)
+    ax.set_title(option + str(N))
     ax.set_xlabel(r'$\kappa$', size=15)
     ax.set_ylabel(r'$\mu$', size=15)
     ax.set_zlabel(r'$GRCI$', size=10)
     
     
-#    data[data < 0] = 0
+    data[data < 0] = 0
     
     surf = ax.plot_surface(ks, mus, data, cmap=cm.coolwarm,
                            linewidth=0, antialiased=False)
@@ -221,7 +221,11 @@ def GRCI(option, N, eta):
 
 
     
-#KR('rps', 20, 0.01, )
-#KR2('none', 20, 1.3)
-#GRCI('rps', 20, 0.01)
-EN('rps', 20, 0.01)
+#KR('rps', 20, 0.01)
+#KR2('rps', 20, 0.01)
+#KR2('rsc', 20, 1.3)
+
+GRCI('none', 20, 0.01)
+#EN('rps', 20, 0.01)
+#EN('none', 20, 0.01)
+#EN('rsc', 20, 0.01)
