@@ -15,19 +15,19 @@ import numpy as np
 
 ############################################ CALCULATIONS
 #options = ['none', 'tps', 'rps', 'tsc', 'rsc', 'tct', 'rct']
-options = ['none', 'tps', 'rps']
+#options = ['none', 'tps', 'rps']
 
-for option in options:
-#for i in [0]:
+#for option in options:
+for i in [0]:
     # Parameters
-    N = 20
+    N = 15
     mpn = 1.3
     mpne = 0.001
     f = 0.95
-#    option = 'tsc'
-    print("Protocol:", option)
-    if option == 'rsc':
-        N = 10
+    option = 'rsc'
+#    print("Protocol:", option)
+#    if option == 'rsc':
+#        N = 10
     
     # Operations options
     k_ps = 0.5
