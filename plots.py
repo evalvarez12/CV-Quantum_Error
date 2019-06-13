@@ -221,11 +221,13 @@ def GRCI(option, N, eta):
 
 
     
-#KR('rps', 20, 0.01)
-#KR2('rps', 20, 0.01)
-#KR2('rsc', 20, 1.3)
+#KR('rsc', 10, 0.01)
+#KR('rps', 10, 0.01)
 
-GRCI('none', 20, 0.01)
+KR2('rsc', 10, 0.01)
+KR2('rsc', 10, 1.3)
+
+#GRCI('none', 20, 0.01)
 #EN('rps', 20, 0.01)
 #EN('none', 20, 0.01)
 #EN('rsc', 20, 0.01)

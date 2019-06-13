@@ -17,10 +17,10 @@ import numpy as np
 ############################################ CALCULATIONS
 
 ## Parameters
-N = 20
+N = 10
 mpne = 0.001
 f = 0.95
-option = 'rps'
+option = 'rsc'
 eta = 0.01
 
 
@@ -32,8 +32,13 @@ sys = cv.System(N, Nmodes=2, cm=False)
 
 key_rates = []
 ps = []
-ks = np.linspace(0000.1, .999, 20)
-mus = np.linspace(0000.1, 1.5, 20)
+#ks = np.linspace(0000.1, .999, 20)
+#mus = np.linspace(0000.1, 1.5, 20)
+
+ks = np.linspace(0.0, 0.01, 20)
+mus = np.linspace(0.0, .1, 20)
+
+
 
 for k in ks:
     k_temp = []
