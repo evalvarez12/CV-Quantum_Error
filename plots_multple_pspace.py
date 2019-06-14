@@ -48,8 +48,12 @@ def plotKR(option, N, eta):
     print("mu:", min(Y), max(Y))
     xmin = min(X)
     xmax = max(X)
+    xmin = 0 
+    xmax = 1
+    
     ymin = min(Y)
     ymax = max(Y)
+
     zmin = 0
     zmax = .000008
     
@@ -71,7 +75,7 @@ def plotKR(option, N, eta):
 #    surf2 = mlab.surf(X, Y, 10*baseline, colormap='Blues')
     surf3 = mlab.surf(X, Y, zero, colormap='bone', opacity=.5)
 
-
+    mlab.title("Photon Subtraction")
     mlab.outline(surf1, color=(.7, .7, .7), extent=ax_extent)
     mlab.axes(surf1, color=(.7, .7, .7), extent=ax_extent,
               ranges=ax_ranges,
@@ -141,7 +145,7 @@ def plotKR2(option, N, mu):
     zmin = 0
     zmax = .08
     
-    factorz = 100000
+    factorz = 10000000
     data = factorz*data
     
     ax_ranges = [xmin, xmax, ymin, ymax, zmin, zmax]
@@ -160,13 +164,12 @@ def plotKR2(option, N, mu):
 #    data = np.log(data)
 #    baseline = np.log(baseline)
     
-    data = 100* data
-    baseline = 10* baseline
-    
     surf2 = mlab.surf(X, Y, data, colormap='Oranges')
     surf1 = mlab.surf(X, Y, baseline, colormap='Blues')
     surf3 = mlab.surf(X, Y, zero, colormap='bone', opacity=1)
 #    
+    
+    
     mlab.outline(surf1, color=(.7, .7, .7), extent=ax_extent)
     mlab.axes(surf1, color=(.7, .7, .7), extent=ax_extent,
               ranges=ax_ranges,
@@ -263,20 +266,29 @@ def plotEN(option, N, eta):
 
     filename_base =  names.measurements(N=N, eta=eta_name, k=k_name, mu=mu_name, measurement=measurement, protocol='none')
     baseline = np.load(filename_base + '.npy')
+    
+    filename_base2 =  names.measurements(N=N, eta=eta_name, k=k_name, mu=mu_name, measurement=measurement, protocol='rps')
+    baseline2 = np.load(filename_base + '.npy')
+   
    
     
     print("k:", min(X), max(X))
     print("mu:", min(Y), max(Y))
     xmin = min(X)
     xmax = max(X)
+    xmin = 0 
+    xmax = 1
+    
     ymin = min(Y)
     ymax = max(Y)
-    zmin = 0
-    zmax = .2
     
-    factorz = 5
+    zmin = 0
+    zmax = .17
+    
+    factorz = 2
     data = factorz * data
     baseline = factorz * baseline
+    baseline2 = factorz * baseline2
     
     
     ax_ranges = [xmin, xmax, ymin, ymax, zmin, zmax]
@@ -288,20 +300,23 @@ def plotEN(option, N, eta):
     
     fig = mlab.figure()
 
-    surf2 = mlab.surf(X, Y, data, colormap='Oranges')
-    surf1 = mlab.surf(X, Y, baseline, colormap='Blues')
+    surf1 = mlab.surf(X, Y, data, colormap='Oranges')
+#    surf2 = mlab.surf(X, Y, baseline, colormap='Greys')
+    surf3 = mlab.surf(X, Y, baseline2, colormap='Greens')
+
 
     mlab.outline(surf1, color=(.7, .7, .7), extent=ax_extent)
-    mlab.axes(surf1, color=(.7, .7, .7), extent=ax_extent,
-              ranges=ax_ranges,
-              xlabel='$\kappa$', ylabel='$\mu$', zlabel='Key rate')    
+    mlab.axes(surf1, color=(.7, .7, .7), extent=ax_extent, ranges=ax_ranges,
+              xlabel='$\kappa$', ylabel='$\mu$', zlabel='$E_N$')    
     
 #    surf1.actor.property.opacity = 1
-#    surf3.actor.property.opacity = 0.5
+#    surf2.actor.property.opacity = 0.6
 #    fig.scene.renderer.use_depth_peeling = 1
     
     
-plotKR('rsc', N=10, eta=0.01)
+#plotKR('rps', N=20, eta=0.01)
 #plotKR2('rps', N=20, mu=1.3)
 #plotGRCI('rsc', N=20, eta=0.01)
-#plotEN('rsc', N=20, eta=0.01)
+
+
+plotEN('rsc', N=20, eta=0.01)

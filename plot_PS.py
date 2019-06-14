@@ -12,11 +12,11 @@ import matplotlib
 import scipy.io
 
 
-def plot(N, params):
+def plot(N, params, MG=True):
     key_rates = []
     indeces = []
-#    options = ['none', 'tps', 'rps', 'tsc', 'rsc', 'tct', 'rct']
-    options = ['none', 'tps', 'rps']
+    options = ['none', 'tps', 'rps', 'tsc', 'rsc', 'tct', 'rct']
+#    options = ['none', 'tps', 'rps']
 
     for option in options:
         
@@ -41,23 +41,24 @@ def plot(N, params):
         ax.plot(indeces[i], key_rates[i], lines_types[i], label=options[i])
     
     
-    mg_ratesNO = scipy.io.loadmat('data/rate_no.mat')
-    mg_ratesR = scipy.io.loadmat('data/rate_r.mat')
-    mg_ratesT = scipy.io.loadmat('data/rate_t.mat')
-    mg_indNO = scipy.io.loadmat('data/ind_no.mat')
-    mg_indR = scipy.io.loadmat('data/ind_r.mat')
-    mg_indT = scipy.io.loadmat('data/ind_t.mat')
-    
-    mg_ratesNO = mg_ratesNO['RateNo'][0]
-    mg_ratesR = mg_ratesR['RateR'][0]
-    mg_ratesT = mg_ratesT['RateT'][0]
-    mg_indNO = mg_indNO['indd'][0]
-    mg_indR = mg_indR['indR'][0]
-    mg_indT = mg_indT['indT'][0]
-    
-    ax.plot(mg_indNO, mg_ratesNO, 'k--')
-    ax.plot(mg_indR, mg_ratesR, 'r--')
-    ax.plot(mg_indT, mg_ratesT, 'b--')
+    if MG:
+        mg_ratesNO = scipy.io.loadmat('data/rate_no.mat')
+        mg_ratesR = scipy.io.loadmat('data/rate_r.mat')
+        mg_ratesT = scipy.io.loadmat('data/rate_t.mat')
+        mg_indNO = scipy.io.loadmat('data/ind_no.mat')
+        mg_indR = scipy.io.loadmat('data/ind_r.mat')
+        mg_indT = scipy.io.loadmat('data/ind_t.mat')
+        
+        mg_ratesNO = mg_ratesNO['RateNo'][0]
+        mg_ratesR = mg_ratesR['RateR'][0]
+        mg_ratesT = mg_ratesT['RateT'][0]
+        mg_indNO = mg_indNO['indd'][0]
+        mg_indR = mg_indR['indR'][0]
+        mg_indT = mg_indT['indT'][0]
+        
+        ax.plot(mg_indNO, mg_ratesNO, 'k--')
+        ax.plot(mg_indR, mg_ratesR, 'r--')
+        ax.plot(mg_indT, mg_ratesT, 'b--')
     
     ax.set_xlabel(r"$\eta$")
     ax.set_ylabel("Key rate")
@@ -85,40 +86,40 @@ def plot(N, params):
     plt.show()
 
 
-# Parameters
-N = 20
-mpn = 1.3
-mpne = 0.001
-f = 0.95
-option = 'tsc'
-# Operations options
-t = .1
-k_ps = 0.9
-k_sc = 0.1
-k_ct = 0.5
-
-#params = ["mpn=" + str(mpn), "mpne=" + str(mpne), "f=" + str(f) , "t=" + str(t)]
-params = ["mpn=" + str(mpn), "mpne=" + str(mpne), "f=" + str(f) , "k_ps=" + str(k_ps),
-          "k_sc=" + str(k_sc), "k_ct=" + str(k_ct)]
-
-plot(N, params)
-
-
-# Parameters
-N = 20
-mpn = 1.3
-mpne = 0.001
-f = 0.95
-option = 'tsc'
-# Operations options
-t = .1
-k_ps = 0.5
-k_sc = 0.1
-k_ct = 0.5
-
-#params = ["mpn=" + str(mpn), "mpne=" + str(mpne), "f=" + str(f) , "t=" + str(t)]
-params = ["mpn=" + str(mpn), "mpne=" + str(mpne), "f=" + str(f) , "k_ps=" + str(k_ps),
-          "k_sc=" + str(k_sc), "k_ct=" + str(k_ct)]
-
-plot(N, params)
+## Parameters
+#N = 20
+#mpn = 1.3
+#mpne = 0.001
+#f = 0.95
+#option = 'tsc'
+## Operations options
+#t = .1
+#k_ps = 0.9
+#k_sc = 0.1
+#k_ct = 0.5
+#
+##params = ["mpn=" + str(mpn), "mpne=" + str(mpne), "f=" + str(f) , "t=" + str(t)]
+#params = ["mpn=" + str(mpn), "mpne=" + str(mpne), "f=" + str(f) , "k_ps=" + str(k_ps),
+#          "k_sc=" + str(k_sc), "k_ct=" + str(k_ct)]
+#
+#plot(N, params)
+#
+#
+## Parameters
+#N = 20
+#mpn = 1.3
+#mpne = 0.001
+#f = 0.95
+#option = 'tsc'
+## Operations options
+#t = .1
+#k_ps = 0.5
+#k_sc = 0.1
+#k_ct = 0.5
+#
+##params = ["mpn=" + str(mpn), "mpne=" + str(mpne), "f=" + str(f) , "t=" + str(t)]
+#params = ["mpn=" + str(mpn), "mpne=" + str(mpne), "f=" + str(f) , "k_ps=" + str(k_ps),
+#          "k_sc=" + str(k_sc), "k_ct=" + str(k_ct)]
+#
+#plot(N, params)
 
