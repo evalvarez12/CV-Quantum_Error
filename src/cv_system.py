@@ -128,6 +128,17 @@ class System:
         self.Nmodes = self.Nmodes - 1
 
 
+    def apply_loss_channel_thermal(self, eta, pos, n):
+        theta = np.arccos(np.sqrt(eta))
+        thermal_state = qt.thermal_dm(self.N, n)
+        self.add_state(thermal_state)
+        self.apply_BS(theta, [pos, self.Nmodes-1])
+
+        # Trace out loss channel mode - NOTE in qutip the last one is index 0
+        self.state = self.state.ptrace(range(1, self.Nmodes))
+        self.Nmodes = self.Nmodes - 1
+
+
     def add_TMSV(self, r):
         state_aux = qt.tensor(qt.basis(self.N), qt.basis(self.N))
         S = ops.tmsqueeze(self.N, r)

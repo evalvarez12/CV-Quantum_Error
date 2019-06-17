@@ -21,9 +21,9 @@ for option in options:
 # for i in [0]:
     # Parameters
     # option = 'rsc'
-    N = 20
-    mpn = 1.3
-    mpne = 0.001
+    N = 10
+    mpn = 0.01
+    mpne = 0.005
     f = 0.95
     print("Protocol:", option)
     if option == 'rsc':

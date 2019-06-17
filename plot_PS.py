@@ -121,8 +121,8 @@ def plot_split(N, params, MG=True):
     lines_types2 = ['ko-', 'bo-', 'ro-', 'yo-', 'mo-', 'co-', 'go-']
 
     for i in range(len(i_shareds)):
-        ax.plot(indeces[i], i_shareds[i], lines_types[i], label=options[i])
-        ax.plot(indeces[i], i_stolens[i], lines_types2[i], label=options[i])
+        ax.plot(indeces[i], i_shareds[i], lines_types[i], label=options[i]+"_shared")
+        ax.plot(indeces[i][:-1], i_stolens[i][:-1], lines_types2[i], label=options[i]+"_stolen")
 
     print(params)
     ax.set_xlabel(r"$\eta$")
@@ -146,8 +146,10 @@ def plot_split(N, params, MG=True):
     ax.yaxis.set_minor_locator(locmin)
     ax.yaxis.set_minor_formatter(matplotlib.ticker.NullFormatter())
 
+    ax.text(0.1, 0.80, params[0])
+
     #ax.minorticks_on()
-    plt.legend()
+    plt.legend(fontsize=8)
     plt.show()
 
 
@@ -155,25 +157,6 @@ def plot_split(N, params, MG=True):
 
 
 ## Parameters
-#N = 20
-#mpn = 1.3
-#mpne = 0.001
-#f = 0.95
-#option = 'tsc'
-## Operations options
-#t = .1
-#k_ps = 0.9
-#k_sc = 0.1
-#k_ct = 0.5
-#
-##params = ["mpn=" + str(mpn), "mpne=" + str(mpne), "f=" + str(f) , "t=" + str(t)]
-#params = ["mpn=" + str(mpn), "mpne=" + str(mpne), "f=" + str(f) , "k_ps=" + str(k_ps),
-#          "k_sc=" + str(k_sc), "k_ct=" + str(k_ct)]
-#
-#plot(N, params)
-#
-#
-# Parameters
 N = 20
 mpn = 1.3
 mpne = 0.001
@@ -187,6 +170,25 @@ k_ct = 0.5
 
 #params = ["mpn=" + str(mpn), "mpne=" + str(mpne), "f=" + str(f) , "t=" + str(t)]
 params = ["mpn=" + str(mpn), "mpne=" + str(mpne), "f=" + str(f) , "k_ps=" + str(k_ps),
+          "k_sc=" + str(k_sc), "k_ct=" + str(k_ct)]
+
+plot(N, params)
+
+
+# Parameters
+N = 20
+mpn = 0.1
+mpne = 0.001
+f = 0.95
+option = 'tsc'
+# Operations options
+t = .1
+k_ps = 0.9
+k_sc = 0.1
+k_ct = 0.5
+
+#params = ["mpn=" + str(mpn), "mpne=" + str(mpne), "f=" + str(f) , "t=" + str(t)]
+params = ["mpn=" + str(mpn), "mpne=" + str(mpne), "f=" + str(f) , "k_ps=" + str(k_ps),
          "k_sc=" + str(k_sc), "k_ct=" + str(k_ct)]
 
-plot_split(N, params)
+#plot_split(N, params)
