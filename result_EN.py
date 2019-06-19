@@ -17,7 +17,7 @@ import numpy as np
 ## Parameters
 N = 20
 option = 'rps'
-eta = 0.01
+eta = 0.5
 
 
 ## Initialize system
