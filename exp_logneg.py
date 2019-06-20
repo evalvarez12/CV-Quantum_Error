@@ -16,57 +16,66 @@ import matplotlib.pyplot as plt
 ############################################ CALCULATIONS
 
 ## Parameters
-N = 30
+N = 20
 k = 0.95
-option = 'dual'
+#option = 'single'
 
+eta = 0.01
+
+options = ['none', 'single', 'dual']
 ## Initialize system
 sys = cv.System(N, Nmodes=2, cm=False)
 
-els = []
-ps = []
-mus = np.linspace(0.001, 2, 20)
 
-for mu in mus:
-    print("--->", mu)
-    sys.reset_state(2)
+mus = np.linspace(0.001, 1, 20)
 
-#    r = np.arcsinh(np.sqrt(mu))
-    r = mu
-    sys.apply_TMS(r, [0, 1])
-        
-    if option == 'none':
-        p_success = 1
+for option in options:
+    els = []
+    ps = []
+
+    print("Options:", option)
+    for mu in mus:
+        print("--->", mu)
+        sys.reset_state(2)
     
-    elif option == 'single':
-        p_success = sys.apply_photon_subtraction(k, 1)
-        print("P SUCCESS:", p_success)
-
-    elif option == 'dual':
-        p_success0 = sys.apply_photon_subtraction(k, 0)
-        p_success1 = sys.apply_photon_subtraction(k, 1)
-        p_success = p_success0 * p_success1
-        print("P SUCCESS:", p_success)
+    #    r = np.arcsinh(np.sqrt(mu))
+        r = mu
+        sys.apply_TMS(r, [0, 1])
             
-    el = measurements.log_neg(sys.state, [1, 0])
-#    el = measurements.log_neg_Gauss(sys, [1, 0])
+#        sys.apply_loss_channel(eta, 1)
+        
+        if option == 'none':
+            p_success = 1
+        
+        elif option == 'single':
+            p_success = sys.apply_photon_subtraction(k, 1)
+            print("P SUCCESS:", p_success)
+    
+        elif option == 'dual':
+            p_success0 = sys.apply_photon_subtraction(k, 0)
+            p_success1 = sys.apply_photon_subtraction(k, 1)
+            p_success = p_success0 * p_success1
+            print("P SUCCESS:", p_success)
+                
+        el = measurements.log_neg(sys.state, [1, 0])
+    #    el = measurements.log_neg_Gauss(sys, [1, 0])
+    
+        print("Logarithmic Negativity", el)
+        els += [el]
+        ps += [p_success]
 
-    print("Logarithmic Negativity", el, p_success)
-    els += [el]
-    ps += [p_success]
 
-
-# Save the resuls
-filename = "data/exp_logneg_el_" + option 
-els = np.array(els)
-np.save(filename, els)
-
-filename = "data/exp_logneg_p_" + option 
-key_rates = np.array(ps)
-np.save(filename, ps)
-
-filename_ind1 = "data/indeces_logneg_mu_" + option 
-np.save(filename_ind1, mus)
+    # Save the resuls
+    filename = "data/exp_logneg_el_" + option 
+    els = np.array(els)
+    np.save(filename, els)
+    
+    filename = "data/exp_logneg_p_" + option 
+    key_rates = np.array(ps)
+    np.save(filename, ps)
+    
+    filename_ind1 = "data/indeces_logneg_mu_" + option 
+    np.save(filename_ind1, mus)
 
 
 
@@ -77,6 +86,7 @@ list_plots = ['none', 'single', 'dual']
 fig = plt.figure()
 indeces = []
 els = []
+pss = []
 
 for ext in list_plots :
 
@@ -91,16 +101,20 @@ for ext in list_plots :
 
     indeces += [inds]
     els += [el]
+    pss += [ps]
 
-
-lines_types = ['k*-', 'b*-', 'r*-']
+lines_types = ['k*-', 'r*-', 'b*-']
 for i in range(len(list_plots)):
-    plt.plot(indeces[i], els[i], lines_types[i])
+    x = -10*np.log10(np.exp(-2*indeces[i]))
+#    y = np.multiply(ps[i], els[i])
+    y = els[i]
+    
+    plt.plot(x, y, lines_types[i])
 
 # Plot the surface.
 
 plt.title(r"Logarithmic Negativity")
-plt.xlabel(r'$\mu$', size=15)
+plt.xlabel(r'Squeezing (dB)', size=15)
 plt.ylabel(r'$E_N$', size=10)
 
 #fig = plt.figure()

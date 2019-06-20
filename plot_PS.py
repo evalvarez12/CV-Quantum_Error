@@ -84,6 +84,64 @@ def plot(N, params, MG=True):
     #ax.minorticks_on()
     plt.legend()
     plt.show()
+    
+    
+    
+def plot2(N, params):
+    key_rates = []
+    indeces = []
+    options = ['none', 'tps', 'rps', 'tqs', 'rqs']
+#    options = ['none', 'tps', 'rps']
+
+    for option in options:
+
+        if option == 'rqs' or option == 'tqs':
+            filename = names.measurements_line(10, 'KR2', params, option)
+            filename_ind = names.indeces_line(10, 'KR2', params, option, 'eta')
+        else:
+            filename = names.measurements_line(N, 'KR2', params, option)
+            filename_ind = names.indeces_line(N, 'KR2', params, option, 'eta')
+
+
+        k_rate = np.load(filename + ".npy")
+        key_rates += [k_rate]
+
+        inds = np.load(filename_ind + '.npy')
+        indeces += [inds]
+
+
+    fig1, ax = plt.subplots()
+    lines_types = ['k*-', 'b*-', 'r*-', 'g*-', 'm*-']
+    legends = ['TMSV', 'tPS', 'rPS', 'tQS', 'rQS']
+    for i in range(len(key_rates)):
+        x = -10*np.log10(indeces[i])
+        ax.plot(x, key_rates[i], lines_types[i], label=legends[i])
+
+
+    ax.set_xlabel(r"Attenuation (dB)", size=15)
+    ax.set_ylabel("Key rate (bit/pulse)", size=15)
+    #ax.legend(["No PS", "Transmitter PS", "Receiver PS", "Transmitter SC", "Mg no PS", "Mg r-PS", "Mg t-PS"])
+
+
+    #key_rates1b = np.load(filename1 + "BAD.npy")
+    #key_rates2b = np.load(filename2 + "BAD.npy")
+    #key_rates3b = np.load(filename3 + "BAD.npy")
+    #ax.plot(tes, key_rates1b, 'ko')
+    #ax.plot(tes, key_rates2b, 'bo')
+    #ax.plot(tes, key_rates3b, 'ro')
+
+    ax.set_yscale('log')
+
+
+    locmaj = matplotlib.ticker.LogLocator(base=10,numticks=10)
+    ax.yaxis.set_major_locator(locmaj)
+    locmin = matplotlib.ticker.LogLocator(base=10.0,subs=(0.2,0.4,0.6,0.8),numticks=12)
+    ax.yaxis.set_minor_locator(locmin)
+    ax.yaxis.set_minor_formatter(matplotlib.ticker.NullFormatter())
+
+    #ax.minorticks_on()
+    plt.legend(loc='upper right', fontsize=15)
+    plt.show()
 
 
 
@@ -156,39 +214,54 @@ def plot_split(N, params, MG=True):
 
 
 
+### Parameters
+#N = 20
+#mpn = 1.3
+#mpne = 0.001
+#f = 0.95
+#option = 'tsc'
+## Operations options
+#t = .1
+#k_ps = 0.9
+#k_sc = 0.1
+#k_ct = 0.5
+#
+##params = ["mpn=" + str(mpn), "mpne=" + str(mpne), "f=" + str(f) , "t=" + str(t)]
+#params = ["mpn=" + str(mpn), "mpne=" + str(mpne), "f=" + str(f) , "k_ps=" + str(k_ps),
+#          "k_sc=" + str(k_sc), "k_ct=" + str(k_ct)]
+#
+##plot(N, params)
+#
+#
 ## Parameters
-N = 20
-mpn = 1.3
-mpne = 0.001
-f = 0.95
-option = 'tsc'
-# Operations options
-t = .1
-k_ps = 0.9
-k_sc = 0.1
-k_ct = 0.5
+#N = 20
+#mpn = 0.1
+#mpne = 0.001
+#f = 0.95
+#option = 'tsc'
+## Operations options
+#t = .1
+#k_ps = 0.9
+#k_sc = 0.1
+#k_ct = 0.5
+#
+##params = ["mpn=" + str(mpn), "mpne=" + str(mpne), "f=" + str(f) , "t=" + str(t)]
+#params = ["mpn=" + str(mpn), "mpne=" + str(mpne), "f=" + str(f) , "k_ps=" + str(k_ps),
+#         "k_sc=" + str(k_sc), "k_ct=" + str(k_ct)]
+#
+##plot_split(N, params)
 
-#params = ["mpn=" + str(mpn), "mpne=" + str(mpne), "f=" + str(f) , "t=" + str(t)]
-params = ["mpn=" + str(mpn), "mpne=" + str(mpne), "f=" + str(f) , "k_ps=" + str(k_ps),
-          "k_sc=" + str(k_sc), "k_ct=" + str(k_ct)]
-
-plot(N, params)
 
 
 # Parameters
 N = 20
-mpn = 0.1
-mpne = 0.001
-f = 0.95
-option = 'tsc'
+r = .92
+r_eve = 0.033
+
 # Operations options
-t = .1
-k_ps = 0.9
-k_sc = 0.1
-k_ct = 0.5
+k_ps = 0.95
+k_qs = 0.05
+params = ["r=" + str(r), "r_eve=" + str(r_eve), "k_ps=" + str(k_ps),
+          "k_qs=" + str(k_qs)]
 
-#params = ["mpn=" + str(mpn), "mpne=" + str(mpne), "f=" + str(f) , "t=" + str(t)]
-params = ["mpn=" + str(mpn), "mpne=" + str(mpne), "f=" + str(f) , "k_ps=" + str(k_ps),
-         "k_sc=" + str(k_sc), "k_ct=" + str(k_ct)]
-
-#plot_split(N, params)
+#plot2(N, params)

@@ -15,9 +15,9 @@ import numpy as np
 ############################################ CALCULATIONS
 
 ## Parameters
-N = 20
-option = 'rps'
-eta = 0.5
+N = 10
+option = 'rsc'
+eta = 0.1
 
 
 ## Initialize system
@@ -26,7 +26,7 @@ sys = cv.System(N, Nmodes=2, cm=False)
 els = []
 ps = []
 ks = np.linspace(0000.1, .999, 20)
-mus = np.linspace(0000.1, 1.5, 20)
+mus = np.linspace(0.001, 1, 20)
 
 for k in ks:
     el_temp = []
@@ -34,7 +34,7 @@ for k in ks:
     for mu in mus:
         print("--->", k, mu)
         sys.reset_state(2)
-        r = np.arcsinh(np.sqrt(mu))
+        r = mu
         sys.apply_TMS(r, [0, 1])
                 
     

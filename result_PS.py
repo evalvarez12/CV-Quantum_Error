@@ -14,32 +14,29 @@ import numpy as np
 
 
 ############################################ CALCULATIONS
-options = ['none', 'tps', 'rps', 'tsc', 'rsc', 'tct', 'rct']
+options = ['none', 'tps', 'rps', 'tqs', 'rqs']
+#options = ['none', 'tps', 'rps']
+
 #options = ['none', 'tps', 'rps']
 
 for option in options:
 #for i in [0]:
-    # Parameters
 #    option = 'rsc'
-    N = 15
-    mpn = 0.01
-    mpne = 0.001
-    f = 0.95
+
+    # Parameters
+    N = 22
+    r = .92
+    r_eve = 0.033
+
     print("Protocol:", option)
-    if option == 'rsc':
+    if option == 'rqs':
         N = 10
     
     # Operations options
-    k_ps = 0.5
-    k_sc = 0.01
-    k_ct = 0.5
+    k_ps = 0.95
+    k_qs = 0.05
     
-    # Modified Scissors options
-    m_aux = .2
     
-    r = np.arcsinh(np.sqrt(mpn))
-    r_eve = np.arcsinh(np.sqrt(mpne))
-    r_aux = np.arcsinh(np.sqrt(m_aux))
     
     ## Initialize state
     sys = cv.System(N, Nmodes=2, cm=False)
@@ -53,27 +50,14 @@ for option in options:
         p_success = sys.apply_photon_subtraction(k_ps, 1)
         print("P SUCCESS:", p_success)
     
-    elif option == 'tct':
-        p_success = sys.apply_photon_catalysis(1, k_ct, 1)
-        print("P SUCCESS:", p_success)
-    
     # No Photon subtraction
     elif option == 'none':
         p_success = 1
     
     # Transmitter Scissors Exact
-    elif option == 'tsc':
-        p_success = sys.apply_scissors_exact(k_sc, 1)
+    elif option == 'tqs':
+        p_success = sys.apply_scissors_exact(k_qs, 1)
         print("P SUCCESS:", p_success)
-    #    print(sys.state)
-    # Transmitter Scissors
-    
-    elif option == 'tsc_mod':
-    #    p_success = sys.apply_scissors(k, r_aux, 1)
-        p_success = sys.apply_scissors_options(k_sc, r_aux, 1, 'c')
-        print("P SUCCESS:", p_success)
-    #    print(sys.state)
-    
     
     # Evesdropper collective attack
     sys.add_TMSV(r_eve)
@@ -87,11 +71,38 @@ for option in options:
     sys.save_state()
     
     key_rates = []
-    tes = np.logspace(-2, 0, base=10, num=20)
+    
+    if option == 'none' or option == 'tps':
+        tes = np.logspace(-2, 0, base=10, num=30)
+    
+    if option == 'rps':
+        tes = np.logspace(-3, 0, base=10, num=34)
+        tes = tes[6:]
+        
+    if option == 'rqs' or option == 'tqs':   
+        tes = np.linspace(1, 0.98, num=3)
+        
+        
+#    tes = np.logspace(-2, 0, base=10, num=20)
+    
+#    if option == 'none' or option == 'tps':
+#        tes = np.logspace(-1, 0, base=10, num=25)
+#    
+#    if option == 'rps':
+#        tes = np.logspace(-2, 0, base=10, num=30)[10:]
+##        tes = tes[6:]
+#    
+#    if option == 'rqs':
+#        tes = np.logspace(-1, 0, base=10, num=3)
+#        
+#    if option == 'tqs':
+#        tes = np.logspace(-2, 0, base=10, num=35)[12:]
+        
     #tes = np.linspace(.9, 1, 10)
     #tes = [1.]
     
     for te in tes:
+        print("->", te)
         sys.load_state()
     
         theta = np.arccos(np.sqrt(te))
@@ -102,42 +113,30 @@ for option in options:
             p_success = sys.apply_photon_subtraction(k_ps, 1)
             print("P SUCCESS:", p_success)
             
-        elif option == 'rct':
-            p_success = sys.apply_photon_catalysis(1, k_ct, 1)
-            print("P SUCCESS:", p_success)
-    
         # Receiver Scissors Exact
-        elif option == 'rsc':
-            p_success = sys.apply_scissors_exact(k_sc, 1)
-            print("P SUCCESS:", p_success)
-    
-        # Receiver Scissors
-        elif option == 'rsc_mod':
-            p_success = sys.apply_scissors(k_sc, r_aux, 1)
+        elif option == 'rqs':
+            p_success = sys.apply_scissors_exact(k_qs, 1)
             print("P SUCCESS:", p_success)
     
     
-    #    print(sys.cm)
-    #    print(sys.get_full_CM())
-        kr = measurements.key_rate(sys, f, p_success)
-    #    kr = measurements.key_rate_compare(sys, f, p_success, mpn, mpne, te)
+        kr = measurements.key_rate(sys, 1, p_success)
         key_rates += [kr]
-        print("--->", te, kr)
+        print("KR:", kr)
     
     
-    params = ["mpn=" + str(mpn), "mpne=" + str(mpne), "f=" + str(f) , "k_ps=" + str(k_ps),
-              "k_sc=" + str(k_sc), "k_ct=" + str(k_ct)]
+    params = ["r=" + str(r), "r_eve=" + str(r_eve), "k_ps=" + str(k_ps),
+              "k_qs=" + str(k_qs)]
     # Save the resuls
-    filename = names.measurements_line(N, 'KR', params, option)
+    filename = names.measurements_line(N, 'KR2', params, option)
     key_rates = np.array(key_rates)
     #print(key_rates)
     np.save(filename, key_rates)
     
-    filename_ind = names.indeces_line(N, 'KR', params, option, 'eta')
+    filename_ind = names.indeces_line(N, 'KR2', params, option, 'eta')
     np.save(filename_ind, tes)
 
 
 ############################################ PLOT
 import plot_PS as plot
 
-plot.plot(N, params)
+plot.plot2(N, params)

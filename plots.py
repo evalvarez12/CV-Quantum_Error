@@ -142,15 +142,19 @@ def EN(option, N, eta):
     filename_ind2 = names.indeces(N=N, eta=eta_name, k=k_name, mu=mu_name, measurement=measurement, protocol=option, index='mu')
     mus = np.load(filename_ind2 + '.npy')
     
-    mus, ks = np.meshgrid(mus, ks)
+    
+    rs = np.arcsinh(np.sqrt(mus))
+    x = -10*np.log10(np.exp(-2*rs))
+    
+    x, ks = np.meshgrid(x, ks)
       
     fig = plt.figure()
     ax = fig.gca(projection='3d')
-    ax.set_title( option + " N = " + str(N))
+#    ax.set_title( option + " N = " + str(N))
     ax.set_xlabel(r'$\kappa$', size=15)
-    ax.set_ylabel(r'$\mu$', size=15)
-    ax.set_zlabel(r'$E_N$', size=10)
-    ax.ticklabel_format(style='sci', axis='z', scilimits=(0,0))
+    ax.set_ylabel(r'Squeezing (dB)', size=12)
+    ax.set_zlabel(r'$<E_N>$', size=15)
+#    ax.ticklabel_format(style='sci', axis='z', scilimits=(0,0))
     
     eta_label = "$\eta=" +str(eta) +  "$"
     ax.text2D(0.1, 0.80, eta_label, transform=ax.transAxes)
@@ -158,10 +162,10 @@ def EN(option, N, eta):
     
     avg_en = np.multiply(data, data2)
     
-#    surf = ax.plot_surface(ks, mus, data, cmap=cm.coolwarm,
+#    surf = ax.plot_surface(ks, rs, data, cmap=cm.coolwarm,
 #                           linewidth=0, antialiased=False)
     
-    surf = ax.plot_surface(ks, mus, avg_en, cmap=cm.coolwarm,
+    surf = ax.plot_surface(ks, x, avg_en, cmap=cm.coolwarm,
                            linewidth=0, antialiased=False)
     
     #surf2 = ax.plot_surface(X, Y, data2,
@@ -175,7 +179,7 @@ def EN(option, N, eta):
     #ax.zaxis.set_major_formatter(FormatStrFormatter('%.02f'))
     
     # Add a color bar which maps values to colors.
-    fig.colorbar(surf, shrink=0.5, aspect=5)
+#    fig.colorbar(surf, shrink=0.5, aspect=5)
     
     
     
@@ -197,6 +201,8 @@ def EN(option, N, eta):
 #    
 #    
 #    fig.colorbar(surf, shrink=0.5, aspect=5)
+    
+    
     plt.show()
     
 
@@ -269,8 +275,10 @@ def GRCI(option, N, eta):
 #GRCI('rps', 20, 0.01)
     
     
-# eta = 0.01    
-#EN('rps', 20, eta)
+eta = 0.315
+EN('rsc', 20, eta)
+#EN('tsc', 10, eta)
+
 #EN('none', 20, eta)
 #EN('rsc', 20, eta)
 #EN('tsc', 20, eta)
