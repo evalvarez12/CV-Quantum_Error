@@ -151,7 +151,7 @@ def EN(option, N, eta):
     fig = plt.figure()
     ax = fig.gca(projection='3d')
 #    ax.set_title( option + " N = " + str(N))
-    ax.set_xlabel(r'$\kappa$', size=13)
+    ax.set_xlabel(r'$\kappa_{QS}$', size=13)
     ax.set_ylabel(r'Squeezing (dB)', size=13)
     ax.set_zlabel(r'$<E_N>$', size=13)
     plt.tick_params(axis='both', which='major', labelsize=12)
