@@ -17,8 +17,8 @@ import matplotlib.pyplot as plt
 
 ## Parameters
 N = 10
-k_ps = 0.5
-k_qs = 0.5
+k_ps = 0.95
+k_qs = 0.05
 #option = 'single'
 
 # eta = 0.315 = 5 dB

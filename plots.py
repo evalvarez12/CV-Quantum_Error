@@ -151,18 +151,21 @@ def EN(option, N, eta):
     fig = plt.figure()
     ax = fig.gca(projection='3d')
 #    ax.set_title( option + " N = " + str(N))
-    ax.set_xlabel(r'$\kappa$', size=15)
-    ax.set_ylabel(r'Squeezing (dB)', size=12)
-    ax.set_zlabel(r'$<E_N>$', size=15)
+    ax.set_xlabel(r'$\kappa$', size=13)
+    ax.set_ylabel(r'Squeezing (dB)', size=13)
+    ax.set_zlabel(r'$<E_N>$', size=13)
+    plt.tick_params(axis='both', which='major', labelsize=12)
+
 #    ax.ticklabel_format(style='sci', axis='z', scilimits=(0,0))
     
     eta_label = "$\eta=" +str(eta) +  "$"
-    ax.text2D(0.1, 0.80, eta_label, transform=ax.transAxes)
-    
+    ax.text2D(0.55, 0.85, "Attenuation = 10 dB", transform=ax.transAxes, size=13)
+    ax.text2D(0.55, 0.92, "Receiver QS", transform=ax.transAxes, size=13)
+
     
     avg_en = np.multiply(data, data2)
     
-#    surf = ax.plot_surface(ks, rs, data, cmap=cm.coolwarm,
+#    surf = ax.plot_surface(ks, x, data, cmap=cm.coolwarm,
 #                           linewidth=0, antialiased=False)
     
     surf = ax.plot_surface(ks, x, avg_en, cmap=cm.coolwarm,
@@ -275,7 +278,7 @@ def GRCI(option, N, eta):
 #GRCI('rps', 20, 0.01)
     
     
-eta = 0.315
+eta = 0.1
 EN('rsc', 20, eta)
 #EN('tsc', 10, eta)
 

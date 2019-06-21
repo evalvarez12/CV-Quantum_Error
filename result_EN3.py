@@ -16,14 +16,14 @@ import matplotlib.pyplot as plt
 ############################################ CALCULATIONS
 
 ## Parameters
-N = 10
+N = 20
 k_ps = 0.95
 k_qs = 0.05
 #option = 'single'
 
 # eta = 0.315 = 5 dB
 # eta = 0.1 = 10 dB
-eta = 0.01
+eta = 0.315
 
 options = ['none', 'rps', 'tps', 'rqs', 'tqs']
 ## Initialize system
@@ -90,7 +90,7 @@ for option in options:
     
     filename_ind1 = "data/indeces_res_logneg_mu_" + option 
     np.save(filename_ind1, mus)
-
+#
 
 
 ############################################ PLOT
@@ -129,9 +129,10 @@ for i in range(len(list_plots)):
 # Plot the surface.
 
 #plt.title(r"Logarithmic Negativity")
-plt.title(r"Attenuation = 20 dB")
+plt.title(r"Attenuation = 5 dB", size=15)
 plt.xlabel(r'Squeezing (dB)', size=15)
 plt.ylabel(r'$E_N$', size=15)
+plt.tick_params(axis='both', which='major', labelsize=13)
 
 #plt.text(.05, .8, "Attenuation = 5 dB", size=15)
 #fig = plt.figure()

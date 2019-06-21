@@ -15,7 +15,7 @@ import numpy as np
 ############################################ CALCULATIONS
 
 ## Parameters
-N = 10
+N = 20
 option = 'rsc'
 eta = 0.1
 

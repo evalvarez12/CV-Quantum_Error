@@ -24,7 +24,7 @@ for option in options:
 #    option = 'rsc'
 
     # Parameters
-    N = 22
+    N = 20
     r = .92
     r_eve = 0.033
 
@@ -86,17 +86,17 @@ for option in options:
 #    tes = np.logspace(-2, 0, base=10, num=20)
     
 #    if option == 'none' or option == 'tps':
-#        tes = np.logspace(-1, 0, base=10, num=25)
+#        tes = np.logspace(-1, 0, base=10, num=35)[10:]
 #    
 #    if option == 'rps':
-#        tes = np.logspace(-2, 0, base=10, num=30)[10:]
+#        tes = np.logspace(-2, 0, base=10, num=35)[10:]
 ##        tes = tes[6:]
 #    
 #    if option == 'rqs':
 #        tes = np.logspace(-1, 0, base=10, num=3)
 #        
 #    if option == 'tqs':
-#        tes = np.logspace(-2, 0, base=10, num=35)[12:]
+#        tes = np.logspace(-2, 0, base=10, num=40)[12:]
         
     #tes = np.linspace(.9, 1, 10)
     #tes = [1.]

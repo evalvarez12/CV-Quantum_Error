@@ -138,7 +138,7 @@ def plot2(N, params):
     locmin = matplotlib.ticker.LogLocator(base=10.0,subs=(0.2,0.4,0.6,0.8),numticks=12)
     ax.yaxis.set_minor_locator(locmin)
     ax.yaxis.set_minor_formatter(matplotlib.ticker.NullFormatter())
-
+    ax.tick_params(axis='both', which='major', labelsize=13)
     #ax.minorticks_on()
     plt.legend(loc='upper right', fontsize=15)
     plt.show()
@@ -255,7 +255,7 @@ def plot_split(N, params, MG=True):
 
 # Parameters
 N = 20
-r = .92
+r = .12
 r_eve = 0.033
 
 # Operations options
