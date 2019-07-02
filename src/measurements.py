@@ -44,8 +44,8 @@ def key_rate(sys, f, p):
     I_stolen = X(Vb, Ve, Vf, Cbe, Cbf, Cef)
 
     k_rate = p * (f * I_shared - I_stolen)
-    print("I_shared:", I_shared)
-    print("I_stolen:", I_stolen)
+#    print("I_shared:", I_shared)
+#    print("I_stolen:", I_stolen)
     return k_rate
 
 

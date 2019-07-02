@@ -26,7 +26,7 @@ sys.apply_TMS(r)
 #sys.add_state(state)
 
 for i in range(20):
-    sys.apply_photon_subtraction(0.99, 1)
+    sys.apply_photon_subtraction(0.99, 0)
 
 
 

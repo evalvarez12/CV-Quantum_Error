@@ -154,13 +154,13 @@ def EN(option, N, eta):
     ax.set_xlabel(r'$\kappa_{QS}$', size=13)
     ax.set_ylabel(r'Squeezing (dB)', size=13)
     ax.set_zlabel(r'$<E_N>$', size=13)
-    plt.tick_params(axis='both', which='major', labelsize=12)
+    plt.tick_params(axis='both', which='major', labelsize=13)
 
 #    ax.ticklabel_format(style='sci', axis='z', scilimits=(0,0))
     
     eta_label = "$\eta=" +str(eta) +  "$"
-    ax.text2D(0.55, 0.85, "Attenuation = 10 dB", transform=ax.transAxes, size=13)
-    ax.text2D(0.55, 0.92, "Receiver QS", transform=ax.transAxes, size=13)
+    ax.text2D(0.58, 0.85, "Attenuation = 10 dB", transform=ax.transAxes, size=13)
+    ax.text2D(0.58, 0.92, "Receiver QS", transform=ax.transAxes, size=13)
 
     
     avg_en = np.multiply(data, data2)

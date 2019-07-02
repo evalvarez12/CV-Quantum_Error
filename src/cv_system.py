@@ -481,6 +481,9 @@ class System:
 
 
     def get_simple_CM_V(self, mode):
+        """
+        Only works for TMSV-type states
+        """
         a = qt.destroy(self.N)
         a = tools.tensor(self.N, a, mode, self.Nmodes)
 
@@ -489,6 +492,9 @@ class System:
 
 
     def get_simple_CM_C(self, modes):
+        """
+        Only works for TMSV-type states
+        """
         a = qt.destroy(self.N)
         a1 = tools.tensor(self.N, a, modes[0], self.Nmodes)
         a2 = tools.tensor(self.N, a, modes[1], self.Nmodes)
@@ -528,6 +534,15 @@ class System:
         # TODO: check this factor of 2
         cm = 2 * qt.covariance_matrix(self.quad_basis, self.state)
         return cm.astype(complex).real
+
+
+    def set_full_CM(self):
+        if self.cm is None:
+            cm = self.get_full_CM()
+            self.cm = cm
+        else:
+            if not self.check_CM():
+                raise ValueError("CM already exists: mismatch with current calculation")
 
 
     def check_CM(self):

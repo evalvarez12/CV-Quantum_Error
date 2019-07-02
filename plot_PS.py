@@ -115,8 +115,13 @@ def plot2(N, params):
     legends = ['TMSV', 'tPS', 'rPS', 'tQS', 'rQS']
     for i in range(len(key_rates)):
         x = -10*np.log10(indeces[i])
-        ax.plot(x, key_rates[i], lines_types[i], label=legends[i])
+        ax.plot(x, key_rates[i], lines_types[i], label=legends[i], linewidth=2)
 
+
+    plt.xlim(-0.1, 23)
+#    plt.ylim(-0.0, .9)
+
+    plt.rcParams["font.family"] = "Times New Roman"
 
     ax.set_xlabel(r"Attenuation (dB)", size=15)
     ax.set_ylabel("Key rate (bit/pulse)", size=15)
@@ -255,7 +260,7 @@ def plot_split(N, params, MG=True):
 
 # Parameters
 N = 20
-r = .12
+r = .92
 r_eve = 0.033
 
 # Operations options
@@ -264,4 +269,4 @@ k_qs = 0.05
 params = ["r=" + str(r), "r_eve=" + str(r_eve), "k_ps=" + str(k_ps),
           "k_qs=" + str(k_qs)]
 
-#plot2(N, params)
+plot2(N, params)

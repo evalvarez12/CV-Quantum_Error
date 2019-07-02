@@ -17,7 +17,7 @@ import numpy as np
 ## Parameters
 N = 20
 option = 'rsc'
-eta = 0.1
+eta = 0.0
 
 
 ## Initialize system
