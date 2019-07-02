@@ -148,6 +148,10 @@ def EN(option, N, eta):
     
     x, ks = np.meshgrid(x, ks)
       
+    
+    plt.rcParams["font.family"] = "Times New Roman"
+
+    
     fig = plt.figure()
     ax = fig.gca(projection='3d')
 #    ax.set_title( option + " N = " + str(N))

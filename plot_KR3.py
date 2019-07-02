@@ -136,8 +136,12 @@ norm = colors.BoundaryNorm(bounds, cmap_bw.N)
 
 cs = plt.contourf(x, y, none2, 1, cmap=cmap_bw, alpha=0.5, norm=norm)
 
-cs = plt.contourf(x, y, tqs, levels1, cmap='Greens', alpha=0.5)
-cs = plt.contourf(x, y, rps, levels2, cmap='Reds', alpha=0.5)
+cs = plt.contourf(x, y, rps, levels2, cmap='Reds', alpha=1)
+cs = plt.contourf(x, y, tqs, levels1, cmap='Greens', alpha=1)
+
+
+
+plt.rcParams["font.family"] = "Times New Roman"
 
 
 plt.text(5, 6.5, r'TMSV', size=13)
