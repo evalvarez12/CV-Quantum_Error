@@ -118,11 +118,12 @@ def plot2(N, params):
         ax.plot(x, key_rates[i], lines_types[i], label=legends[i], linewidth=2)
 
 
-    plt.xlim(-0.1, 23)
-#    plt.ylim(-0.0, .9)
+#    plt.xlim(-0.1, 23)
+    plt.xlim(-0.1, 13.3)
 
     plt.rcParams["font.family"] = "Times New Roman"
 
+    plt.title(r"Squeezing = 1 dB", size=15)
     ax.set_xlabel(r"Attenuation (dB)", size=15)
     ax.set_ylabel("Key rate (bit/pulse)", size=15)
     #ax.legend(["No PS", "Transmitter PS", "Receiver PS", "Transmitter SC", "Mg no PS", "Mg r-PS", "Mg t-PS"])
@@ -145,7 +146,7 @@ def plot2(N, params):
     ax.yaxis.set_minor_formatter(matplotlib.ticker.NullFormatter())
     ax.tick_params(axis='both', which='major', labelsize=13)
     #ax.minorticks_on()
-    plt.legend(loc='upper right', fontsize=15)
+#    plt.legend(loc='upper right', fontsize=15)
     plt.show()
 
 
@@ -260,7 +261,7 @@ def plot_split(N, params, MG=True):
 
 # Parameters
 N = 20
-r = .92
+r = .12
 r_eve = 0.033
 
 # Operations options
