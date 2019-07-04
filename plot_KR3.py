@@ -81,11 +81,11 @@ tqs[tqs < 0 ] = 0
 step_qs = 0.0005
 step_ps = 0.0000005
 
-none2[none2 > 0] = 0
-none2[none2 < 0] = 1
-none2[rps > step_ps/1.2] = 0
-none2[tqs > step_qs/1.6] = 0
-none2[none2 != 0] = 1
+none2[none2 > 0] = 1
+none2[none2 < 0] = 0
+#none2[rps > step_ps/1.2] = 0
+#none2[tqs > step_qs/1.6] = 0
+#none2[none2 != 0] = 1
 
 
 rps = rps.reshape(50, 50)
@@ -130,14 +130,14 @@ m = np.amax(rps)
 levels2 = np.arange(0.0, m, step_ps) + step_ps
 
 
-cmap_bw = colors.ListedColormap(['white', 'grey'])
+cmap_bw = colors.ListedColormap(['grey', 'white'])
 bounds=[0,.5,1]
 norm = colors.BoundaryNorm(bounds, cmap_bw.N)
 
-cs = plt.contourf(x, y, none2, 1, cmap=cmap_bw, alpha=0.5, norm=norm)
+cs = plt.contourf(x, y, none2, 1, cmap=cmap_bw, alpha=1, norm=norm)
 
-cs = plt.contourf(x, y, rps, levels2, cmap='Reds', alpha=1)
-cs = plt.contourf(x, y, tqs, levels1, cmap='Greens', alpha=1)
+cs = plt.contourf(x, y, rps, levels2, cmap='Reds', alpha=.7)
+cs = plt.contourf(x, y, tqs, levels1, cmap='Greens', alpha=.7)
 
 
 
