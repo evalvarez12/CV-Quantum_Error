@@ -104,10 +104,10 @@ pss = []
 
 for ext in list_plots :
 
-    filename = "data/res_logneg_el_" + ext 
+    filename = "data/res2_logneg_el_" + ext 
     el = np.load(filename + '.npy')
     
-    filename = "data/res_logneg_p_" + ext
+    filename = "data/res2_logneg_p_" + ext
     ps = np.load(filename + '.npy')
     
     filename_ind1 = "data/indeces_res_logneg_mu_" + ext 
@@ -117,6 +117,12 @@ for ext in list_plots :
     els += [el]
     pss += [ps]
 
+
+# Plot the surface.
+ax = fig.add_subplot(1,1,1)
+ax.yaxis.grid(color='gray', linestyle='solid')
+ax.xaxis.grid(color='gray', linestyle='solid')
+
 lines_types = ['k*-', 'b*-', 'r*-', 'g*-', 'm*-']
 legends = ['TMSV', 'tPS', 'rPS', 'tQS', 'rQS']
 for i in range(len(list_plots)):
@@ -124,20 +130,23 @@ for i in range(len(list_plots)):
 #    y = np.multiply(ps[i], els[i])
     y = els[i]
     
-    plt.plot(x, y, lines_types[i], label=legends[i], linewidth=2)
+    ax.plot(x, y, lines_types[i], label=legends[i], linewidth=3)
 
-# Plot the surface.
+
 
 plt.xlim(-0.05, 8.8)
-plt.ylim(-0.0, .9)
+plt.ylim(-0.0, .72)
 
 #plt.title(r"Logarithmic Negativity")
 plt.rcParams["font.family"] = "Times New Roman"
 
-plt.title(r"Attenuation = 5 dB", size=15)
+plt.title(r"Attenuation = 10 dB", size=15)
 plt.xlabel(r'Squeezing (dB)', size=15)
 plt.ylabel(r'$E_N$', size=15)
 plt.tick_params(axis='both', which='major', labelsize=15)
+
+plt.rc('axes', axisbelow=True)
+#plt.yaxis.grid(color='gray', linestyle='dashed')
 
 #plt.text(.05, .8, "Attenuation = 5 dB", size=15)
 #fig = plt.figure()

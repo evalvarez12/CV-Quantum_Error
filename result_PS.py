@@ -14,8 +14,8 @@ import numpy as np
 
 
 ############################################ CALCULATIONS
-options = ['none', 'tps', 'rps', 'tqs', 'rqs']
-#options = ['none', 'tps', 'rps']
+#options = ['none', 'tps', 'rps', 'tqs', 'rqs']
+options = ['none', 'tps', 'rps']
 
 #options = ['none', 'tps', 'rps']
 
@@ -73,10 +73,10 @@ for option in options:
     key_rates = []
     
     if option == 'none' or option == 'tps':
-        tes = np.logspace(-2, 0, base=10, num=30)
+        tes = np.logspace(-2, 0, base=10, num=32)
     
     if option == 'rps':
-        tes = np.logspace(-3, 0, base=10, num=34)
+        tes = np.logspace(-3, 0, base=10, num=38)
         tes = tes[6:]
         
     if option == 'rqs' or option == 'tqs':   

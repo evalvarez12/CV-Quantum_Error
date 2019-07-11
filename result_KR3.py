@@ -14,7 +14,8 @@ import numpy as np
 
 
 ############################################ CALCULATIONS
-options = ['none', 'rps', 'tqs']
+#options = ['none', 'rps', 'tqs']
+options = ['tps']
 #options = ['none', 'tps', 'rps']
 
 #options = ['none', 'tps', 'rps']

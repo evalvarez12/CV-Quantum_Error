@@ -90,8 +90,8 @@ def plot(N, params, MG=True):
 def plot2(N, params):
     key_rates = []
     indeces = []
-    options = ['none', 'tps', 'rps', 'tqs', 'rqs']
-#    options = ['none', 'tps', 'rps']
+#    options = ['none', 'tps', 'rps', 'tqs', 'rqs']
+    options = ['none', 'tps', 'rps']
 
     for option in options:
 
@@ -111,15 +111,19 @@ def plot2(N, params):
 
 
     fig1, ax = plt.subplots()
+    
+    ax.yaxis.grid(color='gray', linestyle='solid')
+    ax.xaxis.grid(color='gray', linestyle='solid')
+    
     lines_types = ['k*-', 'b*-', 'r*-', 'g*-', 'm*-']
     legends = ['TMSV', 'tPS', 'rPS', 'tQS', 'rQS']
     for i in range(len(key_rates)):
         x = -10*np.log10(indeces[i])
-        ax.plot(x, key_rates[i], lines_types[i], label=legends[i], linewidth=2)
+        ax.plot(x, key_rates[i], lines_types[i], label=legends[i], linewidth=3)
 
 
-#    plt.xlim(-0.1, 23)
-    plt.xlim(-0.1, 13.3)
+#    plt.xlim(-0.1, 22.5)
+    plt.xlim(-0.1, 13.2)
 
     plt.rcParams["font.family"] = "Times New Roman"
 
