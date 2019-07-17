@@ -15,7 +15,7 @@ import numpy as np
 
 ############################################ CALCULATIONS
 #options = ['none', 'rps', 'tqs']
-options = ['tps']
+options = ['rqs']
 #options = ['none', 'tps', 'rps']
 
 #options = ['none', 'tps', 'rps']
@@ -26,7 +26,7 @@ k_ps = 0.95
 k_qs = 0.05
 
 # Parameters
-N = 20
+N = 10
 
 r_eve = 0.033
 

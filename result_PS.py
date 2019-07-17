@@ -14,10 +14,10 @@ import numpy as np
 
 
 ############################################ CALCULATIONS
-#options = ['none', 'tps', 'rps', 'tqs', 'rqs']
-options = ['none', 'tps', 'rps']
-
+options = ['none', 'tps', 'rps', 'tqs', 'rqs']
 #options = ['none', 'tps', 'rps']
+
+#options = ['none', 'tqs', 'rqs']
 
 for option in options:
 #for i in [0]:
@@ -61,8 +61,7 @@ for option in options:
     
     # Evesdropper collective attack
     sys.add_TMSV(r_eve)
-    # BAD TMSV
-    #sys.add_bad_TMSV(e_mpn)
+
     
     sys.set_quadratures_basis()
     
@@ -72,6 +71,7 @@ for option in options:
     
     key_rates = []
     
+    ##### For r=.92
     if option == 'none' or option == 'tps':
         tes = np.logspace(-2, 0, base=10, num=32)
     
@@ -82,9 +82,9 @@ for option in options:
     if option == 'rqs' or option == 'tqs':   
         tes = np.linspace(1, 0.98, num=3)
         
-        
-#    tes = np.logspace(-2, 0, base=10, num=20)
     
+    
+    ##### For r=.12
 #    if option == 'none' or option == 'tps':
 #        tes = np.logspace(-1, 0, base=10, num=35)[10:]
 #    
@@ -93,7 +93,8 @@ for option in options:
 ##        tes = tes[6:]
 #    
 #    if option == 'rqs':
-#        tes = np.logspace(-1, 0, base=10, num=3)
+##        tes = np.logspace(-1, 0, base=10, num=3)
+#        tes = np.logspace(-2, 0, base=10, num=40)[12:]
 #        
 #    if option == 'tqs':
 #        tes = np.logspace(-2, 0, base=10, num=40)[12:]
@@ -116,6 +117,7 @@ for option in options:
         # Receiver Scissors Exact
         elif option == 'rqs':
             p_success = sys.apply_scissors_exact(k_qs, 1)
+            sys.state = sys.state.permute([2,3,1,0])
             print("P SUCCESS:", p_success)
     
     
@@ -131,7 +133,8 @@ for option in options:
     key_rates = np.array(key_rates)
     #print(key_rates)
     np.save(filename, key_rates)
-    
+    print(f"-------------")
+    print(filename)
     filename_ind = names.indeces_line(N, 'KR2', params, option, 'eta')
     np.save(filename_ind, tes)
 

@@ -15,7 +15,7 @@ from matplotlib import cm, colors, ticker
 N= 20
 datas = []
 
-options = ['none', 'tps', 'rps', 'tqs']
+options = ['none', 'tps', 'rps', 'tqs', 'rqs']
 
 for option in options:
     
@@ -28,6 +28,9 @@ for option in options:
         k = 0.05
 
 
+    if option == 'rqs':
+        N = 10
+
     params = ["r=" + str(0.93), "r_eve=" + str(0.033), "k=" + str(k)]
 
     filename = names.measurements_line(N, 'KR3', params, option)
@@ -36,7 +39,7 @@ for option in options:
     
 
 
-none, tps, rps, tqs = datas
+none, tps, rps, tqs, rqs = datas
 
 vals1 = np.zeros_like(none)
 vals2 = np.zeros_like(none)
@@ -69,6 +72,7 @@ none2 = none.copy()
 
 rps[rps < 0 ] = 0
 tqs[tqs < 0 ] = 0
+rqs[rqs < 0 ] = 0 
 none[ none < 0] = 0 
 
 #rps = rps - none
@@ -80,6 +84,8 @@ none[ none < 0] = 0
 
 rps[rps < none] = 0
 tqs[tqs < none] = 0
+rqs[rqs < none] = 0
+rqs[rqs < tqs] = 0
 none[none < tqs] = 0
 none[none < rps] = 0
 
@@ -94,8 +100,9 @@ none2[none2 < -.001] = 0
 
 
 none = np.log10(none)
-#rps = np.log10(rps)
+rps = np.log10(rps)
 tqs = np.log10(tqs)
+r = np.log10(rqs)
 #none2 = np.log10(none2)
 
 
@@ -109,7 +116,7 @@ tqs = tqs.reshape(50, 50)
 none = none.reshape(50,50)
 none2 = none2.reshape(50, 50)
 tps = tps.reshape(50, 50)
-
+rqs = rqs.reshape(50, 50)
 
 #fig = plt.figure()
 #ax = fig.gca(projection='3d')
@@ -118,16 +125,22 @@ tps = tps.reshape(50, 50)
 #                       linewidth=0, antialiased=False)
 
 
+#fig = plt.figure()
+#ax = fig.gca(projection='3d')
+#ax.set_title( "tps")
+#surf = ax.plot_surface(y, x, tps, cmap=cm.coolwarm,
+#                       linewidth=0, antialiased=False)
+#
 fig = plt.figure()
 ax = fig.gca(projection='3d')
-ax.set_title( "tps")
-surf = ax.plot_surface(y, x, tps, cmap=cm.coolwarm,
+ax.set_title( "tqs")
+surf = ax.plot_surface(y, x, tqs, cmap=cm.coolwarm,
                        linewidth=0, antialiased=False)
 
 fig = plt.figure()
 ax = fig.gca(projection='3d')
-ax.set_title( "rps")
-surf = ax.plot_surface(y, x, rps, cmap=cm.coolwarm,
+ax.set_title( "rqs")
+surf = ax.plot_surface(y, x, rqs, cmap=cm.coolwarm,
                        linewidth=0, antialiased=False)
 
 
@@ -163,8 +176,11 @@ cs = plt.contourf(x, y, none2, 1, cmap=cmap_bw, alpha=.5, norm=norm)
 cs = plt.contour(x, y, none, 10, cmap='Greys', alpha=1)
 
 
+
+
 cs = plt.contourf(x, y, rps, 30, cmap='Reds', alpha=1)
 cs = plt.contourf(x, y, tqs, 30, cmap='Greens', alpha=1)
+#cs = plt.contourf(x, y, rqs, 30, cmap='Greens', alpha=1)
 
 
 
