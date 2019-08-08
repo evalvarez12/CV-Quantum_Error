@@ -6,10 +6,11 @@ Created on Thu Apr  4 15:56:52 2019
 
 @author: Eduardo Villasenor 
 """
-import cv_system as cv
+import src.cv_system as cv
 import numpy as np
 import qutip as qt
 from scipy.special import comb
+import matplotlib.pyplot as plt
 
 N = 50
 T = 0.9

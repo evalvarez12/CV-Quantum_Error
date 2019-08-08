@@ -480,6 +480,33 @@ class System:
         self.Nmodes = len(pos_keep)
 
 
+    def get_homodyne_projector(self, x):
+        a = qt.create(self.N)
+        x = (np.sqrt(2) * x * a) - (x**2 + a*a)/2
+        x = 1/np.pi**(1/4) * x.expm()
+        x = (x * qt.basis(self.N)).dag()
+        return x
+
+
+    def homodyne_measurement(self, mode=0):
+        a = qt.destroy(self.N)
+        # Quadrature operator x
+        x = (a + a.dag())/np.sqrt(2)
+#        x = 1j*(a - a.dag())/np.sqrt(2)
+        x = tools.tensor(self.N, x, mode, self.Nmodes)
+
+        # Calculate <x> and var(x)
+        avg_x = qt.expect(x, self.state)
+        var_x = 2 * (qt.expect(x*x, self.state) - qt.expect(x, self.state)**2)
+        print("Stats:", avg_x, var_x)
+        rand_x = np.random.normal(avg_x, np.sqrt(var_x))
+        
+        proj_hom = self.get_homodyne_projector(rand_x)
+        proj_hom = tools.tensor(self.N, proj_hom, mode, self.Nmodes)
+        self.state = proj_hom * self.state
+        return rand_x
+
+
     def get_simple_CM_V(self, mode):
         """
         Only works for TMSV-type states
