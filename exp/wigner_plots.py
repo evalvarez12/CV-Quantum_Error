@@ -15,10 +15,10 @@ from mpl_toolkits.mplot3d import Axes3D
 
 
 
-def plot(psi, xborders):
+def plot(psi, borders, num=300):
     
-    start, end = xborders
-    xvec = np.linspace(start, end, 300)
+    start, end = borders
+    xvec = np.linspace(start, end, num)
     
     X, Y = np.meshgrid(xvec, xvec)
     

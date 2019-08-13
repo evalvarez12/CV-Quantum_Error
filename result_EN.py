@@ -19,9 +19,12 @@ N = 20
 option = 'rps'
 eta = 0.1
 
-
 ## Initialize system
 sys = cv.System(N, Nmodes=2, cm=False)
+
+if option[1:] is "ot":
+    a = qt.create(N) 
+    sys.ortho_oper(a)
 
 els = []
 ps = []
@@ -53,7 +56,8 @@ for k in ks:
         elif option == 'tct':
             p_success = sys.apply_photon_catalysis(1, k, 1)
             print("P SUCCESS:", p_success)
-    
+        elif option == 'tot':
+            
     
         sys.apply_loss_channel(eta, 1)
     

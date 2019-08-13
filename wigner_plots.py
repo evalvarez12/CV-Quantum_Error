@@ -15,7 +15,7 @@ from mpl_toolkits.mplot3d import Axes3D
 
 
 
-def plot(psi, borders, num):
+def plot(psi, borders, num=300):
     
     start, end = borders
     xvec = np.linspace(start, end, num)

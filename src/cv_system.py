@@ -19,10 +19,10 @@ import numpy as np
 class System:
     def __init__(self, N, Nmodes=0, cm=False, cm_only=False):
         self.N = N
-        if Nmodes != 0 and not cm_only:
+        if Nmodes is not 0 and not cm_only:
             self.state = qt.tensor([qt.basis(self.N, 0)]*Nmodes)
             self.Nmodes = Nmodes
-        elif Nmodes == 0:
+        elif Nmodes is 0:
             self.state = None
             self.Nmodes = 0
 
@@ -43,7 +43,7 @@ class System:
         state_add = qt.tensor([qt.basis(self.N, l)]*Nadd)
         self.Nmodes = self.Nmodes + Nadd
 
-        if self.state == None:
+        if self.state is None:
             self.state = state_add
         else:
             if not self.state.isket:
@@ -146,7 +146,7 @@ class System:
         state_aux = S * state_aux
         self.Nmodes = self.Nmodes + 2
 
-        if self.state == None:
+        if self.state is None:
             self.state = state_aux
         else:
             if not self.state.isket:
@@ -173,19 +173,19 @@ class System:
         if self.state.isket:
             self.state = P * self.state
             p = self.state.norm()
-            if p != 0:
+            if p is not 0:
                 self.state = self.state/p
             p = p**2
         else:
             self.state = P * self.state * P.dag()
             p = self.state.tr()
-            if p != 0:
+            if p is not 0:
                 self.state = self.state/p
         return p
 
 
     def collapse_ON_OFF(self, measurement, pos):
-        if measurement == 0:
+        if measurement is 0:
             return self.collapse_fock_state(0, pos)
 
         P = ops.photon_on_projector(self.N)
@@ -193,7 +193,7 @@ class System:
 
         p = self.collapse_project(P)
 
-        if self.Nmodes != 1:
+        if self.Nmodes is not 1:
             self.ptrace([pos])
         return p
 
@@ -202,7 +202,7 @@ class System:
         P_ON = ops.photon_on_projector(self.N)
         P_OFF = qt.basis(self.N) * qt.basis(self.N).dag()
 
-        operators = [P_OFF if i==0 else P_ON for i in measurements]
+        operators = [P_OFF if iis0 else P_ON for i in measurements]
         P = tools.tensor_singles(self.N, operators, positions, self.Nmodes)
         p = self.collapse_project(P)
         self.ptrace(positions)
@@ -218,6 +218,28 @@ class System:
             p = (P * self.state * P.dag()).tr()
         return p
 
+
+    def ortho_oper(self, operator):
+        exp = qt.expect(operator, self.state)
+        O = operator - exp * qt.identity([self.N]*self.Nmodes) 
+        self.orthogonalizer = O
+
+
+    def apply_orthogonalizer(self, b=0, operator=None):
+        if self.ortho_oper is None:
+            self.ortho_oper(operator)
+        
+        a = 1
+        if b is not 0:
+            norm = np.sqrt(a**2 + b**2)
+            b = b/norm
+            a = a/norm
+            
+        O = b * qt.identity([self.N]*self.Nmodes) + a * self.orthogonalizer
+        if self.state.isket:
+            self.state = O * self.state
+        else:
+            self.state = O * self.state * O.dag()
 
     def apply_photon_subtraction(self, t, pos=0):
         theta = np.arccos(np.sqrt(t))
@@ -235,7 +257,7 @@ class System:
         return p_success
         
 
-    def apply_scissors_exact(self, t, pos=0):
+    def apply_scissors(self, t, pos=0):
         # Tritter parameters
         theta1 = np.arccos(np.sqrt(t))
         theta2 = np.pi/4
@@ -278,7 +300,7 @@ class System:
         return p_success
 
 
-    def apply_scissors(self, k, r_aux, pos=0):
+    def apply_scissors_approx(self, k, r_aux, pos=0):
         # Tritter parameters
         theta1 = np.arccos(np.sqrt(k))
         theta2 = np.pi/4
@@ -309,9 +331,6 @@ class System:
 #        print("p:", p_success)
 
         # Collapse the state
-#        p_aux = self.collapse_ON_OFF(0, self.Nmodes-1)
-#        p_aux = p_aux * self.collapse_ON_OFF(1, pos)
-#        p_aux = p_aux * self.collapse_ON_OFF(1, self.Nmodes-2)
         p_aux = self.collapse_ON_OFF_multiple([1,0,1], collapse_pos)
 
 #        p_success += self.collapse_project(projectorB)
@@ -319,141 +338,6 @@ class System:
 #        print("p_aux:", p_aux)
 
         # Nmodes returns to original value by the funcs
-
-        # Permute the state to return it to its original ordering
-        p_list = np.arange(self.Nmodes)
-        p_list[pos] = self.Nmodes - 1
-        p_list[-1] = pos
-        self.state = self.state.permute(p_list)
-        return p_success
-
-
-    def apply_scissors_options(self, k, r_aux, pos=0, option='a'):
-        # Tritter parameters
-        theta1 = np.arccos(np.sqrt(k))
-        theta2 = np.pi/4
-
-        # Add extra vacuum and TMSV states
-        self.add_vacuum()
-        self.add_TMSV(r_aux)
-
-        # Apply tritter operator
-        tritter_pos=[self.Nmodes-1, self.Nmodes-3, pos]
-#        U = ops.tritter_options(self.N, theta1, theta2, tritter_pos, self.Nmodes, option)
-        U = ops.tritter(self.N, theta1, theta2, tritter_pos, self.Nmodes)
-        # print(Nmodes, theta1, theta2, U)
-        if self.state.isket:
-            self.state = U * self.state
-        else:
-            self.state = U * self.state * U.dag()
-
-        # Define the proyectors, in this case to |10>
-        projectorOFF = qt.basis(self.N, 0).dag()
-        projectorON = ops.photon_on_projector(self.N)
-        collapse_pos = [pos, self.Nmodes-1, self.Nmodes-2]
-        projectorA = tools.tensor_singles(self.N, [projectorOFF, projectorON, projectorON], collapse_pos, self.Nmodes)
-#        projectorB = tools.tensor_singles(self.N, [projectorON, projectorOFF, projectorON], collapse_pos, self.Nmodes)
-
-        # Compute the probability of the alternate click in the detectors
-        p_success = self.collapse_prob(projectorA)
-
-        # Collapse the state
-        if option == 'a':
-            p_aux = self.collapse_ON_OFF(0, self.Nmodes-1)
-            p_aux = p_aux * self.collapse_ON_OFF_multiple([1, 1], [pos, self.Nmodes-2])
-        elif option == 'b':
-            p_aux = self.collapse_ON_OFF_multiple([1, 1], [pos, self.Nmodes-2])
-            p_aux = p_aux * self.collapse_ON_OFF(0, self.Nmodes-1)
-        elif option == 'c':
-            p_aux = self.collapse_ON_OFF(1, self.Nmodes-2)
-            p_aux = p_aux * self.collapse_ON_OFF(1, pos)
-            p_aux = p_aux * self.collapse_ON_OFF(0, self.Nmodes-1)
-
-        p_success += p_aux
-
-        # Permute the state to return it to its original ordering
-        p_list = np.arange(self.Nmodes)
-        p_list[pos] = self.Nmodes - 1
-        p_list[-1] = pos
-        self.state = self.state.permute(p_list)
-        return p_success
-
-
-    def apply_scissors2(self, k, r_aux, pos=0):
-        # Tritter parameters
-        theta1 = np.arccos(np.sqrt(k))
-        theta2 = np.pi/4
-
-        # Add extra vacuum and TMSV states
-        self.add_vacuum()
-        self.add_TMSV(r_aux)
-
-        # Apply tritter operator
-        tritter_pos=[self.Nmodes-1, self.Nmodes-3, pos]
-        U = ops.tritter(self.N, theta1, theta2, tritter_pos, self.Nmodes)
-        # print(Nmodes, theta1, theta2, U)
-        if self.state.isket:
-            self.state = U * self.state
-        else:
-            self.state = U * self.state * U.dag()
-
-        # Define the proyectors, in this case to |10>
-        projectorOFF = qt.basis(self.N, 0).dag()
-        projectorON = ops.photon_on_projector2(self.N)
-        collapse_pos = [pos, self.Nmodes-1, self.Nmodes-2]
-        projectorA = tools.tensor_singles(self.N, [projectorOFF, projectorON, projectorON], collapse_pos, self.Nmodes)
-        projectorB = tools.tensor_singles(self.N, [projectorON, projectorOFF, projectorON], collapse_pos, self.Nmodes)
-
-        # Compute the probability of the alternate click in the detectors
-        p_success = self.collapse_prob(projectorA)
-
-        # Collapse the state
-        p_success += self.collapse_project(projectorB)
-
-        # Return Nmodes to original value
-        self.Nmodes = self.Nmodes - 3
-
-        # Permute the state to return it to its original ordering
-        p_list = np.arange(self.Nmodes)
-        p_list[pos] = self.Nmodes - 1
-        p_list[-1] = pos
-        self.state = self.state.permute(p_list)
-        return p_success
-
-
-    def apply_scissors2_options(self, k, r_aux, pos=0, option='a'):
-        # Tritter parameters
-        theta1 = np.arccos(np.sqrt(k))
-        theta2 = np.pi/4
-
-        # Add extra vacuum and TMSV states
-        self.add_vacuum()
-        self.add_TMSV(r_aux)
-
-        # Apply tritter operator
-        tritter_pos=[self.Nmodes-1, self.Nmodes-3, pos]
-        U = ops.tritter_options(self.N, theta1, theta2, tritter_pos, self.Nmodes, option)
-        # print(Nmodes, theta1, theta2, U)
-        if self.state.isket:
-            self.state = U * self.state
-        else:
-            self.state = U * self.state * U.dag()
-
-        # Define the proyectors, in this case to |10>
-        projectorOFF = qt.basis(self.N, 0).dag()
-        projectorON = ops.photon_on_projector2(self.N)
-        collapse_pos = [pos, self.Nmodes-1, self.Nmodes-2]
-        projectorA = tools.tensor_singles(self.N, [projectorOFF, projectorON, projectorON], collapse_pos, self.Nmodes)
-        projectorB = tools.tensor_singles(self.N, [projectorON, projectorOFF, projectorON], collapse_pos, self.Nmodes)
-
-        # Compute the probability of the alternate click in the detectors
-        p_success = self.collapse_prob(projectorA)
-
-        # Collapse the state
-        p_success += self.collapse_project(projectorB)
-
-        # Return Nmodes to original value
-        self.Nmodes = self.Nmodes - 3
 
         # Permute the state to return it to its original ordering
         p_list = np.arange(self.Nmodes)
@@ -514,8 +398,9 @@ class System:
         a = qt.destroy(self.N)
         a = tools.tensor(self.N, a, mode, self.Nmodes)
 
-        v = 1 + 2 * self.state.dag() * a.dag() * a * self.state
-        return v.norm()
+#        v = 1 + 2 * self.state.dag() * a.dag() * a * self.state
+        v = 2 * qt.expect(a.dag() * a, self.state) + 1
+        return v
 
 
     def get_simple_CM_C(self, modes):
@@ -526,8 +411,9 @@ class System:
         a1 = tools.tensor(self.N, a, modes[0], self.Nmodes)
         a2 = tools.tensor(self.N, a, modes[1], self.Nmodes)
 
-        c = self.state.dag() * (a1*a2 + a1.dag()*a2.dag()) * self.state
-        return c.norm()
+#        c = self.state.dag() * (a1*a2 + a1.dag()*a2.dag()) * self.state
+        c = qt.expect(a1*a2 + a1.dag()*a2.dag(), self.state)
+        return c
 
 
     def set_quadratures_basis(self):
@@ -608,7 +494,7 @@ class System:
         
         
     def reset_state(self, Nmodes=None):
-        if Nmodes == None:
+        if Nmodes is None:
             self.state = qt.tensor([qt.basis(self.N, 0)]*self.Nmodes)
         else:
             self.state = qt.tensor([qt.basis(self.N, 0)]*Nmodes)
