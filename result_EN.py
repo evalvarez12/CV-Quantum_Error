@@ -11,18 +11,19 @@ import src.cv_system as cv
 import src.measurements as measurements
 import src.names as names
 import numpy as np
+import qutip as qt
 
 ############################################ CALCULATIONS
 
 ## Parameters
 N = 20
-option = 'rps'
+option = 'tot'
 eta = 0.1
 
 ## Initialize system
 sys = cv.System(N, Nmodes=2, cm=False)
 
-if option[1:] is "ot":
+if option[1:] == "ot":
     a = qt.create(N) 
     sys.ortho_oper(a)
 
@@ -56,8 +57,10 @@ for k in ks:
         elif option == 'tct':
             p_success = sys.apply_photon_catalysis(1, k, 1)
             print("P SUCCESS:", p_success)
-        elif option == 'tot':
             
+        elif option == 'tot':
+            p_success = 1
+            sys.apply_orthogonalizer()
     
         sys.apply_loss_channel(eta, 1)
     
@@ -74,6 +77,9 @@ for k in ks:
         elif option == 'rct':
             p_success = sys.apply_photon_catalysis(1, k, 1)
             print("P SUCCESS:", p_success)
+        elif option == 'rot':
+            p_success = 1
+            sys.apply_orthogonalizer()
 
         el = measurements.log_neg(sys.state, [0, 1])
         print("Logarithmic Negativity:", el)

@@ -11,7 +11,7 @@ import src.cv_system as cv
 import src.measurements as measurements
 import src.names as names
 import numpy as np
-
+import qutip as qt
 
 ############################################ CALCULATIONS
 options = ['none', 'tps', 'rps', 'tqs', 'rqs']
@@ -41,6 +41,7 @@ for option in options:
     ## Initialize state
     sys = cv.System(N, Nmodes=2, cm=False)
     sys.apply_TMS(r, [0, 1])
+    
     # BAD TMSV
     #sys.replace_current_state_w_bad_TMSV(mean_photon_number)
     
@@ -58,6 +59,7 @@ for option in options:
     elif option == 'tqs':
         p_success = sys.apply_scissors_exact(k_qs, 1)
         print("P SUCCESS:", p_success)
+    
     
     # Evesdropper collective attack
     sys.add_TMSV(r_eve)

@@ -19,10 +19,10 @@ import numpy as np
 class System:
     def __init__(self, N, Nmodes=0, cm=False, cm_only=False):
         self.N = N
-        if Nmodes is not 0 and not cm_only:
+        if Nmodes != 0 and not cm_only:
             self.state = qt.tensor([qt.basis(self.N, 0)]*Nmodes)
             self.Nmodes = Nmodes
-        elif Nmodes is 0:
+        elif Nmodes == 0:
             self.state = None
             self.Nmodes = 0
 
@@ -173,19 +173,19 @@ class System:
         if self.state.isket:
             self.state = P * self.state
             p = self.state.norm()
-            if p is not 0:
+            if p != 0:
                 self.state = self.state/p
             p = p**2
         else:
             self.state = P * self.state * P.dag()
             p = self.state.tr()
-            if p is not 0:
+            if p != 0:
                 self.state = self.state/p
         return p
 
 
     def collapse_ON_OFF(self, measurement, pos):
-        if measurement is 0:
+        if measurement == 0:
             return self.collapse_fock_state(0, pos)
 
         P = ops.photon_on_projector(self.N)
@@ -193,7 +193,7 @@ class System:
 
         p = self.collapse_project(P)
 
-        if self.Nmodes is not 1:
+        if self.Nmodes != 1:
             self.ptrace([pos])
         return p
 
@@ -202,7 +202,7 @@ class System:
         P_ON = ops.photon_on_projector(self.N)
         P_OFF = qt.basis(self.N) * qt.basis(self.N).dag()
 
-        operators = [P_OFF if iis0 else P_ON for i in measurements]
+        operators = [P_OFF if i ==  0 else P_ON for i in measurements]
         P = tools.tensor_singles(self.N, operators, positions, self.Nmodes)
         p = self.collapse_project(P)
         self.ptrace(positions)
@@ -230,7 +230,7 @@ class System:
             self.ortho_oper(operator)
         
         a = 1
-        if b is not 0:
+        if b != 0:
             norm = np.sqrt(a**2 + b**2)
             b = b/norm
             a = a/norm

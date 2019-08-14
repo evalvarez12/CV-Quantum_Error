@@ -12,7 +12,7 @@ import matplotlib
 import scipy.io
 
 
-def plot(N, params, MG=True):
+def plotHG(N, params, MG=True):
     key_rates = []
     indeces = []
     options = ['none', 'tps', 'rps', 'tsc', 'rsc', 'tct', 'rct']
@@ -87,7 +87,7 @@ def plot(N, params, MG=True):
     
     
     
-def plot2(N, params):
+def plot(N, params):
     key_rates = []
     indeces = []
     options = ['none', 'tps', 'rps', 'tqs', 'rqs']
@@ -155,124 +155,16 @@ def plot2(N, params):
     plt.show()
 
 
-
-def plot_split(N, params, MG=True):
-    i_stolens = []
-    i_shareds = []
-    indeces = []
-    options = ['none', 'tps', 'rps', 'tsc', 'rsc']
-#    options = ['none', 'tps', 'rps']
-
-    for option in options:
-
-        if option == 'rsc':
-            filename1 = names.measurements_line(10, 'I_shared', params, option)
-            filename2 = names.measurements_line(10, 'I_stolen', params, option)
-            filename_ind = names.indeces_line(10, 'I_s', params, option, 'eta')
-        else:
-            filename1 = names.measurements_line(N, 'I_shared', params, option)
-            filename2 = names.measurements_line(N, 'I_stolen', params, option)
-            filename_ind = names.indeces_line(N, 'I_s', params, option, 'eta')
-
-
-        i_shared = np.load(filename1 + ".npy")
-        i_shareds += [i_shared]
-
-        i_stolen = np.load(filename2 + ".npy")
-        i_stolens += [i_stolen]
-
-        inds = np.load(filename_ind + '.npy')
-        indeces += [inds]
-
-
-    fig1, ax = plt.subplots()
-    lines_types = ['k*-', 'b*-', 'r*-', 'y*-', 'm*-', 'c*-', 'g*-']
-    lines_types2 = ['ko-', 'bo-', 'ro-', 'yo-', 'mo-', 'co-', 'go-']
-
-    for i in range(len(i_shareds)):
-        ax.plot(indeces[i], i_shareds[i], lines_types[i], label=options[i]+"_shared")
-        ax.plot(indeces[i][:-1], i_stolens[i][:-1], lines_types2[i], label=options[i]+"_stolen")
-
-    print(params)
-    ax.set_xlabel(r"$\eta$")
-    ax.set_ylabel("Key rate")
-    #ax.legend(["No PS", "Transmitter PS", "Receiver PS", "Transmitter SC", "Mg no PS", "Mg r-PS", "Mg t-PS"])
-
-
-    #key_rates1b = np.load(filename1 + "BAD.npy")
-    #key_rates2b = np.load(filename2 + "BAD.npy")
-    #key_rates3b = np.load(filename3 + "BAD.npy")
-    #ax.plot(tes, key_rates1b, 'ko')
-    #ax.plot(tes, key_rates2b, 'bo')
-    #ax.plot(tes, key_rates3b, 'ro')
-
-    ax.set_yscale('log')
-
-
-    locmaj = matplotlib.ticker.LogLocator(base=10,numticks=10)
-    ax.yaxis.set_major_locator(locmaj)
-    locmin = matplotlib.ticker.LogLocator(base=10.0,subs=(0.2,0.4,0.6,0.8),numticks=12)
-    ax.yaxis.set_minor_locator(locmin)
-    ax.yaxis.set_minor_formatter(matplotlib.ticker.NullFormatter())
-
-    ax.text(0.1, 0.80, params[0])
-
-    #ax.minorticks_on()
-    plt.legend(fontsize=8)
-    plt.show()
-
-
-
-
-
-### Parameters
-#N = 20
-#mpn = 1.3
-#mpne = 0.001
-#f = 0.95
-#option = 'tsc'
-## Operations options
-#t = .1
-#k_ps = 0.9
-#k_sc = 0.1
-#k_ct = 0.5
-#
-##params = ["mpn=" + str(mpn), "mpne=" + str(mpne), "f=" + str(f) , "t=" + str(t)]
-#params = ["mpn=" + str(mpn), "mpne=" + str(mpne), "f=" + str(f) , "k_ps=" + str(k_ps),
-#          "k_sc=" + str(k_sc), "k_ct=" + str(k_ct)]
-#
-##plot(N, params)
-#
-#
-## Parameters
-#N = 20
-#mpn = 0.1
-#mpne = 0.001
-#f = 0.95
-#option = 'tsc'
-## Operations options
-#t = .1
-#k_ps = 0.9
-#k_sc = 0.1
-#k_ct = 0.5
-#
-##params = ["mpn=" + str(mpn), "mpne=" + str(mpne), "f=" + str(f) , "t=" + str(t)]
-#params = ["mpn=" + str(mpn), "mpne=" + str(mpne), "f=" + str(f) , "k_ps=" + str(k_ps),
-#         "k_sc=" + str(k_sc), "k_ct=" + str(k_ct)]
-#
-##plot_split(N, params)
-
-
-
+######## EXAMPLE 
 # Parameters
-N = 20
-r = .12
-r_eve = 0.033
-
-# Operations options
-k_ps = 0.95
-k_qs = 0.05
-params = ["r=" + str(r), "r_eve=" + str(r_eve), "k_ps=" + str(k_ps),
-          "k_qs=" + str(k_qs)]
-
-plot2(N, params)
+#N = 20
+#r = .12
+#r_eve = 0.033
+#
+## Operations options
+#k_ps = 0.95
+#k_qs = 0.05
+#params = ["r=" + str(r), "r_eve=" + str(r_eve), "k_ps=" + str(k_ps),
+#          "k_qs=" + str(k_qs)]
+#
+#plot(N, params)

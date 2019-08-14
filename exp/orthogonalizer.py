@@ -19,13 +19,15 @@ r = .6
 
 
 ## Initialize state
-sys = cv.System(N, Nmodes=1, cm=False)
-sys.apply_SMS(r)
+sys = cv.System(N, Nmodes=2, cm=False)
+sys.apply_TMS(r)
 
-a = qt.create(N) * qt.destroy(N)
+statei = sys.state.copy()
+#a = qt.create(N) * qt.destroy(N)
+a = qt.tensor(qt.create(N), qt.identity(N))
 sys.ortho_oper(a)
 
-sys.apply_orthogonalizer(b=.5)
+sys.apply_orthogonalizer(b=0)
 
 wplt.plot(sys.state, [-6, 6], 300)
 print(sys.state.norm())
