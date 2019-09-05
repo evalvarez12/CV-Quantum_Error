@@ -14,25 +14,35 @@ import qutip as qt
 
 
 # Parameters
-N = 30
-r = .6
+N = 20
+r = .7
 
 
 ## Initialize state
-sys = cv.System(N, Nmodes=2, cm=False)
-sys.apply_TMS(r)
+sys = cv.System(N, Nmodes=1, cm=False)
+sys.apply_SMS(r)
 
 statei = sys.state.copy()
-#a = qt.create(N) * qt.destroy(N)
-a = qt.tensor(qt.create(N), qt.identity(N))
-sys.ortho_oper(a)
 
-sys.apply_orthogonalizer(b=0)
 
-wplt.plot(sys.state, [-6, 6], 300)
+#a = qt.destroy(N) 
+##a = qt.tensor(qt.create(N), qt.identity(N))
+#sys.ortho_oper(a)
+#sys.apply_orthogonalizer(b=.4)
+
+
+#sys.apply_photon_catalysis(0.5, 1)
+#sys.apply_photon_subtraction(0.9)
+
+
+#x_res = sys.homodyne_measurement()
+#print("X:", x_res)
+
+wplt.plot(sys.state, [-6, 6], 200)
 print(sys.state.norm())
+print(statei.dag() * sys.state)
 
-cm = sys.get_full_CM()
-
-print(cm)
-print(np.linalg.det(cm))
+#cm = sys.get_full_CM()
+#
+#print(cm)
+#print(np.linalg.det(cm))

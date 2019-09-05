@@ -11,6 +11,9 @@ import scipy.linalg as la
 import qutip as qt
 
 def key_rate_simple(sys, f, p):
+    """
+    Dont use 
+    """
     Va = sys.get_simple_CM_V(0).norm()
     Vb = sys.get_simple_CM_V(1).norm()
     Ve = sys.get_simple_CM_V(2).norm()
@@ -46,6 +49,29 @@ def key_rate(sys, f, p):
     k_rate = p * (f * I_shared - I_stolen)
 #    print("I_shared:", I_shared)
 #    print("I_stolen:", I_stolen)
+    return k_rate
+
+
+def key_rate_Ialtern(sys, f, p):
+    sys.set_quadratures_basis()
+    Va = sys.get_CM_entry([0, 0])
+    Vb = sys.get_CM_entry([2, 2])
+    Ve = sys.get_CM_entry([4, 4])
+    Vf = sys.get_CM_entry([6, 6])
+    Cab = sys.get_CM_entry([0, 2])
+    Cbe = sys.get_CM_entry([2, 4])
+    Cbf = sys.get_CM_entry([2, 6])
+    Cef = sys.get_CM_entry([4, 6])
+
+    I_stolen = X(Vb, Ve, Vf, Cbe, Cbf, Cef)
+    I_shared = I_altern(sys.state, [2,3])
+
+    k_rate = p * (f * I_shared - I_stolen)
+    print("I_shared:", I_shared)
+    I_shared = I(Va, Vb, Cab)
+    print("I_shared2:", I_shared)
+    print("I_stolen:", I_stolen)
+
     return k_rate
 
 
@@ -176,6 +202,7 @@ def key_rate_theory(mpnA, mpnE, t):
     k_rate = p * (f * I_shared - I_stolen)
     return k_rate
 
+
 def I(Va, Vb, Cab):
     # Conditional variance
     Vb_a = Vb - (Cab**2)/Va
@@ -183,6 +210,15 @@ def I(Va, Vb, Cab):
     # Shared information
     si = np.log2(Vb/Vb_a)/2
     return si
+
+
+def I_altern(rho, modes):
+    rhoA = rho.ptrace(modes[0])
+    rhoB = rho.ptrace(modes[1])
+    rhoAB = rho.ptrace(modes)
+    
+    I = qt.entropy_vn(rhoA, 2) + qt.entropy_vn(rhoB, 2) - qt.entropy_vn(rhoAB, 2)
+    return I
 
 def X(Vb, Ve, Vf, Cbe, Cbf, Cef):
     I = np.eye(2)

@@ -14,10 +14,10 @@ import numpy as np
 import qutip as qt
 
 ############################################ CALCULATIONS
-#options = ['none', 'tps', 'rps', 'tqs', 'rqs']
-options = ['tot', 'rot']
-
-#options = ['none', 'tqs', 'rqs']
+options = ['none', 'tps', 'rps', 'tqs', 'rqs']
+#options = ['tot', 'rot']
+#options = ['tpa', 'rpa', 'tct', 'rct']
+#options = ['tpa', 'rpa']
 
 for option in options:
 #for i in [0]:
@@ -35,16 +35,25 @@ for option in options:
     # Operations options
     k_ps = 0.95
     k_qs = 0.05
-    
+    k_ot = 0.4
+    k_pa = 0.95
+    k_ct = 0.95
     
     
     ## Initialize state
     sys = cv.System(N, Nmodes=2, cm=False)
     sys.apply_TMS(r, [0, 1])
     
-    if option[1:] == "ot":
-        a = qt.create(N) 
+#    a = qt.tensor(qt.identity(N), qt.create(N) * qt.destroy(N)) 
+    a = qt.tensor(qt.identity(N), qt.create(N)) 
+#    a = qt.tensor(qt.create(N), qt.identity(N)) 
+
+    if option == "tot":
         sys.ortho_oper(a)
+        
+    if option == "rot":
+        a = qt.tensor([a] + [qt.identity(N)]*2)
+        
     
     # BAD TMSV
     #sys.replace_current_state_w_bad_TMSV(mean_photon_number)
@@ -61,13 +70,20 @@ for option in options:
     
     # Transmitter Scissors Exact
     elif option == 'tqs':
-        p_success = sys.apply_scissors_exact(k_qs, 1)
+        p_success = sys.apply_scissors(k_qs, 1)
         print("P SUCCESS:", p_success)
     
     elif option ==  'tot':
         p_success = 1
-        sys.apply_orthogonalizer(1)
+        sys.apply_orthogonalizer(k_ot)
+        
+    elif option == 'tpa':
+        p_success = sys.apply_photon_addition(k_pa, 1, 0)
+        print("P SUCCESS:", p_success)
     
+    elif option == 'tct':
+        p_success = sys.apply_photon_catalysis(k_ct, 1, 1)
+        print("P SUCCESS:", p_success)
     
     # Evesdropper collective attack
     sys.add_TMSV(r_eve)
@@ -85,15 +101,16 @@ for option in options:
     if option == 'none' or option == 'tps':
         tes = np.logspace(-2, 0, base=10, num=32)
     
-    if option == 'rps':
+    if option == 'rps' or option == 'tot':
         tes = np.logspace(-3, 0, base=10, num=38)
         tes = tes[6:]
+        
+    if option == 'rot':
+        tes = np.logspace(-3, 0, base=10, num=38)
         
     if option == 'rqs' or option == 'tqs':   
         tes = np.linspace(1, 0.98, num=3)
         
-    
-    
     ##### For r=.12
 #    if option == 'none' or option == 'tps':
 #        tes = np.logspace(-1, 0, base=10, num=35)[10:]
@@ -126,15 +143,24 @@ for option in options:
             
         # Receiver Scissors Exact
         elif option == 'rqs':
-            p_success = sys.apply_scissors_exact(k_qs, 1)
+            p_success = sys.apply_scissors(k_qs, 1)
             sys.state = sys.state.permute([2,3,1,0])
             print("P SUCCESS:", p_success)
             
         elif option ==  'rot':
+            sys.ortho_oper(a)
             p_success = 1
-            sys.apply_orthogonalizer(1)
+            sys.apply_orthogonalizer(k_ot)
+            
+        elif option == 'rpa':
+            p_success = sys.apply_photon_addition(k_pa, 1, 0)
+            print("P SUCCESS:", p_success)
     
-        kr = measurements.key_rate(sys, 1, p_success)
+        elif option == 'rct':
+            p_success = sys.apply_photon_catalysis(k_ct, 1, 1)
+            print("P SUCCESS:", p_success)
+
+        kr = measurements.key_rate_Ialtern(sys, 1, p_success)
         key_rates += [kr]
         print("KR:", kr)
     
@@ -142,17 +168,17 @@ for option in options:
     params = ["r=" + str(r), "r_eve=" + str(r_eve), "k_ps=" + str(k_ps),
               "k_qs=" + str(k_qs)]
     # Save the resuls
-    filename = names.measurements_line(N, 'KR2', params, option)
+    filename = names.measurements_line(N, 'KRIaltern', params, option)
     key_rates = np.array(key_rates)
     #print(key_rates)
     np.save(filename, key_rates)
     print(f"-------------")
     print(filename)
-    filename_ind = names.indeces_line(N, 'KR2', params, option, 'eta')
+    filename_ind = names.indeces_line(N, 'KRIaltern', params, option, 'eta')
     np.save(filename_ind, tes)
 
 
 ############################################ PLOT
-import plot_PS as plot
+import plot_KR as plot
 
-plot.plot(N, params)
+plot.plot_Ialern(N=20, params)

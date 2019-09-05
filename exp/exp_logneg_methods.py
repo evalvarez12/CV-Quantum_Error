@@ -5,6 +5,8 @@ Dummy file to test stuff
 @author: Eduardo Villasenor
 """
 
+import sys
+sys.path.append("..") 
 import src.cv_system as cv
 import qutip as qt
 import numpy as np
@@ -53,3 +55,4 @@ log_neg3 = max([0, -np.log2(eig_)])
 
 
 print(log_neg, log_neg2, log_neg3)
+#print(qt.logarithmic_negativity(cm))

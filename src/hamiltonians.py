@@ -65,8 +65,8 @@ def Hamiltonian(N, H_mat):
     a = qt.tensor(qt.destroy(N), qt.qeye(N))
     b = qt.tensor(qt.qeye(N), qt.destroy(N))
 
-    vec = np.array([a, b, a.dag(), b.dag()]).transpose()
-    vec_dag = np.array([a.dag(), b.dag(), a, b])
+    vec = np.array([a, b, a.dag(), b.dag()], dtype=qt.Qobj).transpose()
+    vec_dag = np.array([a.dag(), b.dag(), a, b], dtype=qt.Qobj)
     H = np.dot(vec_dag, np.dot(H_mat, vec))
     return H
 

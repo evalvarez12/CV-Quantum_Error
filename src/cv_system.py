@@ -39,8 +39,8 @@ class System:
         self.add_fock(0, Nadd)
 
 
-    def add_fock(self, l, Nadd=1):
-        state_add = qt.tensor([qt.basis(self.N, l)]*Nadd)
+    def add_fock(self, fock, Nadd=1):
+        state_add = qt.tensor([qt.basis(self.N, fock)]*Nadd)
         self.Nmodes = self.Nmodes + Nadd
 
         if self.state is None:
@@ -160,6 +160,36 @@ class System:
             self.cm = tools.direct_sum([self.cm, cm_add])
 
 
+    def add_CAT(self, a, sign=1):
+        state_aux = qt.coherent(self.N, a) + sign * qt.coherent(self.N, -a)
+        state_aux = state_aux/state_aux.norm()
+        if self.state is None:
+            self.state = state_aux
+        else:
+            if not self.state.isket:
+                state_aux = state_aux * state_aux.dag()
+
+            self.state = qt.tensor(state_aux, self.state)
+
+
+    def add_CAT_Bell(self, a, state):
+        s0 = qt.coherent(self.N, a)
+        s1 =  qt.coherent(self.N, -a)
+        
+        if state[0] == '0':
+            state_aux = qt.tensor(s0, s0) + (-1)**int(state[1]) * qt.tensor(s1, s1)
+        else:
+            state_aux = qt.tensor(s0, s1) + (-1)**int(state[1]) * qt.tensor(s0, s1)
+        
+        if self.state is None:
+            self.state = state_aux
+        else:
+            if not self.state.isket:
+                state_aux = state_aux * state_aux.dag()
+
+            self.state = qt.tensor(state_aux, self.state)
+            
+        
     def collapse_fock_state(self, fock, pos):
         P = qt.basis(self.N, fock).dag()
         P = tools.tensor(self.N, P, pos, self.Nmodes)
@@ -240,6 +270,7 @@ class System:
             self.state = O * self.state
         else:
             self.state = O * self.state * O.dag()
+        self.state = self.state / self.state.norm()
 
     def apply_photon_subtraction(self, t, pos=0):
         theta = np.arccos(np.sqrt(t))
@@ -249,14 +280,22 @@ class System:
         return p_success
 
 
-    def apply_photon_catalysis(self, l, t, pos=0):
+    def apply_photon_catalysis(self, t, l, pos=0):
         theta = np.arccos(np.sqrt(t))
         self.add_fock(l)
         self.apply_BS(theta, [self.Nmodes-1, pos])
         p_success = self.collapse_fock_state(l, self.Nmodes-1)
         return p_success
         
-
+    
+    def apply_photon_addition(self, t, l, pos=0):
+        theta = np.arccos(np.sqrt(t))
+        self.add_fock(l)
+        self.apply_BS(theta, [self.Nmodes-1, pos])
+        p_success = self.collapse_fock_state(0, self.Nmodes-1)
+        return p_success
+        
+    
     def apply_scissors(self, t, pos=0):
         # Tritter parameters
         theta1 = np.arccos(np.sqrt(t))
@@ -388,6 +427,7 @@ class System:
         proj_hom = self.get_homodyne_projector(rand_x)
         proj_hom = tools.tensor(self.N, proj_hom, mode, self.Nmodes)
         self.state = proj_hom * self.state
+        self.state = self.state / self.state.norm()
         return rand_x
 
 
