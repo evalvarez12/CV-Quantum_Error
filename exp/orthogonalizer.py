@@ -11,6 +11,7 @@ import src.cv_system as cv
 #import plots.wigner_plots as wplt
 import wigner_plots as wplt
 import qutip as qt
+sys.path.append("..") 
 
 
 # Parameters

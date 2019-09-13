@@ -9,6 +9,7 @@ Created on Fri Mar  8 10:58:55 2019
 
 import qutip as qt
 import scissor
+sys.path.append("..") 
 
 
 

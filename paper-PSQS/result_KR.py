@@ -17,7 +17,7 @@ import qutip as qt
 #options = ['none', 'tps', 'rps', 'tqs', 'rqs']
 #options = ['tot', 'rot']
 #options = ['tpa', 'rpa', 'tct', 'rct']
-options = ['tpa', 'rpa']
+options = ['tps', 'rps']
 
 for option in options:
 #for i in [0]:

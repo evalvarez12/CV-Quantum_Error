@@ -33,6 +33,7 @@ def key_rate_simple(sys, f, p):
 
 def key_rate(sys, f, p):
     sys.set_quadratures_basis()
+    print(sys.get_full_CM())
     Va = sys.get_CM_entry([0, 0])
     Vb = sys.get_CM_entry([2, 2])
     Ve = sys.get_CM_entry([4, 4])
@@ -42,7 +43,8 @@ def key_rate(sys, f, p):
     Cbe = sys.get_CM_entry([2, 4])
     Cbf = sys.get_CM_entry([2, 6])
     Cef = sys.get_CM_entry([4, 6])
-
+    print(Va, Vb, Ve, Vf)
+    print(Cab, Cbe, Cbf, Cef)
     I_shared = I(Va, Vb, Cab)
     I_stolen = X(Vb, Ve, Vf, Cbe, Cbf, Cef)
 

@@ -12,6 +12,7 @@ import numpy as np
 import src.cv_system as cv
 import wigner_plots as wplt
 
+sys.path.append("..") 
 
 
 

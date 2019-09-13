@@ -11,6 +11,7 @@ import src.cv_system as cv
 import src.measurements as measurements
 import numpy as np
 import matplotlib.pyplot as plt
+sys.path.append("..") 
 
 
 ############################################ CALCULATIONS
