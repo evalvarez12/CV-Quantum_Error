@@ -4,6 +4,9 @@ Created on Wed Jun  5 12:04:09 2019
 
 @author: Eduardo Villasenor
 """
+import sys
+# Add the ptdraft folder path to the sys.path list
+sys.path.append('/..')
 
 import src.names as names
 import numpy as np
@@ -24,6 +27,9 @@ def plot(N, params):
         filename = names.measurements_line(N, 'EN2', params, option)
         filename = names.measurements_line(N, 'EN2_p', params, option)
         filename_ind = names.indeces_line(N, 'EN2', params, option, 'eta')
+
+        print("File names:")
+        print(filename)
 
         data = np.load(filename + ".npy")
         datas += [data]
@@ -76,18 +82,18 @@ def plot(N, params):
 
 
 
-## Parameters
-#N = 5
-#mpn = 0.1
-## Operations options
-#k_ps = 0.5
-#k_sc = 0.01
-#k_ct = 0.5
-#
-##params = ["mpn=" + str(mpn), "mpne=" + str(mpne), "f=" + str(f) , "t=" + str(t)]
-#params = ["mpn=" + str(mpn), "k_ps=" + str(k_ps),
-#          "k_sc=" + str(k_sc), "k_ct=" + str(k_ct)]
-#
-#plot(N, params)
-#
+# Parameters
+N = 20
+mpn = 0.1
+# Operations options
+k_ps = 0.5
+k_sc = 0.01
+k_ct = 0.5
+
+#params = ["mpn=" + str(mpn), "mpne=" + str(mpne), "f=" + str(f) , "t=" + str(t)]
+params = ["mpn=" + str(mpn), "k_ps=" + str(k_ps),
+          "k_sc=" + str(k_sc), "k_ct=" + str(k_ct)]
+
+plot(N, params)
+
 #

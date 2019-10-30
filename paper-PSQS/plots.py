@@ -274,7 +274,7 @@ def GRCI(option, N, eta):
 
     
 #KR('tsc', 20, 0.1)
-KR('rps', 20, 0.01)
+#KR('rps', 20, 0.01)
 
 #KR2('rsc', 10, 0.01)
 #KR2('rsc', 10, 1.3)
@@ -282,10 +282,10 @@ KR('rps', 20, 0.01)
 #GRCI('rps', 20, 0.01)
     
     
-#eta = 0.1
-#EN('rsc', 20, eta)
+eta = 0.1
+EN('rsc', 20, eta)
 #EN('tsc', 10, eta)
-
+#
 #EN('none', 20, eta)
 #EN('rsc', 20, eta)
 #EN('tsc', 20, eta)

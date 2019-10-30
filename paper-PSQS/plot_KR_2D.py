@@ -5,6 +5,10 @@ Created on Wed Jun  5 12:04:09 2019
 @author: Eduardo Villasenor
 """
 
+import sys
+# Add the ptdraft folder path to the sys.path list
+sys.path.append('/..')
+
 import src.names as names
 import numpy as np
 import matplotlib.pyplot as plt
@@ -34,6 +38,8 @@ for option in options:
     params = ["r=" + str(0.93), "r_eve=" + str(0.033), "k=" + str(k)]
 
     filename = names.measurements_line(N, 'KR3', params, option)
+    print("File names:")
+    print(filename)
     data = np.load(filename + ".npy")
     datas += [data]
     
@@ -58,7 +64,11 @@ vals2 = vals2.reshape(50, 50)
 
 filename_ind1 = names.indeces_line(N, 'KR3', params, option, 'eta')
 filename_ind2 = names.indeces_line(N, 'KR3', params, option, 'r')
-    
+
+print("File names:")
+print(filename_ind1)
+print(filename_ind2)    
+
 etas = np.load(filename_ind1 + '.npy')
 rs = np.load(filename_ind2 + '.npy')
 
