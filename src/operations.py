@@ -9,8 +9,8 @@ Created on Fri Feb 15 12:05:43 2019
 
 import qutip as qt
 import numpy as np
-from . import tools
-from . import hamiltonians
+import tools
+import hamiltonians
 
 
 
@@ -226,5 +226,18 @@ def collapse_photon_number_dm(N, rho, n, pos, Nmodes):
     P = tools.tensor(N, P, pos, Nmodes)
     rho = (P * rho)/p_detect_photon_number_dm(N, rho, n, pos, Nmodes)
     return rho
+
+
+def p_parity_odd(N, pos, Nmodes):
+    P = qt.basis(N) * qt.basis(N).dag() * 0
+    for i in range(int(N/2)):
+        P += qt.basis(N, 2*i + 1) * qt.basis(N, 2*i +1).dag()
+    P = tools.tensor(N, P, pos, Nmodes)
+    return P
+
+def p_parity_even(N, pos, Nmodes):
+    P = qt.identity(N) - p_parity_odd(N, pos, Nmodes)
+    return P
+
 
 

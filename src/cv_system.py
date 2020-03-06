@@ -7,10 +7,10 @@ Created on Wed Apr  3 09:29:55 2019
 @author: Eduardo Villasenor
 """
 
-from . import operations as ops
-from . import symplectic as sym
-from . import tools
-from . import theory
+import operations as ops
+import symplectic as sym
+import tools
+import theory
 import qutip as qt
 import numpy as np
 
@@ -37,6 +37,10 @@ class System:
 
     def add_vacuum(self, Nadd=1):
         self.add_fock(0, Nadd)
+        
+        if self.cm is not None:
+            eye = np.eye(2)
+            self.cm = tools.direct_sum([self.cm, eye])
 
 
     def add_fock(self, fock, Nadd=1):
@@ -50,7 +54,7 @@ class System:
                 state_add = state_add * state_add.dag()
 
             self.state = qt.tensor(state_add, self.state)
-
+        
 
     def add_state(self, state):
         N_add = len(state.dims[0])
@@ -160,8 +164,8 @@ class System:
             self.cm = tools.direct_sum([self.cm, cm_add])
 
 
-    def add_CAT(self, a, sign=1):
-        state_aux = qt.coherent(self.N, a) + sign * qt.coherent(self.N, -a)
+    def add_CAT(self, a, phase=0):
+        state_aux = qt.coherent(self.N, a) + np.exp(1j*phase) * qt.coherent(self.N, -a)
         state_aux = state_aux/state_aux.norm()
         if self.state is None:
             self.state = state_aux
