@@ -9,8 +9,8 @@ Created on Fri Feb 15 12:05:43 2019
 
 import qutip as qt
 import numpy as np
-import tools
-import hamiltonians
+from . import tools
+from . import hamiltonians
 
 
 
@@ -235,9 +235,28 @@ def p_parity_odd(N, pos, Nmodes):
     P = tools.tensor(N, P, pos, Nmodes)
     return P
 
+
 def p_parity_even(N, pos, Nmodes):
     P = qt.identity(N) - p_parity_odd(N, pos, Nmodes)
     return P
+
+
+def parity_measurement(N, pos , Nmodes, rho, parity):
+    if parity == 0:
+        P = p_parity_even(N, pos, Nmodes)
+    elif parity == 1:
+        P = p_parity_odd(N, pos, Nmodes)
+    
+    if rho.isket:
+        rho = parity * rho
+        if rho.norm() == 0:
+            return 0
+        return rho / rho.norm()
+    else:  
+        rho = P * rho * P.dag()
+        if rho.tr() == 0:
+            return 0
+        return rho / rho.tr()
 
 
 
