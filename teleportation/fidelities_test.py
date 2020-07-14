@@ -5,11 +5,10 @@ import TMSV_PS as ps
 import numpy as np
 import matplotlib.pyplot as plt
 
-# Rob comments:
 
-T = np.random.rand()
-V = 1
-eps = np.random.rand()
+T = .6
+V = 6
+eps = 0.05
 alpha = 1 + 1j
 theta = .1
 
@@ -23,13 +22,6 @@ r = np.arccosh(V)/2
 tau = -np.log(T)
 g = 1
 
-a = V
-b = T*(V-1) + 1 + eps
-c = np.sqrt(T * (V**2 - 1))
-ref = 2 / (a + b - 2*c + 2)
-Delta = fda.Delta(r, tau, g, Tda, nth)
-print('Ref:', ref)
-print('Delta:', Delta)
 print('Compare TMSV')
 print('TMSV:', tmsv.fidelity(V, T, eps, alpha))
 print('TMSV DA:', fda.tmsv_eq(r, tau, g, Tda, np.real(alpha), np.imag(alpha), nth))
@@ -38,56 +30,65 @@ print('PS:', ps.fidelity(V, theta, T, eps, alpha))
 # print('SB DA:', fda.fidelity_(r, tau, g, Tda, np.real(alpha), np.imag(alpha)))
 
 # print('PS2:', ps2.fidelity(V, theta, T, eps, alpha=1))
-# print('--------- Optimized')
-# print('opt TMSV:', tmsv.opt_fidelity(T, eps, alpha))
-# print('opt TMSV DA:', fda.get_opt_f('tmsv', tau, g, Tda, alpha, nth))
-# print('----------------')
+print('--------- Optimized')
+print('opt TMSV:', tmsv.opt_fidelity(T, eps, alpha))
+print('opt PS:', ps.opt_fidelity(T, eps, alpha))
+print('opt TMSV DA:', fda.get_opt_f('tmsv', tau, g, Tda, alpha, nth))
+print('----------------')
 
 
 ###################### PLOT
-# t = 0.05*0
-# nth = 0.1
-# T =  1
-# B = 1 + 1j
-# g = 1/T
-# eps = nth
-#
-# alpha = 1 + 1j
-#
-# F_tm = []
-# F_ps = []
-#
-# F_sbDA = []
-# F_scDA = []
-# F_tmDA = []
-#
-# trans = np.linspace(0.1,1)
-#
-# for ti in trans:
-#     F_tm += [tmsv.opt_fidelity(ti, eps, alpha)]
-#     F_ps += [ps.opt_fidelity(ti, eps, alpha)]
-#
-#
-#
-# tda = -np.log(trans)
-# for ti in tda:
-#     F_sbDA += [fidelity.get_opt_f('squeezed_bell', ti, g, T, B)]
-#     # F_sc += [fidelity.get_opt_f_r('squeezed_cat', ri, t, g, T, B)]
-#     F_tmDA += [fidelity.get_opt_f('tmsv', ti, g, T, B)]
-#
-#
-# plt.plot(trans, F_tm, label='TMSV')
-# plt.plot(trans, F_ps, label='PS')
-#
-# plt.plot(trans, F_tmDA, 's' ,label='TMSV_DA')
-# plt.plot(trans, F_sbDA, 'o', label='SB')
-# plt.rcParams["font.family"] = "Times New Roman"
-#
-# plt.legend()
-# plt.xlabel('Transmissivity')
-# plt.ylabel('Fidelity')
-#
-# plt.show()
+plot = True
+if plot:
+    alpha = 1 + 1j
+    eps = 0.2
+
+    # Ancilla definitions for DA
+    Tda = 1
+    g = 1/Tda
+
+    F_tm = []
+    F_ps = []
+
+    F_sbDA = []
+    F_scDA = []
+    F_tmDA = []
+
+    trans = np.linspace(0.1,1,10)
+
+    for ti in trans:
+        print('--------------', ti)
+        print('------------> TMSV')
+        # F_tm += [tmsv.opt_fidelity(ti, eps, alpha)]
+        # F_ps += [ps.opt_fidelity(ti, eps, alpha)]
+
+        tau = -np.log(ti)
+        if ti == 1:
+            nth = 0
+        else:
+            nth = eps/(2*(1 - ti))
+
+        print('------------> TMSV DA')
+        F_tmDA += [fda.get_opt_f('tmsv', tau, g, Tda, alpha, nth)]
+        print('------------> SB DA')
+        F_sbDA += [fda.get_opt_f('squeezed_bell', tau, g, Tda, alpha, nth)]
+        # F_sc += [fidelity.get_opt_f_r('squeezed_cat', ri, t, g, T, B)]
+
+
+    # plt.plot(trans, F_tm, label='TMSV')
+    # plt.plot(trans, F_ps, label='PS')
+
+    plt.plot(trans, F_tmDA, 's' ,label='TMSV_DA')
+    plt.plot(trans, F_sbDA, 'o', label='SB')
+    plt.rcParams["font.family"] = "Times New Roman"
+
+    plt.legend()
+    plt.xlabel('Transmissivity')
+    plt.ylabel('Fidelity')
+
+    plt.ylim((.45,1))
+
+    plt.show()
 
 
 ###############################################################################

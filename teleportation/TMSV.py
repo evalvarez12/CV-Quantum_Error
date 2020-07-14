@@ -60,10 +60,11 @@ def opt_fidelity(T, eps, alpha):
     initial_guess = 1
     cons=({'type': 'ineq',
        'fun': lambda x: x})
-    res = op.minimize(F, initial_guess, constraints=cons)
+    # res = op.minimize(F, initial_guess, constraints=cons)
+    res = op.minimize(F, initial_guess)
     print(res)
-    if not res['success']:
-        raise AssertionError('Failure in optimization')
+    # if not res['success']:
+        # raise AssertionError('Failure in optimization')
     return fidelity_pars(res['x'], T, eps, alpha)
 
 # # print(opt_fidelity(1, 0.001, 1))

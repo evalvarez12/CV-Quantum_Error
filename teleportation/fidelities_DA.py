@@ -134,7 +134,7 @@ def opt_tmsv(t, g, T, B, nth):
     initial_guess = 1
     cons=({'type': 'ineq',
            'fun': lambda x: x})
-    res = op.minimize(F, 1, constraints=cons)
+    res = op.minimize(F, initial_guess)
     print(res)
     return res['x'], res['success']
 
@@ -145,6 +145,7 @@ def opt_squeezed_bell_r(r, t, g, T, B, nth):
     F = lambda pars : 1 - pars_squeezed_bell_r(pars, r, t, g, T, Br, Bi, nth)
     initial_guess = [1]
     res = op.minimize(F, initial_guess)
+    print(res)
     return res['x'], res['success']
 
 
@@ -195,7 +196,7 @@ def get_opt_f(stype, t, g, T, B, nth):
     sol, success = opt_func(t, g, T, B, nth)
     if not success:
         print(sol)
-        raise AssertionError('Failure in optimization')
+        # raise AssertionError('Failure in optimization')
     return F_func(sol, t, g, T, np.real(B), np.imag(B), nth)
 
 
@@ -206,5 +207,6 @@ def get_opt_f_r(stype, r, t, g, T, B, nth):
     opt_func = get_opt_func_r(stype)
     sol, success = opt_func(r, t, g, T, B, nth)
     if not success:
-        raise AssertionError('Failure in optimization r')
+        print(sol)
+        # raise AssertionError('Failure in optimization r')
     return F_func(sol, r, t, g, T, np.real(B), np.imag(B), nth)

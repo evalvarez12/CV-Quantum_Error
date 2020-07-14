@@ -74,15 +74,16 @@ def fidelity_pars(pars, T, eps, alpha):
 
 def opt_fidelity(T, eps, alpha):
     F = lambda pars : 1 - fidelity_pars(pars, T, eps, alpha)
-    initial_guess = [2, 2]
+    initial_guess = [1.2, .1]
     cons=({'type': 'ineq',
-       'fun': lambda x: x},
+       'fun': lambda x: x[0]},
       {'type': 'ineq',
-       'fun': lambda x: 2 * np.pi  - np.abs(x)})
+       'fun': lambda x: 2 * np.pi  - np.abs(x[1])})
 
-    res = op.minimize(F, initial_guess, constraints=cons)
-    if not res['success']:
-        print(res)
+    # res = op.minimize(F, initial_guess, constraints=cons)
+    res = op.minimize(F, initial_guess)
+    print('PS', res)
+    # if not res['success']:
         # raise AssertionError('Failure in optimization')
     return fidelity_pars(res['x'], T, eps, alpha)
 
