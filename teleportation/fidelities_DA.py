@@ -199,6 +199,15 @@ def get_opt_f(stype, t, g, T, B, nth):
         # raise AssertionError('Failure in optimization')
     return F_func(sol, t, g, T, np.real(B), np.imag(B), nth)
 
+def get_opt_values(stype, t, g, T, B, nth):
+    F_func = get_F_func(stype)
+    opt_func = get_opt_func(stype)
+    sol, success = opt_func(t, g, T, B, nth)
+    if not success:
+        print('Failure optimization' + stype, sol)
+        # raise AssertionError('Failure in optimization')
+    return sol, F_func(sol, t, g, T, np.real(B), np.imag(B), nth)
+
 
 def get_opt_f_r(stype, r, t, g, T, B, nth):
     if stype == 'tmsv':

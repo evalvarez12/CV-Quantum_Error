@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 
 # This is the old version one, here the collapse to the single photon CF includes
 # the variable change of the BS during PS
+# Incorrect do not use
 
 def fidelity(V, theta, T, eps, alpha):
     gp = 1

@@ -3,14 +3,35 @@ import scipy.optimize as op
 import matplotlib.pyplot as plt
 
 
-def fidelity(V, T, eps, alpha):
+def fidelity(V, T, eps, eta, alpha):
+    g = 1/eta
+    g = g * eta
+    R = 1 - eta**2
+
+    a = V
+    b = T * (V - 1) + 1 + eps
+    c = np.sqrt(T * (V**2 - 1))
+
+    A = (a + b * g**2 - 2*c*g)/2
+    A = A + (g**2 + 1 + (R * g/eta)**2)/2
+
+    Bu = -2 * np.imag(alpha) * (1 - g)
+    Bv = 2 * np.real(alpha) * (1 - g)
+
+    E = np.exp(-(Bu + Bv)**2/(4*A))
+
+    return E/A
+
+
+
+def fidelity_old(V, T, eps, alpha):
     gp = 1
     gx = gp
 
     # Define elements of covariance matrix
     a = V
-    c = np.sqrt(T * (V**2 - 1))
     b = T * (V - 1) + 1 + eps
+    c = np.sqrt(T * (V**2 - 1))
     # print('------ V =', V, 'T =', T, 'eps =', eps)
 
     # print('a:', a)
@@ -51,21 +72,32 @@ def fidelity(V, T, eps, alpha):
     return res
 
 
-def fidelity_pars(pars, T, eps, alpha):
-    V = pars
-    return fidelity(V, T, eps, alpha)
-
-def opt_fidelity(T, eps, alpha):
-    F = lambda pars : 1 - fidelity_pars(pars, T, eps, alpha)
+def opt_fidelity(T, eps, eta, alpha):
+    F = lambda V : 1 - fidelity(V, T, eps, eta, alpha)
     initial_guess = 1
     cons=({'type': 'ineq',
        'fun': lambda x: x})
     # res = op.minimize(F, initial_guess, constraints=cons)
     res = op.minimize(F, initial_guess)
-    print(res)
+    # print(res)
     # if not res['success']:
         # raise AssertionError('Failure in optimization')
-    return fidelity_pars(res['x'], T, eps, alpha)
+    return fidelity(res['x'], T, eps, eta, alpha)
+
+
+def opt_values(T, eps, eta, alpha):
+    F = lambda V : 1 - fidelity(V, T, eps, eta, alpha)
+    initial_guess = 1
+    cons=({'type': 'ineq',
+       'fun': lambda x: x})
+    # res = op.minimize(F, initial_guess, constraints=cons)
+    res = op.minimize(F, initial_guess)
+    if not res['success']:
+        print(res)
+        # raise AssertionError('Failure in optimization')
+    return res['x'], fidelity(res['x'], T, eps, eta, alpha)
+
+
 
 # # print(opt_fidelity(1, 0.001, 1))
 # alpha = 1
