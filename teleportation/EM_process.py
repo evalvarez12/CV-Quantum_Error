@@ -16,7 +16,6 @@ plt.rcParams["font.family"] = "Times New Roman"
 ############################# TRANSMISSIVITIES PLOT
 
 
-# t_ext = 0.5012
 db = 2
 eta = 10**(-0/10)
 t_ext = 10**(-db/10)
@@ -30,8 +29,8 @@ colors = {'uplink':'b', 'downlink':'g'}
 zs = [0, 5, 10, 15, 20 , 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75]
 rs = [0.75]
 fig = plt.figure()
-ax1 = fig.add_subplot(111)
-# ax2 = ax1.twinx()
+ax = fig.add_subplot(111)
+# ax2 = ax.twinx()
 
 scint_up = {}
 scint_down = {}
@@ -98,26 +97,26 @@ for r in rs:
    # Y1_EM = [y - e for y, e in zip(Tavg_EM, Tstd_EM)]
    # Y2_EM = [y + e for y, e in zip(Tavg_EM, Tstd_EM)]
    #
-   # ax1.fill_between(zs, Y1_EM, Y2_EM, alpha=0.25, color=colors_fill[str(r)+'EM'])
-   # ax1.errorbar(zs, Tavg_EM, Tstd_EM, label=r'$r_d=' + str(r)+'$m EM', alpha=1, fmt=':', capsize=4, markersize=4, linewidth=1.5, c=colors_fill[str(r)+'EM'])
+   # ax.fill_between(zs, Y1_EM, Y2_EM, alpha=0.25, color=colors_fill[str(r)+'EM'])
+   # ax.errorbar(zs, Tavg_EM, Tstd_EM, label=r'$r_d=' + str(r)+'$m EM', alpha=1, fmt=':', capsize=4, markersize=4, linewidth=1.5, c=colors_fill[str(r)+'EM'])
    #
-   # ax1.fill_between(zs, Y1, Y2, alpha=0.5, color=colors_fill[str(r)])
-   # ax1.errorbar(zs, Tavg, Tstd, label=r'$r_d=' + str(r)+'$m', alpha=1, fmt=':', capsize=4, markersize=4, linewidth=1.5, c=colors_fill[str(r)])
+   # ax.fill_between(zs, Y1, Y2, alpha=0.5, color=colors_fill[str(r)])
+   # ax.errorbar(zs, Tavg, Tstd, label=r'$r_d=' + str(r)+'$m', alpha=1, fmt=':', capsize=4, markersize=4, linewidth=1.5, c=colors_fill[str(r)])
 
 
-   ax1.errorbar(zs, downlink_avg, downlink_std, label=r'downlink', linestyle='-', marker='o', capsize=4, markersize=4, linewidth=1.5, c=colors['downlink'])
-   ax1.errorbar(zs, uplink_avg, uplink_std, label=r'uplink', linestyle='-', marker='o', capsize=4, markersize=4, linewidth=1.5, c=colors['uplink'])
+   ax.errorbar(zs, downlink_avg, downlink_std, label=r'downlink', linestyle='-', marker='o', capsize=4, markersize=4, linewidth=1.5, c=colors['downlink'])
+   ax.errorbar(zs, uplink_avg, uplink_std, label=r'uplink', linestyle='-', marker='o', capsize=4, markersize=4, linewidth=1.5, c=colors['uplink'])
 
-   ax1.errorbar(zs, downlinkEM_avg, downlinkEM_std, label=r'downlink EM', linestyle='--', marker='o', capsize=4, markersize=4, linewidth=1.5, c=colors['downlink'])
-   ax1.errorbar(zs, uplinkEM_avg, uplinkEM_std, label=r'uplink EM', linestyle='--', marker='o', capsize=4, markersize=4, linewidth=1.5, c=colors['uplink'])
+   ax.errorbar(zs, downlinkEM_avg, downlinkEM_std, label=r'downlink EM', linestyle='--', marker='o', capsize=4, markersize=4, linewidth=1.5, c=colors['downlink'])
+   ax.errorbar(zs, uplinkEM_avg, uplinkEM_std, label=r'uplink EM', linestyle='--', marker='o', capsize=4, markersize=4, linewidth=1.5, c=colors['uplink'])
 
 
 
-ax1.set_xlabel(r'$\zeta$ (deg)')
-ax1.set_ylabel(r'$T$')
+ax.set_xlabel(r'$\zeta$ (deg)')
+ax.set_ylabel(r'$T$')
 # ax2.set_ylabel(r'$\gamma$')
-ax1.grid()
-ax1.legend()
+ax.grid()
+ax.legend()
 
 
 
@@ -168,8 +167,8 @@ colors = {'uplink':'b', 'downlink':'g'}
 zs = [0, 5, 10, 15, 20 , 25, 30, 35, 40, 45, 50, 55, 60, 65, 70]
 rs = [0.75]
 fig = plt.figure()
-ax1 = fig.add_subplot(111)
-# ax2 = ax1.twinx()
+ax = fig.add_subplot(111)
+# ax2 = ax.twinx()
 for r in rs:
    uplink_avg = []
    uplink_std = []
@@ -186,6 +185,9 @@ for r in rs:
 
        T_down = downlink_data * t_ext
        T_up = uplink_data * t_ext
+       
+       T_down = -10 * np.log10(T_down)
+       T_up = -10 * np.log10(T_up)
 
        downlink_avg += [np.average(T_down)]
        downlink_std += [np.std(T_down)]
@@ -195,37 +197,77 @@ for r in rs:
 
    # ax2.errorbar(zs, Pavg, Pstd,  linestyle=':', label=r'$r_d=' + str(r)+'$m', marker='^', capsize=1, markersize=4, c=colorsP[r])
 
-   ax1.errorbar(zs, downlink_avg, downlink_std, label=r'downlink', linestyle='--', marker='o', capsize=4, markersize=4, linewidth=1.5, c=colors['downlink'])
-   ax1.errorbar(zs, uplink_avg, uplink_std, label=r'uplink', linestyle='--', marker='o', capsize=4, markersize=4, linewidth=1.5, c=colors['uplink'])
+   ax.errorbar(zs, downlink_avg, downlink_std, label=r'downlink', linestyle='--', marker='o', capsize=4, markersize=4, linewidth=1.5, c='navy')
+   ax.errorbar(zs, uplink_avg, uplink_std, label=r'uplink', linestyle='--', marker='s', capsize=4, markersize=4, linewidth=1.5, c='dodgerblue')
 
 
-   ax2 = ax1.twinx()  # instantiate a second axes that shares the same x-axis
+   ax2 = ax.twinx()  # instantiate a second axes that shares the same x-axis
 
-   color = 'tab:red'
-   ax2.set_ylabel(r'$\sigma_{SI}$', color=color)  # we already handled the x-label with ax1
-   ax2.plot(zs, list(scint_down.values())[:-1], 'v-', label=r'downlink', color='red')
-   ax2.plot(zs, list(scint_up.values())[:-1], 'v-', label=r'uplink', color='orange')
-   ax2.tick_params(axis='y', labelcolor=color)
+   ax2.set_ylabel(r'$\sigma_{SI}$', color='red')  # we already handled the x-label with ax
+   ax2.plot(zs, list(scint_down.values())[:-1], 'v-', label=r'downlink', color='crimson')
+   ax2.plot(zs, list(scint_up.values())[:-1], '^-', label=r'uplink', color='tomato')
+   ax2.tick_params(axis='y', labelcolor='red')
+   ax2.set_ylim(0.035, -0.001)
    ax2.legend()
 
-
-ax1.set_xlabel(r'$\zeta$ (deg)')
-ax1.set_ylabel(r'$T$')
+#ax.set_zorder(1)  
+#ax.patch.set_visible(False)
+ax.set_xlabel(r'$\zeta$ (deg)')
+ax.set_ylabel(r'$t(dB)$', color='blue')
+ax.tick_params(axis='y', labelcolor='blue')
 # ax2.set_ylabel(r'$\gamma$')
-ax1.grid()
+ax.grid()
+ax.set_ylim(2.9, 17.5)
 
-ax1.legend()
+ax.legend()
 
 
-############################## FIDELITIES PLOT
+############################# FIXED LOSS FIDELITIES PLOT
 fig = plt.figure()
-ax1 = fig.add_subplot(111)
+ax = fig.add_subplot(111)
+
+T = np.logspace(0, -1.3, base=10)
+Tdb = -10 * np.log10(T)
+eps = 0.02
+alpha = [(1 + 1j)*.8, 1 + 1j, (1 + 1j)*1.2,]
+
+f_dir1 = []
+f_dir2 = []
+f_dir3 = []
+f_tele = []
+
+for it in T:
+    f_tele += [tmsv.opt_fidelity(it, eps, eta, alpha=alpha[2])]
+    f_dir1 += [co.fidelity(it, eps, alpha[0])]
+    f_dir2 += [co.fidelity(it, eps, alpha[1])]
+    f_dir3 += [co.fidelity(it, eps, alpha[2])]
+
+
+ax.plot(Tdb, f_tele, label='Teleportation', linestyle='--', marker='o', markersize=4, linewidth=1.5)
+ax.plot(Tdb, f_dir1, label=r'Direct $|\alpha|^2= $' + str(np.round(np.abs(alpha[0]),2)), linestyle='--', marker='o', markersize=4, linewidth=1.5)
+ax.plot(Tdb, f_dir2, label=r'Direct $|\alpha|^2= $' + str(np.round(np.abs(alpha[1]),2)), linestyle='--', marker='o', markersize=4, linewidth=1.5)
+ax.plot(Tdb, f_dir3, label=r'Direct $|\alpha|^2= $' + str(np.round(np.abs(alpha[2]),2)), linestyle='--', marker='o', markersize=4, linewidth=1.5)
+
+clasical = np.ones_like(f_tele) * .5
+plt.plot(Tdb, clasical, 'r--')
+
+ax.set_xlabel(r'$t(dB)$')
+ax.set_ylabel(r'Fidelity')
+# plt.ylim([-0.005, 0.2])
+
+ax.set_xlim(0, 13)
+ax.set_ylim(.49, 1)
+#ax.set_xscale('log')
+ax.grid()
+ax.legend()
+
+############################## UPLINK & TELEPORTATION FIDELITIES PLOT
+fig = plt.figure()
+ax = fig.add_subplot(111)
 
 zs = [0, 5, 10, 15, 20 , 25, 30, 35, 40, 45, 50, 55, 60, 65, 70]
 rs = [0.75]
 
-eps1 = 0.02
-eps2 = 0.07
 
 alpha = [(1 + 1j)*.8, 1 + 1j, (1 + 1j)*1.2,]
 
@@ -265,12 +307,13 @@ for r in rs:
        uplink_std += [np.std(T_up)]
 
        # TMSV
-       V_opt, F_opt = tmsv.opt_values(np.average(T_down), eps1, eta, alpha=1 + 1j)
+       eps = scint_down[z] * V_opt
+       V_opt, F_opt = tmsv.opt_values(np.average(T_down), eps, eta, alpha=alpha[2])
        print("z =", z, V_opt, F_opt)
 
        eps = scint_down[z] * V_opt
-       f_tmsv_avg += [np.average(tmsv.fidelity(V_opt, T_down, eps, eta, alpha))]
-       f_tmsv_std += [np.std(tmsv.fidelity(V_opt, T_down, eps, eta, alpha))]
+       f_tmsv_avg += [np.average(tmsv.fidelity(V_opt, T_down, eps, eta, alpha[2]))]
+       f_tmsv_std += [np.std(tmsv.fidelity(V_opt, T_down, eps, eta, alpha[2]))]
 
        eps = scint_up[z] * np.abs(alpha[0])
        f_up1_avg += [np.average(co.fidelity(T_up, eps, alpha[0]))]
@@ -284,10 +327,10 @@ for r in rs:
        f_up3_avg += [np.average(co.fidelity(T_up, eps, alpha[2]))]
        f_up3_std += [np.std(co.fidelity(T_up, eps, alpha[2]))]
 
-   ax1.errorbar(zs, f_tmsv_avg, f_tmsv_std, label=r'Downlink', linestyle='--', marker='o', capsize=4, markersize=4, linewidth=1.5)
-   ax1.errorbar(zs, f_up1_avg, f_up1_std, label=r'Uplink $|\alpha|^2= $' + str(np.round(np.abs(alpha[0]),2)), linestyle='--', marker='o', capsize=4, markersize=4, linewidth=1.5)
-   ax1.errorbar(zs, f_up2_avg, f_up2_std, label=r'Uplink $|\alpha|^2= $' + str(np.round(np.abs(alpha[1]),2)), linestyle='--', marker='o', capsize=4, markersize=4, linewidth=1.5)
-   ax1.errorbar(zs, f_up3_avg, f_up3_std, label=r'Uplink $|\alpha|^2= $' + str(np.round(np.abs(alpha[2]),2)), linestyle='--', marker='o', capsize=4, markersize=4, linewidth=1.5)
+   ax.errorbar(zs, f_tmsv_avg, f_tmsv_std, label=r'Teleportation', linestyle='--', marker='o', capsize=4, markersize=4, linewidth=1.5)
+   ax.errorbar(zs, f_up1_avg, f_up1_std, label=r'Uplink $|\alpha|^2= $' + str(np.round(np.abs(alpha[0]),2)), linestyle='--', marker='o', capsize=4, markersize=4, linewidth=1.5)
+   ax.errorbar(zs, f_up2_avg, f_up2_std, label=r'Uplink $|\alpha|^2= $' + str(np.round(np.abs(alpha[1]),2)), linestyle='--', marker='o', capsize=4, markersize=4, linewidth=1.5)
+   ax.errorbar(zs, f_up3_avg, f_up3_std, label=r'Uplink $|\alpha|^2= $' + str(np.round(np.abs(alpha[2]),2)), linestyle='--', marker='o', capsize=4, markersize=4, linewidth=1.5)
 
 #plt.plot(zs, np.zeros_like(zs), ls='--', c='k')
 
@@ -295,11 +338,13 @@ clasical = np.ones_like(f_tmsv_avg) * .5
 plt.plot(zs, clasical, 'r--')
 
 
-ax1.set_xlabel(r'$\zeta$ (deg)')
-ax1.set_ylabel(r'Fidelity')
+ax.set_xlabel(r'$\zeta$ (deg)')
+ax.set_ylabel(r'Fidelity')
 # plt.ylim([-0.005, 0.2])
-ax1.grid()
-ax1.legend()
+ax.set_ylim(0.47, 0.81)
+ax.set_xlim(-1, 71)
+ax.grid()
+ax.legend()
 
 
 
