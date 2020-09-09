@@ -122,7 +122,7 @@ ax.legend()
 
 
 
-
+############ UPLINK & DOWNLINK CHANNELS PROPERTIES PLOT
 
 
 
@@ -213,7 +213,7 @@ for r in rs:
 #ax.set_zorder(1)  
 #ax.patch.set_visible(False)
 ax.set_xlabel(r'$\zeta$ (deg)')
-ax.set_ylabel(r'$t(dB)$', color='blue')
+ax.set_ylabel(r'$\langle t \rangle (dB) $', color='blue')
 ax.tick_params(axis='y', labelcolor='blue')
 # ax2.set_ylabel(r'$\gamma$')
 ax.grid()
@@ -307,7 +307,7 @@ for r in rs:
        uplink_std += [np.std(T_up)]
 
        # TMSV
-       eps = scint_down[z] * V_opt
+       eps = scint_down[z] * 2
        V_opt, F_opt = tmsv.opt_values(np.average(T_down), eps, eta, alpha=alpha[2])
        print("z =", z, V_opt, F_opt)
 
