@@ -86,7 +86,7 @@ def opt_fidelity(T, eps, eta, alpha):
 
 
 def opt_values(T, eps, eta, alpha):
-    F = lambda V : 1 - fidelity(V, T, eps, eta, alpha)
+    F = lambda V : 1 - fidelity(V, T, V * eps, eta, alpha)
     initial_guess = 1
     cons=({'type': 'ineq',
        'fun': lambda x: x})

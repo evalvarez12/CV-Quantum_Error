@@ -213,7 +213,7 @@ for r in rs:
    ax2.plot(zs, list(scint_down.values()), 'v-', label=r'downlink', color='crimson')
    ax2.plot(zs, list(scint_up.values()), '^-', label=r'uplink', color='tomato')
    ax2.tick_params(axis='y', labelcolor='red')
-#   ax2.set_ylim(0.035, -0.001)
+   ax2.set_ylim(0.035, -0.001)
    ax2.legend()
 
 #ax.set_zorder(1)
@@ -223,7 +223,7 @@ ax.set_ylabel(r'$\langle t \rangle (dB) $', color='blue')
 ax.tick_params(axis='y', labelcolor='blue')
 # ax2.set_ylabel(r'$\gamma$')
 ax.grid()
-#ax.set_ylim(2.9, 17.5)
+ax.set_ylim(2.9, 17.5)
 
 ax.legend()
 
@@ -275,7 +275,7 @@ zs = [0, 5, 10, 15, 20 , 25, 30, 35, 40, 45, 50, 55, 60]
 rs = [1]
 
 
-alphaV = [2, 2.5, 3, 3.5]
+alpha = [(1 + 1j)*.8, 1 + 1j, (1 + 1j)*1.2,]
 
 
 for r in rs:
@@ -290,7 +290,7 @@ for r in rs:
    f_up2_std = []
    f_up3_avg = []
    f_up3_std = []
-   f_up4_avg = []
+
    f_tmsv_avg = []
    f_tmsv_std = []
 
@@ -307,54 +307,37 @@ for r in rs:
        T_down = downlink_data * t_ext
        T_up = uplink_data * t_ext
 
-       
-       # Define effective parameters
-       T_eff_down = np.average(np.sqrt(T_down))**2
-       eps_eff_down = np.var(np.sqrt(T_down))/T_eff_down + np.average(T_down)/T_eff_down * scint_down[z]
-       
-       T_eff_up = np.average(np.sqrt(T_up))**2
-       eps_eff_up = np.var(np.sqrt(T_up))/T_eff_up + np.average(T_up)/T_eff_up * scint_up[z]
+       downlink_avg += [np.average(T_down)]
+       downlink_std += [np.std(T_down)]
+
+       uplink_avg += [np.average(T_up)]
+       uplink_std += [np.std(T_up)]
 
        # TMSV
-       V_opt, F_opt = tmsv.opt_values(T_eff_down, eps_eff_down, eta, alpha=alpha[2])
+       eps = scint_down[z] * 2
+       V_opt, F_opt = tmsv.opt_values(np.average(T_down), eps, eta, alpha=alpha[2])
        print("z =", z, V_opt, F_opt)
 
-       eps = eps_eff_down * V_opt
-       f_tmsv_avg += [tmsv.fidelity(V_opt, T_eff_down, eps, eta, alpha[2])]
-#       f_tmsv_std += [np.std(tmsv.fidelity(V_opt, T_down, eps, eta, alpha[2]))]
+       eps = scint_down[z] * V_opt
+       f_tmsv_avg += [np.average(tmsv.fidelity(V_opt, T_down, eps, eta, alpha[2]))]
+       f_tmsv_std += [np.std(tmsv.fidelity(V_opt, T_down, eps, eta, alpha[2]))]
 
-    
-       eps = eps_eff_up * alphaV[0]
-       f_dt1 = 2/(2*alphaV[0]*(1-np.sqrt(T_eff_up))**2 + 2 + eps)
-       f_up1_avg += [f_dt1]
-#       f_up1_std += [np.std(co.fidelity(T_up, eps, alpha[0]))]
+       eps = scint_up[z] * np.abs(alpha[0])
+       f_up1_avg += [np.average(co.fidelity(T_up, eps, alpha[0]))]
+       f_up1_std += [np.std(co.fidelity(T_up, eps, alpha[0]))]
 
+       eps = scint_up[z] * np.abs(alpha[1])
+       f_up2_avg += [np.average(co.fidelity(T_up, eps, alpha[1]))]
+       f_up2_std += [np.std(co.fidelity(T_up, eps, alpha[1]))]
 
-       eps = eps_eff_up * alphaV[1]
-       f_dt2 = 2/(2*alphaV[1]*(1-np.sqrt(T_eff_up))**2 + 2 + eps)
-       f_up2_avg += [f_dt2]
+       eps = scint_up[z] * np.abs(alpha[2])
+       f_up3_avg += [np.average(co.fidelity(T_up, eps, alpha[2]))]
+       f_up3_std += [np.std(co.fidelity(T_up, eps, alpha[2]))]
 
-       eps = eps_eff_up * alphaV[2]
-       f_dt3 = 2/(2*alphaV[2]*(1-np.sqrt(T_eff_up))**2 + 2 + eps)
-       f_up3_avg += [f_dt3]
-       
-       eps = eps_eff_up * alphaV[3]
-       f_dt4 = 2/(2*alphaV[3]*(1-np.sqrt(T_eff_up))**2 + 2 + eps)
-       f_up4_avg += [f_dt4]
-
-#   ax.errorbar(zs, f_tmsv_avg, f_tmsv_std, label=r'Teleportation', linestyle='--', marker='o', capsize=4, markersize=4, linewidth=1.5)
-#   ax.errorbar(zs, f_up1_avg, f_up1_std, label=r'Uplink $|\alpha|^2= $' + str(np.round(np.abs(alpha[0]),2)), linestyle='--', marker='o', capsize=4, markersize=4, linewidth=1.5)
-#   ax.errorbar(zs, f_up2_avg, f_up2_std, label=r'Uplink $|\alpha|^2= $' + str(np.round(np.abs(alpha[1]),2)), linestyle='--', marker='o', capsize=4, markersize=4, linewidth=1.5)
-#   ax.errorbar(zs, f_up3_avg, f_up3_std, label=r'Uplink $|\alpha|^2= $' + str(np.round(np.abs(alpha[2]),2)), linestyle='--', marker='o', capsize=4, markersize=4, linewidth=1.5)
-
-   ax.plot(zs, f_tmsv_avg, label=r'Teleportation', linestyle='--', marker='o', markersize=4, linewidth=1.5)
-   ax.plot(zs, f_up1_avg, label=r'Uplink $|\alpha|^2= $' + str(np.round(np.abs(alphaV[0]),2)), linestyle='--', marker='o', markersize=4, linewidth=1.5)
-   ax.plot(zs, f_up2_avg, label=r'Uplink $|\alpha|^2= $' + str(np.round(np.abs(alphaV[1]),2)), linestyle='--', marker='o', markersize=4, linewidth=1.5)
-   ax.plot(zs, f_up3_avg, label=r'Uplink $|\alpha|^2= $' + str(np.round(np.abs(alphaV[2]),2)), linestyle='--', marker='o', markersize=4, linewidth=1.5)
-   ax.plot(zs, f_up4_avg, label=r'Uplink $|\alpha|^2= $' + str(np.round(np.abs(alphaV[3]),2)), linestyle='--', marker='o', markersize=4, linewidth=1.5)
-
-
-
+   ax.errorbar(zs, f_tmsv_avg, f_tmsv_std, label=r'Teleportation', linestyle='--', marker='o', capsize=4, markersize=4, linewidth=1.5)
+   ax.errorbar(zs, f_up1_avg, f_up1_std, label=r'Uplink $|\alpha|^2= $' + str(np.round(np.abs(alpha[0]),2)), linestyle='--', marker='o', capsize=4, markersize=4, linewidth=1.5)
+   ax.errorbar(zs, f_up2_avg, f_up2_std, label=r'Uplink $|\alpha|^2= $' + str(np.round(np.abs(alpha[1]),2)), linestyle='--', marker='o', capsize=4, markersize=4, linewidth=1.5)
+   ax.errorbar(zs, f_up3_avg, f_up3_std, label=r'Uplink $|\alpha|^2= $' + str(np.round(np.abs(alpha[2]),2)), linestyle='--', marker='o', capsize=4, markersize=4, linewidth=1.5)
 
 #plt.plot(zs, np.zeros_like(zs), ls='--', c='k')
 
@@ -365,8 +348,8 @@ plt.plot(zs, clasical, 'r--')
 ax.set_xlabel(r'$\zeta$ (deg)')
 ax.set_ylabel(r'Fidelity')
 # plt.ylim([-0.005, 0.2])
-#ax.set_ylim(0.47, 0.81)
-#ax.set_xlim(-1, 71)
+ax.set_ylim(0.47, 0.81)
+ax.set_xlim(-1, 71)
 ax.grid()
 ax.legend()
 
