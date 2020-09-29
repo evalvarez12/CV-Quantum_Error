@@ -16,10 +16,12 @@ plt.rcParams["font.family"] = "Times New Roman"
 ############################# TRANSMISSIVITIES PLOT
 
 
-t_ext_db = 2
-eta_db = 0
+t_ext_db = 1
+eta_db = 1
 eta = 10**(-eta_db/10)
 t_ext = 10**(-t_ext_db/10)
+
+g = .9/eta
 
 
 colors_fill = {'up':'darkblue', 'upEM':'skyblue', 'down':'darkgreen', 'downEM':'lawngreen'}
@@ -213,13 +215,13 @@ for r in rs:
    ax2.plot(zs, list(scint_down.values()), 'v-', label=r'downlink', color='crimson')
    ax2.plot(zs, list(scint_up.values()), '^-', label=r'uplink', color='tomato')
    ax2.tick_params(axis='y', labelcolor='red')
-#   ax2.set_ylim(0.035, -0.001)
+   ax2.set_ylim(0.067, -0.001)
    ax2.legend()
 
 #ax.set_zorder(1)
 #ax.patch.set_visible(False)
 ax.set_xlabel(r'$\zeta$ (deg)')
-ax.set_ylabel(r'$\langle t \rangle (dB) $', color='blue')
+ax.set_ylabel(r'$\langle T \rangle (dB) $', color='blue')
 ax.tick_params(axis='y', labelcolor='blue')
 # ax2.set_ylabel(r'$\gamma$')
 ax.grid()
@@ -232,36 +234,52 @@ ax.legend()
 fig = plt.figure()
 ax = fig.add_subplot(111)
 
-T = np.logspace(0, -1.3, base=10)
+T = np.logspace(0, -1.3, base=10, num=30)
 Tdb = -10 * np.log10(T)
 eps = 0.02
-alpha = [(1 + 1j)*.8, 1 + 1j, (1 + 1j)*1.2,]
+sigmaT = [2, 4, 10, 25]
+sigmaD = [2, 4, 10]
 
 f_dir1 = []
 f_dir2 = []
 f_dir3 = []
-f_tele = []
+f_tele1 = []
+f_tele2 = []
+f_tele3 = []
+f_tele4 = []
+
 
 for it in T:
-    f_tele += [tmsv.opt_fidelity(it, eps, eta, alpha=alpha[2])]
-    f_dir1 += [co.fidelity(it, eps, alpha[0])]
-    f_dir2 += [co.fidelity(it, eps, alpha[1])]
-    f_dir3 += [co.fidelity(it, eps, alpha[2])]
+    f_tele1 += [tmsv.opt_fidelity_alphabet(it, eps, eta, g, sigmaT[0])]
+    f_tele2 += [tmsv.opt_fidelity_alphabet(it, eps, eta, g, sigmaT[1])]
+    f_tele3 += [tmsv.opt_fidelity_alphabet(it, eps, eta, g, sigmaT[2])]
+    f_tele4 += [tmsv.opt_fidelity_alphabet(it, eps, eta, g, sigmaT[3])]
+
+    f_dir1 += [co.fidelity_alphabet(it, eps, sigmaD[0])]
+    f_dir2 += [co.fidelity_alphabet(it, eps, sigmaD[1])]
+    f_dir3 += [co.fidelity_alphabet(it, eps, sigmaD[2])]
+#    f_tele += [tmsv.opt_fidelity(it, eps, eta, alpha=sigma[2])]
+#    f_dir1 += [co.fidelity(it, eps, sigma[0])]
+#    f_dir2 += [co.fidelity(it, eps, sigma[1])]
+#    f_dir3 += [co.fidelity(it, eps, sigma[2])]
 
 
-ax.plot(Tdb, f_tele, label='Teleportation', linestyle='--', marker='o', markersize=4, linewidth=1.5)
-ax.plot(Tdb, f_dir1, label=r'Direct $|\alpha|^2= $' + str(np.round(np.abs(alpha[0]),2)), linestyle='--', marker='o', markersize=4, linewidth=1.5)
-ax.plot(Tdb, f_dir2, label=r'Direct $|\alpha|^2= $' + str(np.round(np.abs(alpha[1]),2)), linestyle='--', marker='o', markersize=4, linewidth=1.5)
-ax.plot(Tdb, f_dir3, label=r'Direct $|\alpha|^2= $' + str(np.round(np.abs(alpha[2]),2)), linestyle='--', marker='o', markersize=4, linewidth=1.5)
+ax.plot(Tdb, f_tele1, label=r'Teleportation $\sigma= $' + str(np.round(np.abs(sigmaT[0]),2)), linestyle='--', marker='o', markersize=4, linewidth=1.5)
+ax.plot(Tdb, f_tele2, label=r'Teleportation $\sigma= $' + str(np.round(np.abs(sigmaT[1]),2)), linestyle='--', marker='o', markersize=4, linewidth=1.5)
+ax.plot(Tdb, f_tele3, label=r'Teleportation $\sigma= $' + str(np.round(np.abs(sigmaT[2]),2)), linestyle='--', marker='o', markersize=4, linewidth=1.5)
+ax.plot(Tdb, f_tele4, label=r'Teleportation $\sigma= $' + str(np.round(np.abs(sigmaT[3]),2)), linestyle='--', marker='o', markersize=4, linewidth=1.5)
+ax.plot(Tdb, f_dir1, label=r'Direct $\sigma= $' + str(np.round(np.abs(sigmaD[0]),2)), linestyle='--', marker='*', markersize=4, linewidth=1.5)
+ax.plot(Tdb, f_dir2, label=r'Direct $\sigma= $' + str(np.round(np.abs(sigmaD[1]),2)), linestyle='--', marker='*', markersize=4, linewidth=1.5)
+ax.plot(Tdb, f_dir3, label=r'Direct $\sigma= $' + str(np.round(np.abs(sigmaD[2]),2)), linestyle='--', marker='*', markersize=4, linewidth=1.5)
 
-clasical = np.ones_like(f_tele) * .5
+clasical = np.ones_like(f_tele1) * .5
 plt.plot(Tdb, clasical, 'r--')
 
-ax.set_xlabel(r'$t(dB)$')
-ax.set_ylabel(r'Fidelity')
+ax.set_xlabel(r'$T(dB)$')
+ax.set_ylabel(r'$\langle \mathcal{F} \rangle $')
 # plt.ylim([-0.005, 0.2])
 
-ax.set_xlim(0, 13)
+ax.set_xlim(-0.1, 13)
 ax.set_ylim(.49, 1)
 #ax.set_xscale('log')
 ax.grid()
@@ -274,8 +292,8 @@ ax = fig.add_subplot(111)
 zs = [0, 5, 10, 15, 20 , 25, 30, 35, 40, 45, 50, 55, 60]
 rs = [1]
 
-
-alphaV = [2, 2.5, 3, 3.5]
+sigmaT = [2, 4, 10, 25]
+sigmaD = [2, 4, 6]
 
 
 for r in rs:
@@ -293,6 +311,12 @@ for r in rs:
    f_up4_avg = []
    f_tmsv_avg = []
    f_tmsv_std = []
+   
+   f_tmsv_avg1 = []
+   f_tmsv_avg2 = []
+   f_tmsv_avg3 = []
+   f_tmsv_avg4 = []
+
 
    for z in zs:
 
@@ -316,57 +340,68 @@ for r in rs:
        eps_eff_up = np.var(np.sqrt(T_up))/T_eff_up + np.average(T_up)/T_eff_up * scint_up[z]
 
        # TMSV
-       V_opt, F_opt = tmsv.opt_values(T_eff_down, eps_eff_down, eta, alpha=alpha[2])
-       print("z =", z, V_opt, F_opt)
-
-       eps = eps_eff_down * V_opt
-       f_tmsv_avg += [tmsv.fidelity(V_opt, T_eff_down, eps, eta, alpha[2])]
-#       f_tmsv_std += [np.std(tmsv.fidelity(V_opt, T_down, eps, eta, alpha[2]))]
+#       V_opt, F_opt = tmsv.opt_values(T_eff_down, eps_eff_down, eta, alpha=sigma[2])
+#       print("z =", z, V_opt, F_opt)
+#
+#       eps = eps_eff_down * V_opt
+#       f_tmsv_avg += [tmsv.fidelity(V_opt, T_eff_down, eps, eta, sigmaD[2])]
+##       f_tmsv_std += [np.std(tmsv.fidelity(V_opt, T_down, eps, eta, alpha[2]))]
+       f_tmsv_avg1 += [tmsv.opt_fidelity_alphabet_vareps(T_eff_down, eps_eff_down, eta, g, sigmaT[0])]
+       f_tmsv_avg2 += [tmsv.opt_fidelity_alphabet_vareps(T_eff_down, eps_eff_down, eta, g, sigmaT[1])]
+       f_tmsv_avg3 += [tmsv.opt_fidelity_alphabet_vareps(T_eff_down, eps_eff_down, eta, g, sigmaT[2])]
+       f_tmsv_avg4 += [tmsv.opt_fidelity_alphabet_vareps(T_eff_down, eps_eff_down, eta, g, sigmaT[3])]
 
     
-       eps = eps_eff_up * alphaV[0]
-       f_dt1 = 2/(2*alphaV[0]*(1-np.sqrt(T_eff_up))**2 + 2 + eps)
+
+    
+       eps = eps_eff_up * sigmaD[0]
+       f_dt1 = co.fidelity_alphabet(T_eff_up, eps, sigmaD[0])
        f_up1_avg += [f_dt1]
 #       f_up1_std += [np.std(co.fidelity(T_up, eps, alpha[0]))]
 
 
-       eps = eps_eff_up * alphaV[1]
-       f_dt2 = 2/(2*alphaV[1]*(1-np.sqrt(T_eff_up))**2 + 2 + eps)
+       eps = eps_eff_up * sigmaD[1]
+       f_dt2 = co.fidelity_alphabet(T_eff_up, eps, sigmaD[1])
        f_up2_avg += [f_dt2]
 
-       eps = eps_eff_up * alphaV[2]
-       f_dt3 = 2/(2*alphaV[2]*(1-np.sqrt(T_eff_up))**2 + 2 + eps)
+       eps = eps_eff_up * sigmaD[2]
+       f_dt3 = co.fidelity_alphabet(T_eff_up, eps, sigmaD[2])
        f_up3_avg += [f_dt3]
        
-       eps = eps_eff_up * alphaV[3]
-       f_dt4 = 2/(2*alphaV[3]*(1-np.sqrt(T_eff_up))**2 + 2 + eps)
-       f_up4_avg += [f_dt4]
+#       eps = eps_eff_up * sigma[3]
+#       f_dt4 = co.fidelity_alphabet(T_eff_up, eps, sigmaD[3])
+#       f_up4_avg += [f_dt4]
 
 #   ax.errorbar(zs, f_tmsv_avg, f_tmsv_std, label=r'Teleportation', linestyle='--', marker='o', capsize=4, markersize=4, linewidth=1.5)
-#   ax.errorbar(zs, f_up1_avg, f_up1_std, label=r'Uplink $|\alpha|^2= $' + str(np.round(np.abs(alpha[0]),2)), linestyle='--', marker='o', capsize=4, markersize=4, linewidth=1.5)
-#   ax.errorbar(zs, f_up2_avg, f_up2_std, label=r'Uplink $|\alpha|^2= $' + str(np.round(np.abs(alpha[1]),2)), linestyle='--', marker='o', capsize=4, markersize=4, linewidth=1.5)
-#   ax.errorbar(zs, f_up3_avg, f_up3_std, label=r'Uplink $|\alpha|^2= $' + str(np.round(np.abs(alpha[2]),2)), linestyle='--', marker='o', capsize=4, markersize=4, linewidth=1.5)
+#   ax.errorbar(zs, f_up1_avg, f_up1_std, label=r'Uplink $\sigma= $' + str(np.round(np.abs(alpha[0]),2)), linestyle='--', marker='o', capsize=4, markersize=4, linewidth=1.5)
+#   ax.errorbar(zs, f_up2_avg, f_up2_std, label=r'Uplink $\sigma= $' + str(np.round(np.abs(alpha[1]),2)), linestyle='--', marker='o', capsize=4, markersize=4, linewidth=1.5)
+#   ax.errorbar(zs, f_up3_avg, f_up3_std, label=r'Uplink $\sigma= $' + str(np.round(np.abs(alpha[2]),2)), linestyle='--', marker='o', capsize=4, markersize=4, linewidth=1.5)
 
-   ax.plot(zs, f_tmsv_avg, label=r'Teleportation', linestyle='--', marker='o', markersize=4, linewidth=1.5)
-   ax.plot(zs, f_up1_avg, label=r'Uplink $|\alpha|^2= $' + str(np.round(np.abs(alphaV[0]),2)), linestyle='--', marker='o', markersize=4, linewidth=1.5)
-   ax.plot(zs, f_up2_avg, label=r'Uplink $|\alpha|^2= $' + str(np.round(np.abs(alphaV[1]),2)), linestyle='--', marker='o', markersize=4, linewidth=1.5)
-   ax.plot(zs, f_up3_avg, label=r'Uplink $|\alpha|^2= $' + str(np.round(np.abs(alphaV[2]),2)), linestyle='--', marker='o', markersize=4, linewidth=1.5)
-   ax.plot(zs, f_up4_avg, label=r'Uplink $|\alpha|^2= $' + str(np.round(np.abs(alphaV[3]),2)), linestyle='--', marker='o', markersize=4, linewidth=1.5)
+   ax.plot(zs, f_tmsv_avg1, label=r'Upload $\sigma= $' + str(np.round(np.abs(sigmaT[0]),2)), linestyle='--', marker='o', markersize=4, linewidth=1.5)
+   ax.plot(zs, f_tmsv_avg2, label=r'Upload $\sigma= $' + str(np.round(np.abs(sigmaT[1]),2)), linestyle='--', marker='o', markersize=4, linewidth=1.5)
+   ax.plot(zs, f_tmsv_avg3, label=r'Upload $\sigma= $' + str(np.round(np.abs(sigmaT[2]),2)), linestyle='--', marker='o', markersize=4, linewidth=1.5)
+   ax.plot(zs, f_tmsv_avg4, label=r'Upload $\sigma= $' + str(np.round(np.abs(sigmaT[3]),2)), linestyle='--', marker='o', markersize=4, linewidth=1.5)
+
+   
+   ax.plot(zs, f_up1_avg, label=r'Uplink $\sigma= $' + str(np.round(np.abs(sigmaD[0]),2)), linestyle='--', marker='*', markersize=4, linewidth=1.5)
+   ax.plot(zs, f_up2_avg, label=r'Uplink $\sigma= $' + str(np.round(np.abs(sigmaD[1]),2)), linestyle='--', marker='*', markersize=4, linewidth=1.5)
+#   ax.plot(zs, f_up3_avg, label=r'Uplink $\sigma= $' + str(np.round(np.abs(sigmaD[2]),2)), linestyle='--', marker='*', markersize=4, linewidth=1.5)
+#   ax.plot(zs, f_up4_avg, label=r'Uplink $\sigma= $' + str(np.round(np.abs(sigma[3]),2)), linestyle='--', marker='o', markersize=4, linewidth=1.5)
 
 
 
 
 #plt.plot(zs, np.zeros_like(zs), ls='--', c='k')
 
-clasical = np.ones_like(f_tmsv_avg) * .5
+clasical = np.ones_like(f_tmsv_avg1) * .5
 plt.plot(zs, clasical, 'r--')
 
 
 ax.set_xlabel(r'$\zeta$ (deg)')
-ax.set_ylabel(r'Fidelity')
+ax.set_ylabel(r'$\langle \mathcal{F} \rangle $')
 # plt.ylim([-0.005, 0.2])
-#ax.set_ylim(0.47, 0.81)
-#ax.set_xlim(-1, 71)
+ax.set_ylim(0.495, 0.7)
+ax.set_xlim(-0.5, 60.5)
 ax.grid()
 ax.legend()
 
