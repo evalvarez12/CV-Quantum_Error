@@ -31,6 +31,15 @@ for z in [0]:
    data_file = "../../Laser_propagation/data/TELE_UP_I_r=" + str(r) + "_z=" + str(z) + "_1024_10000"
    uplink_data = scipy.io.loadmat(data_file)['res'].transpose()[0]
 
+
+   data_file = "../../Laser_propagation/data/DOWNLINK_PDF_EM_r=" + str(r) + '_z=' + str(z)
+   downlinkEM_data = scipy.io.loadmat(data_file)['t'].transpose()
+
+   data_file = "../../Laser_propagation/data/UPLINK_PDF_EM_r=" + str(r) + '_z=' + str(z)
+   uplinkEM_data = scipy.io.loadmat(data_file)['t'].transpose()
+
+
+
    downlink_avg += [np.average(downlink_data)]
    downlink_std += [np.std(downlink_data)]
 
@@ -52,6 +61,3 @@ ax.grid()
 ax.legend()
 ax.set_title(r'$\omega_0=15cm$')
 plt.show()
-
-print('AVG DOWN:', downlink_avg)
-print('AVG UP:', uplink_avg)
