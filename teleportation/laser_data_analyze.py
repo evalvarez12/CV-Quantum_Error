@@ -20,7 +20,7 @@ uplink_std = []
 downlink_avg = []
 downlink_std = []
 r = 1
-bins = np.arange(0.2, .55, .001)
+bins = np.arange(0., .55, .01)
 
 for z in [0]:
 
@@ -39,7 +39,7 @@ for z in [0]:
 
 
    ax.hist(uplink_data, bins=bins, histtype='step', label='uplink z-'+str(z), density=True, linewidth=2, linestyle='-')
-   ax.hist(downlink_data, bins=bins, histtype='step', label='downlink z-'+str(z), density=True, linewidth=2, linestyle='-')
+#   ax.hist(downlink_data, bins=bins, histtype='step', label='downlink z-'+str(z), density=True, linewidth=2, linestyle='-')
 
 # ax.errorbar(zs, downlink_avg, downlink_std, label=r'downlink', linestyle='--', marker='o', capsize=4, markersize=4, linewidth=1.5, c='navy')
 # ax.errorbar(zs, uplink_avg, uplink_std, label=r'uplink', linestyle='--', marker='s', capsize=4, markersize=4, linewidth=1.5, c='dodgerblue')
@@ -55,3 +55,6 @@ plt.show()
 
 print('AVG DOWN:', downlink_avg)
 print('AVG UP:', uplink_avg)
+print('STD DOWN:', downlink_std)
+print('STD UP:', uplink_std)
+

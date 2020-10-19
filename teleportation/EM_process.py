@@ -16,8 +16,8 @@ plt.rcParams["font.family"] = "Times New Roman"
 ############################# TRANSMISSIVITIES PLOT
 
 
-t_ext_db = 1
-eta_db = 1
+t_ext_db = 0
+eta_db = 0
 eta = 10**(-eta_db/10)
 t_ext = 10**(-t_ext_db/10)
 
@@ -106,8 +106,8 @@ for r in rs:
    ax.errorbar(zs, downlink_avg, downlink_std, label=r'downlink', linestyle='-', marker='o', capsize=4, markersize=4, linewidth=1.5, c=colors['downlink'])
    ax.errorbar(zs, uplink_avg, uplink_std, label=r'uplink', linestyle='-', marker='o', capsize=4, markersize=4, linewidth=1.5, c=colors['uplink'])
 
-   ax.errorbar(zs, downlinkEM_avg, downlinkEM_std, label=r'downlink EM', linestyle='--', marker='o', capsize=4, markersize=4, linewidth=1.5, c=colors['downlink'])
-   ax.errorbar(zs, uplinkEM_avg, uplinkEM_std, label=r'uplink EM', linestyle='--', marker='o', capsize=4, markersize=4, linewidth=1.5, c=colors['uplink'])
+#   ax.errorbar(zs, downlinkEM_avg, downlinkEM_std, label=r'downlink EM', linestyle='--', marker='o', capsize=4, markersize=4, linewidth=1.5, c=colors['downlink'])
+#   ax.errorbar(zs, uplinkEM_avg, uplinkEM_std, label=r'uplink EM', linestyle='--', marker='o', capsize=4, markersize=4, linewidth=1.5, c=colors['uplink'])
 
 
 
