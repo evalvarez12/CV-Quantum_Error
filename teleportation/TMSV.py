@@ -122,8 +122,29 @@ def opt_fidelity_alphabet_vareps(T, eps, eta, g, sigma):
     # print(res)
     # if not res['success']:
         # raise AssertionError('Failure in optimization')
-    print('opt V:', np.round(res['x'],3))
+#    print('opt V:', np.round(res['x'],3))
     return fidelity_alphabet(res['x'], T, eps, eta, g, sigma)
+
+
+
+def opt_fidelity_alphabet_vareps_gopt(T, eps, eta, sigma):
+    F = lambda P : 1 - fidelity_alphabet_pars(P, T, eps, eta, sigma)
+    initial_guess = [1, 1]
+    cons=({'type': 'ineq',
+       'fun': lambda x: x})
+    # res = op.minimize(F, initial_guess, constraints=cons)
+    res = op.minimize(F, initial_guess)
+    # print(res)
+    # if not res['success']:
+        # raise AssertionError('Failure in optimization')
+    print('opt V:', np.round(res['x'],3))
+    return fidelity_alphabet_pars(res['x'], T, eps, eta, sigma)
+
+
+def fidelity_alphabet_pars(pars, T, eps, eta, sigma):
+    V, g = pars
+    return fidelity_alphabet(V, T, V*eps, eta, g, sigma)
+
 
 def opt_values(T, eps, eta, alpha):
     F = lambda V : 1 - fidelity(V, T, V * eps, eta, alpha)

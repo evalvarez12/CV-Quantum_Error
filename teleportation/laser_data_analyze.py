@@ -22,13 +22,13 @@ downlink_std = []
 r = 1
 bins = np.arange(0., .55, .01)
 
-for z in [0]:
+for z in [10]:
 
-   data_file = "../../Laser_propagation/data/TELE_DOWN_I_r=" + str(r) + "_z=" + str(z) + "_1024_10000"
+   data_file = "../../Laser_propagation/data/TELE__L0inf_UP_I_r=" + str(r) + "_z=" + str(z) + "_1024_10000"
    downlink_data = scipy.io.loadmat(data_file)['res'].transpose()[0]
 
 #       data_file = "../../Laser_propagation/data/1550_UP_I_r=" + str(r) + "_z=" + str(z) + "_1024_10000"
-   data_file = "../../Laser_propagation/data/TELE_UP_I_r=" + str(r) + "_z=" + str(z) + "_1024_10000"
+   data_file = "../../Laser_propagation/data/TELE_L0inf2_UP_I_r=" + str(r) + "_z=" + str(z) + "_1024_10000"
    uplink_data = scipy.io.loadmat(data_file)['res'].transpose()[0]
 
    downlink_avg += [np.average(downlink_data)]
@@ -39,7 +39,7 @@ for z in [0]:
 
 
    ax.hist(uplink_data, bins=bins, histtype='step', label='uplink z-'+str(z), density=True, linewidth=2, linestyle='-')
-#   ax.hist(downlink_data, bins=bins, histtype='step', label='downlink z-'+str(z), density=True, linewidth=2, linestyle='-')
+   ax.hist(downlink_data, bins=bins, histtype='step', label='downlink z-'+str(z), density=True, linewidth=2, linestyle='-')
 
 # ax.errorbar(zs, downlink_avg, downlink_std, label=r'downlink', linestyle='--', marker='o', capsize=4, markersize=4, linewidth=1.5, c='navy')
 # ax.errorbar(zs, uplink_avg, uplink_std, label=r'uplink', linestyle='--', marker='s', capsize=4, markersize=4, linewidth=1.5, c='dodgerblue')

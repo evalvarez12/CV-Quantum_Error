@@ -16,8 +16,8 @@ plt.rcParams["font.family"] = "Times New Roman"
 ############################# TRANSMISSIVITIES PLOT
 
 
-t_ext_db = 0
-eta_db = 0
+t_ext_db = 2
+eta_db = 1
 eta = 10**(-eta_db/10)
 t_ext = 10**(-t_ext_db/10)
 
@@ -50,7 +50,7 @@ for r in rs:
        data_file = "../../Laser_propagation/data/TELE_DOWN_I_r=" + str(r) + tag
        downlink_data = scipy.io.loadmat(data_file)['res'].transpose()
 
-       data_file = "../../Laser_propagation/data/TELE_UP_I_r=" + str(r) + tag
+       data_file = "../../Laser_propagation/data/TELE__L0inf_UP_I_r=" + str(r) + tag
        uplink_data = scipy.io.loadmat(data_file)['res'].transpose()
 
        T_down = downlink_data * t_ext
@@ -183,7 +183,7 @@ for r in rs:
        data_file = "../../Laser_propagation/data/TELE_DOWN_I_r=" + str(r) + tag
        downlink_data = scipy.io.loadmat(data_file)['res'].transpose()
 
-       data_file = "../../Laser_propagation/data/TELE_UP_I_r=" + str(r) + tag
+       data_file = "../../Laser_propagation/data/TELE__L0inf_UP_I_r=" + str(r) + tag
        uplink_data = scipy.io.loadmat(data_file)['res'].transpose()
 
 
@@ -210,12 +210,11 @@ for r in rs:
 
 
    ax2 = ax.twinx()  # instantiate a second axes that shares the same x-axis
-
    ax2.set_ylabel(r'$\sigma_{SI}$', color='red')  # we already handled the x-label with ax
    ax2.plot(zs, list(scint_down.values()), 'v-', label=r'downlink', color='crimson')
    ax2.plot(zs, list(scint_up.values()), '^-', label=r'uplink', color='tomato')
    ax2.tick_params(axis='y', labelcolor='red')
-   ax2.set_ylim(0.067, -0.001)
+   ax2.set_ylim(-0.01, 0.55)
    ax2.legend()
 
 #ax.set_zorder(1)
@@ -223,6 +222,8 @@ for r in rs:
 ax.set_xlabel(r'$\zeta$ (deg)')
 ax.set_ylabel(r'$\langle T \rangle (dB) $', color='blue')
 ax.tick_params(axis='y', labelcolor='blue')
+ax.set_zorder(ax2.get_zorder()+1)
+ax.patch.set_visible(False)
 # ax2.set_ylabel(r'$\gamma$')
 ax.grid()
 #ax.set_ylim(2.9, 17.5)
@@ -324,7 +325,7 @@ for r in rs:
        data_file = "../../Laser_propagation/data/TELE_DOWN_I_r=" + str(r) + tag
        downlink_data = scipy.io.loadmat(data_file)['res'].transpose()
 
-       data_file = "../../Laser_propagation/data/TELE_UP_I_r=" + str(r) + tag
+       data_file = "../../Laser_propagation/data/TELE__L0inf_UP_I_r=" + str(r) + tag
        uplink_data = scipy.io.loadmat(data_file)['res'].transpose()
 
 
@@ -346,12 +347,17 @@ for r in rs:
 #       eps = eps_eff_down * V_opt
 #       f_tmsv_avg += [tmsv.fidelity(V_opt, T_eff_down, eps, eta, sigmaD[2])]
 ##       f_tmsv_std += [np.std(tmsv.fidelity(V_opt, T_down, eps, eta, alpha[2]))]
-       f_tmsv_avg1 += [tmsv.opt_fidelity_alphabet_vareps(T_eff_down, eps_eff_down, eta, g, sigmaT[0])]
-       f_tmsv_avg2 += [tmsv.opt_fidelity_alphabet_vareps(T_eff_down, eps_eff_down, eta, g, sigmaT[1])]
-       f_tmsv_avg3 += [tmsv.opt_fidelity_alphabet_vareps(T_eff_down, eps_eff_down, eta, g, sigmaT[2])]
-       f_tmsv_avg4 += [tmsv.opt_fidelity_alphabet_vareps(T_eff_down, eps_eff_down, eta, g, sigmaT[3])]
+#       f_tmsv_avg1 += [tmsv.opt_fidelity_alphabet_vareps(T_eff_down, eps_eff_down, eta, g, sigmaT[0])]
+#       f_tmsv_avg2 += [tmsv.opt_fidelity_alphabet_vareps(T_eff_down, eps_eff_down, eta, g, sigmaT[1])]
+#       f_tmsv_avg3 += [tmsv.opt_fidelity_alphabet_vareps(T_eff_down, eps_eff_down, eta, g, sigmaT[2])]
+#       f_tmsv_avg4 += [tmsv.opt_fidelity_alphabet_vareps(T_eff_down, eps_eff_down, eta, g, sigmaT[3])]
 
     
+       f_tmsv_avg1 += [tmsv.opt_fidelity_alphabet_vareps_gopt(T_eff_down, eps_eff_down, eta, sigmaT[0])]
+       f_tmsv_avg2 += [tmsv.opt_fidelity_alphabet_vareps_gopt(T_eff_down, eps_eff_down, eta, sigmaT[1])]
+       f_tmsv_avg3 += [tmsv.opt_fidelity_alphabet_vareps_gopt(T_eff_down, eps_eff_down, eta, sigmaT[2])]
+       f_tmsv_avg4 += [tmsv.opt_fidelity_alphabet_vareps_gopt(T_eff_down, eps_eff_down, eta, sigmaT[3])]
+
 
     
        eps = eps_eff_up * sigmaD[0]
@@ -383,8 +389,8 @@ for r in rs:
    ax.plot(zs, f_tmsv_avg4, label=r'Upload $\sigma= $' + str(np.round(np.abs(sigmaT[3]),2)), linestyle='--', marker='o', markersize=4, linewidth=1.5)
 
    
-   ax.plot(zs, f_up1_avg, label=r'Uplink $\sigma= $' + str(np.round(np.abs(sigmaD[0]),2)), linestyle='--', marker='*', markersize=4, linewidth=1.5)
-   ax.plot(zs, f_up2_avg, label=r'Uplink $\sigma= $' + str(np.round(np.abs(sigmaD[1]),2)), linestyle='--', marker='*', markersize=4, linewidth=1.5)
+#   ax.plot(zs, f_up1_avg, label=r'Uplink $\sigma= $' + str(np.round(np.abs(sigmaD[0]),2)), linestyle='--', marker='*', markersize=4, linewidth=1.5)
+#   ax.plot(zs, f_up2_avg, label=r'Uplink $\sigma= $' + str(np.round(np.abs(sigmaD[1]),2)), linestyle='--', marker='*', markersize=4, linewidth=1.5)
 #   ax.plot(zs, f_up3_avg, label=r'Uplink $\sigma= $' + str(np.round(np.abs(sigmaD[2]),2)), linestyle='--', marker='*', markersize=4, linewidth=1.5)
 #   ax.plot(zs, f_up4_avg, label=r'Uplink $\sigma= $' + str(np.round(np.abs(sigma[3]),2)), linestyle='--', marker='o', markersize=4, linewidth=1.5)
 
@@ -400,7 +406,7 @@ plt.plot(zs, clasical, 'r--')
 ax.set_xlabel(r'$\zeta$ (deg)')
 ax.set_ylabel(r'$\langle \mathcal{F} \rangle $')
 # plt.ylim([-0.005, 0.2])
-ax.set_ylim(0.495, 0.7)
+ax.set_ylim(0.495, 0.65)
 ax.set_xlim(-0.5, 60.5)
 ax.grid()
 ax.legend()
