@@ -16,12 +16,12 @@ plt.rcParams["font.family"] = "Times New Roman"
 ############################# TRANSMISSIVITIES PLOT
 
 
-t_ext_db = 2
+t_ext_db = 0
 eta_db = 1
 eta = 10**(-eta_db/10)
 t_ext = 10**(-t_ext_db/10)
 
-g = .9/eta
+# g = .9/eta
 
 
 colors_fill = {'up':'darkblue', 'upEM':'skyblue', 'down':'darkgreen', 'downEM':'lawngreen'}
@@ -199,6 +199,9 @@ for r in rs:
        uplink_avg += [np.average(T_up_db)]
        uplink_std += [np.std(T_up_db)]
 
+       # print('UP z=', z, 'avg', np.round(uplink_avg[-1],3), 'std', np.round(uplink_std[-1],3))
+       print('z=', z, 'avg', np.round(downlink_avg[-1],3), 'std', np.round(downlink_std[-1],3))
+
        scint_down.update( {z : np.average(T_down**2)/(np.average(T_down)**2) - 1} )
        scint_up.update({z : np.average(T_up**2)/(np.average(T_up)**2) - 1} )
 
@@ -251,10 +254,10 @@ f_tele4 = []
 
 
 for it in T:
-    f_tele1 += [tmsv.opt_fidelity_alphabet(it, eps, eta, g, sigmaT[0])]
-    f_tele2 += [tmsv.opt_fidelity_alphabet(it, eps, eta, g, sigmaT[1])]
-    f_tele3 += [tmsv.opt_fidelity_alphabet(it, eps, eta, g, sigmaT[2])]
-    f_tele4 += [tmsv.opt_fidelity_alphabet(it, eps, eta, g, sigmaT[3])]
+    f_tele1 += [tmsv.opt_fidelity_alphabet_gopt(it, eps, eta, sigmaT[0])]
+    f_tele2 += [tmsv.opt_fidelity_alphabet_gopt(it, eps, eta, sigmaT[1])]
+    f_tele3 += [tmsv.opt_fidelity_alphabet_gopt(it, eps, eta, sigmaT[2])]
+    f_tele4 += [tmsv.opt_fidelity_alphabet_gopt(it, eps, eta, sigmaT[3])]
 
     f_dir1 += [co.fidelity_alphabet(it, eps, sigmaD[0])]
     f_dir2 += [co.fidelity_alphabet(it, eps, sigmaD[1])]
@@ -312,7 +315,7 @@ for r in rs:
    f_up4_avg = []
    f_tmsv_avg = []
    f_tmsv_std = []
-   
+
    f_tmsv_avg1 = []
    f_tmsv_avg2 = []
    f_tmsv_avg3 = []
@@ -332,11 +335,11 @@ for r in rs:
        T_down = downlink_data * t_ext
        T_up = uplink_data * t_ext
 
-       
+
        # Define effective parameters
        T_eff_down = np.average(np.sqrt(T_down))**2
        eps_eff_down = np.var(np.sqrt(T_down))/T_eff_down + np.average(T_down)/T_eff_down * scint_down[z]
-       
+
        T_eff_up = np.average(np.sqrt(T_up))**2
        eps_eff_up = np.var(np.sqrt(T_up))/T_eff_up + np.average(T_up)/T_eff_up * scint_up[z]
 
@@ -352,14 +355,14 @@ for r in rs:
 #       f_tmsv_avg3 += [tmsv.opt_fidelity_alphabet_vareps(T_eff_down, eps_eff_down, eta, g, sigmaT[2])]
 #       f_tmsv_avg4 += [tmsv.opt_fidelity_alphabet_vareps(T_eff_down, eps_eff_down, eta, g, sigmaT[3])]
 
-    
+
        f_tmsv_avg1 += [tmsv.opt_fidelity_alphabet_vareps_gopt(T_eff_down, eps_eff_down, eta, sigmaT[0])]
        f_tmsv_avg2 += [tmsv.opt_fidelity_alphabet_vareps_gopt(T_eff_down, eps_eff_down, eta, sigmaT[1])]
        f_tmsv_avg3 += [tmsv.opt_fidelity_alphabet_vareps_gopt(T_eff_down, eps_eff_down, eta, sigmaT[2])]
        f_tmsv_avg4 += [tmsv.opt_fidelity_alphabet_vareps_gopt(T_eff_down, eps_eff_down, eta, sigmaT[3])]
 
 
-    
+
        eps = eps_eff_up * sigmaD[0]
        f_dt1 = co.fidelity_alphabet(T_eff_up, eps, sigmaD[0])
        f_up1_avg += [f_dt1]
@@ -373,7 +376,7 @@ for r in rs:
        eps = eps_eff_up * sigmaD[2]
        f_dt3 = co.fidelity_alphabet(T_eff_up, eps, sigmaD[2])
        f_up3_avg += [f_dt3]
-       
+
 #       eps = eps_eff_up * sigma[3]
 #       f_dt4 = co.fidelity_alphabet(T_eff_up, eps, sigmaD[3])
 #       f_up4_avg += [f_dt4]
@@ -388,7 +391,7 @@ for r in rs:
    ax.plot(zs, f_tmsv_avg3, label=r'Upload $\sigma= $' + str(np.round(np.abs(sigmaT[2]),2)), linestyle='--', marker='o', markersize=4, linewidth=1.5)
    ax.plot(zs, f_tmsv_avg4, label=r'Upload $\sigma= $' + str(np.round(np.abs(sigmaT[3]),2)), linestyle='--', marker='o', markersize=4, linewidth=1.5)
 
-   
+
 #   ax.plot(zs, f_up1_avg, label=r'Uplink $\sigma= $' + str(np.round(np.abs(sigmaD[0]),2)), linestyle='--', marker='*', markersize=4, linewidth=1.5)
 #   ax.plot(zs, f_up2_avg, label=r'Uplink $\sigma= $' + str(np.round(np.abs(sigmaD[1]),2)), linestyle='--', marker='*', markersize=4, linewidth=1.5)
 #   ax.plot(zs, f_up3_avg, label=r'Uplink $\sigma= $' + str(np.round(np.abs(sigmaD[2]),2)), linestyle='--', marker='*', markersize=4, linewidth=1.5)
