@@ -15,7 +15,6 @@ plt.close('all')
 plt.rcParams["font.family"] = "Times New Roman"
 ############################# TRANSMISSIVITIES PLOT
 
-
 t_ext_db = 0
 eta_db = 1
 eta = 10**(-eta_db/10)
