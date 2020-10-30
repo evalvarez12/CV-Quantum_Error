@@ -80,7 +80,7 @@ hold on
 yyaxis left
 plot(zs, d_t, 'o-', 'DisplayName', 'Teleportation');
 plot(zs, u_t, 'o--', 'DisplayName', 'Direct');
-ylabel('$T_f$', 'Interpreter', 'latex')
+ylabel('$T_f$ [dB]', 'Interpreter', 'latex')
 
 
 yyaxis right
@@ -132,7 +132,7 @@ plot(zs(1:1:end), tele4(1:1:end), '-', 'DisplayName', 'Teleportation $\sigma = 2
 plot(zs(1:1:end), dir1(1:1:end), '--', 'DisplayName', 'Direct $\sigma = 2$', 'color', [0, 0, 1]);
 plot(zs(1:1:end), dir2(1:1:end), '--', 'DisplayName', 'Direct $\sigma = 4$', 'color', 	[1, 0, 0]);
 plot(zs(1:1:end), dir3(1:1:end), '--', 'DisplayName', 'Direct $\sigma = 10$', 'color', [0, 0.5, 0]);
-plot(zs(1:1:end), dir3(1:1:end), '--', 'DisplayName', 'Direct $\sigma = 25$', 'color', [0.4940, 0.1840, 0.5560]);
+plot(zs(1:1:end), dir4(1:1:end), '--', 'DisplayName', 'Direct $\sigma = 25$', 'color', [0.4940, 0.1840, 0.5560]);
 
 plot(zs, classical, 'r--', 'HandleVisibility','off');
 
