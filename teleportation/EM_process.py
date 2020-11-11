@@ -51,11 +51,11 @@ for z in zs:
    data_file = "../../Laser_propagation/data/TELE_DOWN_I_r=" + str(r) + tag
    downlink_data = scipy.io.loadmat(data_file)['res'].transpose()
 
-   data_file = "../../Laser_propagation/data/TELE__L0inf_UP_I_r=" + str(r) + tag
+   data_file = "../../Laser_propagation/data/TELE_final_UP_I_r=" + str(r) + tag
    uplink_data = scipy.io.loadmat(data_file)['res'].transpose()
 
-   T_down = downlink_data * t_ext
-   T_up = uplink_data * t_ext
+   T_down = downlink_data
+   T_up = uplink_data 
 
    downlink_avg += [np.average(T_down)]
    downlink_std += [np.std(T_down)]
@@ -70,8 +70,8 @@ for z in zs:
    data_file = "../../Laser_propagation/data/UPLINK_PDF_EM_r=" + str(r_em) + '_z=' + str(z)
    uplinkEM_data = scipy.io.loadmat(data_file)['t'].transpose()
 
-   T_downEM = downlinkEM_data * t_ext
-   T_upEM = uplinkEM_data * t_ext
+   T_downEM = downlinkEM_data
+   T_upEM = uplinkEM_data
 
    downlinkEM_avg += [np.average(T_downEM)]
    downlinkEM_std += [np.std(T_downEM)]
@@ -80,15 +80,17 @@ for z in zs:
    uplinkEM_std += [np.std(T_upEM)]
 
 
-   print('z =', z, 'DOWN T_Avg =', np.average(T_down))
-   print('z =', z, 'UP T_Avg =', np.average(T_up))
+#   print(np.round(np.average(T_down - 0.011 * np.cos(np.deg2rad(z))),3))
+   print(np.round(np.average(T_up), 3))
+#   print('z =', z, 'UP T_Avg =', np.round(np.average(T_up),3))
+#   print('z =', z, 'UP T_Avg =', np.average(T_up))
 
-   print('z =', z, 'DOWN scint =', np.average(T_down**2)/(np.average(T_down)**2) - 1)
-   print('z =', z, 'DOWN scint EM =', np.average(T_downEM**2)/(np.average(T_downEM)**2) - 1)
+#   print('z =', z, 'DOWN scint =', np.average(T_down**2)/(np.average(T_down)**2) - 1)
+#   print('z =', z, 'DOWN scint EM =', np.average(T_downEM**2)/(np.average(T_downEM)**2) - 1)
 
-   print('z =', z, 'UP scint =', np.average(T_up**2)/(np.average(T_up)**2) - 1)
-   print('z =', z, 'UP scint EM =', np.average(T_upEM**2)/(np.average(T_upEM)**2) - 1)
-   print('---------------')
+#   print('z =', z, 'UP scint =', np.average(T_up**2)/(np.average(T_up)**2) - 1)
+#   print('z =', z, 'UP scint EM =', np.average(T_upEM**2)/(np.average(T_upEM)**2) - 1)
+#   print('---------------')
 
 
    # Y1 = [y - e for y, e in zip(Tavg, Tstd)]
@@ -190,7 +192,7 @@ for z in zs:
     data_file = "../../Laser_propagation/data/TELE_DOWN_I_r=" + str(r) + tag
     downlink_data = scipy.io.loadmat(data_file)['res'].transpose()
 
-    data_file = "../../Laser_propagation/data/TELE_UP_I_r=" + str(r) + tag
+    data_file = "../../Laser_propagation/data/TELE_final2_UP_I_r=" + str(r) + tag
 #    data_file = "../../Laser_propagation/data/TELE__L0inf_UP_I_r=" + str(r) + tag
     uplink_data = scipy.io.loadmat(data_file)['res'].transpose()
 
@@ -201,11 +203,11 @@ for z in zs:
 
     # Define effective parameters
     T_eff_down = np.average(np.sqrt(T_down))**2
-    scint_down = np.average(T_down**2)/(np.average(T_down)**2) - 1
+    scint_down = np.average(T_down**2)/(np.average(T_down)**2) - 1 + 0.007
     eps_eff_down = np.var(np.sqrt(T_down))/T_eff_down + np.average(T_down)/T_eff_down * scint_down
 
     T_eff_up = np.average(np.sqrt(T_up))**2
-    scint_up = np.average(T_up**2)/(np.average(T_up)**2) - 1
+    scint_up = np.average(T_up**2)/(np.average(T_up)**2) - 1 + 0.007
     eps_eff_up = np.var(np.sqrt(T_up))/T_eff_up + np.average(T_up)/T_eff_up * scint_up
 
     # Convert to dB
@@ -216,7 +218,7 @@ for z in zs:
     T_up_db = -10 * np.log10(T_up)
 #    print('z=', z, 'avg', np.round(-10 * np.log10(np.average(T_up)), 3), 'std', np.round(-10 * np.log10(np.std(T_up)),3))
 #    print('z=', z, 'avg', np.average(T_up_db), 'std', np.std(T_up_db))
-    print(z, np.round(-10 * np.log10(np.average(T_up)), 3))
+#    print(z, np.round(-10 * np.log10(np.average(T_up)), 3))
 #    print(z, np.round(-10 * np.log10(np.average(T_down)), 3))
 
 
@@ -239,8 +241,8 @@ for z in zs:
 #    print('z=', z, 'avg', np.round(uplink_avg[-1],3), 'std', np.round(uplink_std[-1],3))
 #       print('z=', z, 'avg', np.round(downlink_avg[-1],3), 'std', np.round(downlink_std[-1],3))
 
-    scint_down_dic.update( {z : np.average(T_down**2)/(np.average(T_down)**2) - 1} )
-    scint_up_dic.update({z : np.average(T_up**2)/(np.average(T_up)**2) - 1} )
+    scint_down_dic.update( {z : np.average(T_down**2)/(np.average(T_down)**2) - 1 + 0.007})
+    scint_up_dic.update({z : np.average(T_up**2)/(np.average(T_up)**2) - 1 + 0.007})
 
 
    # ax2.errorbar(zs, Pavg, Pstd,  linestyle=':', label=r'$r_d=' + str(r)+'$m', marker='^', capsize=1, markersize=4, c=colorsP[r])
@@ -383,7 +385,7 @@ for z in zs:
     data_file = "../../Laser_propagation/data/TELE_DOWN_I_r=" + str(r) + tag
     downlink_data = scipy.io.loadmat(data_file)['res'].transpose()
 
-    data_file = "../../Laser_propagation/data/TELE_UP_I_r=" + str(r) + tag
+    data_file = "../../Laser_propagation/data/TELE_final2_UP_I_r=" + str(r) + tag
     uplink_data = scipy.io.loadmat(data_file)['res'].transpose()
 
 
@@ -395,12 +397,12 @@ for z in zs:
     T_eff_down = np.average(np.sqrt(T_down))**2
     eps_eff_down = np.var(np.sqrt(T_down))/T_eff_down + np.average(T_down)/T_eff_down * scint_down_dic[z]
 
-    print('T_f DOWN',z,T_eff_down)
-    print('e_f DOWN',z,eps_eff_down)
+#    print('T_f DOWN',z,T_eff_down)
+#    print('e_f DOWN',z,eps_eff_down)
     T_eff_up = np.average(np.sqrt(T_up))**2
     eps_eff_up = np.var(np.sqrt(T_up))/T_eff_up + np.average(T_up)/T_eff_up * scint_up_dic[z]
-    print('T_f UP',z,T_eff_up)
-    print('e_f UP',z,eps_eff_up)
+#    print('T_f UP',z,T_eff_up)
+#    print('e_f UP',z,eps_eff_up)
    # TMSV
 #       V_opt, F_opt = tmsv.opt_values(T_eff_down, eps_eff_down, eta, alpha=sigma[2])
 #       print("z =", z, V_opt, F_opt)

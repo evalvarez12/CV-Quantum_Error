@@ -33,9 +33,10 @@ xlim([7e-19 1.8e-14]);
 set(gca, 'XScale', 'log');
 set(gca,'fontname','times')  % Set it to times
 
-xlabel('$C_n^2(h)$', 'Interpreter', 'latex')
+xlabel('$C_n^2(h)$ [m${}^{-2/3}$]', 'Interpreter', 'latex')
 ylabel('$h$', 'Interpreter', 'latex')
+set(gca,'Box','on');
 
-grid on
+% grid on
 
 savefigures('phase_screens');

@@ -1,7 +1,9 @@
 function [] = savefigures(figure_name)
 
 myfigure = gcf;
-myfigure.Position = [308,443,560,330];
+pbaspect([1 0.618 1])
+
+% myfigure.Position = [308,443,560,330];
 figure_name_full = ['fig_', figure_name];
 saveas(myfigure, figure_name_full)
 print(figure_name_full,'-dpdf','-r300',myfigure)

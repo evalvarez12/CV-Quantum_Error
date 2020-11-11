@@ -7,60 +7,46 @@ close all;
 %%%% Histograms
 t_ext = 10^(-1/10) * exp(-0.7);
 
-data = load('../../../Laser_propagation/data/TELE_DOWN_I_r=1_z=0_1024_10000');
-data = data.res .* t_ext;
+
+data_up = load('../../../Laser_propagation/data/TELE_final2_UP_I_r=1_z=0_1024_10000');
+data_up = data_up.res .* t_ext;
+
+data_down = load('../../../Laser_propagation/data/TELE_final2_DOWN_I_r=1_z=0_1024_10000');
+data_down = data_down.res .* t_ext;
 
 figure
-histogram(data, 'Normalization', 'pdf', 'FaceColor', 'blue', 'FaceAlpha', 0.6);
-xline(mean(data), 'k--', 'LineWidth', 1.25);
-xlim([min(data) max(data)]);
+hold on
+histogram(data_up, 'Normalization', 'pdf', 'EdgeColor', 'red', 'FaceAlpha', 0.6, 'DisplayStyle', 'stairs');
+histogram(data_down, 'Normalization', 'pdf', 'EdgeColor', 'blue', 'FaceAlpha', 0.6, 'DisplayStyle', 'stairs');
 
-ylabel('PDF', 'Interpreter', 'latex');
+% xline(mean(data_up), 'k--', 'LineWidth', 1.25);
+xlim([min(data_up) max(data_down)]);
+
+ylabel('Probability Distribution', 'Interpreter', 'latex');
 xlabel('$T$', 'Interpreter', 'latex');
+
 
 txt1 = ('Downlink');
-txt2 = ('$L_0=\infty$ $l_0=0$');
-text(0.205 , 650, txt1);
-text(0.205 , 550, txt2);
+txt2 = ('Uplink');
+txt3 = ('$L_0=$ Coulman-Vernin');
+txt4 = ('$l_0= \delta L_0$');
+text(0.08 , 930, txt1);
+text(0.04 , 550, txt2);
+text(0.04 , 860, txt3);
+text(0.041 , 805, txt4);
+
+pbaspect([1 0.618 1])
+
+axes('Position',[.49 .55 .33 .28])
+box on
+histogram(data_down, 'Normalization', 'pdf', 'FaceColor', 'blue', 'FaceAlpha', 0.6, 'NumBins', 35);
+
+
+axes('Position',[.17 .21 .33 .33])
+box on
+histogram(data_up, 'Normalization', 'pdf', 'FaceColor', 'red', 'FaceAlpha', 0.6);
 
 savefigures('hist1');
-
-
-data = load('../../../Laser_propagation/data/TELE_UP_I_r=1_z=0_1024_10000');
-data = data.res .* t_ext;
-
-figure
-histogram(data, 'Normalization', 'pdf', 'FaceColor', 'blue', 'FaceAlpha', 0.6);
-xline(mean(data), 'k--', 'LineWidth', 1.25);
-xlim([min(data) max(data)]);
-
-ylabel('PDF', 'Interpreter', 'latex');
-xlabel('$T$', 'Interpreter', 'latex');
-
-txt1 = ('Uplink');
-txt2 = ('$L_0=$Coulman Vernin $l_0=\delta L_0$');
-text(0.06 , 21, txt1);
-text(0.06 , 17, txt2);
-
-savefigures('hist2');
-
-
-data = load('../../../Laser_propagation/data/TELE__L0inf_UP_I_r=1_z=0_1024_10000');
-data = data.res .* t_ext;
-
-figure
-histogram(data, 'Normalization', 'pdf', 'FaceColor', 'blue', 'FaceAlpha', 0.6, 'NumBins', 35);
-xline(mean(data), 'k--', 'LineWidth', 1.25);
-xlim([min(data) max(data)]);
-
-ylabel('PDF', 'Interpreter', 'latex');
-xlabel('$T$', 'Interpreter', 'latex');
-
-txt1 = ('Uplink');
-txt2 = ('$L_0=\infty$ $l_0=0$');
-text(0.12 , 12, txt1);
-text(0.12 , 10, txt2);
-savefigures('hist3');
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%% Channel properties
@@ -88,15 +74,15 @@ plot(zs, d_noise, 'o-', 'DisplayName', 'Teleportation');
 plot(zs, u_noise, 'o--', 'DisplayName', 'Direct');
 ylabel('$\epsilon_f$', 'Interpreter', 'latex')
 set ( gca, 'ydir', 'reverse' )
-ylim([-0.005 0.085]);
+ylim([0 0.13]);
 
-txt1 = ('$1.1 \times 10^{-5}$');
-text(5 , 0.01, txt1);
+txt1 = ('$7.1 \times 10^{-3}$');
+text(48 , 0.015, txt1);
 
-txt2 = ('$1.2 \times 10^{-4}$');
-text(30 , 0.01, txt2);
+txt2 = ('$7.0 \times 10^{-3}$');
+text(2 , 0.015, txt2);
 
-legend
+legend('Position', [.16 .39 .2 .2]);
 xlabel('$\zeta$ [deg]', 'Interpreter', 'latex')
 % grid on;
  set(gca,'Box','on');
@@ -123,6 +109,10 @@ classical = ones(1, length(tele1)) * .5;
 fig = figure;
 % title('Fixed channel fidelities')
 
+fill([0,15,15,0], [0,0,0.5,0.5],  [1,.75,.75] ,'Edgecolor', 'none', 'handlevisibility', 'off')
+
+
+
 hold on
 
 plot(zs(1:1:end), tele1(1:1:end), '-', 'DisplayName', 'Teleportation $\sigma = 2$', 'color', [0, 0, 1]);
@@ -139,7 +129,7 @@ plot(zs, classical, 'r--', 'HandleVisibility','off');
 ylim([0.46 1]);
 xlim([0 13]);
 
-ylabel('$\bar{F}$', 'Interpreter', 'latex')
+ylabel('$\bar{\mathcal{F}}$', 'Interpreter', 'latex')
 xlabel('Fixed loss [dB]', 'Interpreter', 'latex')
 legend;
 
@@ -170,6 +160,10 @@ classical = ones(1, length(tele1)) * .5;
 fig = figure;
 % title('Satellite-to-ground fidelities')
 
+
+fill([0,60,60,0], [0,0,0.5,0.5],  [1,.75,.75] ,'Edgecolor', 'none', 'handlevisibility', 'off')
+
+
 hold on
 
 plot(zs, tele1, 'o-', 'DisplayName', 'Teleportation $\sigma = 2$', 'color', [0, 0, 1]);
@@ -184,15 +178,16 @@ plot(zs, classical, 'r--', 'HandleVisibility','off');
 
 ylim([0.35 0.72]);
 
-ylabel('$\bar{F}$', 'Interpreter', 'latex')
+ylabel('$\bar{\mathcal{F}}$', 'Interpreter', 'latex')
 xlabel('$\zeta$ [deg]', 'Interpreter', 'latex')
 legend('Location', 'northeast');
 
 txt1 = ('classical limit');
-text(0.1 , 0.48, txt1, 'Color', 'r');
+text(0.8 , 0.48, txt1, 'Color', 'r');
 
 % grid on;
  set(gca,'Box','on');
-
+legend('NumColumns', 2);
+ 
 savefigures('fidelities');
 
