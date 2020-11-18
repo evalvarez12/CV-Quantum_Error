@@ -189,7 +189,7 @@ uplink_eff_noise = []
 for z in zs:
 
     tag = "_z=" + str(z) + "_1024_10000"
-    data_file = "../../Laser_propagation/data/TELE_DOWN_I_r=" + str(r) + tag
+    data_file = "../../Laser_propagation/data/TELE_final2_DOWN_I_r=" + str(r) + tag
     downlink_data = scipy.io.loadmat(data_file)['res'].transpose()
 
     data_file = "../../Laser_propagation/data/TELE_final2_UP_I_r=" + str(r) + tag
@@ -382,7 +382,7 @@ f_tmsv_avg4 = []
 for z in zs:
 
     tag = "_z=" + str(z) + "_1024_10000"
-    data_file = "../../Laser_propagation/data/TELE_DOWN_I_r=" + str(r) + tag
+    data_file = "../../Laser_propagation/data/TELE_final2_DOWN_I_r=" + str(r) + tag
     downlink_data = scipy.io.loadmat(data_file)['res'].transpose()
 
     data_file = "../../Laser_propagation/data/TELE_final2_UP_I_r=" + str(r) + tag
