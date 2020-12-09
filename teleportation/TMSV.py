@@ -108,7 +108,7 @@ def opt_fidelity_alphabet(T, eps, eta, g, sigma):
     # print(res)
     # if not res['success']:
         # raise AssertionError('Failure in optimization')
-    print('opt V:', np.round(res['x'],3))
+    # print('opt V:', np.round(res['x'],3))
     return fidelity_alphabet(res['x'], T, eps, eta, g, sigma)
 
 
