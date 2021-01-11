@@ -4,19 +4,23 @@ import coherent as co
 import TMSV_PS as ps
 import numpy as np
 import matplotlib.pyplot as plt
+import scipy.io
 
 
 
 ### Comparing fidelities with MGs code
-tdb = np.linspace(1, 15, 3)
+tdb = np.linspace(0, 1, 15)
 eps = 7e-3
 sigma = 1
-
+res = []
+ps = []
 for it in tdb:
-    t =  10**(-it/10)
+    t =  it
     print(t)
-    print(tmsv.opt_fidelity_alphabet(t, eps, 1, 1, sigma))
+    res += [tmsv.opt_fidelity_alphabet(t, eps, 1, 1, sigma)]
 
+
+scipy.io.savemat('matlab/tmsv.mat', {'data':res})
 
 #
 #
