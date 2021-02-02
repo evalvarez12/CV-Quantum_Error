@@ -18,7 +18,7 @@ def fidelity(V, T, eps, eta, alpha):
     Bu = -2 * np.imag(alpha) * (1 - g)
     Bv = 2 * np.real(alpha) * (1 - g)
 
-    E = np.exp(-(Bu + Bv)**2/(4*A))
+    E = np.exp(-(Bu**2 + Bv**2)/(4*A))
 
     return E/A
 
@@ -108,7 +108,7 @@ def opt_fidelity_alphabet(T, eps, eta, g, sigma):
     # print(res)
     # if not res['success']:
         # raise AssertionError('Failure in optimization')
-    # print('opt V:', np.round(res['x'],3))
+    print('opt V:', np.round(res['x'],3))
     return fidelity_alphabet(res['x'], T, eps, eta, g, sigma)
 
 
@@ -137,7 +137,7 @@ def opt_fidelity_alphabet_vareps_gopt(T, eps, eta, sigma):
     # print(res)
     # if not res['success']:
         # raise AssertionError('Failure in optimization')
-    # print('opt V:', np.round(res['x'],3))
+#    print('opt V:', np.round(res['x'],3))
     return fidelity_alphabet_pars(res['x'], T, eps, eta, sigma)
 
 
@@ -156,7 +156,8 @@ def opt_fidelity_alphabet_gopt(T, eps, eta, sigma):
     # print(res)
     # if not res['success']:
         # raise AssertionError('Failure in optimization')
-    # print('gopt opt V:', np.round(res['x'],3))
+    if sigma == 10:
+        print('T:', np.round(T,3), ' - opt V, g:', np.round(res['x'],3))
     return fidelity_alphabet_pars(res['x'], T, eps, eta, sigma)
 
 

@@ -2,7 +2,7 @@
 (* ::Package:: *)
 
 Clear["Global`*"];
-Import["\\Users\\z5239621\\Documents\\Repos\\MGsCFcode\\ToMatlab.m", "Package"];
+Import["\\Users\\z5239621\\Documents\\Repos\\CV-Quantum_Error_Correction\\teleportation\\MGsCFcode\\ToMatlab.m", "Package"];
 
 t=.;
 g=.;

@@ -88,7 +88,7 @@ def fidelity_eq(V, theta, T, eps, alpha):
     res = (term1 - term2 - term3) * E
 
     # Return simplified eq which does better when t is close to 1
-    return simp_res
+    return res
 
 def fidelity_pars(pars, T, eps, alpha):
     V, theta = pars

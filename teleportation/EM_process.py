@@ -303,7 +303,6 @@ f_tele2 = []
 f_tele3 = []
 f_tele4 = []
 
-
 for it in T:
     f_tele1 += [tmsv.opt_fidelity_alphabet_gopt(it, eps, eta, sigmaT[0])]
     f_tele2 += [tmsv.opt_fidelity_alphabet_gopt(it, eps, eta, sigmaT[1])]
