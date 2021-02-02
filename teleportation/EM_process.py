@@ -17,8 +17,9 @@ plt.rcParams["font.family"] = "Times New Roman"
 # Global extra loss parameters
 absorption = lambda z : np.exp(-0.7/np.cos(np.deg2rad(z)))
 #absorption = lambda z : 1
-eta_db = 1
-eta = 10**(-eta_db/10)
+#eta_db = 1
+#eta = 10**(-eta_db/10)
+eta = 0.9
 t_ext_db = 1
 t_ext = 10**(-t_ext_db/10)
 

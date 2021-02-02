@@ -36,7 +36,7 @@ def fidelity(V, T, tsc, eps, eta, g, alpha):
     return F
     
     
-V = np.random.rand() + 1
+V = np.random.rand()*4 + 1
 T = np.random.rand()
 tsc = np.random.rand() * 0.5
 tsc = 0.2

@@ -31,7 +31,7 @@ def fidelity_alphabet(V, T,eps, eta, g, sigma):
     b = T * (V - 1) + 1 + eps
     c = np.sqrt(T * (V**2 - 1))
 
-    D = a + b * g**2 - 2*c*g + g**2 + 1 + (R * g/eta)**2
+    D = a + b * g**2 - 2*c*g + g**2 + 1 + R*(g/eta)**2
 
     F = 2 / (2*sigma * (1 - g)**2 + D)
     return F
@@ -156,7 +156,7 @@ def opt_fidelity_alphabet_gopt(T, eps, eta, sigma):
     # print(res)
     # if not res['success']:
         # raise AssertionError('Failure in optimization')
-    if sigma == 10:
+    if sigma == 25:
         print('T:', np.round(T,3), ' - opt V, g:', np.round(res['x'],3))
     return fidelity_alphabet_pars(res['x'], T, eps, eta, sigma)
 
