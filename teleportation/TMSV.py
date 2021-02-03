@@ -156,8 +156,8 @@ def opt_fidelity_alphabet_gopt(T, eps, eta, sigma):
     # print(res)
     # if not res['success']:
         # raise AssertionError('Failure in optimization')
-    if sigma == 25:
-        print('T:', np.round(T,3), ' - opt V, g:', np.round(res['x'],3))
+#    if sigma == 25:
+    print('T:', np.round(T,3), ' - opt V, g:', np.round(res['x'],3))
     return fidelity_alphabet_pars(res['x'], T, eps, eta, sigma)
 
 

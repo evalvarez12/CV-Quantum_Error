@@ -22,9 +22,9 @@ def fidelity(V, T, tsc, eps, eta, g, alpha):
     B1 = (gsc / (2 * A)) * np.sqrt(T * (V**2 - 1))
     A4 = 1/2 * (V + 2*A3 + g**2)
     A5 = 1 - gsc**2 * (1 - 1/A)
-    A6 = -B1*g + gsc**2 * (A3 - g * (1 - 1/A))
-    A7 = (gsc * g)**2 * A3
-    A8 = g**2/2 - A4
+    A6 = -B1*g + gsc**2 * (A3/A - g * (1 - 1/A))
+    A7 = (gsc * g)**2 * A3/A
+    A8 = g**2/2 - A4 + g**2*(1-eta**2)/2
     A9 = A8 + 1/2
     A10 = gt**2/A9
     
@@ -40,7 +40,9 @@ V = np.random.rand()*4 + 1
 T = np.random.rand()
 tsc = np.random.rand() * 0.5
 tsc = 0.2
-T = 1
+T = 0
+V = 1.1
+eps = 0
 
 print(V, T, tsc)
-print(fidelity(V, T, tsc, 0, 1, 1, 1+1j))
+print(fidelity(V, T, tsc, eps, 1, 1, 1+1j))
