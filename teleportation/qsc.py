@@ -10,7 +10,8 @@ import scipy.optimize as op
 import matplotlib.pyplot as plt
 
 def fidelity(V, T, tsc, eps, eta, g, alpha):
-    print('tsc', tsc)
+    print('pars opt:', np.round(V, 3), np.round(tsc, 3), np.round(g, 3))
+
     gsc = np.sqrt((1 - tsc)/tsc)
     g = g*eta
     gt = g - 1
@@ -18,7 +19,7 @@ def fidelity(V, T, tsc, eps, eta, g, alpha):
 #    print(gsc, gt)
 
     A = 1/2 * (T*(V-1) + eps + 2)
-    A2 = 1/ ((1 + gsc) *A)
+    A2 = 1/ ((1 + gsc**2) *A)
     A3 = T * (V**2 - 1)/ (4*A)
     B1 = (gsc / (2 * A)) * np.sqrt(T * (V**2 - 1))
     A4 = 1/2 * (V + 2*A3 + g**2)
@@ -69,11 +70,15 @@ def opt_fidelity(T, eps, eta, alpha):
           {'type': 'ineq',
            'fun': lambda x: x[1]},
           {'type': 'ineq',
-           'fun': lambda x: 1-x[1]},
+           'fun': lambda x: 1.1-x[1]},
           {'type': 'ineq',
            'fun': lambda x: x[2]})
+    
+
     res = op.minimize(F, initial_guess, constraints=cons)
-    print('opt V:', np.round(res['x'],3))
+#    res = op.minimize(F, initial_guess)
+    print(res)
+#    print('opt V:', np.round(res['x'],3))
     return fidelity_pars(res['x'], T, eps, eta, alpha)
 
 
@@ -81,9 +86,9 @@ def opt_fidelity(T, eps, eta, alpha):
 V = np.random.rand()*4 + 1
 T = np.random.rand()
 tsc = np.random.rand() * 0.5
-tsc = 0.5
-T = 0.05
-V = 1.2
+tsc = 0.2
+T = .005
+V = 1.8
 eps = 0
 alpha = 1
 
@@ -91,3 +96,5 @@ print('pars:', V, T, tsc)
 print('F:', fidelity(V, T, tsc, eps, 1, 1, alpha))
 
 print('F_opt', opt_fidelity(T, eps, 1, alpha))
+
+#print('F hand:', fidelity_pars([1.6, .999, .541], T, eps, 1, alpha))
