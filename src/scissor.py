@@ -9,9 +9,9 @@ Created on Thu Feb 28 11:04:31 2019
 
 import numpy as np
 import qutip as qt
-import operations as ops
-import beam_splitter as bs
-import tools
+from . import operations as ops
+from . import beam_splitter as bs
+from . import tools
 
 
 
@@ -67,7 +67,7 @@ def NLA(rho_in, kappa, mu_aux):
   c=in  ->---/----D
              |
              |
-  b=|0> ->--/-----> out
+  b=|0> ->---/----> out
              |
              ^
            a=TMSV ->----D

@@ -6,33 +6,29 @@ Created on Fri Mar  8 10:58:55 2019
 
 @author: Eduardo Villasenor
 """
-
-import qutip as qt
-import scissor
+import sys
 sys.path.append("..") 
 
+import src.cv_system as cv
+import numpy as np
+
+N =10
+k = .05
+g = np.sqrt((1 - k)/k)
+print('g:', g)
 
 
-N =5
-kappa = .05
 
-a = qt.displace(N,1)
+sys = cv.System(N, Nmodes=1, cm=False)
+sys.apply_SMD(1)
+print(sys.state)
 
-vacuum = qt.basis(N) * qt.basis(N).dag()
-D = qt.displace(N, 1)
+sys.apply_scissors(k)
+print(sys.state)
 
-rho = D * vacuum * D.dag()
 
-#state = qt.rand_dm(N)
+sys2 = cv.System(N, Nmodes=1, cm=False)
+sys2.apply_SMD(1)
 
-#rho = qt.tensor(rho, vacuum)
-print(rho) 
 
-result = scissor.exact(rho, kappa)
-
-print(result)
-
-mu_aux = 0.1
-rho1NLA = scissor.NLA(rho, kappa, mu_aux)
-print(rho1NLA)
-
+print(sys.state.dag() * sys2.state)

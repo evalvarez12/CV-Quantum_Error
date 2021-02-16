@@ -20,14 +20,15 @@ def fidelity(V, T, tsc, eps, eta, g, alpha):
 
     A1 = 1/((1 + gsc**2) * (V + 1))
     # Normalized
-    A1 = A1 * ((V + 1) / 2)
+    normqs = (1/(1 + gsc**2)) * ((2/(V + 1)) + (4*gsc**2)/((V+1)**2)) 
+    A1 = A1 
 #    A1 = 2/(1 + gsc**2)
-    A2 = 2 * (1 + gsc**2)
-    A3 = gsc**2 * (V - 1 - 2*T*g**2)
-    A4 = gsc**2 * (V - 1) * T * g**2
+    A2 = 2 * (1 + 2*gsc**2/(V + 1))
+    A3 = 2 * gsc**2 * (V - 1 - 2*T*g**2) / (V + 1) + gsc*g*4*np.sqrt(T*(V**2-1))/(V + 1) 
+    A4 = 2 * gsc**2 * (V - 1) * T * g**2 / (V + 1)
     A5 = 1/2 * (g**2 * (eps + 1) + 2 + (g/eta)**2 * (1 - eta**2))
-    A6 = A2/A5 + (A3 * 4) / (A5**2 * np.sqrt(2)) + (A4 * 14)/A5**3
-    A7 = - (4 * A3 * gt**2)/ (np.sqrt(2) * A5**3) - (28 * A4 * gt**2) / A5**4
+    A6 = A2/A5 + (A3) / (A5**2) + (A4 * 14)/A5**3
+    A7 = - (A3 * gt**2)/ (A5**3) - (28 * A4 * gt**2) / A5**4
     print('A1:', A1)
     print('A2:', A2)
     print('A3:', A3)
@@ -71,9 +72,9 @@ def opt_fidelity(T, eps, eta, alpha):
 V = np.random.rand()*4 + 1
 T = np.random.rand()
 tsc = np.random.rand() * 0.5
-tsc = 0.2
-T = 1
-V = 1.00001
+#tsc = 0.2
+#T = 1
+#V = 1.00001
 eps = 0
 alpha = 1
 eta = 1 

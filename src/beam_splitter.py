@@ -9,7 +9,7 @@ Created on Mon Mar  4 11:58:35 2019
 
 import qutip as qt
 import numpy as np
-import tools
+from . import tools
 
 
 def beam_splitter(operators, theta, tensor=True):
