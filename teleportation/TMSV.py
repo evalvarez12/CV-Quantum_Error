@@ -3,8 +3,7 @@ import scipy.optimize as op
 import matplotlib.pyplot as plt
 
 
-def fidelity(V, T, eps, eta, alpha):
-    g = 1/eta
+def fidelity(V, T, eps, g, eta, alpha):
     g = g * eta
     R = 1 - eta**2
 
