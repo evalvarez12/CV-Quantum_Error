@@ -17,8 +17,8 @@ def avg_fidelity(V, T, tsc, eps, eta, g, sigma):
     g = g*eta
     gt = g - 1
 
-    print('gsc:', gsc)
-    print(np.round([V, tsc, g], 3))
+#    print('gsc:', gsc)
+#    print(np.round([V, tsc, g], 3))
     norm = 2 / (V+1) - (gsc*2/(V+1))**2 * (1 / (1 + gsc**2))
 
     A1 = 2/(V + 1) + gsc**2*(2/(V+1) - 4/(V+1)**2)
@@ -34,12 +34,12 @@ def avg_fidelity(V, T, tsc, eps, eta, g, sigma):
     A5 = gt**4 * A2/A3**5 
     A6 = gt**2/A3 + 1/sigma    
     
-    print('A1:', A1)
-    print('A2:', A2)
-    print('A3:', A3)
-    print('A5:', A5)
-    print('A6:', A6)
-    print('norm:', norm)
+#    print('A1:', A1)
+#    print('A2:', A2)
+#    print('A3:', A3)
+#    print('A5:', A5)
+#    print('A6:', A6)
+#    print('norm:', norm)
 
     F = (1 / (1 + gsc**2)) * 1/sigma * (A4/A6 + (1/(2*A6**2))* (B2u + B2v) + A5/(A6**3)* (96 + 1/4))
     return F
@@ -153,10 +153,10 @@ print('-------------------')
 eps = 0.05
 alpha = 5
 
-sigma = 1
+sigma = 2
 eta = 1
 g = 1
-T = 0.99
+T = 0.05
 tsc = 0.04
 V = 1.4
 alpha = 10
@@ -166,9 +166,9 @@ gsc = np.sqrt((1 - tsc)/tsc)
 #
 #print('F:', fidelity(V, T, tsc, eps, eta, g, alpha))
 #print('F_opt', opt_fidelity(T, eps, eta, sigma))
-#print('F_TMSV:', tmsv.fidelity(V, T, eps, eta, g, alpha))
-#print('F_avg:', avg_fidelity(V, T, .01, eps, eta, g, sigma))
+print('F_TMSV:', tmsv.fidelity(V, T, eps, eta, g, alpha))
+print('F_avg:', avg_fidelity(V, T, .01, eps, eta, g, sigma))
 
-
-#print('F_avg_opt', opt_avg_fidelity(T, eps, eta, sigma))
+print('F_avg_TMSV:', tmsv.opt_fidelity_alphabet_gopt(T, eps, eta, sigma))
+print('F_avg_opt', opt_avg_fidelity(T, eps, eta, sigma))
 #print('F hand:', fidelity_pars([1.6, .999, .541], T, eps, 1, alpha))
