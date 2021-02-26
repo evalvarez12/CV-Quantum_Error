@@ -202,7 +202,7 @@ ru = 0.15
 rd = 0.5
 
 sigmaT = [2, 4, 10, 25]
-sigmaD = [2, 4, 6]
+sigmaD = [2, 4, 10, 25]
 
 
 uplink_avg = []
@@ -273,23 +273,47 @@ for z in zs:
 
 
 
+#    eps = eps_eff_up * sigmaD[0]
+#    f_dt1 = co.fidelity_alphabet(T_eff_up, eps, sigmaD[0])
+#    f_up1_avg += [f_dt1]
+##       f_up1_std += [np.std(co.fidelity(T_up, eps, alpha[0]))]
+#
+#
+#    eps = eps_eff_up * sigmaD[1]
+#    f_dt2 = co.fidelity_alphabet(T_eff_up, eps, sigmaD[1])
+#    f_up2_avg += [f_dt2]
+#
+#    eps = eps_eff_up * sigmaD[2]
+#    f_dt3 = co.fidelity_alphabet(T_eff_up, eps, sigmaD[2])
+#    f_up3_avg += [f_dt3]
+#
+##       eps = eps_eff_up * sigma[3]
+##       f_dt4 = co.fidelity_alphabet(T_eff_up, eps, sigmaD[3])
+##       f_up4_avg += [f_dt4]
+    
+    
+    
+    # Optimized direct transfer protocol
     eps = eps_eff_up * sigmaD[0]
-    f_dt1 = co.fidelity_alphabet(T_eff_up, eps, sigmaD[0])
-    f_up1_avg += [f_dt1]
-#       f_up1_std += [np.std(co.fidelity(T_up, eps, alpha[0]))]
+    f_dt1 = co.opt_fidelity_alphabet(T_eff_up, eps, sigmaD[0])
 
+    f_up1_avg += [f_dt1]
 
     eps = eps_eff_up * sigmaD[1]
-    f_dt2 = co.fidelity_alphabet(T_eff_up, eps, sigmaD[1])
+    f_dt2 = co.opt_fidelity_alphabet(T_eff_up, eps, sigmaD[1])
+
     f_up2_avg += [f_dt2]
 
     eps = eps_eff_up * sigmaD[2]
-    f_dt3 = co.fidelity_alphabet(T_eff_up, eps, sigmaD[2])
+    f_dt3 = co.opt_fidelity_alphabet(T_eff_up, eps, sigmaD[2])
+
     f_up3_avg += [f_dt3]
 
-#       eps = eps_eff_up * sigma[3]
-#       f_dt4 = co.fidelity_alphabet(T_eff_up, eps, sigmaD[3])
-#       f_up4_avg += [f_dt4]
+    eps = eps_eff_up * sigmaD[3]
+    f_dt4 = co.opt_fidelity_alphabet(T_eff_up, eps, sigmaD[3])
+    f_up4_avg += [f_dt4]
+    
+    
 
 #   ax.errorbar(zs, f_tmsv_avg, f_tmsv_std, label=r'Teleportation', linestyle='--', marker='o', capsize=4, markersize=4, linewidth=1.5)
 #   ax.errorbar(zs, f_up1_avg, f_up1_std, label=r'Uplink $\sigma= $' + str(np.round(np.abs(alpha[0]),2)), linestyle='--', marker='o', capsize=4, markersize=4, linewidth=1.5)
@@ -326,6 +350,6 @@ ax.legend()
 
 ### To MATLAB
 data = [zs, f_tmsv_avg1, f_tmsv_avg2, f_tmsv_avg3, f_tmsv_avg4, f_up1_avg, f_up2_avg ,f_up3_avg]
-scipy.io.savemat('matlab/fidelities_assym.mat', {'data':data})
+scipy.io.savemat('matlab/fidelities_assym_opt_direct.mat', {'data':data})
 
 plt.show()

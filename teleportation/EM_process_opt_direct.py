@@ -281,7 +281,7 @@ ax.legend()
 
 ### To MATLAB
 data = [zs, downlink_eff, downlink_eff_noise, uplink_eff, uplink_eff_noise]
-scipy.io.savemat('matlab/channel.mat', {'data':data})
+#scipy.io.savemat('matlab/channel.mat', {'data':data})
 
 
 ############################# FIXED LOSS FIDELITIES PLOT
@@ -345,7 +345,7 @@ ax.legend()
 
 ### To MATLAB
 data = [Tdb, f_tele1, f_tele2, f_tele3, f_tele4, f_dir1, f_dir2, f_dir3, f_dir4]
-scipy.io.savemat('matlab/fixed.mat', {'data':data})
+#scipy.io.savemat('matlab/fixed.mat', {'data':data})
 
 ############################## UPLINK & TELEPORTATION FIDELITIES PLOT
 fig = plt.figure()
@@ -487,7 +487,7 @@ ax.grid()
 ax.legend()
 
 ### To MATLAB
-data = [zs, f_tmsv_avg1, f_tmsv_avg2, f_tmsv_avg3, f_tmsv_avg4, f_up1_avg, f_up2_avg ,f_up3_avg]
+data = [zs, f_tmsv_avg1, f_tmsv_avg2, f_tmsv_avg3, f_tmsv_avg4, f_up1_avg, f_up2_avg , f_up3_avg, f_up4_avg]
 scipy.io.savemat('matlab/fidelities_opt_direct.mat', {'data':data})
 
 plt.show()
