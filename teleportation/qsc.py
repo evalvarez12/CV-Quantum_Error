@@ -52,8 +52,8 @@ def fidelity(V, T, tsc, eps, eta, g, alpha):
     g = g*eta
     gt = g - 1
 
-    print('gsc:', gsc)
-    print(np.round([V, tsc, g], 3))
+#    print('gsc:', gsc)
+#    print(np.round([V, tsc, g], 3))
 
     norm = 2 / (V+1) - (gsc*2/(V+1))**2 * (1 / (1 + gsc**2))
 
@@ -75,7 +75,7 @@ def fidelity(V, T, tsc, eps, eta, g, alpha):
 #    print('A3:', A3)
 #    print('A4:', A4)
 #    print('A5:', A5)
-    print('norm:', norm)
+#    print('norm:', norm)
 
     F = (1 / (1 + gsc**2)) * np.exp(-(gt**2/A3)*np.abs(alpha)**2) * \
         (A4 + B2u * np.imag(alpha)**2 + B2v * np.real(alpha)**2 + \
