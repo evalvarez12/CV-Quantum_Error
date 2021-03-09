@@ -14,6 +14,7 @@ import scipy.io
 import numpy as np
 import matplotlib.pyplot as plt
 
+plt.close('all')
 
 ############################# FIXED LOSS FIDELITIES PLOT - NON AVERAGE
 fig = plt.figure()
@@ -28,7 +29,7 @@ f_tmsv = []
 f_qs_t = []
 f_qs_r = []
 
-for alp_ind in range(len(sigmaT)):
+for alp_ind in range(len(alpha)):
     f_tmsv_i = []
     f_qs_t_i = []
     f_qs_r_i = []
@@ -143,3 +144,5 @@ ax.legend()
 ### To MATLAB
 #data = [Tdb, f_tele1, f_tele2, f_tele3, f_tele4, f_dir1, f_dir2, f_dir3, f_dir4]
 #scipy.io.savemat('matlab/fixed.mat', {'data':data})
+
+plt.show()
