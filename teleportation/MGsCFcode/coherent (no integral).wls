@@ -6,6 +6,7 @@ Import["\\Users\\z5239621\\Documents\\Repos\\CV-Quantum_Error_Correction\\telepo
 
 t=.;
 g=.;
+eta=.;
 e=.;
 T=.;
 R=1-T;
@@ -19,7 +20,7 @@ Fepr[a_,ac_,b_,bc_]=Exp[-((1+l^2)/(2(1-l^2)))(a*ac+b*bc)+l/(1-l^2)*(a*b+ac*bc)];
 Feprt[a_,ac_,b_,bc_]=Exp[-(1+e)(1-t)(b*bc)/2]Fepr[a,ac,b*Sqrt[t],bc*Sqrt[t]];
 
 Fcoh[a_,ac_]=Exp[-((a*ac)/2)]Exp[a*ra-ac*ra];
-Feprcoh[a_,ac_]=Feprt[-a,-ac,-g ac,-g a]*Fcoh[-g a,-g ac]*Fcoh[a,ac]/Pi;
+Feprcoh[a_,ac_]=Exp[-g^2*(1-eta^2)*((a*ac)/2)]*Feprt[-a,-ac,-g eta ac,-g eta a]*Fcoh[-g eta a,-g eta ac]*Fcoh[a,ac]/Pi;
 FeprcohPolar[r_,theta_]=Simplify[r*Feprcoh[r*Exp[theta*I],r*Exp[-theta*I]]];
 ToMatlab[FeprcohPolar[r,theta]]
 
@@ -43,7 +44,7 @@ Ps=Simplify[Fsa[0,0,0,0]];
 
 Fs[a_,ac_,b_,bc_]=Fsa[a,ac,b,bc]/Ps;
 
-Fscoh[a_,ac_]=Fs[-a,-ac,-g ac,-g a]*Fcoh[-g a,-g ac]*Fcoh[a,ac]/Pi;
+Fscoh[a_,ac_]=Exp[-g^2*(1-eta^2)*((a*ac)/2)]*Fs[-a,-ac,-g eta ac,-g eta a]*Fcoh[-g eta a,-g eta ac]*Fcoh[a,ac]/Pi;
 
 FscohPolar[r_,theta_]=Simplify[r*Fscoh[r*Exp[theta*I],r*Exp[-theta*I]]];
 ToMatlab[FscohPolar[r,theta]]
@@ -56,7 +57,7 @@ Pa=Simplify[Faa[0,0,0,0]];
 
 Fa[a_,ac_,b_,bc_]=Faa[a,ac,b,bc]/Pa;
 
-Facoh[a_,ac_]=Fa[-a,-ac,-g ac,-g a]*Fcoh[-g a,-g ac]*Fcoh[a,ac]/Pi;
+Facoh[a_,ac_]=Exp[-g^2*(1-eta^2)*((a*ac)/2)]*Fa[-a,-ac,-g eta ac,-g eta a]*Fcoh[-g eta a,-g eta ac]*Fcoh[a,ac]/Pi;
 
 FacohPolar[r_,theta_]=Simplify[r*Facoh[r*Exp[theta*I],r*Exp[-theta*I]]];
 ToMatlab[FacohPolar[r,theta]]
@@ -73,16 +74,17 @@ Pc=T*Fca[0,0,0,0];
 
 Fc[a_,ac_,b_,bc_]=T*Fca[a,ac,b,bc]/Pc;
 
-Fccoh[a_,ac_]=Fc[-a,-ac,-g ac,-g a]*Fcoh[-g a,-g ac]*Fcoh[a,ac]/Pi;
+Fccoh[a_,ac_]=Exp[-g^2*(1-eta^2)*((a*ac)/2)]*Fc[-a,-ac,-g eta ac,-g eta a]*Fcoh[-g eta a,-g eta ac]*Fcoh[a,ac]/Pi;
 
 FccohPolar[r_,theta_]=Simplify[r*Fccoh[r*Exp[theta*I],r*Exp[-theta*I]]];
 ToMatlab[FccohPolar[r,theta]]
 
 
 Clear["Global`*"];
-Import["\\Users\\z5239621\\Documents\\Repos\\MGsCFcode\\ToMatlab.m", "Package"];
+Import["\\Users\\z5239621\\Documents\\Repos\\CV-Quantum_Error_Correction\\teleportation\\MGsCFcode\\ToMatlab.m", "Package"];
 
 g=.;
+eta=.;
 t=.;
 e=.;
 T=.;
@@ -112,7 +114,7 @@ Psa=Fsa0[0,0,0,0];
 Fsa[a_,ac_,b_,bc_]=Fsa0[a,ac,b,bc]/Psa;
 
 Fcoh[a_,ac_]=Exp[-((a*ac)/2)]Exp[a*ra-ac*ra];
-Fsacoh[a_,ac_]=Fsa[-a,-ac,-g ac,-g a]*Fcoh[-g a,-g ac]*Fcoh[a,ac]/Pi;
+Fsacoh[a_,ac_]=Exp[-g^2*(1-eta^2)*((a*ac)/2)]*Fsa[-a,-ac,-g eta ac,-g eta a]*Fcoh[-g eta a,-g eta ac]*Fcoh[a,ac]/Pi;
 
 FsacohPolar[r_,theta_]=Simplify[r*Fsacoh[r*Exp[theta*I],r*Exp[-theta*I]]];
 ToMatlab[FsacohPolar[r,theta]]
@@ -128,10 +130,13 @@ Pas=Fas0[0,0,0,0];
 Fas[a_,ac_,b_,bc_]=Fas0[a,ac,b,bc]/Pas;
 
 Fcoh[a_,ac_]=Exp[-((a*ac)/2)]Exp[a*ra-ac*ra];
-Fascoh[a_,ac_]=Fas[-a,-ac,-g ac,-g a]*Fcoh[-g a,-g ac]*Fcoh[a,ac]/Pi;
+Fascoh[a_,ac_]=Exp[-g^2*(1-eta^2)*((a*ac)/2)]*Fas[-a,-ac,-g eta ac,-g eta a]*Fcoh[-g eta a,-g eta ac]*Fcoh[a,ac]/Pi;
 
 FascohPolar[r_,theta_]=Simplify[r*Fascoh[r*Exp[theta*I],r*Exp[-theta*I]]];
 ToMatlab[FascohPolar[r,theta]]
+
+
+
 
 
 

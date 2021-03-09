@@ -75,7 +75,7 @@ F_as = -F_as;
 F_sa = -F_sa;
 
 %%
-% save('coh_fmax_s10.mat')
+save('coh_fmax_s10.mat')
 FontSize = 12;
 
 PRINT = 1;

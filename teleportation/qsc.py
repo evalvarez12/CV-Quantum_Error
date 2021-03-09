@@ -150,16 +150,16 @@ print('F_avg:', avg_fidelity(V, T, tsc, eps, eta, g, sigma))
 print('-------------------')
 #print('F_opt', opt_fidelity(T, eps, 1, alpha))
 
-eps = 0.05
+eps = 0.0
 alpha = 5
 
-sigma = 2
+sigma = 1
 eta = 1
 g = 1
-T = 0.01
-tsc = 0.04
-V = 1.4
-alpha = 10
+T = 0.76
+tsc = 0.7
+V = 1.8
+alpha = 1
 gsc = np.sqrt((1 - tsc)/tsc)
 #print('gsc:', gsc)
 #print('p_succ:', 2 / (V+1) - (gsc*2/(V+1))**2 * (1 / (1 + gsc**2)))
@@ -167,8 +167,8 @@ gsc = np.sqrt((1 - tsc)/tsc)
 #print('F:', fidelity(V, T, tsc, eps, eta, g, alpha))
 #print('F_opt', opt_fidelity(T, eps, eta, sigma))
 print('F_TMSV:', tmsv.fidelity(V, T, eps, eta, g, alpha))
-print('F_avg:', avg_fidelity(V, T, .01, eps, eta, g, sigma))
+print('F_avg:', avg_fidelity(V, T, tsc, eps, eta, g, sigma))
 
-print('F_avg_TMSV:', tmsv.opt_fidelity_alphabet_gopt(T, eps, eta, sigma))
-print('F_avg_opt', opt_avg_fidelity(T, eps, eta, sigma))
+#print('F_avg_TMSV:', tmsv.opt_fidelity_alphabet_gopt(T, eps, eta, sigma))
+#print('F_avg_opt', opt_avg_fidelity(T, eps, eta, sigma))
 #print('F hand:', fidelity_pars([1.6, .999, .541], T, eps, 1, alpha))

@@ -42,24 +42,26 @@ rmin = 0;
 rini = .5;
 
 sig = 1;
+eta = 0.9;
+
 
 parfor i = 1:tnum
 %     t = 10^(-tdB(i)/10);
     t = ts(i);
     disp([i,t]);
     
-    fun_ep = @(par) -coh_loss(par(1), par(2), t, e, 'epr', 1, sig);
-    fun_ps = @(par) -coh_loss(par(1), par(2), t, e, 'ps', 1,  sig);
+    fun_ep = @(par) -coh_loss_eta(par(1), par(2), t, e, 'epr', par(3), eta, sig);
+    fun_ps = @(par) -coh_loss_eta(par(1), par(2), t, e, 'ps', par(3), eta,  sig);
 %     fun_pa = @(par) -coh_loss(par(1), par(2), t, e, 'pa', par(3),  sig);
 %     fun_pc = @(par) -coh_loss(par(1), par(2), t, e, 'pc', par(3),  sig);
-    fun_as = @(par) -coh_loss(par(1), par(2), t, e, 'as', 1,  sig);
+    fun_as = @(par) -coh_loss_eta(par(1), par(2), t, e, 'as', par(3), eta, sig);
 %     fun_sa = @(par) -coh_loss(par(1), par(2), t, e, 'sa', par(3),  sig);
 %     
-    [~, Fepr(i)] = fmincon(fun_ep, [Tini, rini], [],[],[],[], [Tmin, rmin], [Tmax, rmax], [], OptOption);
-    [~, F_ps(i)] = fmincon(fun_ps, [Tini, rini], [],[],[],[], [Tmin, rmin], [Tmax, rmax], [], OptOption);
+    [~, Fepr(i)] = fmincon(fun_ep, [Tini, rini, gini], [],[],[],[], [Tmin, rmin, gmin], [Tmax, rmax, gmax], [], OptOption);
+    [~, F_ps(i)] = fmincon(fun_ps, [Tini, rini, gini], [],[],[],[], [Tmin, rmin, gmin], [Tmax, rmax, gmax], [], OptOption);
 %     [~, F_pa(i)] = fmincon(fun_pa, [Tini, rini, gini], [],[],[],[], [Tmin, rmin, gmin], [Tmax, rmax, gmax], [], OptOption);
 %     [~, F_pc(i)] = fmincon(fun_pc, [Tini, rini, gini], [],[],[],[], [Tmin, rmin, gmin], [Tmax, rmax, gmax], [], OptOption);
-    [~, F_as(i)] = fmincon(fun_as, [Tini, rini], [],[],[],[], [Tmin, rmin], [Tmax, rmax], [], OptOption);
+    [~, F_as(i)] = fmincon(fun_as, [Tini, rini, gini], [],[],[],[], [Tmin, rmin, gmin], [Tmax, rmax, gmax], [], OptOption);
 %     [~, F_sa(i)] = fmincon(fun_sa, [Tini, rini, gini], [],[],[],[], [Tmin, rmin, gmin], [Tmax, rmax, gmax], [], OptOption);
 
 
