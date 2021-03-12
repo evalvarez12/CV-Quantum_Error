@@ -149,15 +149,20 @@ def opt_fidelity_alphabet_gopt(T, eps, eta, sigma):
     F = lambda P : 1 - fidelity_alphabet_pars(P, T, eps, eta, sigma)
     initial_guess = [1, 1]
     cons=({'type': 'ineq',
-       'fun': lambda x: x})
-    # res = op.minimize(F, initial_guess, constraints=cons)
+           'fun': lambda x: x[0]},
+          {'type': 'ineq',
+           'fun': lambda x: x[1]})
+   
+#    res = op.minimize(F, initial_guess, constraints=cons)
     res = op.minimize(F, initial_guess)
-    # print(res)
+    print(res)
     # if not res['success']:
         # raise AssertionError('Failure in optimization')
 #    if sigma == 25:
     print('T:', np.round(T,3), ' - opt V, g:', np.round(res['x'],3))
     return fidelity_alphabet_pars(res['x'], T, eps, eta, sigma)
+
+
 
 
 def fidelity_alphabet_pars(pars, T, eps, eta, sigma):

@@ -85,28 +85,26 @@ plt.close('all')
 fig = plt.figure()
 ax = fig.add_subplot(111)
 
-T = np.linspace(0.0, 1, 15)
-eps = 0.007
-eta = 10**(-1/10)
-eta = 0.9
-sigmaT = [2, 4, 10, 25]
-sigmaD = [6, 8, 13, 20]
+T = np.linspace(0.01, 1, 15)
+#T = np.logspace(-3, 0, 15)
+eps = 0.005
+eta = np.sqrt(10**(-1/10))
+sigma = [2, 5, 10, 20]
 
-sigma = [1]
 
 
 f_tmsv = []
 f_qs_t = []
 f_qs_r = []
 
-for sig_ind in range(len(sigma)):
+for sig_ind in range(len(sigmaD)):
     f_tmsv_i = []
     f_qs_t_i = []
     f_qs_r_i = []
     
     for it in T:
         f_tmsv_i += [tmsv.opt_fidelity_alphabet_gopt(it, eps, eta, sigma[sig_ind])]
-#        f_qs_t_i += [qs_t.opt_avg_fidelity(it, eps, eta, sigmaD[sig_ind])]
+        f_qs_t_i += [qs_t.opt_avg_fidelity(it, eps, eta, sigma[sig_ind])]
 #        f_qs_r_i += [qs_r.opt_avg_fidelity(it, eps, eta, sigmaT[sig_ind])]
     
     f_tmsv += [f_tmsv_i]
@@ -116,15 +114,15 @@ for sig_ind in range(len(sigma)):
     
     
     
-ax.plot(T, f_tmsv[0], label=r'TMSV $\sigma= $' + str(np.round(np.abs(sigmaT[0]),2)), linestyle='-', marker='o', markersize=4, linewidth=1.5)
-#ax.plot(T, f_tmsv[1], label=r'TMSV $\sigma= $' + str(np.round(np.abs(sigmaT[1]),2)), linestyle='-', marker='o', markersize=4, linewidth=1.5)
-#ax.plot(T, f_tmsv[2], label=r'TMSV $\sigma= $' + str(np.round(np.abs(sigmaT[2]),2)), linestyle='-', marker='o', markersize=4, linewidth=1.5)
-#ax.plot(T, f_tmsv[3], label=r'TMSV $\sigma= $' + str(np.round(np.abs(sigmaT[3]),2)), linestyle='-', marker='o', markersize=4, linewidth=1.5)
+ax.plot(T, f_tmsv[0], label=r'TMSV $\sigma= $' + str(np.round(np.abs(sigma[0]),2)), linestyle='-', marker='o', markersize=4, linewidth=1.5)
+ax.plot(T, f_tmsv[1], label=r'TMSV $\sigma= $' + str(np.round(np.abs(sigma[1]),2)), linestyle='-', marker='o', markersize=4, linewidth=1.5)
+ax.plot(T, f_tmsv[2], label=r'TMSV $\sigma= $' + str(np.round(np.abs(sigma[2]),2)), linestyle='-', marker='o', markersize=4, linewidth=1.5)
+ax.plot(T, f_tmsv[3], label=r'TMSV $\sigma= $' + str(np.round(np.abs(sigma[3]),2)), linestyle='-', marker='o', markersize=4, linewidth=1.5)
 
-#ax.plot(T, f_qs_t[0], label=r'QS_t $\sigma= $' + str(np.round(np.abs(sigmaD[0]),2)), linestyle='-', marker='*', markersize=4, linewidth=1.5)
-#ax.plot(T, f_qs_t[1], label=r'QS_t $\sigma= $' + str(np.round(np.abs(sigmaD[1]),2)), linestyle='-', marker='*', markersize=4, linewidth=1.5)
-#ax.plot(T, f_qs_t[2], label=r'QS_t $\sigma= $' + str(np.round(np.abs(sigmaD[2]),2)), linestyle='-', marker='*', markersize=4, linewidth=1.5)
-#ax.plot(T, f_qs_t[3], label=r'QS_t $\sigma= $' + str(np.round(np.abs(sigmaD[3]),2)), linestyle='-', marker='*', markersize=4, linewidth=1.5)
+ax.plot(T, f_qs_t[0], label=r'QS_t $\sigma= $' + str(np.round(np.abs(sigma[0]),2)), linestyle='-', marker='*', markersize=4, linewidth=1.5)
+ax.plot(T, f_qs_t[1], label=r'QS_t $\sigma= $' + str(np.round(np.abs(sigma[1]),2)), linestyle='-', marker='*', markersize=4, linewidth=1.5)
+ax.plot(T, f_qs_t[2], label=r'QS_t $\sigma= $' + str(np.round(np.abs(sigma[2]),2)), linestyle='-', marker='*', markersize=4, linewidth=1.5)
+ax.plot(T, f_qs_t[3], label=r'QS_t $\sigma= $' + str(np.round(np.abs(sigma[3]),2)), linestyle='-', marker='*', markersize=4, linewidth=1.5)
 
 #ax.plot(T, f_qs_r[0], label=r'QS_r $\sigma= $' + str(np.round(np.abs(sigmaD[0]),2)), linestyle='-', marker='*', markersize=4, linewidth=1.5)
 #ax.plot(T, f_qs_r[1], label=r'QS_r $\sigma= $' + str(np.round(np.abs(sigmaD[1]),2)), linestyle='-', marker='*', markersize=4, linewidth=1.5)
@@ -135,7 +133,7 @@ ax.plot(T, f_tmsv[0], label=r'TMSV $\sigma= $' + str(np.round(np.abs(sigmaT[0]),
 clasical = np.ones_like(f_tmsv[0]) * .5
 plt.plot(T, clasical, 'r--')
 
-ax.set_xlabel(r'Fixed Loss')
+ax.set_xlabel(r'T')
 ax.set_ylabel(r'$\bar{\mathcal{F}} $')
 # plt.ylim([-0.005, 0.2])
 
@@ -144,7 +142,7 @@ ax.set_ylabel(r'$\bar{\mathcal{F}} $')
 #ax.set_xscale('log')
 ax.grid()
 ax.legend()
-
+#ax.set_xscale('log')
 ### To MATLAB
 #data = [Tdb, f_tele1, f_tele2, f_tele3, f_tele4, f_dir1, f_dir2, f_dir3, f_dir4]
 #scipy.io.savemat('matlab/fixed.mat', {'data':data})

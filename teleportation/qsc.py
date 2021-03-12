@@ -116,7 +116,7 @@ def opt_fidelity(T, eps, eta, alpha):
 
     res = op.minimize(F, initial_guess, constraints=cons)
 #    res = op.minimize(F, initial_guess)
-    print(res)
+#    print(res)
 #    print('opt V:', np.round(res['x'],3))
     return fidelity_pars(res['x'], T, eps, eta, alpha)
 
@@ -128,7 +128,7 @@ def opt_avg_fidelity(T, eps, eta, sigma):
 
     res = op.minimize(F, initial_guess, constraints=cons)
 #    res = op.minimize(F, initial_guess)
-    print(res)
+#    print(res)
 #    print('opt V:', np.round(res['x'],3))
     return avg_fidelity_pars(res['x'], T, eps, eta, sigma)
 
