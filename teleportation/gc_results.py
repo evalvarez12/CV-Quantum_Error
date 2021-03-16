@@ -97,7 +97,7 @@ f_tmsv = []
 f_qs_t = []
 f_qs_r = []
 
-for sig_ind in range(len(sigmaD)):
+for sig_ind in range(len(sigma)):
     f_tmsv_i = []
     f_qs_t_i = []
     f_qs_r_i = []
@@ -144,7 +144,7 @@ ax.grid()
 ax.legend()
 #ax.set_xscale('log')
 ### To MATLAB
-#data = [Tdb, f_tele1, f_tele2, f_tele3, f_tele4, f_dir1, f_dir2, f_dir3, f_dir4]
-#scipy.io.savemat('matlab/fixed.mat', {'data':data})
+data = [T, f_tmsv, f_qs_t]
+scipy.io.savemat('matlab/fixed_py.mat', {'data':data})
 
 plt.show()
