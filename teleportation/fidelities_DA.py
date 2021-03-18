@@ -16,6 +16,32 @@ def Gamma(r, t, g, T, nth):
     return res
 
 
+def squeezed_bell_avg(V, d, T, eps, eta, g, sigma):
+    tau = -np.log(T)
+    r = np.arccosh(V)/2
+    nth = eps/((1-T)*2)
+    return squeezed_bell_eq_avg(r, d, tau, g, eta, sigma, nth)
+
+def squeezed_bell_eq_avg(r, d, t, g, T, sigma, nth):
+    g = g * T
+    Bnorm = Br**2 + Bi**2
+    D = Delta(r, t, g, T, nth)
+    
+    A1 = np.sin(d)**2 * 2 *np.exp(-4*r - 2*t)/D**4 * ((1+np.exp(t/2)*g)**2 - \
+                np.exp(4*r)*(1-np.exp(t/2)*g)**2)**2 
+    A2 = 2 * np.exp(-2*r - t)/D**2 * np.sin(d) * (np.cos(d)*(-(1+np.exp(t/2)*g)**2 + \
+                                            np.exp(4*r) * ((1-np.exp(t/2)*g))**2) + \
+                np.sin(d)* ((1+np.exp(t/2)*g)**2 + np.exp(4*r) * (1-np.exp(t/2)*g)**2))
+    
+    A = 1 + A1*D**2 - A2*D
+    B = - A1 * 8 * D * (g-1)**2 + A2 * 4 * (g-1)**2
+    C = A1 * 8 * (g-1)**4
+    E = 4/D * (g-1)**2 + 1/sigma
+    
+    res = 4/(D * sigma) * (A/D + B/D**2 + C/D**3 * (12 + 1/2))
+    return res
+    
+
 def squeezed_bell_eq(r, d, t, g, T, Br, Bi, nth):
     g = g * T
     Bnorm = Br**2 + Bi**2

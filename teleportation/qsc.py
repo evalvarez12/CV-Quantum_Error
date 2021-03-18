@@ -7,10 +7,6 @@ Created on Mon Feb  1 10:18:53 2021
 
 import numpy as np
 import scipy.optimize as op
-import matplotlib.pyplot as plt
-import TMSV as tmsv
-
-
 
 def avg_fidelity(V, T, tsc, eps, eta, g, sigma):
     gsc = np.sqrt((1 - tsc)/tsc)
@@ -39,7 +35,7 @@ def avg_fidelity(V, T, tsc, eps, eta, g, sigma):
 #    print('A3:', A3)
 #    print('A5:', A5)
 #    print('A6:', A6)
-#    print('norm:', norm)
+    print('norm:', norm)
 
     F = (1 / (1 + gsc**2)) * 1/sigma * (A4/A6 + (1/(2*A6**2))* (B2u + B2v) + A5/(A6**3)* (96 + 1/4))
     return F
@@ -132,43 +128,7 @@ def opt_avg_fidelity(T, eps, eta, sigma):
 #    print('opt V:', np.round(res['x'],3))
     return avg_fidelity_pars(res['x'], T, eps, eta, sigma)
 
+
+
+
 ################################################
-V = np.random.rand() + 1
-T = np.random.rand() * 1
-tsc = np.random.rand() 
-#T = 1
-#V = 1.00001
-eps = 0.05
-alpha = 5
-sigma = 5
-eta = 1
-g = 1
-print('-------------Random')
-print('pars:', np.round([V, T, tsc], 3))
-print('F:', fidelity(V, T, tsc, eps, eta, g, alpha))
-print('F_avg:', avg_fidelity(V, T, tsc, eps, eta, g, sigma))
-print('-------------------')
-#print('F_opt', opt_fidelity(T, eps, 1, alpha))
-
-eps = 0.0
-alpha = 5
-
-sigma = 1
-eta = 1
-g = 1
-T = 0.76
-tsc = 0.7
-V = 1.8
-alpha = 1
-gsc = np.sqrt((1 - tsc)/tsc)
-#print('gsc:', gsc)
-#print('p_succ:', 2 / (V+1) - (gsc*2/(V+1))**2 * (1 / (1 + gsc**2)))
-#
-#print('F:', fidelity(V, T, tsc, eps, eta, g, alpha))
-#print('F_opt', opt_fidelity(T, eps, eta, sigma))
-print('F_TMSV:', tmsv.fidelity(V, T, eps, eta, g, alpha))
-print('F_avg:', avg_fidelity(V, T, tsc, eps, eta, g, sigma))
-
-#print('F_avg_TMSV:', tmsv.opt_fidelity_alphabet_gopt(T, eps, eta, sigma))
-#print('F_avg_opt', opt_avg_fidelity(T, eps, eta, sigma))
-#print('F hand:', fidelity_pars([1.6, .999, .541], T, eps, 1, alpha))

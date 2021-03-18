@@ -10,6 +10,7 @@ Created on Mon Mar  8 11:32:18 2021
 import TMSV as tmsv
 import qsc as qs_t
 import qsc_rec as qs_r
+import sb as sb
 import scipy.io
 import numpy as np
 import matplotlib.pyplot as plt
@@ -106,6 +107,8 @@ for sig_ind in range(len(sigma)):
         f_tmsv_i += [tmsv.opt_fidelity_alphabet_gopt(it, eps, eta, sigma[sig_ind])]
         f_qs_t_i += [qs_t.opt_avg_fidelity(it, eps, eta, sigma[sig_ind])]
 #        f_qs_r_i += [qs_r.opt_avg_fidelity(it, eps, eta, sigmaT[sig_ind])]
+        f_qs_r_i += [sb.opt_avg_fidelity(it, eps, eta, sigma[sig_ind])]
+
     
     f_tmsv += [f_tmsv_i]
     f_qs_t += [f_qs_t_i]
@@ -124,10 +127,10 @@ ax.plot(T, f_qs_t[1], label=r'QS_t $\sigma= $' + str(np.round(np.abs(sigma[1]),2
 ax.plot(T, f_qs_t[2], label=r'QS_t $\sigma= $' + str(np.round(np.abs(sigma[2]),2)), linestyle='-', marker='*', markersize=4, linewidth=1.5)
 ax.plot(T, f_qs_t[3], label=r'QS_t $\sigma= $' + str(np.round(np.abs(sigma[3]),2)), linestyle='-', marker='*', markersize=4, linewidth=1.5)
 
-#ax.plot(T, f_qs_r[0], label=r'QS_r $\sigma= $' + str(np.round(np.abs(sigmaD[0]),2)), linestyle='-', marker='*', markersize=4, linewidth=1.5)
-#ax.plot(T, f_qs_r[1], label=r'QS_r $\sigma= $' + str(np.round(np.abs(sigmaD[1]),2)), linestyle='-', marker='*', markersize=4, linewidth=1.5)
-#ax.plot(T, f_qs_r[2], label=r'QS_r $\sigma= $' + str(np.round(np.abs(sigmaD[2]),2)), linestyle='-', marker='*', markersize=4, linewidth=1.5)
-#ax.plot(T, f_qs_r[3], label=r'QS_r $\sigma= $' + str(np.round(np.abs(sigmaD[3]),2)), linestyle='-', marker='*', markersize=4, linewidth=1.5)
+ax.plot(T, f_qs_r[0], label=r'QS_r $\sigma= $' + str(np.round(np.abs(sigma[0]),2)), linestyle='-', marker='v', markersize=4, linewidth=1.5)
+ax.plot(T, f_qs_r[1], label=r'QS_r $\sigma= $' + str(np.round(np.abs(sigma[1]),2)), linestyle='-', marker='v', markersize=4, linewidth=1.5)
+ax.plot(T, f_qs_r[2], label=r'QS_r $\sigma= $' + str(np.round(np.abs(sigma[2]),2)), linestyle='-', marker='v', markersize=4, linewidth=1.5)
+ax.plot(T, f_qs_r[3], label=r'QS_r $\sigma= $' + str(np.round(np.abs(sigma[3]),2)), linestyle='-', marker='v', markersize=4, linewidth=1.5)
 
 
 clasical = np.ones_like(f_tmsv[0]) * .5
@@ -145,6 +148,6 @@ ax.legend()
 #ax.set_xscale('log')
 ### To MATLAB
 data = [T, f_tmsv, f_qs_t]
-scipy.io.savemat('matlab/fixed_py.mat', {'data':data})
+#scipy.io.savemat('matlab/fixed_py.mat', {'data':data})
 
 plt.show()
