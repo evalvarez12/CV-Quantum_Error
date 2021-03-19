@@ -91,8 +91,7 @@ T = np.linspace(0.01, 0.99, 15)
 eps = 0.005
 eta = np.sqrt(10**(-1/10))
 sigma = [2, 5, 10, 20]
-eta = 1
-
+eta = 10**(-1/10)
 
 f_tmsv = []
 f_qs_t = []

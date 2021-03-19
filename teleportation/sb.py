@@ -107,7 +107,7 @@ def squeezed_bell_eq(r, d, t, g, T, Br, Bi, nth):
     return res
 
 def squeezed_bell_eq_avg(r, d, t, g, T, sigma, nth):
-    D = Delta(r, t, g/T, T, nth) 
+    D = Delta(r, t, g, T, nth) 
     g = g * T
     
     A1 = np.sin(d)**2 * 2 *np.exp(-4*r - 2*t)/D**4 * ((1+np.exp(t/2)*g)**2 - \
@@ -119,9 +119,9 @@ def squeezed_bell_eq_avg(r, d, t, g, T, sigma, nth):
     A = 1 + A1*D**2 - A2*D
     B = - A1 * 8 * D * (g-1)**2 + A2 * 4 * (g-1)**2
     C = A1 * 8 * (g-1)**4
-    E = 4/D * (g-1)**2 + 1/sigma
+    D2 = 4/D * (g-1)**2 + 1/sigma
     
-    res = 4/(D * sigma) * (A/E + B/E**2 + C/E**3 * (12 + 1/2))
+    res = 4/(D * sigma) * (A/D2 + B/D2**2 + C/D2**3 * (12 + 1/2))
     return res
 
 def Delta(r, t, g, T, nth):

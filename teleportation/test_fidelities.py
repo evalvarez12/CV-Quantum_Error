@@ -29,13 +29,13 @@ if True:
     fig = plt.figure()
     ax = fig.add_subplot(111)
     
-    V = np.linspace(1, 10, 15)
+    V = np.linspace(1, 20, 30)
     #T = np.logspace(-3, 0, 15)
     T = [0.1, 0.4, 0.7, .99]
     eps = 0.005
     eta = 10**(-1/10)
     alpha = 5
-    
+    eta = 1
     f_tmsv = []
     f_sb = []
     
@@ -45,10 +45,10 @@ if True:
         f_sb_i = []
         
         for iV in V:
-            f_tmsv_i += [tmsv.opt_fidelity_r(iV, iT, eps, eta, alpha)]
-            f_sb_i += [sb.opt_fidelity_r(iV, iT, eps, eta, alpha)]
-    #        f_tmsv_i += [tmsv.opt_avg_fidelity_r(iV, iT, eps, eta, alpha)]
-    #        f_sb_i += [sb.opt_avg_fidelity_r(iV, iT, eps, eta, alpha)]
+#            f_tmsv_i += [tmsv.opt_fidelity_r(iV, iT, eps, eta, alpha)]
+#            f_sb_i += [sb.opt_fidelity_r(iV, iT, eps, eta, alpha)]
+            f_tmsv_i += [tmsv.opt_avg_fidelity_r(iV, iT, eps, eta, alpha)]
+            f_sb_i += [sb.opt_avg_fidelity_r(iV, iT, eps, eta, alpha)]
     
         
         f_tmsv += [f_tmsv_i]
