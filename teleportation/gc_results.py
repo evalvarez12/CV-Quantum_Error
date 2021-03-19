@@ -86,33 +86,33 @@ plt.close('all')
 fig = plt.figure()
 ax = fig.add_subplot(111)
 
-T = np.linspace(0.01, 1, 15)
+T = np.linspace(0.01, 0.99, 15)
 #T = np.logspace(-3, 0, 15)
 eps = 0.005
 eta = np.sqrt(10**(-1/10))
 sigma = [2, 5, 10, 20]
-
+eta = 1
 
 
 f_tmsv = []
 f_qs_t = []
-f_qs_r = []
+f_sb = []
 
 for sig_ind in range(len(sigma)):
     f_tmsv_i = []
     f_qs_t_i = []
-    f_qs_r_i = []
+    f_sb_i = []
     
     for it in T:
-        f_tmsv_i += [tmsv.opt_fidelity_alphabet_gopt(it, eps, eta, sigma[sig_ind])]
+        f_tmsv_i += [tmsv.opt_avg_fidelity(it, eps, eta, sigma[sig_ind])]
         f_qs_t_i += [qs_t.opt_avg_fidelity(it, eps, eta, sigma[sig_ind])]
 #        f_qs_r_i += [qs_r.opt_avg_fidelity(it, eps, eta, sigmaT[sig_ind])]
-        f_qs_r_i += [sb.opt_avg_fidelity(it, eps, eta, sigma[sig_ind])]
+        f_sb_i += [sb.opt_avg_fidelity(it, eps, eta, sigma[sig_ind])]
 
     
     f_tmsv += [f_tmsv_i]
     f_qs_t += [f_qs_t_i]
-    f_qs_r += [f_qs_r_i]
+    f_sb += [f_sb_i]
 
     
     
@@ -122,15 +122,15 @@ ax.plot(T, f_tmsv[1], label=r'TMSV $\sigma= $' + str(np.round(np.abs(sigma[1]),2
 ax.plot(T, f_tmsv[2], label=r'TMSV $\sigma= $' + str(np.round(np.abs(sigma[2]),2)), linestyle='-', marker='o', markersize=4, linewidth=1.5)
 ax.plot(T, f_tmsv[3], label=r'TMSV $\sigma= $' + str(np.round(np.abs(sigma[3]),2)), linestyle='-', marker='o', markersize=4, linewidth=1.5)
 
-ax.plot(T, f_qs_t[0], label=r'QS_t $\sigma= $' + str(np.round(np.abs(sigma[0]),2)), linestyle='-', marker='*', markersize=4, linewidth=1.5)
-ax.plot(T, f_qs_t[1], label=r'QS_t $\sigma= $' + str(np.round(np.abs(sigma[1]),2)), linestyle='-', marker='*', markersize=4, linewidth=1.5)
-ax.plot(T, f_qs_t[2], label=r'QS_t $\sigma= $' + str(np.round(np.abs(sigma[2]),2)), linestyle='-', marker='*', markersize=4, linewidth=1.5)
-ax.plot(T, f_qs_t[3], label=r'QS_t $\sigma= $' + str(np.round(np.abs(sigma[3]),2)), linestyle='-', marker='*', markersize=4, linewidth=1.5)
+#ax.plot(T, f_qs_t[0], label=r'QS_t $\sigma= $' + str(np.round(np.abs(sigma[0]),2)), linestyle='-', marker='*', markersize=4, linewidth=1.5)
+#ax.plot(T, f_qs_t[1], label=r'QS_t $\sigma= $' + str(np.round(np.abs(sigma[1]),2)), linestyle='-', marker='*', markersize=4, linewidth=1.5)
+#ax.plot(T, f_qs_t[2], label=r'QS_t $\sigma= $' + str(np.round(np.abs(sigma[2]),2)), linestyle='-', marker='*', markersize=4, linewidth=1.5)
+#ax.plot(T, f_qs_t[3], label=r'QS_t $\sigma= $' + str(np.round(np.abs(sigma[3]),2)), linestyle='-', marker='*', markersize=4, linewidth=1.5)
 
-ax.plot(T, f_qs_r[0], label=r'QS_r $\sigma= $' + str(np.round(np.abs(sigma[0]),2)), linestyle='-', marker='v', markersize=4, linewidth=1.5)
-ax.plot(T, f_qs_r[1], label=r'QS_r $\sigma= $' + str(np.round(np.abs(sigma[1]),2)), linestyle='-', marker='v', markersize=4, linewidth=1.5)
-ax.plot(T, f_qs_r[2], label=r'QS_r $\sigma= $' + str(np.round(np.abs(sigma[2]),2)), linestyle='-', marker='v', markersize=4, linewidth=1.5)
-ax.plot(T, f_qs_r[3], label=r'QS_r $\sigma= $' + str(np.round(np.abs(sigma[3]),2)), linestyle='-', marker='v', markersize=4, linewidth=1.5)
+ax.plot(T, f_sb[0], label=r'QS_r $\sigma= $' + str(np.round(np.abs(sigma[0]),2)), linestyle='-', marker='v', markersize=4, linewidth=1.5)
+ax.plot(T, f_sb[1], label=r'QS_r $\sigma= $' + str(np.round(np.abs(sigma[1]),2)), linestyle='-', marker='v', markersize=4, linewidth=1.5)
+ax.plot(T, f_sb[2], label=r'QS_r $\sigma= $' + str(np.round(np.abs(sigma[2]),2)), linestyle='-', marker='v', markersize=4, linewidth=1.5)
+ax.plot(T, f_sb[3], label=r'QS_r $\sigma= $' + str(np.round(np.abs(sigma[3]),2)), linestyle='-', marker='v', markersize=4, linewidth=1.5)
 
 
 clasical = np.ones_like(f_tmsv[0]) * .5
