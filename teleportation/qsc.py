@@ -25,21 +25,21 @@ def avg_fidelity(V, T, tsc, eps, eta, g, sigma):
     A2 = 2*T*(V-1)*g**2/(V+1)**2
     A3 = 1/2*(g**2*(eps + 1) + 2 + g**2 + (g/eta)**2 * (1-eta**2))
     A4 = A1/A3 + A2/A3**3 * (12 + 1/4) + 1/(2 * A3**2) * (B1u + B1v)
-    B2u = -gt**2 * (B1u/A3**3 + A2/A3**4 * (24 + 1/2))  
-    B2v = -gt**2 * (B1v/A3**3 + A2/A3**4 * (24 + 1/2))  
-    A5 = gt**4 * A2/A3**5 
-    A6 = gt**2/A3 + 1/sigma    
-    
+    B2u = -gt**2 * (B1u/A3**3 + A2/A3**4 * (24 + 1/2))
+    B2v = -gt**2 * (B1v/A3**3 + A2/A3**4 * (24 + 1/2))
+    A5 = gt**4 * A2/A3**5
+    A6 = gt**2/A3 + 1/sigma
+
 #    print('A1:', A1)
 #    print('A2:', A2)
 #    print('A3:', A3)
 #    print('A5:', A5)
 #    print('A6:', A6)
-    print('norm:', norm)
+    # print('norm:', norm)
 
     F = (1 / (1 + gsc**2)) * 1/sigma * (A4/A6 + (1/(2*A6**2))* (B2u + B2v) + A5/(A6**3)* (96 + 1/4))
     return F
-    
+
 
 def fidelity(V, T, tsc, eps, eta, g, alpha):
 #    print('pars opt:', np.round(V, 3), np.round(tsc, 3), np.round(g, 3))
@@ -53,7 +53,7 @@ def fidelity(V, T, tsc, eps, eta, g, alpha):
 
     norm = 2 / (V+1) - (gsc*2/(V+1))**2 * (1 / (1 + gsc**2))
 
-    A1 = 2/(V + 1) + gsc**2*(2/(V+1) - 4/(V+1)**2) 
+    A1 = 2/(V + 1) + gsc**2*(2/(V+1) - 4/(V+1)**2)
     B1u = gsc*g*4*np.sqrt(T*(V**2 - 1))/(V+1)**2 - gsc**2 * \
           (2*(V-1)/(V+1)**2 + T*g**2*(2/(V+1) - 4/(V+1)**2))
     B1v = - gsc*g*4*np.sqrt(T*(V**2 - 1))/(V+1)**2 - gsc**2 * \
@@ -61,11 +61,11 @@ def fidelity(V, T, tsc, eps, eta, g, alpha):
     A2 = 2*T*(V-1)*g**2/(V+1)**2
     A3 = 1/2*(g**2*(eps + 1) + 2 + g**2 + (g/eta)**2 * (1-eta**2))
     A4 = A1/A3 + A2/A3**3 * (12 + 1/4) + 1/(2 * A3**2) * (B1u + B1v)
-    B2u = -gt**2 * (B1u/A3**3 + A2/A3**4 * (24 + 1/2))  
-    B2v = -gt**2 * (B1v/A3**3 + A2/A3**4 * (24 + 1/2))  
-    A5 = gt**4 * A2/A3**5 
-    
-    
+    B2u = -gt**2 * (B1u/A3**3 + A2/A3**4 * (24 + 1/2))
+    B2v = -gt**2 * (B1v/A3**3 + A2/A3**4 * (24 + 1/2))
+    A5 = gt**4 * A2/A3**5
+
+
 #    print('A1:', A1)
 #    print('A2:', A2)
 #    print('A3:', A3)

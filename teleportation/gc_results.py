@@ -15,7 +15,7 @@ import scipy.io
 import numpy as np
 import matplotlib.pyplot as plt
 
-plt.close('all')
+# plt.close('all')
 
 ############################## FIXED LOSS FIDELITIES PLOT - NON AVERAGE
 #fig = plt.figure()
@@ -34,19 +34,19 @@ plt.close('all')
 #    f_tmsv_i = []
 #    f_qs_t_i = []
 #    f_qs_r_i = []
-#    
+#
 #    for it in T:
 #        f_tmsv_i += [tmsv.opt_fidelity(it, eps, eta, alpha[alp_ind])]
 #        f_qs_t_i += [qs_t.opt_fidelity(it, eps, eta, alpha[alp_ind])]
 ##        f_qs_r_i += [qs_r.opt_avg_fidelity(it, eps, eta, sigmaT[sig_ind])]
-#    
+#
 #    f_tmsv += [f_tmsv_i]
 #    f_qs_t += [f_qs_t_i]
 #    f_qs_r += [f_qs_r_i]
 #
-#    
-#    
-#    
+#
+#
+#
 #ax.plot(T, f_tmsv[0], label=r'TMSV $\alpha= $' + str(np.round(np.abs(alpha[0]),2)), linestyle='-', marker='o', markersize=4, linewidth=1.5)
 #ax.plot(T, f_tmsv[1], label=r'TMSV $\alpha= $' + str(np.round(np.abs(alpha[1]),2)), linestyle='-', marker='o', markersize=4, linewidth=1.5)
 #ax.plot(T, f_tmsv[2], label=r'TMSV $\alpha= $' + str(np.round(np.abs(alpha[2]),2)), linestyle='-', marker='o', markersize=4, linewidth=1.5)
@@ -87,11 +87,12 @@ fig = plt.figure()
 ax = fig.add_subplot(111)
 
 T = np.linspace(0.01, 0.99, 15)
+# T = [0.74, 0.81, 0.9, 1]
 #T = np.logspace(-3, 0, 15)
 eps = 0.005
 eta = np.sqrt(10**(-1/10))
 sigma = [2, 5, 10, 20]
-eta = 10**(-1/10)
+# eta = 1
 
 f_tmsv = []
 f_qs_t = []
@@ -101,21 +102,21 @@ for sig_ind in range(len(sigma)):
     f_tmsv_i = []
     f_qs_t_i = []
     f_sb_i = []
-    
+
     for it in T:
         f_tmsv_i += [tmsv.opt_avg_fidelity(it, eps, eta, sigma[sig_ind])]
         f_qs_t_i += [qs_t.opt_avg_fidelity(it, eps, eta, sigma[sig_ind])]
 #        f_qs_r_i += [qs_r.opt_avg_fidelity(it, eps, eta, sigmaT[sig_ind])]
         f_sb_i += [sb.opt_avg_fidelity(it, eps, eta, sigma[sig_ind])]
 
-    
+
     f_tmsv += [f_tmsv_i]
     f_qs_t += [f_qs_t_i]
     f_sb += [f_sb_i]
 
-    
-    
-    
+
+
+
 ax.plot(T, f_tmsv[0], label=r'TMSV $\sigma= $' + str(np.round(np.abs(sigma[0]),2)), linestyle='-', marker='o', markersize=4, linewidth=1.5)
 ax.plot(T, f_tmsv[1], label=r'TMSV $\sigma= $' + str(np.round(np.abs(sigma[1]),2)), linestyle='-', marker='o', markersize=4, linewidth=1.5)
 ax.plot(T, f_tmsv[2], label=r'TMSV $\sigma= $' + str(np.round(np.abs(sigma[2]),2)), linestyle='-', marker='o', markersize=4, linewidth=1.5)
