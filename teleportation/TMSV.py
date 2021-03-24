@@ -12,7 +12,7 @@ def fidelity(V, T, eps, g, eta, alpha):
     c = np.sqrt(T * (V**2 - 1))
 
     A = (a + b * g**2 - 2*c*g)/2
-    A = A + (g**2 + 1 + (R * g/eta)**2)/2
+    A = A + (g**2 + 1 + R * (g/eta)**2)/2
 
     Bu = -2 * np.imag(alpha) * (1 - g)
     Bv = 2 * np.real(alpha) * (1 - g)
@@ -98,17 +98,18 @@ def opt_fidelity(T, eps, eta, alpha):
 
 
 def opt_fidelity_r(V, T, eps, eta, alpha):
-    F = lambda g : 1 - fidelity(V, T, eps, eta, g, alpha)
-    initial_guess = 1
-    cons=({'type': 'ineq',
-       'fun': lambda x: x})
-    # res = op.minimize(F, initial_guess, constraints=cons)
-    res = op.minimize(F, initial_guess)
-    # print(res)
-    # if not res['success']:
-        # raise AssertionError('Failure in optimization')
-    return fidelity(V, T, eps, eta, res['x'], alpha)
-    # return fidelity(V, T, eps, eta, 1/eta, alpha)
+    return fidelity(V, T, eps, 1/eta, eta, alpha)
+#    F = lambda g : 1 - fidelity(V, T, eps, eta, g, alpha)
+#    initial_guess = 1
+#    cons=({'type': 'ineq',
+#       'fun': lambda x: x})
+#    res = op.minimize(F, initial_guess, constraints=cons)
+##    res = op.minimize(F, initial_guess)
+#    if not res.success:
+#        print(res)
+#    # if not res['success']:
+#        # raise AssertionError('Failure in optimization')
+#    return fidelity(V, T, eps, eta, res['x'], alpha)
 
 
 

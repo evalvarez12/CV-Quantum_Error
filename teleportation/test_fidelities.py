@@ -13,7 +13,7 @@ import qsc as qs
 import sb as sb
 
 
-# plt.close('all')
+plt.close('all')
 
 # V = 1
 # #T = np.logspace(-3, 0, 15)
@@ -31,10 +31,12 @@ if True:
     fig = plt.figure()
     ax = fig.add_subplot(111)
 
-    V = np.linspace(0, 3, 5)
+    V = np.linspace(0, 3, 15)
     # V = np.linspace(1, 150, 80)
     #T = np.logspace(-3, 0, 15)
-    T = [0.74, 0.81, 0.9, 1]
+    R = np.array([0, 0.05, 0.1, 0.15])
+    T = (1 - R)
+#    T = [1, 0, 0.81, 0.9]
     eps = 0.00
     eta = np.sqrt(10**(-1/10))
     alpha = 15
@@ -49,13 +51,16 @@ if True:
 
         for iV in V:
            iV = np.cosh(2*iV)
-           # f_tmsv_i += [tmsv.opt_fidelity_r(iV, iT, eps, eta, alpha)]
-           # f_sb_i += [sb.opt_fidelity_r(iV, iT, eps, eta, alpha)]
-           # f_tmsv_i += [tmsv.opt_avg_fidelity_r(iV, iT, eps, eta, alpha)]
-           # f_sb_i += [sb.opt_avg_fidelity_r(iV, iT, eps, eta, alpha)]
+#           f_tmsv_i += [tmsv.opt_fidelity_r(iV, iT, eps, eta, alpha)]
+#           f_sb_i += [sb.opt_fidelity_r(iV, iT, eps, np.sqrt(eta), alpha)]
+           f_tmsv_i += [tmsv.opt_avg_fidelity_r(iV, iT, eps, eta, alpha)]
+           f_sb_i += [sb.opt_avg_fidelity_r(iV, iT, eps, np.sqrt(eta), alpha)]
+#
+#           f_tmsv_i += [tmsv.opt_avg_fidelity_r(iV, 1, eps, iT, alpha)]
+#           f_sb_i += [sb.opt_avg_fidelity_r(iV, 1, eps, iT, alpha)]
 
-           f_tmsv_i += [tmsv.opt_avg_fidelity_r(iV, 1, eps, iT, alpha)]
-           f_sb_i += [sb.opt_avg_fidelity_r(iV, 1, eps, iT, alpha)]
+#           f_tmsv_i += [tmsv.opt_fidelity_r(iV, 1, eps, iT, alpha)]
+#           f_sb_i += [sb.opt_fidelity_r(iV, 1, eps, np.sqrt(iT), alpha)]
 
 
         print('-----> T', iT)

@@ -43,7 +43,7 @@ def avg_fidelity_pars(P, T, eps, eta, sigma):
 
 def fidelity_pars_r(P, V, T, eps, eta, alpha):
     d, g = P
-    # g = 1/eta
+    g = 1/eta
     return fidelity(V, T, d, eps, eta, g, alpha)
 
 
@@ -103,43 +103,43 @@ def opt_fidelity_r(V, T, eps, eta, alpha):
 def squeezed_bell_eq(r, d, t, g, T, Br, Bi, nth):
     Bnorm = Br**2 + Bi**2
     D = Delta(r, t, g, T, nth)
-    g = g * T
+    g2 = g * T
 
-    res = (4/D) * np.exp((-4/D) * (g - 1)**2 * Bnorm) * (1 + (2*np.exp(-4*r - 2*t))/(D**4) * \
-          ((1 + np.exp(t/2) * g )**2 - np.exp(4 * r) * (1 - np.exp(t/2) * g)**2)**2 * \
-          (D**2 - 8 * D * (g -  1)**2 * Bnorm + 8 * (g - 1)**4 * Bnorm**2) * np.sin(d)**2 + \
-          2 * np.exp(-2*r - 2*t)/D**2 * (4 * (g - 1)**2 * Bnorm - D) * np.sin(d) * \
-          (np.cos(d) * (-(1 + np.exp(t/2)*g)**2 + np.exp(4*r) * (1 - np.exp(t/2)*g)**2) + \
-          np.sin(d) * ((1 + np.exp(t/2)*g)**2 + np.exp(4*r) * (1 - np.exp(t/2)*g)**2)))
+    res = (4/D) * np.exp((-4/D) * (g2 - 1)**2 * Bnorm) * (1 + (2*np.exp(-4*r - 2*t))/(D**4) * \
+          ((1 + np.exp(t/2) * g2 )**2 - np.exp(4 * r) * (1 - np.exp(t/2) * g2)**2)**2 * \
+          (D**2 - 8 * D * (g2 -  1)**2 * Bnorm + 8 * (g2 - 1)**4 * Bnorm**2) * np.sin(d)**2 + \
+          2 * np.exp(-2*r - 2*t)/D**2 * (4 * (g2 - 1)**2 * Bnorm - D) * np.sin(d) * \
+          (np.cos(d) * (-(1 + np.exp(t/2)*g2)**2 + np.exp(4*r) * (1 - np.exp(t/2)*g2)**2) + \
+          np.sin(d) * ((1 + np.exp(t/2)*g2)**2 + np.exp(4*r) * (1 - np.exp(t/2)*g2)**2)))
     return res
 
 def squeezed_bell_eq_avg(r, d, t, g, T, sigma, nth):
     D = Delta(r, t, g, T, nth)
-    g = g * T
+    g2 = g * T
 
-    A1 = np.sin(d)**2 * 2 *np.exp(-4*r - 2*t)/D**4 * ((1+np.exp(t/2)*g)**2 - \
-                np.exp(4*r)*(1-np.exp(t/2)*g)**2)**2
-    A2 = 2 * np.exp(-2*r - t)/D**2 * np.sin(d) * (np.cos(d)*(-(1+np.exp(t/2)*g)**2 + \
-                                            np.exp(4*r) * ((1-np.exp(t/2)*g))**2) + \
-                np.sin(d)* ((1+np.exp(t/2)*g)**2 + np.exp(4*r) * (1-np.exp(t/2)*g)**2))
+    A1 = np.sin(d)**2 * 2 *np.exp(-4*r - 2*t)/D**4 * ((1+np.exp(t/2)*g2)**2 - \
+                np.exp(4*r)*(1-np.exp(t/2)*g2)**2)**2
+    A2 = 2 * np.exp(-2*r - t)/D**2 * np.sin(d) * (np.cos(d)*(-(1+np.exp(t/2)*g2)**2 + \
+                                            np.exp(4*r) * ((1-np.exp(t/2)*g2))**2) + \
+                np.sin(d)* ((1+np.exp(t/2)*g2)**2 + np.exp(4*r) * (1-np.exp(t/2)*g2)**2))
 
     A = 1 + A1*D**2 - A2*D
-    B = - A1 * 8 * D * (g-1)**2 + A2 * 4 * (g-1)**2
-    C = A1 * 8 * (g-1)**4
-    D2 = 4/D * (g-1)**2 + 1/sigma
+    B = - A1 * 8 * D * (g2-1)**2 + A2 * 4 * (g-1)**2
+    C = A1 * 8 * (g2-1)**4
+    D2 = 4/D * (g2-1)**2 + 1/sigma
 
     res = 4/(D * sigma) * (A/D2 + B/D2**2 + C/D2**3 * (12 + 1/2))
     return res
 
 def Delta(r, t, g, T, nth):
     G = Gamma(r, t, g, T, nth)
-    g = g * T
+    g2 = g * T
 
-    res = np.exp(-2*r - t)*((1 + np.exp(t/2) * g)**2 + np.exp(4*r) * (1 - np.exp(t/2) * g)**2 + \
-          2 * np.exp(2*r + t) * (1 + g**2 + 2 * G))
+    res = np.exp(-2*r - t)*((1 + np.exp(t/2) * g2)**2 + np.exp(4*r) * (1 - np.exp(t/2) * g2)**2 + \
+          2 * np.exp(2*r + t) * (1 + g2**2 + 2 * G))
     return res
 
 def Gamma(r, t, g, T, nth):
-    R = 1 - T
-    res = (1 - np.exp(-t)) * (.5 + nth) + g**2 * R**2
+    R = (1 - T**2) 
+    res = (1 - np.exp(-t)) * (.5 + nth) + g**2 * R
     return res

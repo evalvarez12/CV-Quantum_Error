@@ -107,7 +107,7 @@ for sig_ind in range(len(sigma)):
         f_tmsv_i += [tmsv.opt_avg_fidelity(it, eps, eta, sigma[sig_ind])]
         f_qs_t_i += [qs_t.opt_avg_fidelity(it, eps, eta, sigma[sig_ind])]
 #        f_qs_r_i += [qs_r.opt_avg_fidelity(it, eps, eta, sigmaT[sig_ind])]
-        f_sb_i += [sb.opt_avg_fidelity(it, eps, eta, sigma[sig_ind])]
+        f_sb_i += [sb.opt_avg_fidelity(it, eps, np.sqrt(eta), sigma[sig_ind])]
 
 
     f_tmsv += [f_tmsv_i]
