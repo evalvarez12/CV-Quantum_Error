@@ -65,23 +65,19 @@ sa_m_sig10 = data_m_sig10(:,6);
 sa_m_sig20 = data_m_sig20(:,6);
 
 
-data_py_eta = load('fixed_py_eta0.7.mat');
-data_py_eta = data_py_eta.data;
+data_py_eta = load('fixed_py_eta=0.7');
 tmsv_py_eta = cell2mat(data_py_eta(2));
 sb_py_eta = cell2mat(data_py_eta(4));
 
-tmsv_py_sig5_eta = tmsv_py_eta(2, :);
-tmsv_py_sig20_eta = tmsv_py_eta(4, :);
+tmsv_py_sig5_eta = tmsv_py_eta(:,2);
+tmsv_py_sig20_eta = tmsv_py_eta(:,4);
 
-sb_py_sig5_eta = sb_py_eta(2, :);
-sb_py_sig20_eta = sb_py_eta(4, :);
+sb_py_sig5_eta = as_py_eta(:,2);
+sb_py_sig5_eta = as_py_eta(:,2);
 
 
-as_m_sig5_eta = load('results_as_sig5_eta0.7.mat');
-as_m_sig20_eta = load('results_as_sig20_eta0.7.mat');
-
-as_m_sig5_eta = as_m_sig5_eta.results;
-as_m_sig20_eta = as_m_sig20_eta.results;
+as_m_sig5_eta = load('results_as_sig5_eta=0.7');
+as_m_sig20_eta = load('results_as_sig20_eta=0.7');
 
 
 
@@ -142,36 +138,21 @@ figure;
 hold all;
 
 
-plot(t, tmsv_py_sig20_eta,'k-', 'LineWidth', 3, 'DisplayName', 'TMSV');
-plot(t, sb_py_sig20_eta, 'o-', 'DisplayName', 'SB');
-plot(t, as_m_sig20_eta, 'o-', 'DisplayName', 'PA-PS');
+plot(t, tmsv_py_sig20,'k-', 'LineWidth', 3, 'DisplayName', 'TMSV');
+plot(t, sb_py_sig20, 'o-', 'DisplayName', 'SB');
+plot(t, as_m_sig20, 'o-', 'DisplayName', 'PA-PS');
 
 legend('Location', 'southeast');
 ylabel('$\bar{\mathcal{F}}$', 'Interpreter', 'latex');
 xlabel('$T$', 'Interpreter', 'latex');
 
 txt1 = ('\sigma = 20');
-text(0.015, .55, txt1);
+text(0.015, .85, txt1);
 
 savefigures('fixed1')
 
 
-figure;
-hold all;
 
-
-plot(t, tmsv_py_sig5_eta,'k-', 'LineWidth', 3, 'DisplayName', 'TMSV');
-plot(t, sb_py_sig5_eta, 'o-', 'DisplayName', 'SB');
-plot(t, as_m_sig5_eta, 'o-', 'DisplayName', 'PA-PS');
-
-legend('Location', 'southeast');
-ylabel('$\bar{\mathcal{F}}$', 'Interpreter', 'latex');
-xlabel('$T$', 'Interpreter', 'latex');
-
-txt1 = ('\sigma = 5');
-text(0.015, .55, txt1);
-
-savefigures('fixed1')
 
 figure;
 hold all;

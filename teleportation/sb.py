@@ -140,6 +140,7 @@ def Delta(r, t, g, T, nth):
     return res
 
 def Gamma(r, t, g, T, nth):
-    R = (1 - T**2) 
+    # NOTE: this fix of /2 to R
+    R = (1 - T**2)/2 
     res = (1 - np.exp(-t)) * (.5 + nth) + g**2 * R
     return res

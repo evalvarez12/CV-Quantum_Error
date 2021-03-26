@@ -87,5 +87,5 @@ F_as = -F_as;
 
 results = F_as;
 
-save('results_as_sig20_eta=0.7.mat', 'results');
+save('results_as_sig5_eta=0.7.mat', 'results');
 

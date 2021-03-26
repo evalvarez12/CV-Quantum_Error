@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 
 def fidelity(V, T, eps, g, eta, alpha):
     g = g * eta
-    R = 1 - eta**2
+    R = (1 - eta**2)
 
     a = V
     b = T * (V - 1) + 1 + eps
@@ -24,7 +24,7 @@ def fidelity(V, T, eps, g, eta, alpha):
 
 def fidelity_alphabet(V, T,eps, eta, g, sigma):
     g = g * eta
-    R = 1 - eta**2
+    R = (1 - eta**2)
 
     a = V
     b = T * (V - 1) + 1 + eps
