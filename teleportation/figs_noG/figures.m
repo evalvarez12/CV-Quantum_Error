@@ -28,6 +28,12 @@ qs_py_sig5 = qs_py(2,:);
 qs_py_sig10 = qs_py(3,:);
 qs_py_sig20 = qs_py(4,:);
 
+sb_py = cell2mat(data_py(4));
+sb_py_sig2 = sb_py(1,:);
+sb_py_sig5 = sb_py(2,:);
+sb_py_sig10 = sb_py(3,:);
+sb_py_sig20 = sb_py(4,:);
+
 tmsv_m_sig2 = data_m_sig2(:,1);
 tmsv_m_sig5 = data_m_sig5(:,1);
 tmsv_m_sig10 = data_m_sig10(:,1);
@@ -69,6 +75,7 @@ ps_m_sig5(1) = 0.27456;
 ps_m_sig5(2) = 0.28067;
 
 plot(t, tmsv_py_sig5,'k-', 'LineWidth', 3, 'DisplayName', 'TMSV');
+plot(t, sb_py_sig5, 'o-', 'DisplayName', 'SB');
 plot(t, qs_py_sig5, 'o-', 'DisplayName', 'QS');
 plot(t, ps_m_sig5, 'o-', 'DisplayName', 'PS');
 plot(t, pa_m_sig5, 'o-', 'DisplayName', 'PA');
@@ -88,6 +95,32 @@ savefigures('fixed1')
 
 figure;
 hold all;
+
+% sa_m_sig5(1) = 0.2875;
+ps_m_sig20(1) = 0.27456;
+ps_m_sig20(2) = 0.28067;
+
+plot(t, tmsv_py_sig20,'k-', 'LineWidth', 3, 'DisplayName', 'TMSV');
+plot(t, sb_py_sig20, 'o-', 'DisplayName', 'SB');
+plot(t, qs_py_sig20, 'o-', 'DisplayName', 'QS');
+plot(t, ps_m_sig20, 'o-', 'DisplayName', 'PS');
+plot(t, pa_m_sig20, 'o-', 'DisplayName', 'PA');
+plot(t, pc_m_sig20, 'o-', 'DisplayName', 'PC');
+plot(t, as_m_sig20, 'o-', 'DisplayName', 'PA-PS');
+plot(t, sa_m_sig20, 'o-', 'DisplayName', 'PS-PA');
+
+legend('Location', 'southeast');
+ylabel('$\bar{\mathcal{F}}$', 'Interpreter', 'latex');
+xlabel('$T$', 'Interpreter', 'latex');
+
+txt1 = ('\sigma = 20');
+text(0.015, .85, txt1);
+
+savefigures('fixed1')
+
+
+figure;
+hold all;
 plot(t, tmsv_py_sig2, '-', 'LineWidth', 1.5, 'DisplayName', 'TMSV\sigma = 2')
 plot(t, tmsv_py_sig5, '-', 'LineWidth', 1.5, 'DisplayName', 'TMSV \sigma = 5')
 plot(t, tmsv_py_sig10, '-', 'LineWidth', 1.5, 'DisplayName', 'TMSV \sigma = 10')
@@ -96,6 +129,11 @@ plot(t, tmsv_py_sig20, '-', 'LineWidth', 1.5,'DisplayName', 'TMSV \sigma = 20')
 % plot(t, tmsv_m_sig5, 'ro')
 % plot(t, tmsv_m_sig10, 'ro')
 % plot(t, tmsv_m_sig20, 'ro')
+
+plot(t, sb_py_sig2, 'v-', 'DisplayName', 'SB \sigma = 2')
+plot(t, sb_py_sig5, 'v-', 'DisplayName', 'SB \sigma = 5')
+plot(t, sb_py_sig10, 'v-', 'DisplayName', 'SB \sigma = 10')
+plot(t, sb_py_sig20, 'v-', 'DisplayName', 'SB \sigma = 20')
 
 % plot(t, qs_py_sig2)
 % plot(t, qs_py_sig5)

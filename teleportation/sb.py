@@ -43,7 +43,7 @@ def avg_fidelity_pars(P, T, eps, eta, sigma):
 
 def fidelity_pars_r(P, V, T, eps, eta, alpha):
     d, g = P
-    g = 1/eta
+#    g = 1/eta
     return fidelity(V, T, d, eps, eta, g, alpha)
 
 
@@ -108,7 +108,7 @@ def squeezed_bell_eq(r, d, t, g, T, Br, Bi, nth):
     res = (4/D) * np.exp((-4/D) * (g2 - 1)**2 * Bnorm) * (1 + (2*np.exp(-4*r - 2*t))/(D**4) * \
           ((1 + np.exp(t/2) * g2 )**2 - np.exp(4 * r) * (1 - np.exp(t/2) * g2)**2)**2 * \
           (D**2 - 8 * D * (g2 -  1)**2 * Bnorm + 8 * (g2 - 1)**4 * Bnorm**2) * np.sin(d)**2 + \
-          2 * np.exp(-2*r - 2*t)/D**2 * (4 * (g2 - 1)**2 * Bnorm - D) * np.sin(d) * \
+          2 * np.exp(-2*r - t)/D**2 * (4 * (g2 - 1)**2 * Bnorm - D) * np.sin(d) * \
           (np.cos(d) * (-(1 + np.exp(t/2)*g2)**2 + np.exp(4*r) * (1 - np.exp(t/2)*g2)**2) + \
           np.sin(d) * ((1 + np.exp(t/2)*g2)**2 + np.exp(4*r) * (1 - np.exp(t/2)*g2)**2)))
     return res

@@ -98,18 +98,17 @@ def opt_fidelity(T, eps, eta, alpha):
 
 
 def opt_fidelity_r(V, T, eps, eta, alpha):
-    return fidelity(V, T, eps, 1/eta, eta, alpha)
-#    F = lambda g : 1 - fidelity(V, T, eps, eta, g, alpha)
-#    initial_guess = 1
-#    cons=({'type': 'ineq',
-#       'fun': lambda x: x})
-#    res = op.minimize(F, initial_guess, constraints=cons)
-##    res = op.minimize(F, initial_guess)
-#    if not res.success:
-#        print(res)
-#    # if not res['success']:
-#        # raise AssertionError('Failure in optimization')
-#    return fidelity(V, T, eps, eta, res['x'], alpha)
+#    return fidelity(V, T, eps, 1/eta, eta, alpha)
+    F = lambda g : 1 - fidelity(V, T, eps, g, eta, alpha)
+    initial_guess = 1
+    cons=({'type': 'ineq',
+       'fun': lambda x: x})
+    res = op.minimize(F, initial_guess, constraints=cons)
+#    res = op.minimize(F, initial_guess)
+    print(res)
+    # if not res['success']:
+        # raise AssertionError('Failure in optimization')
+    return fidelity(V, T, eps, res['x'], eta, alpha)
 
 
 

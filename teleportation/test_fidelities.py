@@ -51,10 +51,10 @@ if True:
 
         for iV in V:
            iV = np.cosh(2*iV)
-#           f_tmsv_i += [tmsv.opt_fidelity_r(iV, iT, eps, eta, alpha)]
-#           f_sb_i += [sb.opt_fidelity_r(iV, iT, eps, np.sqrt(eta), alpha)]
-           f_tmsv_i += [tmsv.opt_avg_fidelity_r(iV, iT, eps, eta, alpha)]
-           f_sb_i += [sb.opt_avg_fidelity_r(iV, iT, eps, np.sqrt(eta), alpha)]
+           f_tmsv_i += [tmsv.opt_fidelity_r(iV, iT, eps, eta, alpha)]
+           f_sb_i += [sb.opt_fidelity_r(iV, iT, eps, np.sqrt(eta), alpha)]
+#           f_tmsv_i += [tmsv.opt_avg_fidelity_r(iV, iT, eps, eta, alpha)]
+#           f_sb_i += [sb.opt_avg_fidelity_r(iV, iT, eps, np.sqrt(eta), alpha)]
 #
 #           f_tmsv_i += [tmsv.opt_avg_fidelity_r(iV, 1, eps, iT, alpha)]
 #           f_sb_i += [sb.opt_avg_fidelity_r(iV, 1, eps, iT, alpha)]

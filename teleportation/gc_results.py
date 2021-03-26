@@ -147,7 +147,7 @@ ax.grid()
 ax.legend()
 #ax.set_xscale('log')
 ### To MATLAB
-data = [T, f_tmsv, f_qs_t]
-#scipy.io.savemat('matlab/fixed_py.mat', {'data':data})
+data = [T, f_tmsv, f_qs_t, f_sb]
+scipy.io.savemat('figs_noG/fixed_py.mat', {'data':data})
 
 plt.show()
