@@ -3,7 +3,7 @@ clc;clear
 OptOption = optimoptions(@fmincon, 'FunctionTolerance', 1e-30,'StepTolerance', 1e-20, 'Display','off');
 
 % 'algorithm','sqp'
-e = 0.005;
+e = 0.05;
 
 
 tnum = 15;
@@ -42,8 +42,8 @@ rini = .5;
 
 % sigma = [2, 5, 10, 20]
 sig = 20;
-% eta = sqrt(10^(-1/10));
-eta = 0.7;
+eta = sqrt(10^(-1/10));
+% eta = 0.7;
 
 parfor i = 1:tnum
 %     t = 10^(-tdB(i)/10);
@@ -87,5 +87,5 @@ F_as = -F_as;
 
 results = F_as;
 
-save('results_as_sig20_eta=0.7.mat', 'results');
+% save('results_as_sig20_eta=0.7.mat', 'results');
 

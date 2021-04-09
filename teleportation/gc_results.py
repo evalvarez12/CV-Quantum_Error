@@ -89,11 +89,11 @@ ax = fig.add_subplot(111)
 T = np.linspace(0.01, 0.99, 15)
 # T = [0.74, 0.81, 0.9, 1]
 #T = np.logspace(-3, 0, 15)
-eps = 0.005
+eps = 0.1
 eta = np.sqrt(10**(-1/10))
 sigma = [2, 5, 10, 20]
 # eta = 1
-eta = 0.7
+#eta = 0.7
 
 f_tmsv = []
 f_qs_t = []
@@ -149,6 +149,6 @@ ax.legend()
 #ax.set_xscale('log')
 ### To MATLAB
 data = [T, f_tmsv, f_qs_t, f_sb]
-scipy.io.savemat('figs_noG/fixed_py_eta0.7.mat', {'data':data})
+#scipy.io.savemat('figs_noG/fixed_py_eta0.7.mat', {'data':data})
 
 plt.show()

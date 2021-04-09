@@ -37,14 +37,16 @@ if True:
     R = np.array([0, 0.05, 0.1, 0.15])
 #    T = (1 - R)
     T = [1, 0.9, 0.8, 0.7]
-    eps = 0.00
+    eps = 0.005
     eta = np.sqrt(10**(-1/10))
-    alpha = 15
+    alpha = 10
     # eta = 1
     f_tmsv = []
     f_sb = []
 
     eta = 0.9
+
+    T = [10, 15, 20, 25]
 
     g = 1
     for iT in T:
@@ -53,10 +55,10 @@ if True:
 
         for iV in V:
            iV = np.cosh(2*iV)
-           f_tmsv_i += [tmsv.opt_fidelity_r(iV, iT, eps, eta, alpha)]
-           f_sb_i += [sb.opt_fidelity_r(iV, iT, eps, eta, alpha)]
+#           f_tmsv_i += [tmsv.opt_fidelity_r(iV, iT, eps, eta, alpha)]
+#           f_sb_i += [sb.opt_fidelity_r(iV, iT, eps, eta, alpha)]
 #           f_tmsv_i += [tmsv.opt_avg_fidelity_r(iV, iT, eps, eta, alpha)]
-#           f_sb_i += [sb.opt_avg_fidelity_r(iV, iT, eps, np.sqrt(eta), alpha)]
+#           f_sb_i += [sb.opt_avg_fidelity_r(iV, iT, eps, eta, alpha)]
 #
 #           f_tmsv_i += [tmsv.opt_avg_fidelity_r(iV, 1, eps, iT, alpha)]
 #           f_sb_i += [sb.opt_avg_fidelity_r(iV, 1, eps, np.sqrt(iT), alpha)]
@@ -64,6 +66,8 @@ if True:
 #           f_tmsv_i += [tmsv.opt_fidelity_r(iV, 1, eps, iT, alpha)]
 #           f_sb_i += [sb.opt_fidelity_r(iV, 1, eps, np.sqrt(iT), alpha)]
 
+           f_tmsv_i += [tmsv.opt_fidelity_r(iV, 0.9, eps, eta, iT)]
+           f_sb_i += [sb.opt_fidelity_r(iV, 0.9, eps, eta, iT)]
 
         print('-----> T', iT)
         print(np.max(f_tmsv_i), np.max(f_sb_i))
