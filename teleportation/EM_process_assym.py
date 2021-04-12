@@ -119,6 +119,8 @@ for z in zs:
     scint_up = np.average(T_up**2)/(np.average(T_up)**2) - 1 + 0.007
     eps_eff_up = np.var(np.sqrt(T_up))/T_eff_up + np.average(T_up)/T_eff_up * scint_up
 
+    print(T_eff_down)
+
     # Convert to dB
     T_eff_up = -10 * np.log10(T_eff_up)
     T_eff_down = -10 * np.log10(T_eff_down)
