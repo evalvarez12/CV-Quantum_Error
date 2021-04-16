@@ -20,34 +20,55 @@ figure;
 hold all;
 
 Ls = linspace(50, 150, 20);
-plot(Ls, tmsv_fiber, 'ko-', 'DisplayName', 'TMSV');
-plot(Ls, as_fiber, 'o-', 'DisplayName', 'PA-PS');
-
 
 class = 0.5*ones(length(Ls));
 plot(Ls, class, 'r-', 'LineWidth', 2, 'HandleVisibility','off');
 
+plot(Ls, tmsv_fiber, 'ko-', 'DisplayName', 'TMSV');
+plot(Ls, as_fiber, 'o-', 'DisplayName', 'PA-PS');
+
+
+
+
 legend();
 ylabel('$\bar{\mathcal{F}}$', 'Interpreter', 'latex');
-xlabel('$L$', 'Interpreter', 'latex');
+xlabel('$L$ [km]', 'Interpreter', 'latex');
 
 savefigures('fiber');
 
 % Satellite
 figure;
 hold all;
+set(gca, 'xscale', 'log')
 
-zs = [0 5 10 15 20 25 30 35 40 45 50 55 60];
+zs = deg2rad([0 5 10 15 20 25 30 35 40 45 50 55 60]);
 
-plot(zs, tmsv_sat, 'ko-', 'DisplayName', 'TMSV');
-plot(zs, as_sat, 'o-', 'DisplayName', 'PA-PS');
 
-class = 0.5*ones(length(zs));
-plot(zs, class, 'r-', 'LineWidth', 2, 'HandleVisibility','off');
+R = 6371000;
+H = 500;
+ds = sqrt((R*cos(zs)).^2 + H^2 + 2*R*H) - R * cos(zs);
+
+
+dmaxfit = 1250;
+class = 0.5*ones(200);
+plot(linspace(500, dmaxfit, 200), class, 'r-', 'LineWidth', 2, 'HandleVisibility','off');
+
+plot(ds, tmsv_sat, 'ko-', 'DisplayName', 'TMSV');
+plot(ds, as_sat, 'o-', 'DisplayName', 'PA-PS');
+
+
+coeffs = polyfit(ds, as_sat, 4);
+% Get fitted values
+fittedX = linspace(min(ds), dmaxfit, 200);
+fittedY = polyval(coeffs, fittedX);
+% Plot the fitted line
+
+plot(fittedX, fittedY, 'b--', 'LineWidth', 0.5, 'DisplayName', 'PolyFit');
+
+
 
 legend();
 ylabel('$\bar{\mathcal{F}}$', 'Interpreter', 'latex');
-xlabel('$\zeta$', 'Interpreter', 'latex');
-
+xlabel('$L$ [km]', 'Interpreter', 'latex');
 savefigures('sat');
 
