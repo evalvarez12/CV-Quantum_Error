@@ -77,7 +77,7 @@ scint_up_dic = {}
 scint_down_dic = {}
 
 colors = {'uplink':'b', 'downlink':'g'}
-zs = [0, 5, 10, 15, 20 , 25, 30, 35, 40, 45, 50, 55, 60]
+zs = [0, 5, 10, 15, 20 , 25, 30, 35, 40, 45, 50, 55, 60, 65, 70]
 ru = 0.15
 rd = 0.5
 
@@ -100,6 +100,9 @@ for z in zs:
     tag = "_z=" + str(z) + "_1024_10000"
     data_file = "../../Laser_propagation/data/TELE_assym_DOWN_I_r=" + str(rd) + tag
     downlink_data = scipy.io.loadmat(data_file)['res'].transpose()
+
+    if z > 60:
+        tag = "_z=" + str(60) + "_1024_10000"
 
     data_file = "../../Laser_propagation/data/TELE_assym_UP_I_r=" + str(ru) + tag
 #    data_file = "../../Laser_propagation/data/TELE__L0inf_UP_I_r=" + str(r) + tag
