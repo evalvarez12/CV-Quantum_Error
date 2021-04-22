@@ -19,7 +19,8 @@ as = data_as.results;
 
 
 ts = linspace(0.0001, 1, 30);
-es = logspace(-2.2, -0.9, 30);
+% es = logspace(-2.2, -0.9, 30);
+es = logspace(-2.9, -0.9, 30);
 
 
 
@@ -95,10 +96,10 @@ txt_fib22 = ('f22');
 txt_fib23 = ('f23');
 txt_fib24 = ('f24');
 
-text(0.008, .158, txt_fib11);
-text(0.008, .0631, txt_fib12);
-text(0.026, .158, txt_fib13);
-text(0.026, .0631, txt_fib14);
+text(0.0015, .158, txt_fib11);
+text(0.0015, .0631, txt_fib12);
+text(0.0086, .158, txt_fib13);
+text(0.0086, .0631, txt_fib14);
 
 text(0.01, .0251, txt_fib21);
 text(0.01, .004, txt_fib22);
