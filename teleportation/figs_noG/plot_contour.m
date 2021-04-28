@@ -106,8 +106,8 @@ text(0.01, .004, txt_fib22);
 text(0.028, .0251, txt_fib23);
 text(0.028, .004, txt_fib24);
 
-text(0.0135, .063, txt_sat1);
-text(0.0135, .01, txt_sat2);
-text(0.0144, .063, txt_sat3);
-text(0.0144, .01, txt_sat4);
+text(0.014, .063, txt_sat1);
+text(0.014, .01, txt_sat2);
+text(0.015, .063, txt_sat3);
+text(0.015, .01, txt_sat4);
 
