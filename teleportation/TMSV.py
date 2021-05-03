@@ -105,7 +105,7 @@ def opt_fidelity_r(V, T, eps, eta, alpha):
        'fun': lambda x: x})
     res = op.minimize(F, initial_guess, constraints=cons)
 #    res = op.minimize(F, initial_guess)
-    print(res)
+#    print(res)
     # if not res['success']:
         # raise AssertionError('Failure in optimization')
     return fidelity(V, T, eps, res['x'], eta, alpha)
@@ -122,7 +122,7 @@ def opt_avg_fidelity_g(T, eps, eta, g, sigma):
     # print(res)
     # if not res['success']:
         # raise AssertionError('Failure in optimization')
-    print('opt V:', np.round(res['x'],3))
+#    print('opt V:', np.round(res['x'],3))
     return fidelity_alphabet(res['x'], T, eps, eta, g, sigma)
 
 
@@ -155,6 +155,20 @@ def opt_avg_fidelity_vareps(T, eps, eta, sigma):
     return fidelity_alphabet_pars(res['x'], T, eps, eta, sigma)
 
 
+def opt_avg_fidelity_vareps_getoptpars(T, eps, eta, sigma):
+    F = lambda P : 1 - fidelity_alphabet_pars_vareps(P, T, eps, eta, sigma)
+    initial_guess = [1, 1]
+    cons=({'type': 'ineq',
+       'fun': lambda x: x})
+    # res = op.minimize(F, initial_guess, constraints=cons)
+    res = op.minimize(F, initial_guess)
+    # print(res)
+    # if not res['success']:
+        # raise AssertionError('Failure in optimization')
+#    print('opt V:', np.round(res['x'],3))
+#    return fidelity_alphabet_pars(res['x'], T, eps, eta, sigma)
+    return res['x']
+
 def fidelity_alphabet_pars_vareps(pars, T, eps, eta, sigma):
     V, g = pars
     return fidelity_alphabet(V, T, V*eps, eta, g, sigma)
@@ -170,8 +184,8 @@ def opt_avg_fidelity(T, eps, eta, sigma):
 
 #    res = op.minimize(F, initial_guess, constraints=cons)
     res = op.minimize(F, initial_guess)
-    print('TMSV')
-    print(res)
+#    print('TMSV')
+#    print(res)
     return fidelity_alphabet_pars(res['x'], T, eps, eta, sigma)
 
 
@@ -181,8 +195,8 @@ def opt_avg_fidelity_r(V, T, eps, eta, sigma):
 
 #    res = op.minimize(F, initial_guess, constraints=cons)
     res = op.minimize(F, initial_guess)
-    print('TMSV')
-    print(res)
+#    print('TMSV')
+#    print(res)
     return fidelity_alphabet(V, T, eps, eta, res['x'], sigma)
     # return fidelity_alphabet(V, T, eps, eta, 1/eta, sigma)
 

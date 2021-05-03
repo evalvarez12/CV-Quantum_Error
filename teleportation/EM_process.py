@@ -397,7 +397,7 @@ for z in zs:
     T_eff_down = np.average(np.sqrt(T_down))**2
     eps_eff_down = np.var(np.sqrt(T_down))/T_eff_down + np.average(T_down)/T_eff_down * scint_down_dic[z]
 
-#    print('T_f DOWN',z,T_eff_down)
+    print('T_f DOWN',z,T_eff_down)
 #    print('e_f DOWN',z,eps_eff_down)
     T_eff_up = np.average(np.sqrt(T_up))**2
     eps_eff_up = np.var(np.sqrt(T_up))/T_eff_up + np.average(T_up)/T_eff_up * scint_up_dic[z]

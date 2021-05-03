@@ -29,8 +29,18 @@ def opt_fidelity_alphabet(T, eps, sigma):
        'fun': lambda x: x})
     res = op.minimize(F, initial_guess, constraints=cons)
 #    res = op.minimize(F, initial_guess)
-    print('res:', res)
+#    print('res:', res)
     # if not res['success']:
         # raise AssertionError('Failure in optimization')
 #    print('opt V:', np.round(res['x'],3))
     return fidelity_alphabet_amp(T, eps, sigma, res['x'])[0]
+
+
+def opt_fidelity_alphabet_getparsopt(T, eps, sigma):
+    F = lambda g : 1 - fidelity_alphabet_amp(T, eps, sigma, g)
+    initial_guess = 1
+    cons=({'type': 'ineq',
+       'fun': lambda x: x})
+    res = op.minimize(F, initial_guess, constraints=cons)
+#    return fidelity_alphabet_amp(T, eps, sigma, res['x'])[0]
+    return res['x']
