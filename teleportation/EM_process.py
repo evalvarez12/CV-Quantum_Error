@@ -56,7 +56,7 @@ for z in zs:
    uplink_data = scipy.io.loadmat(data_file)['res'].transpose()
 
    T_down = downlink_data
-   T_up = uplink_data 
+   T_up = uplink_data
 
    downlink_avg += [np.average(T_down)]
    downlink_std += [np.std(T_down)]
@@ -82,7 +82,7 @@ for z in zs:
 
 
 #   print(np.round(np.average(T_down - 0.011 * np.cos(np.deg2rad(z))),3))
-   print(np.round(np.average(T_up), 3))
+   # print(np.round(np.average(T_up), 3))
 #   print('z =', z, 'UP T_Avg =', np.round(np.average(T_up),3))
 #   print('z =', z, 'UP T_Avg =', np.average(T_up))
 
@@ -228,13 +228,13 @@ for z in zs:
 
     downlink_avg += [np.average(T_down_db)]
     downlink_std += [np.std(T_down_db)]
-    
+
     downlink_eff += [T_eff_down]
     downlink_eff_noise += [eps_eff_down]
 
     uplink_avg += [np.average(T_up_db)]
     uplink_std += [np.std(T_up_db)]
-    
+
     uplink_eff += [T_eff_up]
     uplink_eff_noise += [eps_eff_up]
 
@@ -445,6 +445,9 @@ for z in zs:
 #   ax.errorbar(zs, f_up1_avg, f_up1_std, label=r'Uplink $\sigma= $' + str(np.round(np.abs(alpha[0]),2)), linestyle='--', marker='o', capsize=4, markersize=4, linewidth=1.5)
 #   ax.errorbar(zs, f_up2_avg, f_up2_std, label=r'Uplink $\sigma= $' + str(np.round(np.abs(alpha[1]),2)), linestyle='--', marker='o', capsize=4, markersize=4, linewidth=1.5)
 #   ax.errorbar(zs, f_up3_avg, f_up3_std, label=r'Uplink $\sigma= $' + str(np.round(np.abs(alpha[2]),2)), linestyle='--', marker='o', capsize=4, markersize=4, linewidth=1.5)
+
+print(f_tmsv_avg4)
+
 
 ax.plot(zs, f_tmsv_avg1, label=r'Upload $\sigma= $' + str(np.round(np.abs(sigmaT[0]),2)), linestyle='--', marker='o', markersize=4, linewidth=1.5)
 ax.plot(zs, f_tmsv_avg2, label=r'Upload $\sigma= $' + str(np.round(np.abs(sigmaT[1]),2)), linestyle='--', marker='o', markersize=4, linewidth=1.5)
