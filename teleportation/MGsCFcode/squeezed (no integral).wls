@@ -2,8 +2,8 @@
 (* ::Package:: *)
 
 Clear["Global`*"];
-Import["\\Users\\z5239621\\Documents\\Repos\\CV-Quantum_Error_Correction\\teleportation\\MGsCFcode\\ToMatlab.m", "Package"];
-(*Import["ToMatlab.m", (*"Package"*)];*)
+(*Import["\\Users\\z5239621\\Documents\\Repos\\CV-Quantum_Error_Correction\\teleportation\\MGsCFcode\\ToMatlab.m", "Package"];*)
+Import["ToMatlab.m", "Package"];
 
 t=.;
 g=.;
@@ -86,8 +86,8 @@ ToMatlab[FcsqPolar[r,theta]]
 
 
 Clear["Global`*"];
-Import["\\Users\\z5239621\\Documents\\Repos\\CV-Quantum_Error_Correction\\teleportation\\MGsCFcode\\ToMatlab.m", "Package"];
-(*Import["ToMatlab.m", "Package"];*)
+(*Import["\\Users\\z5239621\\Documents\\Repos\\CV-Quantum_Error_Correction\\teleportation\\MGsCFcode\\ToMatlab.m", "Package"];*)
+Import["ToMatlab.m", "Package"];
 
 g=.;
 eta=.;
