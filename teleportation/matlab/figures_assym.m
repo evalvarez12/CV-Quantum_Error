@@ -22,6 +22,7 @@ plot(zs, d_t, 'o-', 'DisplayName', 'Teleportation');
 plot(zs, u_t, 'o--', 'DisplayName', 'Direct');
 ylabel('$T_f$ [dB]', 'Interpreter', 'latex')
 ylim([11 27]);
+xlim([0 60]);
 
 
 yyaxis right
@@ -42,7 +43,7 @@ xlabel('$\zeta$ [deg]', 'Interpreter', 'latex')
 % grid on;
  set(gca,'Box','on');
 
-savefigures('channel_assym');
+savefigures('channel_assym_default_ratio');
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -81,6 +82,7 @@ plot(zs, dir2, 'v--', 'DisplayName', 'Direct $\sigma = 4$', 'color', 	[1, 0, 0])
 plot(zs, classical, 'r--', 'HandleVisibility','off');
 
 ylim([0.35 0.72]);
+xlim([0 60]);
 
 ylabel('$\bar{\mathcal{F}}$', 'Interpreter', 'latex')
 xlabel('$\zeta$ [deg]', 'Interpreter', 'latex')
@@ -93,7 +95,7 @@ text(0.8 , 0.48, txt1, 'Color', 'r');
  set(gca,'Box','on');
 legend('NumColumns', 2);
  
-savefigures('fidelities_assym');
+savefigures('fidelities_assym_default_ratio');
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%% Fidelities optimized direct
@@ -131,6 +133,7 @@ plot(zs, dir3, 'v--', 'DisplayName', 'Direct $\sigma = 10$', 'color', 	[0, 0.5, 
 plot(zs, classical, 'r--', 'HandleVisibility','off');
 
 ylim([0.07 0.65]);
+xlim([0 60]);
 
 ylabel('$\bar{\mathcal{F}}$', 'Interpreter', 'latex')
 xlabel('$\zeta$ [deg]', 'Interpreter', 'latex')
@@ -143,4 +146,4 @@ txt1 = ('classical limit');
  set(gca,'Box','on');
 legend('NumColumns', 2);
  
-savefigures('fidelities_assym_opt_direct');
+% savefigures('fidelities_assym_opt_direct');

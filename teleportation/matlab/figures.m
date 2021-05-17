@@ -28,7 +28,7 @@ xlabel('$T$', 'Interpreter', 'latex');
 
 txt1 = ('Downlink');
 txt2 = ('Uplink');
-txt3 = ('$L_0=$ Coulman-Vernin');
+txt3 = ('$L_0=$ Eq.(16)');
 txt4 = ('$l_0= \delta L_0$');
 text(0.08 , 930, txt1);
 text(0.04 , 550, txt2);
@@ -37,16 +37,16 @@ text(0.041 , 805, txt4);
 
 pbaspect([1 0.618 1])
 
-axes('Position',[.49 .55 .33 .28])
+axes('Position',[.52 .45 .32 .32])
 box on
 histogram(data_down, 'Normalization', 'pdf', 'FaceColor', 'blue', 'FaceAlpha', 0.6, 'NumBins', 35);
 
 
-axes('Position',[.17 .21 .33 .33])
+axes('Position',[.17 .24 .32 .32])
 box on
 histogram(data_up, 'Normalization', 'pdf', 'FaceColor', 'red', 'FaceAlpha', 0.6);
 
-savefigures('hist1');
+savefigures('hist1_default_ratio');
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%% Channel properties
@@ -82,12 +82,12 @@ text(48 , 0.015, txt1);
 txt2 = ('$7.0 \times 10^{-3}$');
 text(2 , 0.015, txt2);
 
-legend('Position', [.16 .39 .2 .2]);
+legend('Position', [.16 .39 .2 .2],'Interpreter','latex');
 xlabel('$\zeta$ [deg]', 'Interpreter', 'latex')
 % grid on;
  set(gca,'Box','on');
 
-savefigures('channel');
+savefigures('channel_default_ratio');
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%% Fixed loss
@@ -131,7 +131,7 @@ xlim([0 13]);
 
 ylabel('$\bar{\mathcal{F}}$', 'Interpreter', 'latex')
 xlabel('Fixed loss [dB]', 'Interpreter', 'latex')
-legend;
+legend('Interpreter','latex');
 
 txt1 = ('classical limit');
 text(0.1 , 0.52, txt1, 'Color', 'r');
@@ -139,7 +139,7 @@ text(0.1 , 0.52, txt1, 'Color', 'r');
 % grid on;
  set(gca,'Box','on');
 
-savefigures('fixed');
+savefigures('fixed_default_ratio');
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%% Fidelities
@@ -187,9 +187,9 @@ text(0.8 , 0.48, txt1, 'Color', 'r');
 
 % grid on;
  set(gca,'Box','on');
-legend('NumColumns', 2);
+legend('NumColumns', 2,'Interpreter','latex');
  
-savefigures('fidelities');
+savefigures('fidelities_default_ratio');
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -240,6 +240,6 @@ txt1 = ('classical limit');
 
 % grid on;
  set(gca,'Box','on');
-legend('NumColumns', 2);
+legend('NumColumns', 2,'Interpreter','latex');
  
-savefigures('fidelities_opt_direct');
+% savefigures('fidelities_opt_direct');

@@ -2,8 +2,8 @@
 (* ::Package:: *)
 
 Clear["Global`*"];
-(*Import["\\Users\\z5239621\\Documents\\Repos\\CV-Quantum_Error_Correction\\teleportation\\MGsCFcode\\ToMatlab.m", "Package"];*)
-Import["ToMatlab.m", "Package"];
+Import["\\Users\\z5239621\\Documents\\Repos\\CV-Quantum_Error_Correction\\teleportation\\MGsCFcode\\ToMatlab.m", "Package"];
+(*Import["ToMatlab.m", "Package"];*)
 
 t=.;
 g=.;
@@ -86,8 +86,8 @@ ToMatlab[FcsqPolar[r,theta]]
 
 
 Clear["Global`*"];
-(*Import["\\Users\\z5239621\\Documents\\Repos\\CV-Quantum_Error_Correction\\teleportation\\MGsCFcode\\ToMatlab.m", "Package"];*)
-Import["ToMatlab.m", "Package"];
+Import["\\Users\\z5239621\\Documents\\Repos\\CV-Quantum_Error_Correction\\teleportation\\MGsCFcode\\ToMatlab.m", "Package"];
+(*Import["ToMatlab.m", "Package"];*)
 
 g=.;
 eta=.;
@@ -142,6 +142,9 @@ Fassq[a_,ac_]=Exp[-g^2*(1-eta^2)*((a*ac)/2)]*Fas[-a,-ac,-g eta ac,-g eta a]*Fsq[
 FassqPolar[r_,theta_]=Simplify[r*Fassq[r*Exp[theta*I],r*Exp[-theta*I]]];
 Print["PA-PS"]
 ToMatlab[FassqPolar[r,theta]]
+
+
+
 
 
 
