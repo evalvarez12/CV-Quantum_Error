@@ -35,14 +35,14 @@ text(0.04 , 550, txt2);
 text(0.04 , 860, txt3);
 text(0.041 , 805, txt4);
 
-pbaspect([1 0.618 1])
+% pbaspect([1 0.618 1])
 
-axes('Position',[.52 .45 .32 .32])
+axes('Position',[.53 .48 .32 .32])
 box on
 histogram(data_down, 'Normalization', 'pdf', 'FaceColor', 'blue', 'FaceAlpha', 0.6, 'NumBins', 35);
 
 
-axes('Position',[.17 .24 .32 .32])
+axes('Position',[.17 .20 .32 .32])
 box on
 histogram(data_up, 'Normalization', 'pdf', 'FaceColor', 'red', 'FaceAlpha', 0.6);
 
@@ -87,7 +87,7 @@ xlabel('$\zeta$ [deg]', 'Interpreter', 'latex')
 % grid on;
  set(gca,'Box','on');
 
-savefigures('channel_default_ratio');
+% savefigures('channel_default_ratio');
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%% Fixed loss
@@ -139,7 +139,7 @@ text(0.1 , 0.52, txt1, 'Color', 'r');
 % grid on;
  set(gca,'Box','on');
 
-savefigures('fixed_default_ratio');
+% savefigures('fixed_default_ratio');
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%% Fidelities
@@ -189,7 +189,7 @@ text(0.8 , 0.48, txt1, 'Color', 'r');
  set(gca,'Box','on');
 legend('NumColumns', 2,'Interpreter','latex');
  
-savefigures('fidelities_default_ratio');
+% savefigures('fidelities_default_ratio');
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
