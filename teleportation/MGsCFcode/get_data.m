@@ -49,7 +49,7 @@ rmin = 0;
 rini = .5;
 
 % sigma = [2, 5, 10, 20]
-sig = 1;
+sig = 0.575;
 eta = sqrt(10^(-1/10));
 % eta = 0.7;
 
@@ -59,7 +59,8 @@ parfor i = 1:tnum
     % Fixed
     t = ts(i);
     e = 0.05
-    
+
+
     % Fiber
 %     t = 10^(-tdB(i)/10);
 %     L = Ls(i);
@@ -100,11 +101,11 @@ end
 
 
 Fepr = -Fepr;
-% F_ps = -F_ps;
-% F_pa = -F_pa;
-% F_pc = -F_pc;
-% F_as = -F_as; 
-% F_sa = -F_sa;
+F_ps = -F_ps;
+F_pa = -F_pa;
+F_pc = -F_pc;
+F_as = -F_as; 
+F_sa = -F_sa;
 % 
 % Fepr
 % F_ps

@@ -16,27 +16,33 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-T = np.random.rand()
+#T = np.random.rand()
 # T = 1
-s = np.random.rand()
-eta = 1
-g = 1
+#s = np.random.rand()
+eta = np.sqrt(10**(-1/10))
+g = 1 / eta
 eps = 0
 V = np.random.rand()*5 + 1
 d = np.pi * np.random.rand()*2
 
-# T = 0.9
-s = 0.5
+T = 0.9
+s = 0.7
+print(T, s)
 
 # V=1.909335096180439
-print('TMSV', tmsv.fidelity(V, T, eps, g, eta, s))
+#print('TMSV', tmsv.fidelity(V, T, eps, g, eta, s)) 
+#print('SB', sb.fidelity(V, T, d, eps, eta, g, s))
+
 print('-----------------------------------------------------------')
 
-print(T, s)
 print('TMSV', tmsv.opt_fidelity(T, eps, eta, s))
 print('SB', sb.opt_fidelity(T, eps, eta, s))
 
 
+print('SB', sb.opt_fidelity_avg(T, eps, eta, s, .1))
+print('TMSV', tmsv.opt_fidelity_avg(T, eps, eta, s, .1))
+
+#print('TMSV ---', tmsv.fidelity(18.91863554, T, eps, g, eta, 0.7341))
 
 ############################# FIXED LOSS FIDELITIES PLOT
 # fig = plt.figure()
