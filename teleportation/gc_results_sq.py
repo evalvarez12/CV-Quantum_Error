@@ -21,26 +21,32 @@ import matplotlib.pyplot as plt
 #s = np.random.rand()
 eta = np.sqrt(10**(-1/10))
 g = 1 / eta
-eps = 0
+eps = 0.05
 V = np.random.rand()*5 + 1
 d = np.pi * np.random.rand()*2
 
-T = 0.9
-s = 0.7
-print(T, s)
+Ts = np.linspace(0.01, 0.99, 15)
+s = 0.575
+print(Ts, s)
+
+
+SB = []
 
 # V=1.909335096180439
-#print('TMSV', tmsv.fidelity(V, T, eps, g, eta, s)) 
-#print('SB', sb.fidelity(V, T, d, eps, eta, g, s))
+#print('TMSV', tmsv.fidelity(V, T, eps, g, eta, s))
+for T in Ts :
+    # print('SB', sb.fidelity(V, T, d, eps, eta, g, s))
+    SB += [sb.opt_fidelity(T, eps, eta, s)]
 
 print('-----------------------------------------------------------')
+print(SB)
+scipy.io.savemat('figs_noG/fixed_py_sq575.mat', {'data':SB})
 
-print('TMSV', tmsv.opt_fidelity(T, eps, eta, s))
-print('SB', sb.opt_fidelity(T, eps, eta, s))
+# print('TMSV', tmsv.opt_fidelity(T, eps, eta, s))
 
 
-print('SB', sb.opt_fidelity_avg(T, eps, eta, s, .1))
-print('TMSV', tmsv.opt_fidelity_avg(T, eps, eta, s, .1))
+# print('TMSV', tmsv.opt_fidelity_avg(T, eps, eta, s, .1))
+# print('SB', sb.opt_fidelity_avg(T, eps, eta, s, .1))
 
 #print('TMSV ---', tmsv.fidelity(18.91863554, T, eps, g, eta, 0.7341))
 
