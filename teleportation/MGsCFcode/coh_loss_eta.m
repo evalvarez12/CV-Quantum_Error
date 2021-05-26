@@ -1,4 +1,4 @@
-function [F] = coh_loss(T, l, t, e, operation, g, eta, sigma)
+function [F] = coh_loss_eta(T, l, t, e, operation, g, eta, sigma)
 warning('off')
 
 switch operation

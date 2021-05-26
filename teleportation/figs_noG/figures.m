@@ -87,19 +87,21 @@ as_m_sig20_eta = as_m_sig20_eta.results;
 
 figure;
 hold all;
+set(0,'defaultTextInterpreter','latex');
 
-sa_m_sig5(1) = 0.2875;
-ps_m_sig5(1) = 0.27456;
-ps_m_sig5(2) = 0.28067;
+% sa_m_sig5(1) = 0.2875;
+% ps_m_sig5(1) = 0.27456;
+% ps_m_sig5(2) = 0.28067;
+ps_m_sig5(1:6) = 0.4;
 
 plot(t, tmsv_py_sig5,'k-', 'LineWidth', 3, 'DisplayName', 'TMSV');
-plot(t, sb_py_sig5, 'o-', 'DisplayName', 'SB');
-plot(t, qs_py_sig5, 'o-', 'DisplayName', 'QS');
-plot(t, ps_m_sig5, 'o-', 'DisplayName', 'PS');
-plot(t, pa_m_sig5, 'o-', 'DisplayName', 'PA');
-plot(t, pc_m_sig5, 'o-', 'DisplayName', 'PC');
-plot(t, as_m_sig5, 'o-', 'DisplayName', 'PA-PS');
-plot(t, sa_m_sig5, 'o-', 'DisplayName', 'PS-PA');
+plot(t, sb_py_sig5, 'o-','LineWidth', 1.2, 'DisplayName', 'SB');
+plot(t, qs_py_sig5, 'o-','LineWidth', 1.2, 'DisplayName', 'QS');
+plot(t, ps_m_sig5, 'o-','LineWidth', 1.2, 'DisplayName', 'PS');
+plot(t, pa_m_sig5, 'o-','LineWidth', 1.2, 'DisplayName', 'PA');
+plot(t, pc_m_sig5, 'o-','LineWidth', 1.2, 'DisplayName', 'PC');
+plot(t, as_m_sig5, 'o-','LineWidth', 1.2, 'DisplayName', 'PA-PS');
+plot(t, sa_m_sig5, 'o-','LineWidth', 1.2, 'DisplayName', 'PS-PA');
 
 class = 0.5*ones(length(t));
 plot(t, class, 'r-', 'LineWidth', 2, 'HandleVisibility','off');
@@ -108,8 +110,10 @@ legend('Location', 'southeast');
 ylabel('$\bar{\mathcal{F}}$', 'Interpreter', 'latex');
 xlabel('$T$', 'Interpreter', 'latex');
 
-txt1 = ('\sigma = 5');
-text(0.015, .85, txt1);
+txt1 = ('$\sigma = 5$');
+text(0.05, .83, txt1);
+
+ylim([0.45 0.875])
 
 savefigures('fixed1')
 
@@ -119,18 +123,19 @@ set(0,'defaultTextInterpreter','latex');
 
 hold all;
 
-sa_m_sig10(1) = 0.2801;
-ps_m_sig10(1) = 0.270;
-ps_m_sig10(2) = 0.28067;
+% sa_m_sig10(1) = 0.2801;
+% ps_m_sig10(1) = 0.270;
+% ps_m_sig10(2) = 0.28067;
+ps_m_sig10(1:6) = 0.4;
 
 plot(t, tmsv_py_sig10,'k-', 'LineWidth', 3, 'DisplayName', 'TMSV');
-plot(t, sb_py_sig10, 'o-', 'DisplayName', 'SB');
-plot(t, qs_py_sig10, 'o-', 'DisplayName', 'QS');
-plot(t, ps_m_sig10, 'o-', 'DisplayName', 'PS');
-plot(t, pa_m_sig10, 'o-', 'DisplayName', 'PA');
-plot(t, pc_m_sig10, 'o-', 'DisplayName', 'PC');
-plot(t, as_m_sig10, 'o-', 'DisplayName', 'PA-PS');
-plot(t, sa_m_sig10, 'o-', 'DisplayName', 'PS-PA');
+plot(t, sb_py_sig10, 'o-','LineWidth', 1.2, 'DisplayName', 'SB');
+plot(t, qs_py_sig10, 'o-','LineWidth', 1.2, 'DisplayName', 'QS');
+plot(t, ps_m_sig10, 'o-','LineWidth', 1.2, 'DisplayName', 'PS');
+plot(t, pa_m_sig10, 'o-','LineWidth', 1.2, 'DisplayName', 'PA');
+plot(t, pc_m_sig10, 'o-','LineWidth', 1.2, 'DisplayName', 'PC');
+plot(t, as_m_sig10, 'o-','LineWidth', 1.2, 'DisplayName', 'PA-PS');
+plot(t, sa_m_sig10, 'o-','LineWidth', 1.2, 'DisplayName', 'PS-PA');
 
 
 class = 0.5*ones(length(t));
@@ -141,43 +146,11 @@ ylabel('$\bar{\mathcal{F}}$', 'Interpreter', 'latex');
 xlabel('$T$', 'Interpreter', 'latex');
 
 txt1 = ('$\sigma = 10$');
-text(0.015, .85, txt1);
+text(0.05, .83, txt1);
+
+ylim([0.45 0.875])
 
 savefigures('fixed2')
-
-figure;
-set(0,'defaultTextInterpreter','latex');
-
-hold all;
-
-sa_m_sig10(1) = 0.2801;
-ps_m_sig10(1) = 0.270;
-ps_m_sig10(2) = 0.28067;
-
-plot(t, tmsv_py_sig10,'k-', 'LineWidth', 3, 'DisplayName', 'TMSV');
-plot(t, sb_py_sig10, 'o-', 'DisplayName', 'SB');
-plot(t, qs_py_sig10, 'o-', 'DisplayName', 'QS');
-plot(t, ps_m_sig10, 'o-', 'DisplayName', 'PS');
-plot(t, pa_m_sig10, 'o-', 'DisplayName', 'PA');
-plot(t, pc_m_sig10, 'o-', 'DisplayName', 'PC');
-plot(t, as_m_sig10, 'o-', 'DisplayName', 'PA-PS');
-plot(t, sa_m_sig10, 'o-', 'DisplayName', 'PS-PA');
-
-
-class = 0.5*ones(length(t));
-plot(t, class, 'r-', 'LineWidth', 2, 'HandleVisibility','off');
-
-legend('Location', 'southeast');
-ylabel('$\bar{\mathcal{F}}$', 'Interpreter', 'latex');
-xlabel('$T$', 'Interpreter', 'latex');
-
-txt1 = ('$\bar{r}= 5$');
-text(0.015, .85, txt1);
-
-savefigures('fixed3')
-
-
-
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

@@ -30,6 +30,30 @@ def squeezed_bell_eq(r, d, t, g, T, s, nth):
     return res
 
 
+def squeezed_bell_eq_disp(r, d, t, g, T, a, s, nth):
+    G = Gamma(r, t, g, T, nth)
+    g2 = g * T
+    D1 = 1 + np.exp(4*r) + 2*np.exp(t/2)*(1-np.exp(4*r))*g2 + np.exp(t)*(1+np.exp(4*r))*g2**2
+    D2 = 1 - np.exp(4*r) + 2*np.exp(t/2)*(1+np.exp(4*r))*g2 + np.exp(t)*(1-np.exp(4*r))*g2**2
+    L1 = np.exp(-2*r - t)*D1 + 2*np.exp(2*s)*(1+g2**2) + 4*G
+    L2 = np.exp(-2*r - t)*D1 + 2*np.exp(-2*s)*(1+g2**2) + 4*G
+    w1 = (1-g2)**2*(2*np.imag(a))**2
+    w2 = (1-g2)**2*(2*np.real(a))**2
+    # pp = np.array([np.round(L1,3), np.round(L2, 3), np.round(G, 3), np.round(D1, 3), np.round(D2, 3)])
+    # if not np.isnan(pp).any():
+    #     print(pp)
+
+    si = np.sin(d)
+    co = np.cos(d)
+
+    E = np.exp(w1**2/L1 - w2**2/L2)
+    res = 4/np.sqrt(L1*L2)*E*(1 + np.exp(-2*r-t)*si*(D2*co-D1*si)*((1/L1)*(1 + 2*w1**2/L1) + (1/L2)*(1 + 2*w2**2/L2)) + \
+                    1/4*np.exp(-2*(2*r+t))*(D2*si)**2*((1/L1**2)*(3 + 12*w1**2/L1 + 4*w1**4/L1**2) + (1/L2**2)*(3 + 12*w2**2/L2 + 4*w2**4/L2**2) + \
+                    (2/(L1*L2))*(1 + 2*w1**2/L1 - 2*w2**2/L2 - 4*w1**2*w2**2/(L1*L2))))
+
+    return res
+
+
 def Gamma(r, t, g, T, nth):
     # NOTE: this fix of /2 to R
     R = (1 - T**2)/2
@@ -37,7 +61,7 @@ def Gamma(r, t, g, T, nth):
     return res
 
 def fidelity(V, T, d, eps, eta, g, s):
-    # g = 1/eta
+#    g = 1/eta
     tau = -np.log(T)
     r = np.arccosh(V)/2
     if T == 1:
@@ -45,15 +69,30 @@ def fidelity(V, T, d, eps, eta, g, s):
     else:
         nth = eps/((1-T)*2)
 
-    P = np.array([V, T, d, eps, eta, g, s])
-    P2 = np.array([r, d, tau, g, eta, s, nth])
+#    P = np.array([V, T, d, eps, eta, g, s])
+#    P2 = np.array([r, d, tau, g, eta, s, nth])
     # if not np.isnan(P).any():
         # print(P)
         # print(P2)
 
     return squeezed_bell_eq(r, d, tau, g, eta, s, nth)
 
+def fidelity_disp(V, T, d, eps, eta, g, a, s):
+#    g = 1/eta
+    tau = -np.log(T)
+    r = np.arccosh(V)/2
+    if T == 1:
+        nth = eps
+    else:
+        nth = eps/((1-T)*2)
 
+#    P = np.array([V, T, d, eps, eta, g, s])
+#    P2 = np.array([r, d, tau, g, eta, s, nth])
+    # if not np.isnan(P).any():
+        # print(P)
+        # print(P2)
+
+    return squeezed_bell_eq_disp(r, d, tau, g, eta, a, s, nth)
 
 
 def fidelity_pars(P, T, eps, eta, s):
@@ -63,11 +102,40 @@ def fidelity_pars(P, T, eps, eta, s):
 #    g = 1/eta
     return fidelity(V, T, d, eps, eta, g, s)
 
-
+def fidelity_disp_pars(P, T, eps, eta, a, s):
+    V, d, g = P
+    # if not np.isnan(P).any():
+        # print(P)
+#    g = 1/eta
+    return fidelity_disp(V, T, d, eps, eta, g, a, s)
 
 
 def opt_fidelity(T, eps, eta, s):
     F = lambda P : 1 - fidelity_pars(P, T, eps, eta, s)
+    initial_guess = [1.5, np.pi/3, 1.1]
+    cons=({'type': 'ineq',
+           'fun': lambda x: x[0] - 1.001},
+          {'type': 'ineq',
+           'fun': lambda x: 1000 - x[0]},
+          {'type': 'ineq',
+           'fun': lambda x: x[1]},
+          {'type': 'ineq',
+           'fun': lambda x: 2*np.pi - x[1]},
+          {'type': 'ineq',
+           'fun': lambda x: x[2] - eta},
+          {'type': 'ineq',
+           'fun': lambda x: 10- x[2]})
+
+    res = op.minimize(F, initial_guess, constraints=cons)
+#    res = op.minimize(F, initial_guess)
+#    print(res)
+#    print('opt V:', np.round(res['x'],3))
+    return fidelity_pars(res['x'], T, eps, eta, s)
+
+
+
+def opt_fidelity_disp(T, eps, eta, a, s):
+    F = lambda P : 1 - fidelity_disp_pars(P, T, eps, eta, a, s)
     initial_guess = [1.5, np.pi/3, 1.1]
     cons=({'type': 'ineq',
            'fun': lambda x: x[0] - 1.001},
@@ -86,7 +154,7 @@ def opt_fidelity(T, eps, eta, s):
 #    res = op.minimize(F, initial_guess)
     # print(res)
 #    print('opt V:', np.round(res['x'],3))
-    return fidelity_pars(res['x'], T, eps, eta, s)
+    return fidelity_disp_pars(res['x'], T, eps, eta, a, s)
 
 
 def opt_fidelity_params(T, eps, eta, s):

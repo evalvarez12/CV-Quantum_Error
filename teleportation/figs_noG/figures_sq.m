@@ -34,6 +34,7 @@ sa_m = data_m(:,6);
 
 figure;
 hold all;
+set(0,'defaultTextInterpreter','latex');
 
 % sa_m_sig5(1) = 0.2875;
 % ps_m_sig5(1) = 0.27456;
@@ -48,14 +49,14 @@ plot(t, pc_m, 'o-', 'DisplayName', 'PC');
 plot(t, as_m, 'o-', 'DisplayName', 'PA-PS');
 plot(t, sa_m, 'o-', 'DisplayName', 'PS-PA');
 
-class = 0.5*ones(length(t));
+class = 0.815*ones(length(t));
 plot(t, class, 'r-', 'LineWidth', 2, 'HandleVisibility','off');
 
 legend('Location', 'southeast');
 ylabel('$\bar{\mathcal{F}}$', 'Interpreter', 'latex');
 xlabel('$T$', 'Interpreter', 'latex');
 
-txt1 = ('\bar{s} = 5\mathrm{dB}');
+txt1 = ('$\bar{s} = 5\mathrm{dB}$');
 text(0.015, .85, txt1);
 
 % savefigures('fixed1')

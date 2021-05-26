@@ -20,27 +20,34 @@ import matplotlib.pyplot as plt
 # T = 1
 #s = np.random.rand()
 eta = np.sqrt(10**(-1/10))
+#eta = 1
 g = 1 / eta
-eps = 0.05
+eps = 0.00
 V = np.random.rand()*5 + 1
 d = np.pi * np.random.rand()*2
 
-Ts = np.linspace(0.01, 0.99, 15)
+Ts = np.linspace(0.5, 0.99, 15)
 s = 0.575
 print(Ts, s)
-
+a = .5 + .5j 
 
 SB = []
+TMSV = []
 
 # V=1.909335096180439
 #print('TMSV', tmsv.fidelity(V, T, eps, g, eta, s))
 for T in Ts :
-    # print('SB', sb.fidelity(V, T, d, eps, eta, g, s))
+#     print('SB', sb.fidelity_disp(V, T, d, eps, eta, g, a, s))
+#     print('SB opt', sb.opt_fidelity_disp(T, eps, eta, a, s))
+#     print('SB normal opt', sb.opt_fidelity(T, eps, eta, s))
+
     SB += [sb.opt_fidelity(T, eps, eta, s)]
+    TMSV += [tmsv.opt_fidelity(T, eps, eta, s)]
 
 print('-----------------------------------------------------------')
+print(TMSV)
 print(SB)
-scipy.io.savemat('figs_noG/fixed_py_sq575.mat', {'data':SB})
+#scipy.io.savemat('figs_noG/fixed_py_sq575.mat', {'data':SB})
 
 # print('TMSV', tmsv.opt_fidelity(T, eps, eta, s))
 

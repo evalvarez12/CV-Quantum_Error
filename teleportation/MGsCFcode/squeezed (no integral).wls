@@ -20,7 +20,7 @@ Fepr[a_,ac_,b_,bc_]=Exp[-((1+l^2)/(2(1-l^2)))(a*ac+b*bc)+l/(1-l^2)*(a*b+ac*bc)];
 (*Feprt[a_,ac_,b_,bc_]=Exp[-(1+e)(1-t)(a*ac)/2]Fepr[a*Sqrt[t],ac*Sqrt[t],b,bc];*)
 Feprt[a_,ac_,b_,bc_]=Exp[-(1+e)(1-t)(b*bc)/2]Fepr[a,ac,b*Sqrt[t],bc*Sqrt[t]];
 
-Fsq[a_,ac_]=Exp[-((a*ac)*(1 + 2*Sinh[ra]^2) + (Sinh[2*ra]/2)*(a*a + ac*ac))/2];
+Fsq[a_,ac_]=Exp[-Norm[a*Cosh[ra] + ac*Sinh[ra]]^2/2];
 Feprsq[a_,ac_]=Exp[-g^2*(1-eta^2)*((a*ac)/2)]*Feprt[-a,-ac,-g eta ac,-g eta a]*Fsq[-g eta a,-g eta ac]*Fsq[a,ac]/Pi;
 FeprsqPolar[r_,theta_]=Simplify[r*Feprsq[r*Exp[theta*I],r*Exp[-theta*I]]];
 Print["TMSV"]

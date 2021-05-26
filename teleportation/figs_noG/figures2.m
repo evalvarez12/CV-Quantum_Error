@@ -24,8 +24,8 @@ Ls = linspace(50, 150, 20);
 class = 0.5*ones(length(Ls));
 plot(Ls, class, 'r-', 'LineWidth', 2, 'HandleVisibility','off');
 
-plot(Ls, tmsv_fiber, 'ko-', 'DisplayName', 'TMSV');
-plot(Ls, as_fiber, 'o-', 'DisplayName', 'PA-PS');
+plot(Ls, tmsv_fiber, 'ko-','LineWidth', 1.2, 'DisplayName', 'TMSV');
+plot(Ls, as_fiber, 'o-','LineWidth', 1.2, 'DisplayName', 'PA-PS');
 
 
 
@@ -53,8 +53,8 @@ ds = sqrt((R*cos(zs)).^2 + H^2 + 2*R*H) - R * cos(zs);
 class = 0.5*ones(200);
 plot(linspace(500, max(ds), 200), class, 'r-', 'LineWidth', 2, 'HandleVisibility','off');
 
-plot(ds, tmsv_sat, 'ko-', 'DisplayName', 'TMSV');
-plot(ds, as_sat, 'o-', 'DisplayName', 'PA-PS');
+plot(ds, tmsv_sat, 'ko-','LineWidth', 1.2, 'DisplayName', 'TMSV');
+plot(ds, as_sat, 'o-','LineWidth', 1.2, 'DisplayName', 'PA-PS');
 
 
 % coeffs = polyfit(ds, as_sat, 4);
