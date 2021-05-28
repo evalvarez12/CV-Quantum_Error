@@ -7,6 +7,7 @@ Created on Thu Mar 18 15:16:12 2021
 import numpy as np
 import matplotlib.pyplot as plt
 import scipy.optimize as op
+import scipy.integrate as integrate
 
 def squeezed_bell_eq(r, d, t, g, T, s, nth):
     G = Gamma(r, t, g, T, nth)
@@ -60,8 +61,17 @@ def Gamma(r, t, g, T, nth):
     res = (1 - np.exp(-t)) * (.5 + nth) + g**2 * R
     return res
 
+
+
+def avg_fidelity(V, T, d, eps, eta, g, sig):
+    F = lambda s : fidelity(V, T, d, eps, eta, g, s) * np.exp(-s**2/sig) * s
+    I = integrate.quad(F, 0, 3*sig)
+#    print(I)
+    return 2*I[0]/sig
+
+
 def fidelity(V, T, d, eps, eta, g, s):
-#    g = 1/eta
+
     tau = -np.log(T)
     r = np.arccosh(V)/2
     if T == 1:
@@ -78,7 +88,6 @@ def fidelity(V, T, d, eps, eta, g, s):
     return squeezed_bell_eq(r, d, tau, g, eta, s, nth)
 
 def fidelity_disp(V, T, d, eps, eta, g, a, s):
-#    g = 1/eta
     tau = -np.log(T)
     r = np.arccosh(V)/2
     if T == 1:
@@ -99,32 +108,37 @@ def fidelity_pars(P, T, eps, eta, s):
     V, d, g = P
     # if not np.isnan(P).any():
         # print(P)
-#    g = 1/eta
+
     return fidelity(V, T, d, eps, eta, g, s)
+
+
+def avg_fidelity_pars(P, T, eps, eta, sig):
+    V, d, g = P
+    # if not np.isnan(P).any():
+        # print(P)
+
+    return avg_fidelity(V, T, d, eps, eta, g, sig)
+
 
 def fidelity_disp_pars(P, T, eps, eta, a, s):
     V, d, g = P
     # if not np.isnan(P).any():
         # print(P)
-#    g = 1/eta
+
     return fidelity_disp(V, T, d, eps, eta, g, a, s)
 
 
 def opt_fidelity(T, eps, eta, s):
     F = lambda P : 1 - fidelity_pars(P, T, eps, eta, s)
-    initial_guess = [1.5, np.pi/3, 1.1]
+    initial_guess = [1.5, np.pi/3, 1]
     cons=({'type': 'ineq',
            'fun': lambda x: x[0] - 1.001},
-          {'type': 'ineq',
-           'fun': lambda x: 1000 - x[0]},
           {'type': 'ineq',
            'fun': lambda x: x[1]},
           {'type': 'ineq',
            'fun': lambda x: 2*np.pi - x[1]},
           {'type': 'ineq',
-           'fun': lambda x: x[2] - eta},
-          {'type': 'ineq',
-           'fun': lambda x: 10- x[2]})
+           'fun': lambda x: x[2] - eta})
 
     res = op.minimize(F, initial_guess, constraints=cons)
 #    res = op.minimize(F, initial_guess)
@@ -132,6 +146,24 @@ def opt_fidelity(T, eps, eta, s):
 #    print('opt V:', np.round(res['x'],3))
     return fidelity_pars(res['x'], T, eps, eta, s)
 
+
+def opt_avg_fidelity(T, eps, eta, sig):
+    F = lambda P : 1 - avg_fidelity_pars(P, T, eps, eta, sig)
+    initial_guess = [1.5, np.pi/3, 1]
+    cons=({'type': 'ineq',
+           'fun': lambda x: x[0] - 1.001},
+          {'type': 'ineq',
+           'fun': lambda x: x[1]},
+          {'type': 'ineq',
+           'fun': lambda x: 2*np.pi - x[1]},
+          {'type': 'ineq',
+           'fun': lambda x: x[2] - eta})
+
+    res = op.minimize(F, initial_guess, constraints=cons)
+#    res = op.minimize(F, initial_guess)
+#    print(res)
+#    print('opt V:', np.round(res['x'],3))
+    return avg_fidelity_pars(res['x'], T, eps, eta, sig)
 
 
 def opt_fidelity_disp(T, eps, eta, a, s):
@@ -190,7 +222,7 @@ def opt_fidelity_avg(T, eps, eta, s_mean, sigma):
 
 def fidelity_pars_r(P, V, T, eps, eta, s):
     d, g = P
-    #    g = 1/eta
+
     return fidelity(V, T, d, eps, eta, g, s)
 
 def opt_fidelity_r(V, T, eps, eta, s):

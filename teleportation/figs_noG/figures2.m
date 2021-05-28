@@ -15,24 +15,56 @@ as_fiber = data_fiber.results;
 as_sat = data_sat.results;
 
 
+
+sq_fiber_py = load('py_sq_fiber_sig1');
+sq_sat_py = load('py_sq_sat_sig1');
+
+sq_tmsv_fiber = sq_fiber_py.data;
+sq_tmsv_sat = sq_sat_py.data;
+
+sq_data_fiber = load('sq_results_fiber_sig1');
+sq_data_sat = load('sq_results_sat_sig1');
+
+sq_as_fiber = sq_data_fiber.results;
+sq_as_sat = sq_data_sat.results;
+
+
 % Fiber
 figure;
 hold all;
+set(0,'defaultTextInterpreter','latex');
 
 Ls = linspace(50, 150, 20);
 
-class = 0.5*ones(length(Ls));
-plot(Ls, class, 'r-', 'LineWidth', 2, 'HandleVisibility','off');
+class_coh = 0.5*ones(length(Ls));
+plot(Ls, class_coh, 'r-', 'LineWidth', 2, 'HandleVisibility','off');
 
-plot(Ls, tmsv_fiber, 'ko-','LineWidth', 1.2, 'DisplayName', 'TMSV');
-plot(Ls, as_fiber, 'o-','LineWidth', 1.2, 'DisplayName', 'PA-PS');
+class_sq = 0.454*ones(length(Ls));
+plot(Ls, class_sq, 'r-', 'LineWidth', 2, 'HandleVisibility','off');
+
+plot(Ls, tmsv_fiber, 'ko-','LineWidth', 1.2, 'DisplayName', 'TMSV $\left| \alpha \right\rangle$');
+plot(Ls, as_fiber, 'o-', 'Color', [0 0.4470 0.7410],'LineWidth', 1.2, 'DisplayName', 'PA-PS $\left| \alpha \right\rangle$');
+
+plot(Ls, sq_tmsv_fiber, 'ko--','LineWidth', 1.2, 'DisplayName', 'TMSV $\left| s \right\rangle$');
+plot(Ls, sq_as_fiber, 'o--','Color', [0 0.4470 0.7410], 'LineWidth', 1.2, 'DisplayName', 'PA-PS $\left| s \right\rangle$');
 
 
-
-
-legend();
+hl = legend('show');
+set(hl, 'Interpreter','latex');
 ylabel('$\bar{\mathcal{F}}$', 'Interpreter', 'latex');
 xlabel('$L$ [km]', 'Interpreter', 'latex');
+
+
+txt1 = ('Classical limit  $\left| \alpha \right\rangle$');
+txt2 = ('Classical limit  $\left| s \right\rangle$');
+t1 = text(50.3, .4935, txt1);
+t2 = text(126, .446, txt2);
+
+set(t1, 'Color','r');
+set(t2, 'Color','r');
+
+ylim([0.42 0.6])
+
 
 savefigures('fiber');
 
@@ -40,6 +72,7 @@ savefigures('fiber');
 figure;
 hold all;
 set(gca, 'xscale', 'log')
+set(0,'defaultTextInterpreter','latex');
 
 zs = deg2rad([0 5 10 15 20 25 30 35 40 45 50 55 60, 65, 70]);
 
@@ -50,12 +83,18 @@ ds = sqrt((R*cos(zs)).^2 + H^2 + 2*R*H) - R * cos(zs);
 
 
 % dmaxfit = 1250;
-class = 0.5*ones(200);
-plot(linspace(500, max(ds), 200), class, 'r-', 'LineWidth', 2, 'HandleVisibility','off');
+class_coh = 0.5*ones(200);
+plot(linspace(500, max(ds), 200), class_coh, 'r-', 'LineWidth', 2, 'HandleVisibility','off');
 
-plot(ds, tmsv_sat, 'ko-','LineWidth', 1.2, 'DisplayName', 'TMSV');
-plot(ds, as_sat, 'o-','LineWidth', 1.2, 'DisplayName', 'PA-PS');
+class_sq = 0.454*ones(200);
+% plot(linspace(500, max(ds), 200), class_sq, 'r-', 'LineWidth', 2, 'HandleVisibility','off');
 
+plot(ds, tmsv_sat, 'ko-','LineWidth', 1.2, 'DisplayName', 'TMSV $\left| \alpha \right\rangle$');
+plot(ds, as_sat, 'o-','Color', [0 0.4470 0.7410], 'LineWidth', 1.2, 'DisplayName', 'PA-PS $\left| \alpha \right\rangle$');
+
+
+% plot(ds, sq_tmsv_sat, 'ko--','LineWidth', 1.2, 'DisplayName', 'TMSV $\left| \alpha \right\rangle$');
+% plot(ds, sq_as_sat, 'o--','Color', [0 0.4470 0.7410], 'LineWidth', 1.2, 'DisplayName', 'PA-PS $\left| \alpha \right\rangle$');
 
 % coeffs = polyfit(ds, as_sat, 4);
 % Get fitted values
@@ -65,9 +104,10 @@ plot(ds, as_sat, 'o-','LineWidth', 1.2, 'DisplayName', 'PA-PS');
 
 % plot(fittedX, fittedY, 'b--', 'LineWidth', 0.5, 'DisplayName', 'PolyFit');
 
+ylim([0.49 0.54])
 
-
-legend();
+hl = legend('show');
+set(hl, 'Interpreter','latex');
 ylabel('$\bar{\mathcal{F}}$', 'Interpreter', 'latex');
 xlabel('$L$ [km]', 'Interpreter', 'latex');
 savefigures('sat');

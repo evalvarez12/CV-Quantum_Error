@@ -146,7 +146,9 @@ ylabel('$\bar{\mathcal{F}}$', 'Interpreter', 'latex');
 xlabel('$T$', 'Interpreter', 'latex');
 
 txt1 = ('$\sigma = 10$');
-text(0.05, .83, txt1);
+txt2 = ('Input states - $\left| \alpha \right\rangle$');
+text(0.05, .81, txt1);
+text(0.05, .836, txt2);
 
 ylim([0.45 0.875])
 

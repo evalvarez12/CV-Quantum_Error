@@ -8,6 +8,7 @@ Created on Mon Mar  8 11:32:18 2021
 
 
 import TMSV as tmsv
+import TMSV_sq as tmsvsq
 import qsc as qs_t
 import qsc_rec as qs_r
 import sb as sb
@@ -56,23 +57,19 @@ me = (0.0086-.0033)/100
 #num = 15
 
 eta = np.sqrt(10**(-1/10))
+#sigma = 10
 sigma = 10
 # eta = 1
 #eta = 0.7
 
 f_tmsv = np.zeros(num)
-f_tmsv1 = np.zeros(num)
-f_tmsv2 = np.zeros(num)
 
-V1 = 1.1076
-#V2 = 5.037
-V2 = 1.73
 
 
 for i in range(num):
-        L = Ls[i]
     
         # Fiber
+        L = Ls[i]
         T = 10**(-(0.16 * L)/10);
         e = me * L + 0.0006 
         
@@ -81,13 +78,14 @@ for i in range(num):
 #        e = T * 0.0186 + 0.0133/0.95;
         
         f_tmsv[i] = tmsv.opt_avg_fidelity(T, e, eta, sigma)
+#        f_tmsv[i] = tmsvsq.opt_avg_fidelity(T, e, eta, sigma)
+
 #        f_sb[i, j] = sb.opt_avg_fidelity(T, e, eta, sigma)
 
-        f_tmsv1[i] = tmsv.fidelity_alphabet(V1, T, e, eta, 1/eta, sigma)
-        f_tmsv2[i] = tmsv.fidelity_alphabet(V2, T, e, eta, 1/eta, sigma)
+
 
 
 ### To MATLAB
-data = [f_tmsv, f_tmsv1, f_tmsv2]
+data = f_tmsv
 scipy.io.savemat('figs_noG/py_fiber_sig10.mat', {'data':data})
 

@@ -26,10 +26,9 @@ eps = 0.00
 V = np.random.rand()*5 + 1
 d = np.pi * np.random.rand()*2
 
-Ts = np.linspace(0.5, 0.99, 15)
-s = 0.575
-print(Ts, s)
-a = .5 + .5j 
+Ts = np.linspace(0.001, 0.99, 15)
+s = 1
+#print(Ts, s)
 
 SB = []
 TMSV = []
@@ -41,13 +40,13 @@ for T in Ts :
 #     print('SB opt', sb.opt_fidelity_disp(T, eps, eta, a, s))
 #     print('SB normal opt', sb.opt_fidelity(T, eps, eta, s))
 
-    SB += [sb.opt_fidelity(T, eps, eta, s)]
-    TMSV += [tmsv.opt_fidelity(T, eps, eta, s)]
+    SB += [sb.opt_avg_fidelity(T, eps, eta, s)]
+    TMSV += [tmsv.opt_avg_fidelity(T, eps, eta, s)]
 
 print('-----------------------------------------------------------')
 print(TMSV)
 print(SB)
-#scipy.io.savemat('figs_noG/fixed_py_sq575.mat', {'data':SB})
+scipy.io.savemat('figs_noG/fixed_py_sq575.mat', {'data':[TMSV, SB]})
 
 # print('TMSV', tmsv.opt_fidelity(T, eps, eta, s))
 
