@@ -34,7 +34,7 @@ import numpy as np
 #    for j in range(num):
 #        T = Ts[i]
 #        e = es[j]
-#        
+#
 #        f_tmsv[i, j] = tmsv.opt_avg_fidelity(T, e, eta, sigma)
 #        f_sb[i, j] = sb.opt_avg_fidelity(T, e, eta, sigma)
 #
@@ -47,8 +47,8 @@ import numpy as np
 
 
 # Fiber
-Ls = np.linspace(50, 150, 20);
-num = 20 
+Ls = np.linspace(30, 150, 24);
+num = len(Ls)
 me = (0.0086-.0033)/100
 
 
@@ -57,7 +57,9 @@ me = (0.0086-.0033)/100
 #num = 15
 
 eta = np.sqrt(10**(-1/10))
-#sigma = 10
+#sq
+# sigma = 1
+# tmsv
 sigma = 10
 # eta = 1
 #eta = 0.7
@@ -67,18 +69,18 @@ f_tmsv = np.zeros(num)
 
 
 for i in range(num):
-    
+
         # Fiber
         L = Ls[i]
         T = 10**(-(0.16 * L)/10);
-        e = me * L + 0.0006 
-        
+        e = me * L + 0.0006
+
         # Sat
 #        T = Ts[i];
 #        e = T * 0.0186 + 0.0133/0.95;
-        
+
         f_tmsv[i] = tmsv.opt_avg_fidelity(T, e, eta, sigma)
-#        f_tmsv[i] = tmsvsq.opt_avg_fidelity(T, e, eta, sigma)
+        # f_tmsv[i] = tmsvsq.opt_avg_fidelity(T, e, eta, sigma)
 
 #        f_sb[i, j] = sb.opt_avg_fidelity(T, e, eta, sigma)
 
@@ -87,5 +89,4 @@ for i in range(num):
 
 ### To MATLAB
 data = f_tmsv
-scipy.io.savemat('figs_noG/py_fiber_sig10.mat', {'data':data})
-
+scipy.io.savemat('figs_noG/py_fiber_sig10-2.mat', {'data':data})

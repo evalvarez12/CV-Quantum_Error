@@ -2,13 +2,13 @@ clear all;
 close all;
 
 
-fiber_py = load('py_fiber_sig10');
+fiber_py = load('py_fiber_sig10-2');
 sat_py = load('py_sat_sig10');
 
 tmsv_fiber = fiber_py.data;
 tmsv_sat = sat_py.data;
 
-data_fiber = load('results_fiber_sig10');
+data_fiber = load('results_fiber_sig10-2');
 data_sat = load('results_sat_sig10');
 
 as_fiber = data_fiber.results;
@@ -16,13 +16,13 @@ as_sat = data_sat.results;
 
 
 
-sq_fiber_py = load('py_sq_fiber_sig1');
+sq_fiber_py = load('py_sq_fiber_sig1-2');
 sq_sat_py = load('py_sq_sat_sig1');
 
 sq_tmsv_fiber = sq_fiber_py.data;
 sq_tmsv_sat = sq_sat_py.data;
 
-sq_data_fiber = load('sq_results_fiber_sig1');
+sq_data_fiber = load('sq_results_fiber_sig1-2');
 sq_data_sat = load('sq_results_sat_sig1');
 
 sq_as_fiber = sq_data_fiber.results;
@@ -34,7 +34,7 @@ figure;
 hold all;
 set(0,'defaultTextInterpreter','latex');
 
-Ls = linspace(50, 150, 20);
+Ls = linspace(30, 150, 24);
 
 class_coh = 0.5*ones(length(Ls));
 plot(Ls, class_coh, 'r-', 'LineWidth', 2, 'HandleVisibility','off');
@@ -58,13 +58,13 @@ xlabel('$L$ [km]', 'Interpreter', 'latex');
 txt1 = ('Classical limit  $\left| \alpha \right\rangle$');
 txt2 = ('Classical limit  $\left| s \right\rangle$');
 t1 = text(50.3, .4935, txt1);
-t2 = text(126, .446, txt2);
+t2 = text(120, .446, txt2);
 
 set(t1, 'Color','r');
 set(t2, 'Color','r');
 
-ylim([0.42 0.6])
-
+ylim([0.42 0.65]);
+xlim([30 150]);
 
 savefigures('fiber');
 
