@@ -43,10 +43,10 @@ class_sq = 0.454*ones(length(Ls));
 plot(Ls, class_sq, 'r-', 'LineWidth', 2, 'HandleVisibility','off');
 
 plot(Ls, tmsv_fiber, 'ko-','LineWidth', 1.2, 'DisplayName', 'TMSV $\left| \alpha \right\rangle$');
-plot(Ls, as_fiber, 'o-', 'Color', [0 0.4470 0.7410],'LineWidth', 1.2, 'DisplayName', 'PA-PS $\left| \alpha \right\rangle$');
+plot(Ls, as_fiber, 'v-', 'Color', [0 0.4470 0.7410],'LineWidth', 1.2, 'DisplayName', 'PA-PS $\left| \alpha \right\rangle$');
 
 plot(Ls, sq_tmsv_fiber, 'ko--','LineWidth', 1.2, 'DisplayName', 'TMSV $\left| s \right\rangle$');
-plot(Ls, sq_as_fiber, 'o--','Color', [0 0.4470 0.7410], 'LineWidth', 1.2, 'DisplayName', 'PA-PS $\left| s \right\rangle$');
+plot(Ls, sq_as_fiber, 'v--','Color', [0 0.4470 0.7410], 'LineWidth', 1.2, 'DisplayName', 'PA-PS $\left| s \right\rangle$');
 
 
 hl = legend('show');
@@ -57,8 +57,8 @@ xlabel('$L$ [km]', 'Interpreter', 'latex');
 
 txt1 = ('Classical limit  $\left| \alpha \right\rangle$');
 txt2 = ('Classical limit  $\left| s \right\rangle$');
-t1 = text(50.3, .4935, txt1);
-t2 = text(120, .446, txt2);
+t1 = text(50.3, .490, txt1);
+t2 = text(120, .444, txt2);
 
 set(t1, 'Color','r');
 set(t2, 'Color','r');
@@ -90,7 +90,7 @@ class_sq = 0.454*ones(200);
 % plot(linspace(500, max(ds), 200), class_sq, 'r-', 'LineWidth', 2, 'HandleVisibility','off');
 
 plot(ds, tmsv_sat, 'ko-','LineWidth', 1.2, 'DisplayName', 'TMSV $\left| \alpha \right\rangle$');
-plot(ds, as_sat, 'o-','Color', [0 0.4470 0.7410], 'LineWidth', 1.2, 'DisplayName', 'PA-PS $\left| \alpha \right\rangle$');
+plot(ds, as_sat, 'v-','Color', [0 0.4470 0.7410], 'LineWidth', 1.2, 'DisplayName', 'PA-PS $\left| \alpha \right\rangle$');
 
 
 % plot(ds, sq_tmsv_sat, 'ko--','LineWidth', 1.2, 'DisplayName', 'TMSV $\left| \alpha \right\rangle$');

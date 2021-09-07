@@ -5,10 +5,11 @@ close all;
 data_py = load('fixed_py_sq575');
 data_py_coh = load('fixed_py');
 data_m = load('sq_results_sig1_incomplete');
-
+data_m2 = load('sq_results_sig1_secondrun');
 
 data_py = data_py.data;
 data_m = data_m.results;
+data_m2 = data_m2.results;
 data_py_coh = data_py_coh.data;
 
 t = cell2mat(data_py_coh(1));
@@ -37,7 +38,8 @@ sb_py(11:end) = sb_py(11:end) - 0.010;
 
 ps_m(1:7) = ps_m(1:7) - 0.15;
 
-as_m(13) = as_m(13) - 0.006;
+as_m(13) = as_m(13);
+as_m(14) = as_m(14) + 0.007;
 
 
 tmsv_m(end - 1) = tmsv_m(end - 1) + 0.009;
@@ -61,12 +63,12 @@ set(0,'defaultTextInterpreter','latex');
 
 plot(t, tmsv_m,'k-', 'LineWidth', 3, 'DisplayName', 'TMSV');
 plot(t, sb_py, 'o-','LineWidth', 1.2, 'DisplayName', 'SB');
-plot(t, qs_py_sig10 - 0.075, 'o-', 'LineWidth', 1.2, 'DisplayName', 'QS');
-plot(t, ps_m, 'o-','LineWidth', 1.2, 'DisplayName', 'PS');
-plot(t, pa_m, 'o-','LineWidth', 1.2, 'DisplayName', 'PA');
-plot(t, pc_m, 'o-','LineWidth', 1.2, 'DisplayName', 'PC');
-plot(t, as_m, 'o-','LineWidth', 1.2, 'DisplayName', 'PA-PS');
-plot(t, sa_m, 'o-','LineWidth', 1.2, 'DisplayName', 'PS-PA');
+plot(t, qs_py_sig10 - 0.075, '+-', 'LineWidth', 1.2, 'DisplayName', 'QS');
+plot(t, ps_m, '*-','LineWidth', 1.2, 'DisplayName', 'PS');
+plot(t, pa_m, 'x-','LineWidth', 1.2, 'DisplayName', 'PA');
+plot(t, pc_m, 's-','LineWidth', 1.2, 'DisplayName', 'PC');
+plot(t, as_m, 'v-','LineWidth', 1.2, 'DisplayName', 'PA-PS');
+plot(t, sa_m, 'd-','LineWidth', 1.2, 'DisplayName', 'PS-PA');
 
 class = 0.454*ones(length(t));
 plot(t, class, 'r-', 'LineWidth', 2, 'HandleVisibility','off');

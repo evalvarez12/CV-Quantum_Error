@@ -130,12 +130,12 @@ ps_m_sig10(1:6) = 0.4;
 
 plot(t, tmsv_py_sig10,'k-', 'LineWidth', 3, 'DisplayName', 'TMSV');
 plot(t, sb_py_sig10, 'o-','LineWidth', 1.2, 'DisplayName', 'SB');
-plot(t, qs_py_sig10, 'o-','LineWidth', 1.2, 'DisplayName', 'QS');
-plot(t, ps_m_sig10, 'o-','LineWidth', 1.2, 'DisplayName', 'PS');
-plot(t, pa_m_sig10, 'o-','LineWidth', 1.2, 'DisplayName', 'PA');
-plot(t, pc_m_sig10, 'o-','LineWidth', 1.2, 'DisplayName', 'PC');
-plot(t, as_m_sig10, 'o-','LineWidth', 1.2, 'DisplayName', 'PA-PS');
-plot(t, sa_m_sig10, 'o-','LineWidth', 1.2, 'DisplayName', 'PS-PA');
+plot(t, qs_py_sig10, '+-','LineWidth', 1.2, 'DisplayName', 'QS');
+plot(t, ps_m_sig10, '*-','LineWidth', 1.2, 'DisplayName', 'PS');
+plot(t, pa_m_sig10, 'x-','LineWidth', 1.2, 'DisplayName', 'PA');
+plot(t, pc_m_sig10, 's-','LineWidth', 1.2, 'DisplayName', 'PC');
+plot(t, as_m_sig10, 'v-','LineWidth', 1.2, 'DisplayName', 'PA-PS');
+plot(t, sa_m_sig10, 'd-','LineWidth', 1.2, 'DisplayName', 'PS-PA');
 
 
 class = 0.5*ones(length(t));
