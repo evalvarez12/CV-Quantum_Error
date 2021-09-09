@@ -6,6 +6,14 @@ import qutip as qt
 import numpy as np
 import tools
 
+# OLD function save just in case
+# def get_homodyne_projector(self, x_measured):
+#     a = qt.create(self.N)
+#     x = (np.sqrt(2) * x_measured * a) - (x_measured**2 + a*a)/2
+#     x = 1/np.pi**(1/4) * x.expm()
+#     x = (x * qt.basis(self.N)).dag()
+#     return x
+
 
 def get_homodyne_projector(N, q_m, theta, eta):
     a = qt.destroy(N)
@@ -20,9 +28,6 @@ def get_homodyne_projector(N, q_m, theta, eta):
 
 
 def homodyne_measurement(state, mode=0, theta=0, eta=1, mlim=[-3, 3], sample_size=20):
-    """
-    Perfomr a homodyne measurement
-    """
     N = state.dims[0][0]
     Nmodes = len(state.dims[0])
 
@@ -55,7 +60,7 @@ def homodyne_measurement(state, mode=0, theta=0, eta=1, mlim=[-3, 3], sample_siz
     return state, prob
 
 
-def homodyne_measurement_gaussian_approx(state, mode=0, theta=0, eta=1):
+def homodyne_measurement_gauss_approx(state, mode=0, theta=0, eta=1):
     N = state.dims[0][0]
     Nmodes = len(state.dims[0])
 

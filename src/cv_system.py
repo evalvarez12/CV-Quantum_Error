@@ -7,10 +7,11 @@ Created on Wed Apr  3 09:29:55 2019
 @author: Eduardo Villasenor
 """
 
-from . import operations as ops
-from . import symplectic as sym
-from . import tools
-from . import theory
+import operations as ops
+import symplectic as sym
+import homodyne as hom
+import tools
+import theory
 import qutip as qt
 import numpy as np
 
@@ -386,31 +387,10 @@ class System:
         self.state = self.state.ptrace(pos_keep)
         self.Nmodes = len(pos_keep)
 
-    def get_homodyne_projector(self, x_measured):
-        a = qt.create(self.N)
-        x = (np.sqrt(2) * x_measured * a) - (x_measured**2 + a*a)/2
-        x = 1/np.pi**(1/4) * x.expm()
-        x = (x * qt.basis(self.N)).dag()
-        return x
-
     def homodyne_measurement(self, mode=0):
-        a = qt.destroy(self.N)
-        # Quadrature operator x
-        x = (a + a.dag())/np.sqrt(2)
-#        x = 1j*(a - a.dag())/np.sqrt(2)
-        x = tools.tensor(self.N, x, mode, self.Nmodes)
-
-        # Calculate <x> and var(x)
-        avg_x = qt.expect(x, self.state)
-        var_x = 2 * (qt.expect(x*x, self.state) - qt.expect(x, self.state)**2)
-        print("Stats:", avg_x, var_x)
-        rand_x = np.random.normal(avg_x, np.sqrt(var_x))
-
-        proj_hom = self.get_homodyne_projector(rand_x)
-        proj_hom = tools.tensor(self.N, proj_hom, mode, self.Nmodes)
-        self.state = proj_hom * self.state
-        self.state = self.state / self.state.norm()
-        return rand_x
+        theta = 0
+        eta = 1
+        return hom.homodyne_measurement(self.state, mode, theta, eta)
 
     def get_simple_CM_V(self, mode):
         """
