@@ -48,7 +48,7 @@ def tensor_singles(N, operators, positions, Nmodes):
 
 
 def reorder_two_mode_operator(N, op, pos, Nmodes):
-#    op = qt.tensor([op] + [qt.qeye(N)]*(Nmodes-2))
+    #    op = qt.tensor([op] + [qt.qeye(N)]*(Nmodes-2))
     op = qt.tensor([qt.qeye(N)]*(Nmodes-2) + [op])
 
     # Bring positions from lso on right to normal for permute
@@ -66,7 +66,7 @@ def get_permutation_list(pos, N):
     permute_list = np.arange(N)
     permute_list[pos[0]] = N-1
     permute_list[N-1] = pos[0]
-    
+
     # Now desired swap with N-2
     # Find the index of the desired value is
     ind1 = np.where(permute_list == N-2)[0][0]
@@ -75,7 +75,7 @@ def get_permutation_list(pos, N):
     # Set N-2 in spot pos1
     permute_list[pos[1]] = N-2
     return permute_list
-    
+
 
 def matrix_sandwich(A, B):
     # Returns A.transpose * B * A
@@ -87,7 +87,7 @@ def direct_sum(matrices):
 
 
 def direct_sum_singles(matrices, positions, Nmodes):
-     # Check if arguments make sense
+    # Check if arguments make sense
     if max(positions) >= Nmodes:
         raise ValueError("direct_sum: postion out of number of blocks")
 
@@ -128,7 +128,7 @@ def kron(matrices):
 
 
 def kron_sum(matrices, positions, Nmodes):
-        # Check if arguments make sense
+    # Check if arguments make sense
     if max(positions) >= Nmodes:
         raise ValueError("direct_sum: postion out ot numbe blocks")
 
@@ -139,7 +139,7 @@ def kron_sum(matrices, positions, Nmodes):
     # TODO: remove this for
     for i in range(len(matrices)):
         row = [identity]*Nmodes
-        row[positions[i]]  = matrices[i]
+        row[positions[i]] = matrices[i]
         submatrix = kron(row)
         full_matrix += submatrix
 

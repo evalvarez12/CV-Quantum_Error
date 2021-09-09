@@ -1,6 +1,12 @@
 import numpy as np
 import scipy.special as sp
 
+
+"""
+Fucntion that retrns the number of steps required for a chain of ON/OFF states
+to all go ON starting from OFF
+"""
+
 def ptree(nodes, p):
     if nodes == 0:
         return []

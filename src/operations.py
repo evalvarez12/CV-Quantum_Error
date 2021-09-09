@@ -10,8 +10,7 @@ Created on Fri Feb 15 12:05:43 2019
 import qutip as qt
 import numpy as np
 from . import tools
-from . import hamiltonians
-
+# from . import hamiltonians
 
 
 def displace(a, alpha):
@@ -19,9 +18,9 @@ def displace(a, alpha):
 
 
 def squeeze(N, r, pos=0, Nmodes=1):
-#    return ((z.conjugate()*a**2 - z*(a.dag()**2))/2).expm()
-#     TODO: check if phase of pi is required
-    S = qt.squeeze(N, -r)
+    #    return ((z.conjugate()*a**2 - z*(a.dag()**2))/2).expm()
+    # TODO: check squeezing parameter - old was -r
+    S = qt.squeeze(N, r)
 
 #    H = hamiltonians.sigle_mode_squeeze(N, r)
 #    S = (-1j * H).expm()
@@ -30,33 +29,38 @@ def squeeze(N, r, pos=0, Nmodes=1):
     return S
 
 
-def tmsqueeze(N, r, pos=[0,1], Nmodes=2):
-#    a = qt.tensor(qt.destroy(N), qt.identity(N))
-#    b = qt.tensor(qt.identity(N), qt.destroy(N))
+def tmsqueeze(N, r, pos=[0, 1], Nmodes=2):
+    a = qt.tensor(qt.destroy(N), qt.identity(N))
+    b = qt.tensor(qt.identity(N), qt.destroy(N))
 
-#    S = (z.conjugate()*a*b - z*a.dag()*b.dag()).expm()
-    # TODO: check this factor of two, and phase of pi
-#    S = qt.squeezing(a, b, -2*r)
+    # S = (z.conjugate()*a*b - z*a.dag()*b.dag()).expm()
+    # TODO: check squeezing parameter - old was -2*r
+    S = qt.squeezing(a, b, r)
 
-    H = hamiltonians.two_mode_squeeze(N, r)
-    S = (-1j* H).expm()
+    # H = hamiltonians.two_mode_squeeze(N, r)
+    # S = (-1j* H).expm()
 
     if Nmodes > 2:
         S = tools.reorder_two_mode_operator(N, S, pos, Nmodes)
     return S
 
 
-def beam_splitter(N, z, pos=[0,1], Nmodes=2):
+def beam_splitter(N, theta, pos=[0, 1], Nmodes=2):
     """
-              |theta2
+              |theta
     |c>  ->---/----->
               |
               ^
              |a>
     """
     # print("BS:", pos, z)
-    H = hamiltonians.beam_splitter(N, z)
-    U = (-1j * H).expm()
+    # H = hamiltonians.beam_splitter(N, z)
+    # U = (-1j * H).expm()
+
+    a = qt.tensor(qt.destroy(N), qt.identity(N))
+    b = qt.tensor(qt.identity(N), qt.destroy(N))
+    U = (theta * (a.dag()*b - a*b.dag())).expm()
+
     # print(U)
     if Nmodes > 2:
         U = tools.reorder_two_mode_operator(N, U, pos, Nmodes)
@@ -80,10 +84,10 @@ def tritter(N, theta1, theta2, pos=[0, 1, 2], Nmodes=3):
 
     U1 = beam_splitter(N, theta1, pos=[pos_b, pos_a], Nmodes=Nmodes)
 #    U1 = beam_splitter(N, theta1, pos=[pos_a, pos_b], Nmodes=Nmodes)
-    
+
     U2 = beam_splitter(N, theta2, pos=[pos_a, pos_c], Nmodes=Nmodes)
 #    U2 = beam_splitter(N, theta2, pos=[pos_c, pos_a], Nmodes=Nmodes)
-    
+
     # print("pos:", pos)
     U = U2 * U1
     return U
@@ -102,28 +106,28 @@ def tritter_options(N, theta1, theta2, pos=[0, 1, 2], Nmodes=3, option='a'):
     """
 
     pos_a, pos_b, pos_c = pos
-    
+
     if option == 'a':
         U1 = beam_splitter(N, theta1, pos=[pos_b, pos_a], Nmodes=Nmodes)
 #        U1 = beam_splitter(N, theta1, pos=[pos_a, pos_b], Nmodes=Nmodes)
-    
+
 #        U2 = beam_splitter(N, theta2, pos=[pos_a, pos_c], Nmodes=Nmodes)
         U2 = beam_splitter(N, theta2, pos=[pos_c, pos_a], Nmodes=Nmodes)
-        
+
     elif option == 'b':
-#        U1 = beam_splitter(N, theta1, pos=[pos_b, pos_a], Nmodes=Nmodes)
+        #        U1 = beam_splitter(N, theta1, pos=[pos_b, pos_a], Nmodes=Nmodes)
         U1 = beam_splitter(N, theta1, pos=[pos_a, pos_b], Nmodes=Nmodes)
-    
+
         U2 = beam_splitter(N, theta2, pos=[pos_a, pos_c], Nmodes=Nmodes)
 #        U2 = beam_splitter(N, theta2, pos=[pos_c, pos_a], Nmodes=Nmodes)
-        
+
     elif option == 'c':
-#        U1 = beam_splitter(N, theta1, pos=[pos_b, pos_a], Nmodes=Nmodes)
+        #        U1 = beam_splitter(N, theta1, pos=[pos_b, pos_a], Nmodes=Nmodes)
         U1 = beam_splitter(N, theta1, pos=[pos_a, pos_b], Nmodes=Nmodes)
-    
+
 #        U2 = beam_splitter(N, theta2, pos=[pos_a, pos_c], Nmodes=Nmodes)
         U2 = beam_splitter(N, theta2, pos=[pos_c, pos_a], Nmodes=Nmodes)
-    
+
     # print("pos:", pos)
     U = U2 * U1
     return U
@@ -185,13 +189,13 @@ def purify(rho):
     eigenvals, eigenstates = rho.eigenstates()
 
     for i in range(len(eigenvals)):
-        eigenstates[i] = np.sqrt(eigenvals[i]) * qt.tensor(eigenstates[i], eigenstates[i])
+        eigenstates[i] = np.sqrt(eigenvals[i]) * \
+                                 qt.tensor(eigenstates[i], eigenstates[i])
 
     return sum(eigenstates)
 
 
-
-#def photon_number_projector(n, N):
+# def photon_number_projector(n, N):
 #    P = qt.basis(N, n).dag()
 #    return P
 
@@ -231,7 +235,7 @@ def collapse_photon_number_dm(N, rho, n, pos, Nmodes):
 def p_parity_odd(N, pos, Nmodes):
     P = qt.basis(N) * qt.basis(N).dag() * 0
     for i in range(int(N/2)):
-        P += qt.basis(N, 2*i + 1) * qt.basis(N, 2*i +1).dag()
+        P += qt.basis(N, 2*i + 1) * qt.basis(N, 2*i + 1).dag()
     P = tools.tensor(N, P, pos, Nmodes)
     return P
 
@@ -241,22 +245,19 @@ def p_parity_even(N, pos, Nmodes):
     return P
 
 
-def parity_measurement(N, pos , Nmodes, rho, parity):
+def parity_measurement(N, pos, Nmodes, rho, parity):
     if parity == 0:
         P = p_parity_even(N, pos, Nmodes)
     elif parity == 1:
         P = p_parity_odd(N, pos, Nmodes)
-    
+
     if rho.isket:
         rho = parity * rho
         if rho.norm() == 0:
             return 0
         return rho / rho.norm()
-    else:  
+    else:
         rho = P * rho * P.dag()
         if rho.tr() == 0:
             return 0
         return rho / rho.tr()
-
-
-
