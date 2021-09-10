@@ -27,27 +27,38 @@ def get_homodyne_projector(N, q_m, theta, eta):
     return P/np.sqrt(np.pi/eta)
 
 
-def homodyne_measurement(state, mode=0, theta=0, eta=1, mlim=[-3, 3], sample_size=20):
+def homodyne_measurement(state, mode=0, theta=0, eta=1, mlim=[-5, 5], sample_size=20):
     N = state.dims[0][0]
     Nmodes = len(state.dims[0])
 
     q_samples = np.linspace(mlim[0], mlim[1], sample_size)
     samples = np.zeros_like(q_samples)
-
-    for i in range(q_samples):
+    for i in range(sample_size):
         projector = get_homodyne_projector(N, q_samples[i], theta, eta)
         projector = tools.tensor(N, projector, mode, Nmodes)
         samples[i] = qt.expect(projector, state)
 
     # Perform 1D polyfit to approximate the PDF
-    fit = np.polyfit(q_samples, samples, 1)
+    fit = np.polyfit(q_samples, samples, 20)
     pdf_func = np.poly1d(fit)
     # New points to find pdf
     qs = np.linspace(mlim[0], mlim[1], 10 * sample_size)
-    pdf = pdf_func(qs)
+    ds = np.abs(qs[0] - qs[1])
+    pdf = pdf_func(qs) * ds
+    pdf[pdf < 0] = 0
+    pdf = pdf / np.sum(pdf)
+
+    # import matplotlib.pyplot as plt
+    # plt.plot(q_samples, samples)
+    # plt.plot(qs, pdf)
+    # plt.show()
+    # from IPython import embed
+    # embed()
 
     # Select a measurement result
     q_measured = np.random.choice(qs, p=pdf)
+    # q_measured = np.random.choice(
+    #     q_samples, p=samples/sum(samples))
     projector = get_homodyne_projector(N, q_measured, theta, eta)
     projector = tools.tensor(N, projector, mode, Nmodes)
 

@@ -9,7 +9,7 @@ Created on Fri Feb 15 12:05:43 2019
 
 import qutip as qt
 import numpy as np
-from . import tools
+import tools
 # from . import hamiltonians
 
 
