@@ -38,10 +38,15 @@ def plot(psi, borders, num=300):
     #    savefig("cat_state_"+str(k)+".png")
 
 
-##setup constants:
-#N = 20 # size of the Hilbert space
-#a = qt.destroy(N) #annihilation operator
-#alpha = 2
-#psi=(qt.displace(N,alpha) * qt.basis(N,0) - qt.displace(N,-1*alpha) * qt.basis(N,0)).unit()
-#
-#plot(psi, [-6,6])
+#setup constants:
+N = 20  # size of the Hilbert space
+a = qt.destroy(N)  # annihilation operator
+alpha = 2.4
+psi = (qt.displace(N, alpha) * qt.basis(N, 0)
+       - qt.displace(N, -1*alpha) * qt.basis(N, 0)).unit()
+
+# psi = qt.displace(N, alpha) * qt.basis(N, 0)
+# psi = qt.squeeze(N, alpha) * qt.basis(N, 0)
+# psi = qt.basis(N, 1)
+
+plot(psi, [-6, 6])
