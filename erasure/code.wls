@@ -2,7 +2,8 @@
 (* ::Package:: *)
 
 Clear["Global`*"];
-Import["/home/eduardo/quantum/CV-Quantum_Error_Correction/erasure/ToMatlab.m", "Package"];
+(*Import["/home/eduardo/quantum/CV-Quantum_Error_Correction/erasure/ToMatlab.m", "Package"];*)
+Import["\\Users\\z5239621\\Documents\\Repos\\CV-Quantum_Error_Correction\\erasure\\ToMatlab.m", "Package"];
 (*Import["/home/eduardo/QuantumComms/CV-Quantum_Error_Correction/chain/cm.wls", "Package"];*)
 
 V=.;
@@ -14,7 +15,8 @@ ai=.;
 
 CFtmsv[xa_, pa_, xb_, pb_] = Exp[-V/2*(xa^2 + pa^2 + xb^2 + pb^2) + Sqrt[V^2-1]*(xa*xb - pa*pb)];
 CF0[x_, p_] = Exp[-1/2*(x^2 + p^2)];
-CFalpha[x_, p_] = Exp[-1/2*(x^2 + p^2) + 2*I*(p*ar - x*ai)];
+(*CFalpha[x_, p_] = Exp[-1/2*(x^2 + p^2) + 2*I*(p*ar - x*ai)];*)
+CFalpha[x_, p_] = Exp[-1/2*(x^2 + p^2) + 2*I*(p*ar)];
 
 (*----------------------------------------*)
 CFs[x_, p_] = CFalpha[x, p];
@@ -46,31 +48,30 @@ Fid1Polar[r_, theta_] = Simplify[Fid1[r*Cos[theta], r*Sin[theta]]];
 Print["-----------------  Fid1"];
 ToMatlab[Fid1Polar[r, theta]]
 
-
-Fid1[x_, p_] = CF2[x, p] * CFs[-x, -p]/Pi;
-Fid1Polar[r_, theta_] = Simplify[Fid1[r*Cos[theta], r*Sin[theta]]];
+Fid2[x_, p_] = CF2[x, p] * CFs[-x, -p]/Pi;
+Fid2Polar[r_, theta_] = Simplify[Fid2[r*Cos[theta], r*Sin[theta]]];
 Print["-----------------  Fid2"];
-ToMatlab[Fid1Polar[r, theta]]
+ToMatlab[Fid2Polar[r, theta]]
 
-Fid1[x_, p_] = CF3[x, p] * CFs[-x, -p]/Pi;
-Fid1Polar[r_, theta_] = Simplify[Fid1[r*Cos[theta], r*Sin[theta]]];
+Fid3[x_, p_] = CF3[x, p] * CFs[-x, -p]/Pi;
+Fid3Polar[r_, theta_] = Simplify[Fid3[r*Cos[theta], r*Sin[theta]]];
 Print["-----------------  Fid3"];
-ToMatlab[Fid1Polar[r, theta]]
+ToMatlab[Fid3Polar[r, theta]]
 
-Fid1[x_, p_] = CF12[x, p] * CFs[-x, -p]/Pi;
-Fid1Polar[r_, theta_] = Simplify[Fid1[r*Cos[theta], r*Sin[theta]]];
+Fid12[x_, p_] = CF12[x, p] * CFs[-x, -p]/Pi;
+Fid12Polar[r_, theta_] = Simplify[Fid12[r*Cos[theta], r*Sin[theta]]];
 Print["-----------------  Fid12"];
-ToMatlab[Fid1Polar[r, theta]]
+ToMatlab[Fid12Polar[r, theta]]
 
-Fid1[x_, p_] = CF13[x, p] * CFs[-x, -p]/Pi;
-Fid1Polar[r_, theta_] = Simplify[Fid1[r*Cos[theta], r*Sin[theta]]];
+Fid13[x_, p_] = CF13[x, p] * CFs[-x, -p]/Pi;
+Fid13Polar[r_, theta_] = Simplify[Fid13[r*Cos[theta], r*Sin[theta]]];
 Print["-----------------  Fid13"];
-ToMatlab[Fid1Polar[r, theta]]
+ToMatlab[Fid13Polar[r, theta]]
 
-Fid1[x_, p_] = CF23[x, p] * CFs[-x, -p]/Pi;
-Fid1Polar[r_, theta_] = Simplify[Fid1[r*Cos[theta], r*Sin[theta]]];
+Fid23[x_, p_] = CF23[x, p] * CFs[-x, -p]/Pi;
+Fid23Polar[r_, theta_] = Simplify[Fid23[r*Cos[theta], r*Sin[theta]]];
 Print["-----------------  Fid23"];
-ToMatlab[Fid1Polar[r, theta]]
+ToMatlab[Fid23Polar[r, theta]]
 
 (*ToMatlab[CF0[((1+gx) x)/Sqrt[2],((1+gp) p)/Sqrt[2]] CFalpha[1/2 (1-gx) x,1/2 (1-gp) p] CFtmsv[1/2 (-1+gx) x,1/2 (-1+gp) p,gx x,-gp p]]*)
 
