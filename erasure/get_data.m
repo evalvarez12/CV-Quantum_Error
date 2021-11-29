@@ -8,8 +8,8 @@ me = (0.0086-.0033)/100;
 
 
 
-V_num = 15;
-Vs = linspace(1, 20, V_num);
+V_num = 5;
+Vs = linspace(1, 30, V_num);
 
 F_1 = zeros(1, V_num);
 F_2 = F_1;
@@ -18,12 +18,18 @@ F_12 = F_1;
 F_13 = F_1;
 F_23 = F_1;
 
+par1 = zeros(2, V_num);
+par2 = par1;
+par3 = par1;
+par12 = par1;
+par13 = par1;
+par23 = par1;
 
 sigma = 10;
 
 gmax = 10;
-gmin = 1;
-gini = 1.1;
+gmin = -10;
+gini = 1;
 
 % gmax = 1;
 % gmin = 1;
@@ -69,12 +75,12 @@ for i = 1:V_num
     fun_23 = @(par) -fid_tmsv(V, par(1), par(2), '23', sigma);
 
 
-    [~, F_1(i)] = fmincon(fun_1, [gini, gini], [],[],[],[], [gmin, gmin], [gmax, gmax], [], OptOption);
-    [~, F_2(i)] = fmincon(fun_2, [gini, gini], [],[],[],[], [gmin, gmin], [gmax, gmax], [], OptOption);
-    [~, F_3(i)] = fmincon(fun_3, [gini, gini], [],[],[],[], [gmin, gmin], [gmax, gmax], [], OptOption);
-    [~, F_12(i)] = fmincon(fun_12, [gini, gini], [],[],[],[], [gmin, gmin], [gmax, gmax], [], OptOption);
-    [~, F_13(i)] = fmincon(fun_13, [gini, gini], [],[],[],[], [gmin, gmin], [gmax, gmax], [], OptOption);
-    [~, F_23(i)] = fmincon(fun_23, [gini, gini], [],[],[],[], [gmin, gmin], [gmax, gmax], [], OptOption);
+    [par1(:,i), F_1(i)] = fmincon(fun_1, [gini, gini], [],[],[],[], [gmin, gmin], [gmax, gmax], [], OptOption);
+    [par2(:,i), F_2(i)] = fmincon(fun_2, [gini, gini], [],[],[],[], [gmin, gmin], [gmax, gmax], [], OptOption);
+    [par3(:,i), F_3(i)] = fmincon(fun_3, [gini, gini], [],[],[],[], [gmin, gmin], [gmax, gmax], [], OptOption);
+    [par12(:,i), F_12(i)] = fmincon(fun_12, [gini, gini], [],[],[],[], [gmin, gmin], [gmax, gmax], [], OptOption);
+    [par13(:,i), F_13(i)] = fmincon(fun_13, [gini, gini], [],[],[],[], [gmin, gmin], [gmax, gmax], [], OptOption);
+    [par23(:,i), F_23(i)] = fmincon(fun_23, [gini, gini], [],[],[],[], [gmin, gmin], [gmax, gmax], [], OptOption);
     
 
 end
@@ -87,6 +93,10 @@ F_12 = -F_12;
 F_13 = -F_13; 
 F_23 = -F_23;
 
+F_1
+
+par1
+
 % Fepr
 % F_ps
 % F_pa
@@ -94,8 +104,8 @@ F_23 = -F_23;
 % F_as
 % F_sa
 
-results = [F_1(:), F_2(:), F_3(:), F_12(:), F_13(:), F_23(:)];
-save('results_Ftmsv.mat', 'results');
+% results = [F_1(:), F_2(:), F_3(:), F_12(:), F_13(:), F_23(:)];
+% save('results_Ftmsv.mat', 'results');
 
 % results = [F_as(:), F_as1(:), F_as2(:)];
 

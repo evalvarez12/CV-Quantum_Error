@@ -8,16 +8,21 @@ me = (0.0086-.0033)/100;
 
 
 
+V_num = 15;
+Vs = linspace(1, 2, V_num);
 
-F_1 = zeros(1, tnum);
+F_1 = zeros(1, V_num);
 F_2 = F_1;
 F_3 = F_1;
 F_12 = F_1;
 F_13 = F_1;
 F_23 = F_1;
 
+par1 = zeros(2, V_num);
+par2 = par1;
+par
 
-sig = 10;
+sigma = 10;
 
 gmax = 10;
 gmin = 1;
@@ -39,81 +44,51 @@ Vini = 1.5;
 
 
 
-fun_1 = @(par) -fid_tmsv(par(1), par(2), par(3), '1', sigma);
-fun_2 = @(par) -fid_tmsv(par(1), par(2), par(3), '2', sigma);
-fun_3 = @(par) -fid_tmsv(par(1), par(2), par(3), '3', sigma);
-fun_12 = @(par) -fid_tmsv(par(1), par(2), par(3), '12', sigma);
-fun_13 = @(par) -fid_tmsv(par(1), par(2), par(3), '13', sigma);
-fun_23 = @(par) -fid_tmsv(par(1), par(2), par(3), '23', sigma);
+% fun_1 = @(par) -fid_tmsv(par(1), par(2), par(3), '1', sigma);
+% fun_2 = @(par) -fid_tmsv(par(1), par(2), par(3), '2', sigma);
+% fun_3 = @(par) -fid_tmsv(par(1), par(2), par(3), '3', sigma);
+% fun_12 = @(par) -fid_tmsv(par(1), par(2), par(3), '12', sigma);
+% fun_13 = @(par) -fid_tmsv(par(1), par(2), par(3), '13', sigma);
+% fun_23 = @(par) -fid_tmsv(par(1), par(2), par(3), '23', sigma);
+% 
+% 
+% [~, F_1] = fmincon(fun_ep, [Tini, rini, gini], [],[],[],[], [Tmin, rmin, gmin], [Tmax, rmax, gmax], [], OptOption);
+% [~, F_2] = fmincon(fun_ps, [Tini, rini, gini], [],[],[],[], [Tmin, rmin, gmin], [Tmax, rmax, gmax], [], OptOption);
+% [~, F_3] = fmincon(fun_pa, [Tini, rini, gini], [],[],[],[], [Tmin, rmin, gmin], [Tmax, rmax, gmax], [], OptOption);
+% [~, F_12] = fmincon(fun_pc, [Tini, rini, gini], [],[],[],[], [Tmin, rmin, gmin], [Tmax, rmax, gmax], [], OptOption);
+% [~, F_13] = fmincon(fun_as, [Tini, rini, gini], [],[],[],[], [Tmin, rmin, gmin], [Tmax, rmax, gmax], [], OptOption);
+% [~, F_23 ] = fmincon(fun_sa, [Tini, rini, gini], [],[],[],[], [Tmin, rmin, gmin], [Tmax, rmax, gmax], [], OptOption);
 
 
-[~, F_1] = fmincon(fun_ep, [Tini, rini, gini], [],[],[],[], [Tmin, rmin, gmin], [Tmax, rmax, gmax], [], OptOption);
-[~, F_2] = fmincon(fun_ps, [Tini, rini, gini], [],[],[],[], [Tmin, rmin, gmin], [Tmax, rmax, gmax], [], OptOption);
-[~, F_3] = fmincon(fun_pa, [Tini, rini, gini], [],[],[],[], [Tmin, rmin, gmin], [Tmax, rmax, gmax], [], OptOption);
-[~, F_12] = fmincon(fun_pc, [Tini, rini, gini], [],[],[],[], [Tmin, rmin, gmin], [Tmax, rmax, gmax], [], OptOption);
-[~, F_13] = fmincon(fun_as, [Tini, rini, gini], [],[],[],[], [Tmin, rmin, gmin], [Tmax, rmax, gmax], [], OptOption);
-[~, F_23] = fmincon(fun_sa, [Tini, rini, gini], [],[],[],[], [Tmin, rmin, gmin], [Tmax, rmax, gmax], [], OptOption);
-
-
-for i = 6:tnum
+for i = 1:V_num
     disp([i]);
+    V = Vs(i);
     
-    % Fixed
-    t = ts(i);
-    e = 0.05;
+    fun_1 = @(par) -fid_tmsv(V, par(1), par(2), '1', sigma);
+    fun_2 = @(par) -fid_tmsv(V, par(1), par(2), '2', sigma);
+    fun_3 = @(par) -fid_tmsv(V, par(1), par(2), '3', sigma);
+    fun_12 = @(par) -fid_tmsv(V, par(1), par(2), '12', sigma);
+    fun_13 = @(par) -fid_tmsv(V, par(1), par(2), '13', sigma);
+    fun_23 = @(par) -fid_tmsv(V, par(1), par(2), '23', sigma);
 
 
-    % Fiber
-%     t = 10^(-tdB(i)/10);
-%     L = Ls(i);
-%     t = 10^(-(0.16 * L)/10);
-%     e = me * L + 0.0006;
-
-    % Sat
-%     t = ts(i);
-%     e = t * 0.0186 + 0.0133/0.95;
-
-
-    fun_ep = @(par) -coh_loss_eta_mean(par(1), par(2), t, e, 'epr', par(3), eta, sig);
-    fun_ps = @(par) -coh_loss_eta_mean(par(1), par(2), t, e, 'ps', par(3), eta, sig);
-    fun_pa = @(par) -coh_loss_eta_mean(par(1), par(2), t, e, 'pa', par(3), eta, sig);
-    fun_pc = @(par) -coh_loss_eta_mean(par(1), par(2), t, e, 'pc', par(3), eta, sig);
-    fun_as = @(par) -coh_loss_eta_mean(par(1), par(2), t, e, 'as', par(3), eta, sig);
-    fun_sa = @(par) -coh_loss_eta_mean(par(1), par(2), t, e, 'sa', par(3), eta, sig);
-    
-    
-%     fun_ep = @(par) -sq_loss_eta(par(1), par(2), t, e, 'epr', par(3), eta, sig);
-%     fun_ps = @(par) -sq_loss_eta(par(1), par(2), t, e, 'ps', par(3), eta, sig);
-%     fun_pa = @(par) -sq_loss_eta(par(1), par(2), t, e, 'pa', par(3), eta, sig);
-%     fun_pc = @(par) -sq_loss_eta(par(1), par(2), t, e, 'pc', par(3), eta, sig);
-%     fun_as = @(par) -sq_loss_eta(par(1), par(2), t, e, 'as', par(3), eta, sig);
-%     fun_sa = @(par) -sq_loss_eta(par(1), par(2), t, e, 'sa', par(3), eta, sig);
-    
-%     fun_ep = @(par) -sq_coh_loss_eta(par(1), par(2), t, e, 'epr', par(3), eta, s, sig);
-%     fun_ps = @(par) -sq_coh_loss_eta(par(1), par(2), t, e, 'ps', par(3), eta, s, sig);
-%     fun_pa = @(par) -sq_coh_loss_eta(par(1), par(2), t, e, 'pa', par(3), eta, s, sig);
-%     fun_pc = @(par) -sq_coh_loss_eta(par(1), par(2), t, e, 'pc', par(3), eta, s, sig);
-%     fun_as = @(par) -sq_coh_loss_eta(par(1), par(2), t, e, 'as', par(3), eta, s, sig);
-%     fun_sa = @(par) -sq_coh_loss_eta(par(1), par(2), t, e, 'sa', par(3), eta, s, sig);
-    
-    
-    [~, Fepr(i)] = fmincon(fun_ep, [Tini, rini, gini], [],[],[],[], [Tmin, rmin, gmin], [Tmax, rmax, gmax], [], OptOption);
-    [~, F_ps(i)] = fmincon(fun_ps, [Tini, rini, gini], [],[],[],[], [Tmin, rmin, gmin], [Tmax, rmax, gmax], [], OptOption);
-    [~, F_pa(i)] = fmincon(fun_pa, [Tini, rini, gini], [],[],[],[], [Tmin, rmin, gmin], [Tmax, rmax, gmax], [], OptOption);
-    [~, F_pc(i)] = fmincon(fun_pc, [Tini, rini, gini], [],[],[],[], [Tmin, rmin, gmin], [Tmax, rmax, gmax], [], OptOption);
-    [~, F_as(i)] = fmincon(fun_as, [Tini, rini, gini], [],[],[],[], [Tmin, rmin, gmin], [Tmax, rmax, gmax], [], OptOption);
-    [~, F_sa(i)] = fmincon(fun_sa, [Tini, rini, gini], [],[],[],[], [Tmin, rmin, gmin], [Tmax, rmax, gmax], [], OptOption);
+    [par1, F_1(i)] = fmincon(fun_1, [gini, gini], [],[],[],[], [gmin, gmin], [gmax, gmax], [], OptOption);
+    [par2, F_2(i)] = fmincon(fun_2, [gini, gini], [],[],[],[], [gmin, gmin], [gmax, gmax], [], OptOption);
+    [par, F_3(i)] = fmincon(fun_3, [gini, gini], [],[],[],[], [gmin, gmin], [gmax, gmax], [], OptOption);
+    [~, F_12(i)] = fmincon(fun_12, [gini, gini], [],[],[],[], [gmin, gmin], [gmax, gmax], [], OptOption);
+    [~, F_13(i)] = fmincon(fun_13, [gini, gini], [],[],[],[], [gmin, gmin], [gmax, gmax], [], OptOption);
+    [~, F_23(i)] = fmincon(fun_23, [gini, gini], [],[],[],[], [gmin, gmin], [gmax, gmax], [], OptOption);
     
 
 end
 
 
-Fepr = -Fepr;
-F_ps = -F_ps;
-F_pa = -F_pa;
-F_pc = -F_pc;
-F_as = -F_as; 
-F_sa = -F_sa;
+F_1 = -F_1;
+F_2 = -F_2;
+F_3 = -F_3;
+F_12 = -F_12;
+F_13 = -F_13; 
+F_23 = -F_23;
 
 % Fepr
 % F_ps
@@ -122,8 +97,8 @@ F_sa = -F_sa;
 % F_as
 % F_sa
 
-results = [Fepr(:), F_ps(:), F_pa(:), F_pc(:), F_as(:), F_sa(:)];
-save('sq_results_sig10.mat', 'results');
+results = [F_1(:), F_2(:), F_3(:), F_12(:), F_13(:), F_23(:)];
+save('results_Ftmsv.mat', 'results');
 
 % results = [F_as(:), F_as1(:), F_as2(:)];
 

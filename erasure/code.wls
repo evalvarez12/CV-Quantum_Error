@@ -44,32 +44,32 @@ CF23[x_, p_] = CFs[(1+gx)*x/2, (1+gp)*p/2]*CFab[(1+gx)*x/2, (1+gp)*p/2, 0, 0]*CF
 
 
 Fid1[x_, p_] = CF1[x, p] * CFs[-x, -p]/Pi;
-Fid1Polar[r_, theta_] = Simplify[Fid1[r*Cos[theta], r*Sin[theta]]];
+Fid1Polar[r_, theta_] = Simplify[r*Fid1[r*Cos[theta], r*Sin[theta]]];
 Print["-----------------  Fid1"];
 ToMatlab[Fid1Polar[r, theta]]
 
 Fid2[x_, p_] = CF2[x, p] * CFs[-x, -p]/Pi;
-Fid2Polar[r_, theta_] = Simplify[Fid2[r*Cos[theta], r*Sin[theta]]];
+Fid2Polar[r_, theta_] = Simplify[r*Fid2[r*Cos[theta], r*Sin[theta]]];
 Print["-----------------  Fid2"];
 ToMatlab[Fid2Polar[r, theta]]
 
 Fid3[x_, p_] = CF3[x, p] * CFs[-x, -p]/Pi;
-Fid3Polar[r_, theta_] = Simplify[Fid3[r*Cos[theta], r*Sin[theta]]];
+Fid3Polar[r_, theta_] = Simplify[r*Fid3[r*Cos[theta], r*Sin[theta]]];
 Print["-----------------  Fid3"];
 ToMatlab[Fid3Polar[r, theta]]
 
 Fid12[x_, p_] = CF12[x, p] * CFs[-x, -p]/Pi;
-Fid12Polar[r_, theta_] = Simplify[Fid12[r*Cos[theta], r*Sin[theta]]];
+Fid12Polar[r_, theta_] = Simplify[r*Fid12[r*Cos[theta], r*Sin[theta]]];
 Print["-----------------  Fid12"];
 ToMatlab[Fid12Polar[r, theta]]
 
 Fid13[x_, p_] = CF13[x, p] * CFs[-x, -p]/Pi;
-Fid13Polar[r_, theta_] = Simplify[Fid13[r*Cos[theta], r*Sin[theta]]];
+Fid13Polar[r_, theta_] = Simplify[r*Fid13[r*Cos[theta], r*Sin[theta]]];
 Print["-----------------  Fid13"];
 ToMatlab[Fid13Polar[r, theta]]
 
 Fid23[x_, p_] = CF23[x, p] * CFs[-x, -p]/Pi;
-Fid23Polar[r_, theta_] = Simplify[Fid23[r*Cos[theta], r*Sin[theta]]];
+Fid23Polar[r_, theta_] = Simplify[r*Fid23[r*Cos[theta], r*Sin[theta]]];
 Print["-----------------  Fid23"];
 ToMatlab[Fid23Polar[r, theta]]
 
