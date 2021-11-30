@@ -2,8 +2,8 @@
 (* ::Package:: *)
 
 Clear["Global`*"];
-(*Import["/home/eduardo/quantum/CV-Quantum_Error_Correction/erasure/ToMatlab.m", "Package"];*)
-Import["\\Users\\z5239621\\Documents\\Repos\\CV-Quantum_Error_Correction\\erasure\\ToMatlab.m", "Package"];
+Import["/home/eduardo/quantum/CV-Quantum_Error_Correction/erasure/ToMatlab.m", "Package"];
+(*Import["\\Users\\z5239621\\Documents\\Repos\\CV-Quantum_Error_Correction\\erasure\\ToMatlab.m", "Package"];*)
 (*Import["/home/eduardo/QuantumComms/CV-Quantum_Error_Correction/chain/cm.wls", "Package"];*)
 
 V=.;
@@ -41,6 +41,9 @@ CF13[x_, p_] = CFs[(1-gx)*x/2, (1-gp)*p/2]*CFab[-(1-gx)*x/2, -(1-gp)*p/2, 0, 0]*
 (*------- Mode 2,3 lost --------------*)
 CF23[x_, p_] = CFs[(1+gx)*x/2, (1+gp)*p/2]*CFab[(1+gx)*x/2, (1+gp)*p/2, 0, 0]*CF0[(1-gx)*x/Sqrt[2], (1-gp)*p/Sqrt[2]]*CF0[gx*x, -gp*p];
 
+(*------- All lost --------------*)
+CF123[x_, p_] = CF0[x, p];
+
 
 
 Fid1[x_, p_] = CF1[x, p] * CFs[-x, -p]/Pi;
@@ -73,6 +76,10 @@ Fid23Polar[r_, theta_] = Simplify[r*Fid23[r*Cos[theta], r*Sin[theta]]];
 Print["-----------------  Fid23"];
 ToMatlab[Fid23Polar[r, theta]]
 
+Fid123[x_, p_] = CF123[x, p] * CFs[-x, -p]/Pi;
+Fid123Polar[r_, theta_] = Simplify[r*Fid123[r*Cos[theta], r*Sin[theta]]];
+Print["-----------------  Fid123"];
+ToMatlab[Fid123Polar[r, theta]]
 (*ToMatlab[CF0[((1+gx) x)/Sqrt[2],((1+gp) p)/Sqrt[2]] CFalpha[1/2 (1-gx) x,1/2 (1-gp) p] CFtmsv[1/2 (-1+gx) x,1/2 (-1+gp) p,gx x,-gp p]]*)
 
 

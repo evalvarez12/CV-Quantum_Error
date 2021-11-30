@@ -6,8 +6,6 @@ OptOption = optimoptions(@fmincon, 'FunctionTolerance', 1e-30,'StepTolerance', 1
 me = (0.0086-.0033)/100;
 
 
-
-
 V_num = 5;
 Vs = linspace(1, 30, V_num);
 
