@@ -1,4 +1,4 @@
-function [F] = full_fid_tmsv(V, gx, gp, sigma)
+function [F] = full_fid_tmsv(V, gx, gp, Pe, sigma)
 warning('off')
 
 F_1 = fid_tmsv(V, gx, gp, '1', sigma);

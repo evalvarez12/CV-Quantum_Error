@@ -2,6 +2,9 @@ clc;clear
 
 OptOption = optimoptions(@fmincon, 'FunctionTolerance', 1e-30,'StepTolerance', 1e-20, 'Display','off');
 
+% 'algorithm','sqp'
+me = (0.0086-.0033)/100;
+
 
 V_num = 72;
 Vs = linspace(1, 7, V_num);
@@ -90,7 +93,7 @@ F_23 = -F_23;
 
 
 results = [Vs(:), F_1(:), F_2(:), F_3(:), F_12(:), F_13(:), F_23(:)];
-save('data/dic_Fs.mat', 'results');
+save('dic_Fs.mat', 'results');
 
 results_pars = [transpose(par1(1, :)), transpose(par1(2, :)), ...
                 transpose(par2(1, :)), transpose(par2(2, :)), ...
@@ -98,5 +101,5 @@ results_pars = [transpose(par1(1, :)), transpose(par1(2, :)), ...
                 transpose(par12(1, :)), transpose(par12(2, :)), ...
                 transpose(par13(1, :)), transpose(par13(2, :)), ...
                 transpose(par23(1, :)), transpose(par23(2, :))];
-save('data/dic_Fs_pars.mat', 'results_pars');
+save('dic_Fs_pars.mat', 'results_pars');
 

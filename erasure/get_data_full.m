@@ -10,6 +10,8 @@ num = 12;
 Ps = linspace(0, .6, num);
 
 F = zeros(1, num);
+pars = zeros(3, num);
+Fdir = F;
 
 sigma = 10;
 
@@ -23,6 +25,7 @@ Vmax = 100;
 Vmin = 1;
 Vini = 1.5;
 
+F123 = fid_tmsv(1, 1, 1, '123', sigma);
 
 
 
@@ -30,15 +33,18 @@ parfor i = 1:num
     disp([i]);
     Pe = Ps(i);
     
-    fun = @(par) -full_fid_tmsv(par(1), par(2), par(3), sigma);
+    fun = @(par) -full_fid_tmsv(par(1), par(2), par(3), Pe, sigma);
 
-    [~, F(i)] = fmincon(fun, [Vini, gini, gini], [],[],[],[], [Vmin, gmin, gmin], [Vmax, gmax, gmax], [], OptOption);
+    [pars(:, i), F(i)] = fmincon(fun, [Vini, gini, gini], [],[],[],[], [Vmin, gmin, gmin], [Vmax, gmax, gmax], [], OptOption);
+        
+    Fdir(i) = (1-Pe) + Pe * F123;
 
+    
 end
 
 
 F = -F;
 
 
-results = [Ps(:), F(:)];
+results = [Ps(:), transpose(pars(1,:)), F(:), Fdir(:)];
 save('results_Ftmsv_full.mat', 'results');
