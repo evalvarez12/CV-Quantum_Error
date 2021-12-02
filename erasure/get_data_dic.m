@@ -21,6 +21,7 @@ dic = ParameterDic();
 dic = dic.setupImpl();
 
 F_123 = fid_tmsv(1, 1, 1, '123', sigma);
+% F_123 = 0.0909 sigma = 10
 
 parfor i = 1:num
     disp([i]);
