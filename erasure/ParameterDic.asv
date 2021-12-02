@@ -1,0 +1,46 @@
+classdef ParameterDic
+    properties
+        Size
+        Pars1
+        Pars2
+        Pars3
+        Pars12
+        Pars13
+        Pars23
+        Vs
+    end
+
+    methods
+        function setupImpl(obj)
+            all_pars = load();
+            Size = 12;
+            obj.Vs = load();
+            obj.Pars1 = [all_pars(:, 1) all_pars(:, 2)];
+            obj.Pars2 = [all_pars(:, 3) all_pars(:, 4)];
+            obj.Pars3 = [all_pars(:, 5) all_pars(:, 6)];
+            obj.Pars12 = [all_pars(:, 7) all_pars(:, 8)];
+            obj.Pars13 = [all_pars(:, 9) all_pars(:, 10)];
+            obj.Pars23 = [all_pars(:, 11) all_pars(:, 12)];
+        end
+        
+        
+        
+        function [F] = idelity(V, modes, sigma)
+            [val, ind] = min(Vs - V);
+            switch modes
+                case '1'
+                    F = fid_tmsv(V, obj.Pars1(1, ind), obj.Pars1(1, ind), '1', sigma);
+                case '2'
+                    F = fid_tmsv(V, obj.Pars2(1, ind), obj.Pars2(1, ind), '1', sigma);
+                case '3'
+                    F = fid_tmsv(V, obj.Pars3(1, ind), obj.Pars3(1, ind), '1', sigma);
+                case '12'
+                    F = fid_tmsv(V, obj.Pars12(1, ind), obj.Pars12(1, ind), '1', sigma);
+                case '13'
+                    F = fid_tmsv(V, obj.Pars13(1, ind), obj.Pars13(1, ind), '1', sigma);
+                case '23'
+                    F = fid_tmsv(V, obj.Pars23(1, ind), obj.Pars23(1, ind), '1', sigma);
+            end
+        end    
+        
+        
