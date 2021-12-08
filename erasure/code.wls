@@ -10,8 +10,8 @@ V=.;
 V2=Sqrt[V^2-1];
 gx=.;
 gp=.;
-ar=.;
-ai=.;
+ra=.;
+ri=.;
 d=.;
 r=.;
 
@@ -19,11 +19,11 @@ r=.;
 CFtmsv[xa_, pa_, xb_, pb_] = Exp[-V/2*(xa^2 + pa^2 + xb^2 + pb^2) + V2*(xa*xb - pa*pb)];
 CF0[x_, p_] = Exp[-1/2*(x^2 + p^2)];
 (*CFalpha[x_, p_] = Exp[-1/2*(x^2 + p^2) + 2*I*(p*ar - x*ai)];*)
-CFalpha[x_, p_] = Exp[-1/2*(x^2 + p^2) + 2*I*(p*ar)];
+CFalpha[x_, p_] = Exp[-1/2*(x^2 + p^2) + 2*I*(p*ra)];
 
-CFsb[xa_, pa_, xb_, pb_] = 1/Sqrt[Cos[d]^2 + Sin[d]^2]*Exp[-V/2*(xa^2 + pa^2 + xb^2 + pb^2) + V2*(xa*xb - pa*pb)](Cos[d]^2 + 2*Cos[d]*Sin[d] + V*(xa*xb-pa*pb) - V2/2*(xa^2 + pa^2 + xb^2 + pb^2) +
+CFsb[xa_, pa_, xb_, pb_] = 1/Sqrt[Cos[d]^2 + Sin[d]^2]*Exp[-V/2*(xa^2 + pa^2 + xb^2 + pb^2) + V2*(xa*xb - pa*pb)](Cos[d]^2 - 2*Cos[d]*Sin[d]*(V*(xa*xb-pa*pb) - V2/2*(xa^2 + pa^2 + xb^2 + pb^2)) +
 							Sin[d]^2*(1 - (xa^2 + pa^2 + xb^2 + pb^2)*V + 2*V2*(xa*xb - pa*pb)+ (V^2 + V2^2/2)*((xa*xb)^2 + (pa*pb)^2) + (V^2 - V2^2/2)*((xa*pb)^2 + (pa*xb)^2) + V2^2/4 * (xa^4 + xb^4 + pa^4 + pb^4) +
-							V*V2*(-xa^3*xb + xa^2*pa*pb - xa*xb^3 + xb^2*pa*pb - x*xb*pa^2 + pa*pb^3 + pa^3*pb) + V2^2/2*(xa^2*pa^2 + xb^2*pb^2) - 2*V2^2*xa*xb*pa*pb)) 
+							V*V2*(-xa^3*xb + xa^2*pa*pb - xa*xb^3 + xb^2*pa*pb - xa*xb*pa^2 + pa*pb^3 + pa^3*pb) + V2^2/2*(xa^2*pa^2 + xb^2*pb^2) - 2*V2^2*xa*xb*pa*pb));
 
 (*----------------------------------------*)
 CFs[x_, p_] = CFalpha[x, p];
@@ -51,6 +51,7 @@ CF23[x_, p_] = CFs[(1+gx)*x/2, (1+gp)*p/2]*CFab[(1+gx)*x/2, (1+gp)*p/2, 0, 0]*CF
 (*------- All lost --------------*)
 CF123[x_, p_] = CF0[x, p];
 
+CFsb[xa, pa, xb, pb]
 
 
 Fid1[x_, p_] = CF1[x, p] * CFs[-x, -p]/Pi;
@@ -90,4 +91,4 @@ ToMatlab[Fid123Polar[r, theta]]
 (*ToMatlab[CF0[((1+gx) x)/Sqrt[2],((1+gp) p)/Sqrt[2]] CFalpha[1/2 (1-gx) x,1/2 (1-gp) p] CFtmsv[1/2 (-1+gx) x,1/2 (-1+gp) p,gx x,-gp p]]*)
 
 
-CFsb0[a - Sinh[r]*bc, Cosh[r]*b - Sinh[r]*ac]
+CFsb[0, 0, 0, 0]

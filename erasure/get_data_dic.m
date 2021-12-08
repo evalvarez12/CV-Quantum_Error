@@ -4,7 +4,7 @@ OptOption = optimoptions(@fmincon, 'FunctionTolerance', 1e-30,'StepTolerance', 1
 
 
 num = 24;
-Ps = linspace(0, .7, num);
+Ps = linspace(0.05, .7, num);
 
 F = zeros(1, num);
 Fdir = F;
@@ -40,5 +40,5 @@ end
 F = -F;
 
 
-results = [Ps(:), F(:), Fdir(:)];
+results = [Ps(:), pars(:), F(:), Fdir(:)];
 save('data/results_F_dic.mat', 'results');

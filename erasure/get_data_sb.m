@@ -30,9 +30,9 @@ gini = 1;
 % gmin = 1;
 % gini = 1;
 
-Tmax = 0.999;
-Tmin = 0.001;
-Tini = 0.99;
+Tmax = 2*pi;
+Tmin = 0.0;
+Tini = pi/4;
 
 
 Vmax = 10;
