@@ -58,8 +58,9 @@ Vini = 1.5;
 % [~, F_23 ] = fmincon(fun_sa, [Tini, rini, gini], [],[],[],[], [Tmin, rmin, gmin], [Tmax, rmax, gmax], [], OptOption);
 
 
-for i = 1:V_num
+parfor i = 1:V_num
     V = Vs(i);
+    disp(i);
     
     fun_1 = @(par) -fid_sb(V, par(1), par(2), par(3), '1', sigma);
     fun_2 = @(par) -fid_sb(V, par(1), par(2), par(3), '2', sigma);

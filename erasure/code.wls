@@ -2,8 +2,8 @@
 (* ::Package:: *)
 
 Clear["Global`*"];
-(*Import["/home/eduardo/quantum/CV-Quantum_Error_Correction/erasure/ToMatlab.m", "Package"];*)
-Import["\\Users\\z5239621\\Documents\\Repos\\CV-Quantum_Error_Correction\\erasure\\ToMatlab.m", "Package"];
+Import["/home/eduardo/quantum/CV-Quantum_Error_Correction/erasure/ToMatlab.m", "Package"];
+(*Import["\\Users\\z5239621\\Documents\\Repos\\CV-Quantum_Error_Correction\\erasure\\ToMatlab.m", "Package"];*)
 (*Import["/home/eduardo/QuantumComms/CV-Quantum_Error_Correction/chain/cm.wls", "Package"];*)
 
 V=.;
@@ -18,8 +18,8 @@ r=.;
 
 CFtmsv[xa_, pa_, xb_, pb_] = Exp[-V/2*(xa^2 + pa^2 + xb^2 + pb^2) + V2*(xa*xb - pa*pb)];
 CF0[x_, p_] = Exp[-1/2*(x^2 + p^2)];
-(*CFalpha[x_, p_] = Exp[-1/2*(x^2 + p^2) + 2*I*(p*ar - x*ai)];*)
-CFalpha[x_, p_] = Exp[-1/2*(x^2 + p^2) + 2*I*(p*ra)];
+CFalpha[x_, p_] = Exp[-1/2*(x^2 + p^2) + 2*I*(p*ra - x*ri)];
+(*CFalpha[x_, p_] = Exp[-1/2*(x^2 + p^2) + 2*I*(p*ra)];*)
 
 CFsb[xa_, pa_, xb_, pb_] = 1/Sqrt[Cos[d]^2 + Sin[d]^2]*Exp[-V/2*(xa^2 + pa^2 + xb^2 + pb^2) + V2*(xa*xb - pa*pb)](Cos[d]^2 - 2*Cos[d]*Sin[d]*(V*(xa*xb-pa*pb) - V2/2*(xa^2 + pa^2 + xb^2 + pb^2)) +
 							Sin[d]^2*(1 - (xa^2 + pa^2 + xb^2 + pb^2)*V + 2*V2*(xa*xb - pa*pb)+ (V^2 + V2^2/2)*((xa*xb)^2 + (pa*pb)^2) + (V^2 - V2^2/2)*((xa*pb)^2 + (pa*xb)^2) + V2^2/4*(xa^4 + xb^4 + pa^4 + pb^4) +
@@ -102,6 +102,9 @@ FidtelePolar[r_, theta_] = Simplify[r*Fidtele[r*Cos[theta], r*Sin[theta]]];
 Print["-----------------  Fidtele"];
 ToMatlab[FidtelePolar[r, theta]]
 Simplify[Fidtele[x,p]]
+
+
+
 
 
 

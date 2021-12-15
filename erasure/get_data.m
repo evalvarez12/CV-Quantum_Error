@@ -3,7 +3,7 @@ clc;clear
 OptOption = optimoptions(@fmincon, 'FunctionTolerance', 1e-30,'StepTolerance', 1e-20, 'Display','off');
 
 
-V_num = 72;
+V_num = 12;
 Vs = linspace(1, 7, V_num);
 
 F_1 = zeros(1, V_num);
@@ -61,12 +61,12 @@ Vini = 1.5;
 for i = 1:V_num
     V = Vs(i);
     
-    fun_1 = @(par) -fid_tmsv(V, par(1), par(2), '1', sigma);
-    fun_2 = @(par) -fid_tmsv(V, par(1), par(2), '2', sigma);
-    fun_3 = @(par) -fid_tmsv(V, par(1), par(2), '3', sigma);
-    fun_12 = @(par) -fid_tmsv(V, par(1), par(2), '12', sigma);
-    fun_13 = @(par) -fid_tmsv(V, par(1), par(2), '13', sigma);
-    fun_23 = @(par) -fid_tmsv(V, par(1), par(2), '23', sigma);
+    fun_1 = @(par) -fid_tmsv_ri(V, par(1), par(2), '1', sigma);
+    fun_2 = @(par) -fid_tmsv_ri(V, par(1), par(2), '2', sigma);
+    fun_3 = @(par) -fid_tmsv_ri(V, par(1), par(2), '3', sigma);
+    fun_12 = @(par) -fid_tmsv_ri(V, par(1), par(2), '12', sigma);
+    fun_13 = @(par) -fid_tmsv_ri(V, par(1), par(2), '13', sigma);
+    fun_23 = @(par) -fid_tmsv_ri(V, par(1), par(2), '23', sigma);
 
 
     [par1(:,i), F_1(i)] = fmincon(fun_1, [gini, gini], [],[],[],[], [gmin, gmin], [gmax, gmax], [], OptOption);

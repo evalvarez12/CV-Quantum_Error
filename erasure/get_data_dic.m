@@ -17,7 +17,9 @@ Vmin = 1;
 Vini = 1.1;
 
 
-dic = ParameterDic();
+% dic = ParameterDic();
+dic = ParameterDicSb();
+
 dic = dic.setupImpl();
 
 F_123 = fid_tmsv(1, 1, 1, '123', sigma);
@@ -41,4 +43,4 @@ F = -F;
 
 
 results = [Ps(:), pars(:), F(:), Fdir(:)];
-save('data/results_F_dic.mat', 'results');
+save('data/results_F_dic_sb.mat', 'results');
