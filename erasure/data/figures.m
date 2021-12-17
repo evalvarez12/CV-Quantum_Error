@@ -73,16 +73,16 @@ plot(Vs(1:2:end), F23(1:2:end),'-', 'LineWidth', 1.7, 'DisplayName', '$\bar{\mat
 plot(Vs(1:2:end), F123(1:2:end),'-', 'LineWidth', 1.7, 'DisplayName', '$\bar{\mathcal{F}}_{123}$');
 
 
-plot(Vs(1:2:end), F1_sb(1:2:end),'o', 'LineWidth', 1.7, 'DisplayName', '$\bar{\mathcal{F}}_1$');
-plot(Vs(1:2:end), F2_sb(1:2:end),'o', 'LineWidth', 1.7, 'DisplayName', '$\bar{\mathcal{F}}_2$');
-plot(Vs(1:2:end), F3_sb(1:2:end),'o', 'LineWidth', 1.7, 'DisplayName', '$\bar{\mathcal{F}}_3$');
-plot(Vs(1:2:end), F12_sb(1:2:end),'o', 'LineWidth', 1.7, 'DisplayName', '$\bar{\mathcal{F}}_{12}$');
-plot(Vs(1:2:end), F13_sb(1:2:end),'o', 'LineWidth', 1.7, 'DisplayName', '$\bar{\mathcal{F}}_{13}$');
-plot(Vs(1:2:end), F23_sb(1:2:end),'o', 'LineWidth', 1.7, 'DisplayName', '$\bar{\mathcal{F}}_{23}$');
-plot(Vs(1:2:end), F23_sb(1:2:end),'o', 'LineWidth', 1.7, 'DisplayName', '$\bar{\mathcal{F}}_{23}$');
-plot(Vs(1:2:end), F123_sb(1:2:end),'o', 'LineWidth', 1.7, 'DisplayName', '$\bar{\mathcal{F}}_{123}$');
+plot(Vs(1:2:end), F1_sb(1:2:end),'o', 'LineWidth', 1.7, 'DisplayName', '$\mathrm{SB}~ \bar{\mathcal{F}}_1$');
+plot(Vs(1:2:end), F2_sb(1:2:end),'o', 'LineWidth', 1.7, 'DisplayName', '$\mathrm{SB}~ \bar{\mathcal{F}}_2$');
+plot(Vs(1:2:end), F3_sb(1:2:end),'o', 'LineWidth', 1.7, 'DisplayName', '$\mathrm{SB}~\bar{\mathcal{F}}_3$');
+plot(Vs(1:2:end), F12_sb(1:2:end),'o', 'LineWidth', 1.7, 'DisplayName', '$\mathrm{SB}~\bar{\mathcal{F}}_{12}$');
+plot(Vs(1:2:end), F13_sb(1:2:end),'o', 'LineWidth', 1.7, 'DisplayName', '$\mathrm{SB}~\bar{\mathcal{F}}_{13}$');
+plot(Vs(1:2:end), F23_sb(1:2:end),'o', 'LineWidth', 1.7, 'DisplayName', '$\mathrm{SB}~\bar{\mathcal{F}}_{23}$');
+plot(Vs(1:2:end), F23_sb(1:2:end),'o', 'LineWidth', 1.7, 'DisplayName', '$\mathrm{SB}~\bar{\mathcal{F}}_{23}$');
+plot(Vs(1:2:end), F123(1:2:end),'o', 'LineWidth', 1.7, 'DisplayName', '$\mathrm{SB}~\bar{\mathcal{F}}_{123}$');
 
-l1 = legend();
+l1 = legend('NumColumns',4);
 set(l1, 'Interpreter', 'latex');
 ylabel('$\bar{\mathcal{F}}$', 'Interpreter', 'latex');
 xlabel('$V$', 'Interpreter', 'latex');
