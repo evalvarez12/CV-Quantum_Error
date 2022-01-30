@@ -19,12 +19,12 @@ classdef ParameterDicSb
             [l, ~] = size(fs);
             obj.Size = l;
             obj.Vs = fs(:, 1);
-            obj.Pars1 = [all_pars(:, 1) all_pars(:, 2) all_pars(:, 3)];
-            obj.Pars2 = [all_pars(:, 4) all_pars(:, 5) all_pars(:, 6)];
-            obj.Pars3 = [all_pars(:, 7) all_pars(:, 8) all_pars(:, 9)];
-            obj.Pars12 = [all_pars(:, 10) all_pars(:, 11) all_pars(:, 12)];
-            obj.Pars13 = [all_pars(:, 13) all_pars(:, 14) all_pars(:, 15)];
-            obj.Pars23 = [all_pars(:, 16) all_pars(:, 17) all_pars(:, 18)];
+            obj.Pars1 = [all_pars(:, 1) all_pars(:, 2)];
+            obj.Pars2 = [all_pars(:, 3) all_pars(:, 4)];
+            obj.Pars3 = [all_pars(:, 5) all_pars(:, 6)];
+            obj.Pars12 = [all_pars(:, 7) all_pars(:, 8)];
+            obj.Pars13 = [all_pars(:, 9) all_pars(:, 10)];
+            obj.Pars23 = [all_pars(:, 11) all_pars(:, 12)];
         end
         
         
@@ -34,22 +34,22 @@ classdef ParameterDicSb
 %             disp([ind]);
             switch modes
                 case '1'
-                    F = fid_sb(V, obj.Pars1(ind, 1), obj.Pars1(ind, 2), obj.Pars1(ind, 3), '1', sigma);
+                    F = fid_sb_ri(V, obj.Pars1(ind, 1), obj.Pars1(ind, 2), '1', sigma);
 %                     disp([obj.Pars1(ind, 1) obj.Pars1(ind, 2)]);
                 case '2'
-                    F = fid_sb(V, obj.Pars2(ind, 1), obj.Pars2(ind, 2), obj.Pars2(ind, 3), '2', sigma);
+                    F = fid_sb_ri(V, obj.Pars2(ind, 1), obj.Pars2(ind, 2), '2', sigma);
 %                     disp([obj.Pars2(ind, 1) obj.Pars2(ind, 2)]);
                 case '3'
-                    F = fid_sb(V, obj.Pars3(ind, 1), obj.Pars3(ind, 2), obj.Pars3(ind, 3), '3', sigma);
+                    F = fid_sb_ri(V, obj.Pars3(ind, 1), obj.Pars3(ind, 2), '3', sigma);
 %                     disp([obj.Pars3(ind, 1) obj.Pars3(ind, 2)]);
                 case '12'
-                    F = fid_sb(V, obj.Pars12(ind, 1), obj.Pars12(ind, 2), obj.Pars12(ind, 3), '12', sigma);
+                    F = fid_sb_ri(V, obj.Pars12(ind, 1), obj.Pars12(ind, 2), '12', sigma);
 %                     disp([obj.Pars12(ind, 1) obj.Pars12(ind, 2)]);
                 case '13'
-                    F = fid_sb(V, obj.Pars13(ind, 1), obj.Pars13(ind, 2), obj.Pars13(ind, 3), '13', sigma);
+                    F = fid_sb_ri(V, obj.Pars13(ind, 1), obj.Pars13(ind, 2), '13', sigma);
 %                     disp([obj.Pars13(ind, 1) obj.Pars13(ind, 2)]);
                 case '23'
-                    F = fid_sb(V, obj.Pars23(ind, 1), obj.Pars23(ind, 2), obj.Pars23(ind, 3), '23', sigma);
+                    F = fid_sb_ri(V, obj.Pars23(ind, 1), obj.Pars23(ind, 2), '23', sigma);
 %                     disp([obj.Pars23(ind, 1) obj.Pars23(ind, 2)]);
             end
         end
@@ -66,6 +66,16 @@ classdef ParameterDicSb
             
             F = (1-Pe)^3  + Pe*(1-Pe)^2*F_1 + + Pe*(1-Pe)^2*F_2 + + Pe*(1-Pe)^2*F_3 + ...
                 Pe^2*(1-Pe)*F_12 + Pe^2*(1-Pe)*F_13 +Pe^2*(1-Pe)*F_23 + Pe^3*F_123;
+        end
+        
+        
+        function [F] = Partial_fidelity(obj, Pe, V, sigma)
+            F_1 = obj.Fidelity(V, '1', sigma);
+            F_2 = obj.Fidelity(V, '2', sigma);
+            F_3 = obj.Fidelity(V, '3', sigma);
+
+            
+            F = (1-Pe)^3  + Pe*(1-Pe)^2*F_1 + + Pe*(1-Pe)^2*F_2 + + Pe*(1-Pe)^2*F_3;
         end
     end
 end

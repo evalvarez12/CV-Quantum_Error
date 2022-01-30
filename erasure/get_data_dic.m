@@ -4,7 +4,7 @@ OptOption = optimoptions(@fmincon, 'FunctionTolerance', 1e-30,'StepTolerance', 1
 
 
 num = 24;
-Ps = linspace(0.05, .7, num);
+Ps = linspace(0.001, .7, num);
 
 F = zeros(1, num);
 Fdir = F;
@@ -12,24 +12,24 @@ pars = F;
 
 sigma = 10;
 
-Vmax = 7;
+Vmax = 9;
 Vmin = 1;
 Vini = 1.1;
 
 
-% dic = ParameterDic();
-dic = ParameterDicSb();
+dic = ParameterDic();
+% dic = ParameterDicSb();
 
 dic = dic.setupImpl();
 
-F_123 = fid_tmsv(1, 1, 1, '123', sigma);
+F_123 = fid_tmsv_ri(1, 1, '123', sigma);
 % F_123 = 0.0909 sigma = 10
 
 parfor i = 1:num
     disp([i]);
     Pe = Ps(i);
     
-    fun = @(par) -dic.Full_fidelity(Pe, par, sigma);
+    fun = @(par) -dic.Partial_fidelity(Pe, par, sigma);
 
     [pars(i), F(i)] = fmincon(fun, Vini, [],[],[],[], Vmin, Vmax, [], OptOption);
         
@@ -43,4 +43,4 @@ F = -F;
 
 
 results = [Ps(:), pars(:), F(:), Fdir(:)];
-save('data/results_F_dic_sb.mat', 'results');
+save('data/results_F_dic_part.mat', 'results');

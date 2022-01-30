@@ -32,7 +32,7 @@ gini = 1;
 
 Tmax = 2*pi;
 Tmin = 0.0;
-Tini = pi/4;
+Tini = 3.04;
 
 
 Vmax = 10;
@@ -62,12 +62,12 @@ parfor i = 1:V_num
     V = Vs(i);
     disp(i);
     
-    fun_1 = @(par) -fid_sb(V, par(1), par(2), '1', sigma);
-    fun_2 = @(par) -fid_sb(V, par(1), par(2), '2', sigma);
-    fun_3 = @(par) -fid_sb(V, par(1), par(2), '3', sigma);
-    fun_12 = @(par) -fid_sb(V, par(1), par(2), '12', sigma);
-    fun_13 = @(par) -fid_sb(V, par(1), par(2), '13', sigma);
-    fun_23 = @(par) -fid_sb(V, par(1), par(2), '23', sigma);
+    fun_1 = @(par) -fid_sb_ri(V, par(1), par(2), '1', sigma);
+    fun_2 = @(par) -fid_sb_ri(V, par(1), par(2), '2', sigma);
+    fun_3 = @(par) -fid_sb_ri(V, par(1), par(2), '3', sigma);
+    fun_12 = @(par) -fid_sb_ri(V, par(1), par(2), '12', sigma);
+    fun_13 = @(par) -fid_sb_ri(V, par(1), par(2), '13', sigma);
+    fun_23 = @(par) -fid_sb_ri(V, par(1), par(2), '23', sigma);
 
 
     [par1(:,i), F_1(i)] = fmincon(fun_1, [gini, Tini], [],[],[],[], [gmin, Tmin], [gmax, Tmax], [], OptOption);
