@@ -26,9 +26,9 @@ d=.;
 r=.;
 
 
-CFtmsv[xa_, pa_, xb_, pb_] = Exp[-V/2*(xa^2 + pa^2 + xb^2 + pb^2) + V2*(xa*xb - pa*pb)];
-CF0[x_, p_] = Exp[-1/2*(x^2 + p^2)];
-CFalpha[x_, p_] = Exp[-1/2*(x^2 + p^2) + 2*I*(p*ra - x*ri)];
+CFtmsv[xa_, pa_, xb_, pb_] = Exp[-V/4*(xa^2 + pa^2 + xb^2 + pb^2) + V2/2*(xa*xb - pa*pb)];
+CF0[x_, p_] = Exp[-1/4*(x^2 + p^2)];
+CFalpha[x_, p_] = Exp[-1/4*(x^2 + p^2) + Sqrt[2]*I*(p*ra - x*ri)];
 (*CFalpha[x_, p_] = Exp[-1/2*(x^2 + p^2) + 2*I*(p*ra)];*)
 
 CFsb[xa_, pa_, xb_, pb_] = 1/Sqrt[Cos[d]^2 + Sin[d]^2]*Exp[-V/2*(xa^2 + pa^2 + xb^2 + pb^2) + V2*(xa*xb - pa*pb)](Cos[d]^2 - 2*Cos[d]*Sin[d]*(V*(xa*xb-pa*pb) - V2/2*(xa^2 + pa^2 + xb^2 + pb^2)) +
@@ -40,7 +40,7 @@ CFsbred[xa_, pa_, xb_, pb_] = Exp[-V/2*(xa^2 + pa^2 + xb^2 + pb^2) + V2*(xa*xb -
 
 (*----------------------------------------*)
 CFs[x_, p_] = CFalpha[x, p];
-CFab[xa_, pa_, xb_, pb_] = CFsb \\[xa, pa, xb, pb];
+CFab[xa_, pa_, xb_, pb_] = CFtmsv[xa, pa, xb, pb];
 CF0[a_, a_c] = Exp[(a*ac)/2];
 
 (*------- Output CF --------------*)
@@ -57,6 +57,9 @@ Fid[x_, p_] = CF[x, p] * CFs[-x, -p]/Pi;
 FidPolar[r_, theta_] = Simplify[r*Fid[r*Cos[theta], r*Sin[theta]]];
 Print["-----------------  Fid"];
 ToMatlab[FidPolar[r, theta]]
+
+
+
 
 
 
