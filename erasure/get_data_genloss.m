@@ -1,12 +1,11 @@
-clc;clear
 
 
-V = 10;
+V = 1;
 g = -1;
 sigma = 10;
-T1r = 0.9;
-T2r = 0.6;
-T3r = 0.3;
+T1r = 0.7;
+T2r = 0.7;
+T3r = 0.7;
 epsilon = 0;
 
 % fid_tmsv_gen_loss(V, g, sigma, T1r, T2r, T3r, epsilon)
@@ -28,10 +27,17 @@ Vini = 1.5;
 
 OptOption = optimoptions(@fmincon, 'FunctionTolerance', 1e-30,'StepTolerance', 1e-20, 'Display','off');
 
+
 % [pars(:,1), F] = fmincon(fun3, [gini, Vini], [],[],[],[], [gmin, Vmin], [gmax, Vmax], [], OptOption);
 
-[g_opt, F] = fmincon(fun1, gini, [],[],[],[], gmin, gmax, [], OptOption);
-% [g_opt, F] = fmincon(fun2, Vini, [],[],[],[], Vmin, Vmax, [], OptOption);
+[g, F] = fmincon(fun1, gini, [],[],[],[], gmin, gmax, [], OptOption);
+% [V, F] = fmincon(fun2, Vini, [],[],[],[], Vmin, Vmax, [], OptOption);
 
--F/2
-g_opt
+
+disp(['T1 - ', num2str(T1r)]);
+disp(['T2 - ', num2str(T2r)]);
+disp(['T3 - ', num2str(T3r)]);
+disp(['g - ', num2str(g)]);
+disp(['V - ', num2str(V)]);
+disp(['F - ', num2str(-F/2)]);
+disp('-----------------------');

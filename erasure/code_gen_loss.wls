@@ -12,9 +12,9 @@ T1r=.;
 T2r=.;
 T3r=.;
 epsilon=.;
-T1p=Sqrt[epsilon + 1 - T1r^2]; 
-T2p=Sqrt[epsilon + 1 - T3r^2];
-T3p=Sqrt[epsilon + 1 - T3r^2];
+T1p=Sqrt[epsilon + 1 - T1r]; 
+T2p=Sqrt[epsilon + 1 - T3r];
+T3p=Sqrt[epsilon + 1 - T3r];
 T1=Sqrt[T1r];
 T2=Sqrt[T2r];
 T3=Sqrt[T3r];
@@ -22,7 +22,6 @@ gx=.;
 gp=.;
 ra=.;
 ri=.;
-d=.;
 r=.;
 
 
@@ -59,8 +58,49 @@ Print["-----------------  Fid"];
 ToMatlab[FidPolar[r, theta]]
 
 
+(*------- g = 0 --------------*)
+T0pp = Sqrt[(T1p^2 + T2p^2)/2];
+CFg0[x_, p_] = CFs[x*(T1+T2)/2, p*(T1+T2)/2]*CFab[x*(T1-T2)/2, p*(T1-T2)/2, 0, 0]*
+			 CF0[x*T0pp,p*T0pp];
+
+(*------- g = 1 --------------*)
+T1pp = Sqrt[2*T1p^2 + T3p^2];
+CFg1[x_, p_] = CFs[x*T1, p*T1]*CFab[x*T1, p*T1, x*T3, -p*T3]*
+			 CF0[x*T1pp,p*T1pp];
+			 
+(*------- g = -1 --------------*)
+T2pp = Sqrt[2*T2p^2 + T3p^2];
+CFg2[x_, p_] = CFs[x*T2, p*T2]*CFab[-x*T2, -p*T2, -x*T3, p*T3]*
+			 CF0[x*T2pp,p*T2pp];
+			 
 
 
+Fidg0[x_, p_] = CFg0[x, p] * CFs[-x, -p]/Pi;
+FidPolarg0[r_, theta_] = Simplify[r*Fidg0[r*Cos[theta], r*Sin[theta]]];
+Print["-----------------  Fid g = 0"];
+ToMatlab[FidPolarg0[r, theta]]
+
+
+
+Fidg1[x_, p_] = CFg1[x, p] * CFs[-x, -p]/Pi;
+FidPolarg1[r_, theta_] = Simplify[r*Fidg1[r*Cos[theta], r*Sin[theta]]];
+Print["-----------------  Fid g = 1"];
+ToMatlab[FidPolarg1[r, theta]]
+
+
+
+Fidg2[x_, p_] = CFg2[x, p] * CFs[-x, -p]/Pi;
+FidPolarg2[r_, theta_] = Simplify[r*Fidg2[r*Cos[theta], r*Sin[theta]]];
+Print["-----------------  Fid g = -1"];
+ToMatlab[FidPolarg2[r, theta]]
+
+
+
+CFdir[x_, p_] = CFs[x*T1, p*T1]*CF0[x*T1p, p*T1p];
+Fiddir[x_, p_] = CFdir[x, p] * CFs[-x, -p]/Pi;
+FidPolardir[r_, theta_] = Simplify[r*Fiddir[r*Cos[theta], r*Sin[theta]]];
+Print["-----------------  Fid dir"];
+ToMatlab[FidPolardir[r, theta]]
 
 
 
