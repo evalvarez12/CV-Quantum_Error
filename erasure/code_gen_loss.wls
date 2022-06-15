@@ -13,7 +13,7 @@ T2r=.;
 T3r=.;
 epsilon=.;
 T1p=Sqrt[epsilon + 1 - T1r]; 
-T2p=Sqrt[epsilon + 1 - T3r];
+T2p=Sqrt[epsilon + 1 - T2r];
 T3p=Sqrt[epsilon + 1 - T3r];
 T1=Sqrt[T1r];
 T2=Sqrt[T2r];
@@ -101,6 +101,9 @@ Fiddir[x_, p_] = CFdir[x, p] * CFs[-x, -p]/Pi;
 FidPolardir[r_, theta_] = Simplify[r*Fiddir[r*Cos[theta], r*Sin[theta]]];
 Print["-----------------  Fid dir"];
 ToMatlab[FidPolardir[r, theta]]
+
+
+
 
 
 

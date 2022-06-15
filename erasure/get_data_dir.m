@@ -4,10 +4,10 @@ sigma = 10;
 epsilon = 0;
 
 % Sample size
-N = 2000000;
+N = 2e6;
 
 % Distribution properties
-sigmaT = 0.3;
+sigmaT = 0.6;
 meanT = 0.6;
 
 

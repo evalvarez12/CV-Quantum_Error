@@ -3,10 +3,10 @@ V = 20;
 sigma = 10;
 epsilon = 0;
 
-sigmaT = 0.6;
-meanT = 0.5;
+sigmaT = 0.1;
+meanT = 0.6;
 
-N = 2e6;
+N = 1e5;
 Ts = normrnd(meanT, sigmaT, N, 3);
 Ts = max(Ts, 0);
 Ts(Ts>1) = 1;
