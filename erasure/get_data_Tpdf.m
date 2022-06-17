@@ -8,25 +8,25 @@ epsilon = 0;
 % Discrete error rate
 pd = 0.1;
 % Discrete error transmissivity
-T0 = 0.;
+T0 = 0.1;
 % Gaussian mean 
-mu = 1;
+mu = 0.8;
 % Gaussian sigma
-sigma = 0.0; 
+sigma = 0.05; 
 
 
 % Sample size
 % N = 2e6;
-N = 2e3;
+N = 2e2;
 
 par = 0:0.005:.5;
 
-Fm = zeros(length(par), 1);
-Fstd = zeros(length(par), 1);
+Fm = zeros(length(par), N);
+% Fstd = zeros(length(par), 1);
 
 
-Fm_dir = zeros(length(par), 1);
-Fstd_dir = zeros(length(par), 1);
+Fm_dir = zeros(length(par), N);
+% Fstd_dir = zeros(length(par), 1);
 
 Fmax = zeros(N,1);
 gmax = zeros(N, 1);
@@ -51,23 +51,23 @@ for i = 1:length(par)
     end
     
     
-    Fm(i) = mean(Fmax);
-    Fstd(i) = std(Fmax);
+    Fm(i, :) = transpose(Fmax);
+%     Fstd(i) = std(Fmax);
 
 
     Fs_dir = fid_tmsv_dir_eq(Ts1, epsilon, coh_sigma);
 
     
-    Fm_dir(i) = mean(Fs_dir);
-    Fstd_dir(i) = std(Fs_dir);
+    Fm_dir(i, :) = transpose(Fs_dir);
+%     Fstd_dir(i) = std(Fs_dir);
 
 
 
 
 end
 
-save('data/F_pd_mean.mat', 'Fm');
-save('data/F_pd_std.mat', 'Fstd');
+save('data/F_pd.mat', 'Fm');
+% save('data/F_pd_std.mat', 'Fstd');
 
-save('data/F_pd_mean_dir.mat', 'Fm_dir');
-save('data/F_pd_std_dir.mat', 'Fstd_dir');
+save('data/F_pd_dir.mat', 'Fm_dir');
+% save('data/F_pd_std_dir.mat', 'Fstd_dir');
