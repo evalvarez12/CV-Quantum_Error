@@ -1,34 +1,73 @@
-
+clear;
+% Fidelity parameters
 V = 20;
-sigma = 10;
+coh_sigma = 10;
 epsilon = 0;
 
-sigmaT = 0.6;
-meanT = 0.5;
+% Distribution parameters
+% Discrete error rate
+pd = 0.1;
+% Discrete error transmissivity
+T0 = 0.;
+% Gaussian mean 
+mu = 1;
+% Gaussian sigma
+sigma = 0.0; 
 
-N = 2e6;
-Ts = normrnd(meanT, sigmaT, N, 3);
-Ts = max(Ts, 0);
-Ts(Ts>1) = 1;
+
+% Sample size
+% N = 2e6;
+N = 2e3;
+
+par = 0:0.005:.5;
+
+Fm = zeros(length(par), 1);
+Fstd = zeros(length(par), 1);
+
+
+Fm_dir = zeros(length(par), 1);
+Fstd_dir = zeros(length(par), 1);
 
 Fmax = zeros(N,1);
 gmax = zeros(N, 1);
-
 gs = -1:.01:1;
 
+for i = 1:length(par)
+
+    var = par(i);
+
+    Ts1 = distribution(var, T0, mu, sigma, N);
+    Ts2 = distribution(var, T0, mu, sigma, N);
+    Ts3 = distribution(var, T0, mu, sigma, N);
+    
+    for j = 1:N
+        T1 = Ts1(j);
+        T2 = Ts2(j);
+        T3 = Ts3(j);
+    
+        Fs = fid_tmsv_gen_loss_eq(V, gs, coh_sigma, T1, T2, T3, epsilon);
+        [Fmax(j), gmax(j)]= max(Fs);
+    
+    end
+    
+    
+    Fm(i) = mean(Fmax);
+    Fstd(i) = std(Fmax);
 
 
-for i = 1:N
-    T1 = Ts(i, 1);
-    T2 = Ts(i, 2);
-    T3 = Ts(i, 3);
+    Fs_dir = fid_tmsv_dir_eq(Ts1, epsilon, coh_sigma);
 
-    Fs = fid_tmsv_gen_loss_eq(V, gs, sigma, T1, T2, T3, epsilon);
-    [Fmax(i), gmax(i)]= max(Fs);
+    
+    Fm_dir(i) = mean(Fs_dir);
+    Fstd_dir(i) = std(Fs_dir);
+
+
 
 
 end
 
+save('data/F_pd_mean.mat', 'Fm');
+save('data/F_pd_std.mat', 'Fstd');
 
-mean(Fmax)
-
+save('data/F_pd_mean_dir.mat', 'Fm_dir');
+save('data/F_pd_std_dir.mat', 'Fstd_dir');
