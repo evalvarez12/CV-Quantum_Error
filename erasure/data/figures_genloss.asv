@@ -6,7 +6,7 @@ N = 2e5;
 Nsubset = 2e3;
 
 % mu
-x = 0.4:0.002:1;
+x = 1:-0.002:0.4;
 % sigma
 % x = 0:0.001:.3;
 
@@ -16,7 +16,7 @@ F_class = (1 + (1/sigma_coh))/(2 + (1/sigma_coh));
 X = repmat(x, Nsubset, 1);
 X = transpose(X);
 
-data = load('F_mu.mat');
+data = load('F_sigma.mat');
 Fm = data.Fm;
 Fmean = mean(transpose(Fm));
 Ncl = sum(transpose(Fm) > F_class)/N;
@@ -24,7 +24,7 @@ Ncl = sum(transpose(Fm) > F_class)/N;
 % data = load('F_pd_std.mat');
 % Fstd = data.Fstd;
 
-data = load('F_mu_dir.mat');
+data = load('F_sigma_dir.mat');
 Fm_dir = data.Fm_dir;
 Fmean_dir = mean(transpose(Fm_dir));
 Ncl_dir = sum(transpose(Fm_dir) > 0.5)/N;
@@ -41,7 +41,7 @@ hold on;
 
 yyaxis left
 % title('Plots with Different y-Scales')
-xlabel('$\mu$', 'Interpreter', 'latex');
+xlabel('$\sigma$', 'Interpreter', 'latex');
 
 
 plot(x, Fmean, 'LineWidth', 1.7, 'DisplayName', 'Code');
@@ -62,7 +62,7 @@ hold on;
 scatter(X, Fm(:, 1:Nsubset), 1, 'MarkerFaceAlpha',.01,'MarkerEdgeAlpha',.01);
 plot(x, Fmean, 'LineWidth', 1.7);
 % plot(x, Ncl, 'LineWidth', 1.7);
-xlabel('$\mu$', 'Interpreter', 'latex');
+xlabel('$\sigma$', 'Interpreter', 'latex');
 ylabel('$\mathcal{F}$', 'Interpreter', 'latex');
 
 plot(x, class, 'LineWidth', 1, 'Color', 'red');
@@ -74,7 +74,7 @@ hold on;
 scatter(X, Fm_dir(:, 1:Nsubset), 1, '+' ,'MarkerFaceAlpha',.01,'MarkerEdgeAlpha',.01);
 plot(x, Fmean_dir, 'LineWidth', 1.7);
 % plot(x, Ncl_dir, 'LineWidth', 1.7);
-xlabel('$\mu$', 'Interpreter', 'latex');
+xlabel('$\sigma$', 'Interpreter', 'latex');
 ylabel('$\mathcal{F}$', 'Interpreter', 'latex');
 
 plot(x, class, 'LineWidth', 1, 'Color', 'red');

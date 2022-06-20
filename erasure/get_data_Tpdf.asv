@@ -8,9 +8,9 @@ epsilon = 0;
 % Discrete error rate
 pd = 0.;
 % Discrete error transmissivity
-T0 = 0.;
+T0 = 0.3;
 % Gaussian mean 
-mu = 0.6;
+mu = 0.465;
 % Gaussian sigma
 sigma = 0.2; 
 
@@ -19,7 +19,7 @@ sigma = 0.2;
 % N = 2e6;
 N = 2e5;
 
-par = 0:0.001:.3;
+par = 0.4:0.002:1;
 
 Fm = zeros(length(par), N);
 % Fstd = zeros(length(par), 1);
@@ -38,8 +38,8 @@ for i = 1:length(par)
 
     pd = pd;
     T0 = T0;
-    mu = mu;
-    sigma = var;
+    mu = var;
+    sigma = sigma;
 
     Ts1 = distribution(pd, T0, mu, sigma, N);
     Ts2 = distribution(pd, T0, mu, sigma, N);
@@ -71,11 +71,10 @@ for i = 1:length(par)
 
 end
 
-% mu - par = 0.4:0.002:1 sigma=0.2 pd=0 T0=0;
-% sigma - par = 0:0.001:.3 mu=0.6 pd=0 T0=0;
+% mu - par = 0.4:0.002:1;
 
-save('data/F_sigma.mat', 'Fm');
+save('data/F_mu.mat', 'Fm');
 % save('data/F_pd_std.mat', 'Fstd');
 
-save('data/F_sigma_dir.mat', 'Fm_dir');
+save('data/F_mu_dir.mat', 'Fm_dir');
 % save('data/F_pd_std_dir.mat', 'Fstd_dir');
