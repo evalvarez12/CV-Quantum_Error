@@ -1,14 +1,15 @@
 clear all;
 close all;
+set(0,'defaultTextInterpreter','latex');
 
 % PD
 N = 2e5;
 Nsubset = 2e3;
 
 % mu
-x = 0.4:0.002:1;
+% x = 0.4:0.002:1;
 % sigma
-% x = 0:0.001:.3;
+x = 0:0.001:.3;
 
 sigma_coh = 10;
 F_class = (1 + (1/sigma_coh))/(2 + (1/sigma_coh));
@@ -16,7 +17,7 @@ F_class = (1 + (1/sigma_coh))/(2 + (1/sigma_coh));
 X = repmat(x, Nsubset, 1);
 X = transpose(X);
 
-data = load('F_mu.mat');
+data = load('F_sigma.mat');
 Fm = data.Fm;
 Fmean = mean(transpose(Fm));
 Ncl = sum(transpose(Fm) > F_class)/N;
@@ -24,7 +25,7 @@ Ncl = sum(transpose(Fm) > F_class)/N;
 % data = load('F_pd_std.mat');
 % Fstd = data.Fstd;
 
-data = load('F_mu_dir.mat');
+data = load('F_sigma_dir.mat');
 Fm_dir = data.Fm_dir;
 Fmean_dir = mean(transpose(Fm_dir));
 Ncl_dir = sum(transpose(Fm_dir) > 0.5)/N;
@@ -41,29 +42,29 @@ hold on;
 
 yyaxis left
 % title('Plots with Different y-Scales')
-xlabel('$\mu$', 'Interpreter', 'latex');
+xlabel('$\sigma$', 'Interpreter', 'latex');
 
 
-plot(x, Fmean, 'LineWidth', 1.7, 'DisplayName', 'Code');
+plot(x, Fmean, 'LineWidth', 1.7, 'DisplayName', 'Protocol');
 plot(x, Fmean_dir, 'LineWidth', 1.7, 'DisplayName', 'Direct');
-ylabel('$\mathcal{F}$', 'Interpreter', 'latex');
+ylabel('$\bar{\mathcal{F}}$', 'Interpreter', 'latex');
 
 yyaxis right
-ylabel('$\%$', 'Interpreter', 'latex');
+ylabel('$\%> F_\mathrm{class}$', 'Interpreter', 'latex');
 
-plot(x, Ncl, 'LineWidth', 1.7, 'DisplayName', 'Code');
+plot(x, Ncl, 'LineWidth', 1.7, 'DisplayName', 'Protocol');
 plot(x, Ncl_dir, 'LineWidth', 1.7, 'DisplayName', 'Direct');
-legend('fontname','times', 'Location','southwest');
+legend('fontname','times', 'Location','southeast');
 
 subplot(2, 2, 2)
-title('Code')  
+title('Protocol')  
 % figure;
 hold on;
 scatter(X, Fm(:, 1:Nsubset), 1, 'MarkerFaceAlpha',.01,'MarkerEdgeAlpha',.01);
 plot(x, Fmean, 'LineWidth', 1.7);
 % plot(x, Ncl, 'LineWidth', 1.7);
-xlabel('$\mu$', 'Interpreter', 'latex');
-ylabel('$\mathcal{F}$', 'Interpreter', 'latex');
+xlabel('$\sigma$', 'Interpreter', 'latex');
+ylabel('$\bar{\mathcal{F}}$', 'Interpreter', 'latex');
 
 plot(x, class, 'LineWidth', 1, 'Color', 'red');
 
@@ -73,12 +74,14 @@ title('Direct')
 hold on;
 scatter(X, Fm_dir(:, 1:Nsubset), 1, '+' ,'MarkerFaceAlpha',.01,'MarkerEdgeAlpha',.01);
 plot(x, Fmean_dir, 'LineWidth', 1.7);
-% plot(x, Ncl_dir, 'LineWidth', 1.7);
-xlabel('$\mu$', 'Interpreter', 'latex');
-ylabel('$\mathcal{F}$', 'Interpreter', 'latex');
-
 plot(x, class, 'LineWidth', 1, 'Color', 'red');
 
+% plot(x, Ncl_dir, 'LineWidth', 1.7);
+xlabel('$\sigma$', 'Interpreter', 'latex');
+ylabel('$\bar{\mathcal{F}}$', 'Interpreter', 'latex');
+
+
+% savefigures('mu');
 
 
 
