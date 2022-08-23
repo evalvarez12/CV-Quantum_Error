@@ -16,12 +16,12 @@ T0 = 0.;
 % Gaussian mean 
 mu = 0.6;
 % Gaussian sigma
-sigma = 0.1; 
+sigma = 0.2; 
 
 
 % Sample size
 % N = 2e6;
-N = 2e5;
+N = 2e6;
 
 par = 0.4:0.01:1;
 
@@ -58,8 +58,8 @@ for i = 1:length(par)
    snr_std(i) = std(snr);
 end
 
-save('data/snr_m.mat', 'snr_m');
-save('data/snr_std.mat', 'snr_std');
+save('data/snr_m_t3.mat', 'snr_m');
+save('data/snr_std_t3.mat', 'snr_std');
 
 
 

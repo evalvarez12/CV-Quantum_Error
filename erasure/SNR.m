@@ -10,5 +10,5 @@ function [snr] = SNR(T1, T2, T3, sigma, V, delta)
     sig_snr = d^2*sigma + 4*(a + b + c) + epsilon;
 %     snr = (T3 * delta)/ (sig_snr); 
     snr = ((T1+T2)/2 * delta)/ (sig_snr); 
-
+%     snr = (((T1+T2)/2 + T3)/2 * delta)/ (sig_snr); 
 end

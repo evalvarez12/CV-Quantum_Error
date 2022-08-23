@@ -13,7 +13,7 @@ T0 = 0.;
 mu = 0.8;
 % Gaussian sigma
 sigma = 0.2; 
-figure;
+% figure;
 hold on;
 xlabel('$g$', 'Interpreter', 'latex');
 ylabel('$\bar{\mathcal{F}}$', 'Interpreter', 'latex');
@@ -34,12 +34,18 @@ gmax = zeros(N, 1);
 gs = -1:.01:1;
 
 for j = 1:N
-    T1 = Ts1(j);
+    T1 = 0;
     T2 = Ts2(j);
     T3 = Ts3(j);
 
+    disp([num2str((fid_tmsv_dir_eq(T1, epsilon, coh_sigma) ...
+            +fid_tmsv_dir_eq(T2, epsilon, coh_sigma) ...
+            +fid_tmsv_dir_eq(T3, epsilon, coh_sigma))/3)]);
+
     Fs = fid_tmsv_gen_loss_eq(V, gs, coh_sigma, T1, T2, T3, epsilon);
     
+
+
 % %     plot(gs, Fs);
     plot(gs, Fs, 'LineWidth', 1,"Color", [rand(1,3) 0.8])
     [Fmax(j), gmax(j)]= max(Fs);
