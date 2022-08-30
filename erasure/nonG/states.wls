@@ -2,7 +2,7 @@
 (* ::Package:: *)
 
 Clear["Global`*"];
-Import["/home/quantum/CV-Quantum_Error_Correction/erasure/ToMatlab.m", "Package"];
+Import["/home/eduardo/quantum/CV-Quantum_Error_Correction/erasure/nonG/ToMatlab.m", "Package"];
 
 
 (*----------------TMSV-----------------*)
