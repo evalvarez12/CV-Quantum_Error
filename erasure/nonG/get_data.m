@@ -1,41 +1,50 @@
-V = 1;
-g = -1;
+V = 10;
 sigma = 10;
-T1r = 0.7;
-T2r = 0.7;
-T3r = 0.7;
-epsilon = 0;
 
-% fid_tmsv_gen_loss(V, g, sigma, T1r, T2r, T3r, epsilon)
-fun1 = @(par) -fid_tmsv_gen_loss(V, par, sigma, T1r, T2r, T3r, epsilon);
-fun2 = @(par) -fid_tmsv_gen_loss(par, g, sigma, T1r, T2r, T3r, epsilon);
+g = -1;
 
-% fun3 = @(par) -fid_tmsv_gen_loss(par(1), par(2), sigma, T1r, T2r, T3r, epsilon);
+Ts = .9:.1:.94;
+l = length(Ts);
 
-pars=zeros(2:1);
-% F = 0;
+F_tmsv = zeros(1, l);
+F_ps = zeros(1, l);
+F_pa = zeros(1, l);
+F_pc = zeros(1, l);
+F_pspa = zeros(1, l);
+F_paps = zeros(1, l);
 
-gmax = 10;
-gmin = -10;
-gini = 1;
-
-Vmax = 25;
-Vmin = 1;
-Vini = 1.5;
+Tmax = 0.999;
+Tmin = 0.001;
+Tini = 0.99;
 
 OptOption = optimoptions(@fmincon, 'FunctionTolerance', 1e-30,'StepTolerance', 1e-20, 'Display','off');
 
 
-% [pars(:,1), F] = fmincon(fun3, [gini, Vini], [],[],[],[], [gmin, Vmin], [gmax, Vmax], [], OptOption);
+for i=1:l
+    
+    T = Ts(i);
+    T1 = 0;
+    T2 = T;
+    T3 = T;
 
-[g, F] = fmincon(fun1, gini, [],[],[],[], gmin, gmax, [], OptOption);
-% [V, F] = fmincon(fun2, Vini, [],[],[],[], Vmin, Vmax, [], OptOption);
+    fun_ps = @(par) -f_code(T1, T2, T3, V, par, g, 'ps', sigma);
+    fun_pa = @(par) -f_code(T1, T2, T3, V, par, g, 'pa', sigma);
+    fun_pc = @(par) -f_code(T1, T2, T3, V, par, g, 'pc', sigma);
+    fun_pspa = @(par) -f_code(T1, T2, T3, V, par, g, 'pspa', sigma);
+    fun_paps = @(par) -f_code(T1, T2, T3, V, par, g, 'paps', sigma);
 
+    F_tmsv(i) = f_code(T1, T2, T3, V, 0, g, 'tmsv', sigma);
+    [~, F_ps(i)] = fmincon(fun_ps, Tini, [],[],[],[], Tmin, Tmax, [], OptOption);
+    [~, F_pa(i)] = fmincon(fun_pa, Tini, [],[],[],[], Tmin, Tmax, [], OptOption);
+    [~, F_pc(i)] = fmincon(fun_pc, Tini, [],[],[],[], Tmin, Tmax, [], OptOption);
+    [~, F_pspa(i)] = fmincon(fun_pspa, Tini, [],[],[],[], Tmin, Tmax, [], OptOption);
+    [~, F_paps(i)] = fmincon(fun_paps, Tini, [],[],[],[], Tmin, Tmax, [], OptOption);
+end
 
-disp(['T1 - ', num2str(T1r)]);
-disp(['T2 - ', num2str(T2r)]);
-disp(['T3 - ', num2str(T3r)]);
-disp(['g - ', num2str(g)]);
-disp(['V - ', num2str(V)]);
-disp(['F - ', num2str(-F/2)]);
-disp('-----------------------');
+F_ps = -F_ps;
+F_pa = -F_pa;
+F_pc = -F_pc;
+F_pspa = -F_pspa;
+F_paps = -F_paps;
+
+results = [Ts(:), F_tmsv(:), F_ps(:), F_pa(:), F_pc(:), F_pspa(:), F_paps(:)];

@@ -1,4 +1,4 @@
-function [F] = f_code(T1, T2, T3, V, T, g, operation, ra, ri, sigma)
+function [F] = f_code(T1, T2, T3, V, T, g, operation, sigma)
 warning('off')
 
 switch operation
