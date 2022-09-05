@@ -3,7 +3,7 @@ sigma = 10;
 
 g = -1;
 
-Ts = .9:.1:.94;
+Ts = linspace(0.4,1,12);
 l = length(Ts);
 
 F_tmsv = zeros(1, l);
@@ -48,3 +48,4 @@ F_pspa = -F_pspa;
 F_paps = -F_paps;
 
 results = [Ts(:), F_tmsv(:), F_ps(:), F_pa(:), F_pc(:), F_pspa(:), F_paps(:)];
+save('fid_T1erased_V10_s10.mat', 'results');
