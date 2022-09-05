@@ -6,14 +6,14 @@ set(0,'defaultTextInterpreter','latex');
 N = 2e5;
 Nsubset = 2e3;
 
-par = linspace(0.4, 1, 12);
+par = linspace(0.4, 1, 60);
 sigma_coh = 10;
 F_class = (1 + (1/sigma_coh))/(2 + (1/sigma_coh));
 
 X = repmat(par, Nsubset, 1);
 X = transpose(X);
 
-data = load('F_T1erased_V3_sigma10.mat');
+data = load('F_noerased_V3_sigma10.mat');
 Fm = data.Fm;
 Fmean = mean(transpose(Fm));
 Ncl = sum(transpose(Fm) > F_class)/N;
