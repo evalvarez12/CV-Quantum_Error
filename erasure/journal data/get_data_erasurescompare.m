@@ -1,6 +1,6 @@
 clear;
 % Fidelity parameters
-V = 20;
+V = 3;
 coh_sigma = 10;
 epsilon = 0;
 
@@ -12,14 +12,14 @@ T0 = 0.;
 % Gaussian mean 
 mu = 1;
 % Gaussian sigma
-sigma = 0.1; 
+sigma = 0.; 
 
 
 % Sample size
 % N = 2e6;
-N = 2e6;
+N = 1;
 
-par = linspace(0.4, 1, 12);
+par = linspace(0.4, 1, 24);
 
 F_noerased = zeros(length(par), N);
 F_1erased = zeros(length(par), N);
@@ -89,7 +89,7 @@ end
 results = cat(3, F_noerased,  F_1erased,  F_2erased, F_3erased, F_dir);
 
 
-save('data/F_compare_V20_sigma10.mat', 'results');
+save('data/F_compare_V3_sigma10_sigma0.mat', 'results');
 % save('data/F_pd_std.mat', 'Fstd');
 
 % save('data/F_dir_sigma10.mat', 'Fm_dir');
