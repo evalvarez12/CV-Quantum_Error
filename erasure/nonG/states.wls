@@ -74,7 +74,9 @@ Ppaps=Fas0[0,0,0,0];
 
 CFpaps[a_,ac_,b_,bc_]=Fas0[a,ac,b,bc]/Ppaps;
 		
-				
+		
+
+
 (*------- Output CF of code --------------*)
 CFcode[a_,ac_] = CFs[a*((T1+T2)/2 + g*(T1-T2)/2), ac*((T1+T2)/2 + g*(T1-T2)/2)]*CFab[a*((T1-T2)/2 + g*(T1+T2)/2), ac*((T1-T2)/2 + g*(T1+T2)/2), ac*T3*g, a*T3*g]*
 				 CF0[a*Sqrt[(1-T1^2)/2*(1+g)^2 + (1-T2^2)/2*(1-g)^2 + (1-T3^2)*g^2], ac*Sqrt[(1-T1^2)/2*(1+g)^2 + (1-T2^2)/2*(1-g)^2 + (1-T3^2)*g^2]];								
