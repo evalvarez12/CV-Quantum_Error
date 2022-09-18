@@ -8,7 +8,7 @@ Import["/home/eduardo/quantum/CV-Quantum_Error_Correction/erasure/nonG/ToMatlab.
 T1 = .;
 T2 = .;
 T3 = .;
-r = .;
+rs = .;
 d = .;
 g = .;
 ra = .;
@@ -26,10 +26,10 @@ CF0[a_,ac_] = Exp[-(a*ac)/2];
 							Sin[d]^2*(1 - (xa^2 + pa^2 + xb^2 + pb^2)*V + 2*V2*(xa*xb - pa*pb)+ (V^2 + V2^2/2)*((xa*xb)^2 + (pa*pb)^2) + (V^2 - V2^2/2)*((xa*pb)^2 + (pa*xb)^2) + V2^2/4*(xa^4 + xb^4 + pa^4 + pb^4) +
 							V*V2*(-xa^3*xb + xa^2*pa*pb - xa*xb^3 + xb^2*pa*pb - xa*xb*pa^2 - xa*xb*pb^2 + pa*pb^3 + pa^3*pb) + V2^2/2*(xa^2*pa^2 + xb^2*pb^2) - 2*V2^2*xa*xb*pa*pb));		
 *)
-ap[a_, ac_, b_ ,bc_] = Cosh[r]*a - Sinh[r]*bc;
-bp[a_, ac_, b_ ,bc_] = Cosh[r]*b - Sinh[r]*ac;
-acp[a_, ac_, b_ ,bc_] = Cosh[r]*ac - Sinh[r]*b;
-bcp[a_, ac_, b_ ,bc_] = Cosh[r]*bc - Sinh[r]*a;
+ap[a_, ac_, b_ ,bc_] = Cosh[rs]*a - Sinh[rs]*bc;
+bp[a_, ac_, b_ ,bc_] = Cosh[rs]*b - Sinh[rs]*ac;
+acp[a_, ac_, b_ ,bc_] = Cosh[rs]*ac - Sinh[rs]*b;
+bcp[a_, ac_, b_ ,bc_] = Cosh[rs]*bc - Sinh[rs]*a;
 
 CFsb[a_, ac_, b_, bc_] = 1/Sqrt[Cos[d]^2 + Sin[d]^2]*Exp[-1/2*(ap[a, ac, b ,bc]*acp[a, ac, b ,bc] + bp[a, ac, b ,bc]*bcp[a, ac, b ,bc])]*
 						(Cos[d]^2 + Cos[d]*Sin[d]*(ap[a, ac, b ,bc]*bp[a, ac, b ,bc] + acp[a, ac, b ,bc]*bcp[a, ac, b ,bc]) + 
@@ -56,6 +56,12 @@ FidPolarSb[r_, theta_] = Simplify[r*Fsb[r*Exp[theta*I], r*Exp[-theta*I]]];
 Print["-----------------  Fid sb"];
 
 ToMatlab[FidPolarSb[r, theta]]
+
+
+
+
+
+
 
 
 
