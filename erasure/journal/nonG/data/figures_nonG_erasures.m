@@ -13,12 +13,12 @@ F_class = (1 + (1/sigma_coh))/(2 + (1/sigma_coh));
 % dataV32 = load('fid_nonG_T1erased_V3_s10.mat');
 
 dataV3 = load('fid_T1erased_V3_s10.mat');
-dataV5 = load('fid_T1erased_V6_s10.mat');
+dataV6 = load('fid_T1erased_V6_s10.mat');
 dataV10 = load('fid_T1erased_V10_s10.mat');
 % dataV20 = load('fid_nonG_T2erased_V20_s10.mat');
 
 dataV3 = dataV3.results;
-dataV5 = dataV5.results;
+dataV6 = dataV6.results;
 dataV10 = dataV10.results;
 % dataV20 = dataV20.results;
 

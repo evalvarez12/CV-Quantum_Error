@@ -1,6 +1,6 @@
 clear;
 % Fidelity parameters
-V = 20;
+V = 10;
 coh_sigma = 10;
 epsilon = 0;
 
@@ -10,22 +10,22 @@ pd = 0.;
 % Discrete error transmissivity
 T0 = 0.;
 % Gaussian mean 
-mu = 1;
+mu = 0.0;
 % Gaussian sigma
-sigma = 0.1; 
+sigma = 0.2; 
 
 
 % Sample size
 % N = 2e6;
-N = 2e5;
+N = 5e5;
 
-par = linspace(0.4, 1, 60);
+par = linspace(.5,1,24);
 
 Fm = zeros(length(par), N);
 % Fstd = zeros(length(par), 1);
 
 
-% Fm_dir = zeros(length(par), N);
+Fm_dir = zeros(length(par), N);
 % Fstd_dir = zeros(length(par), 1);
 
 Fmax = zeros(N,1);
@@ -41,7 +41,7 @@ for i = 1:length(par)
     mu = var;
     sigma = sigma;
 
-    Ts1 = distribution(pd, T0, mu, sigma, N);
+    Ts1 = distribution(pd, T0, mu, sigma, N)*0;
     Ts2 = distribution(pd, T0, mu, sigma, N);
     Ts3 = distribution(pd, T0, mu, sigma, N);
     
@@ -60,11 +60,8 @@ for i = 1:length(par)
 %     Fstd(i) = std(Fmax);
 
 
-%     Fs_dir = fid_tmsv_dir_eq(Ts2, epsilon, coh_sigma);
 
     
-%     Fm_dir(i, :) = transpose(Fs_dir);
-%     Fstd_dir(i) = std(Fs_dir);
 
 
 
@@ -74,8 +71,6 @@ end
 % mu - par = 0.4:0.002:1 sigma=0.2 pd=0 T0=0;
 % sigma - par = 0:0.001:.3 mu=0.6 pd=0 T0=0;
 
-save('data/F_noerased_V20_sigma10.mat', 'Fm');
+save('data/Ferasure_none_V3_sigma2.mat', 'Fm');
 % save('data/F_pd_std.mat', 'Fstd');
 
-% save('data/F_dir_sigma10.mat', 'Fm_dir');
-% save('data/F_pd_std_dir.mat', 'Fstd_dir');

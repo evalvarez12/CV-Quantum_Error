@@ -12,7 +12,7 @@ T0 = 0.;
 % Gaussian mean 
 mu = 1;
 % Gaussian sigma
-sigma = 0.; 
+sigma = 0.2; 
 
 
 % Sample size
