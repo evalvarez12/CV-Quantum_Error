@@ -1,6 +1,6 @@
 clear;
 % Fidelity parameters
-V = 10;
+V = 3;
 coh_sigma = 10;
 epsilon = 0;
 
@@ -12,12 +12,12 @@ T0 = 0.;
 % Gaussian mean 
 mu = 0.0;
 % Gaussian sigma
-sigma = 0.2; 
+sigma = 0.0; 
 
 
 % Sample size
-% N = 2e6;
-N = 5e5;
+% N = 5e5;
+N = 1;
 
 par = linspace(.5,1,24);
 
@@ -41,7 +41,7 @@ for i = 1:length(par)
     mu = var;
     sigma = sigma;
 
-    Ts1 = distribution(pd, T0, mu, sigma, N)*0;
+    Ts1 = distribution(pd, T0, mu, sigma, N);
     Ts2 = distribution(pd, T0, mu, sigma, N);
     Ts3 = distribution(pd, T0, mu, sigma, N);
     
@@ -71,6 +71,6 @@ end
 % mu - par = 0.4:0.002:1 sigma=0.2 pd=0 T0=0;
 % sigma - par = 0:0.001:.3 mu=0.6 pd=0 T0=0;
 
-save('data/Ferasure_none_V3_sigma2.mat', 'Fm');
+save('data/Fnoerasure_V3_sigma0.mat', 'Fm');
 % save('data/F_pd_std.mat', 'Fstd');
 
