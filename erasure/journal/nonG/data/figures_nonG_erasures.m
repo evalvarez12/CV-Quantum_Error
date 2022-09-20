@@ -22,7 +22,7 @@ dataV6 = dataV6.results;
 dataV10 = dataV10.results;
 % dataV20 = dataV20.results;
 
-data = dataV10;
+data = dataV3;
 
 par = data(:, 1);
 tmsv = data(:, 2);
@@ -43,7 +43,7 @@ plot(par, paps, '.-', 'LineWidth', 1.7, 'DisplayName', 'PA-PS');
 plot(par, sb, '^-',  'LineWidth', 1.7, 'DisplayName', 'SB');
 plot(par, tmsv, 'k-',  'LineWidth', 3, 'DisplayName', 'TMSV');
 
-% legend('Location','northwest');
+legend('Location','northwest');
 
 xlabel('$T$', 'Interpreter', 'latex');
 ylabel('$\bar{\mathcal{F}}$ ','Interpreter', 'latex');
@@ -51,7 +51,10 @@ ylabel('$\bar{\mathcal{F}}$ ','Interpreter', 'latex');
 % xlim([.5 1])
 ylim([.30 1])
 
-savefigures('nonG_V10')
+text(0.96,0.97,'V=3')
+
+
+savefigures('nonG_V3')
 
 % 
 % F1V1 = dataV1(:, :, 2);

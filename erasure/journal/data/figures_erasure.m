@@ -60,6 +60,8 @@ ylim([0.4 1]);
 xlabel('$T$', 'Interpreter', 'latex');
 ylabel('$\bar{\mathcal{F}}$', 'Interpreter', 'latex');
 % legend('Location','northwest')
+text(0.95, 0.97, '$\sigma=0.2$')
+
 savefigures('erasure_sigma2')
 
 
@@ -97,6 +99,9 @@ plot(par_erasure, data1_no, 'LineWidth', 1.5, 'DisplayName', 'No erasure');
 xlabel('$T$', 'Interpreter', 'latex');
 ylabel('$\bar{\mathcal{F}}$', 'Interpreter', 'latex');
 legend('Location','northwest')
+text(0.81, 0.97, '$\sigma=0$')
+
+
 savefigures('erasure_sigma0')
 
 

@@ -1,7 +1,7 @@
 function [] = savefigures(figure_name)
 
 myfigure = gcf;
-pbaspect([1.618 1 1])
+% pbaspect([1 1 1])
 
 % myfigure.Position = [308,443,560,330];
 set(0,'defaultTextInterpreter','latex');

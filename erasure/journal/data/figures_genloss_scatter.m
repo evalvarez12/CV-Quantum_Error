@@ -21,17 +21,17 @@ F_class = (1 + (1/sigma_coh))/(2 + (1/sigma_coh));
 X = repmat(par, Nsubset, 1);
 X = transpose(X);
 
-data = load('Fscatter_V10_sigma10.mat');
+data = load('Fscatter_V10_sigma2.mat');
 Fm = data.Fm;
 Fmean = mean(transpose(Fm));
 Ncl = sum(transpose(Fm) > F_class)/N;
 
 
-data2 = load('Fscatter_V6_sigma10.mat');
+data2 = load('Fscatter_V6_sigma2.mat');
 Fm2 = data2.Fm;
 Fmean2 = mean(transpose(Fm2));
 
-data3 = load('Fscatter_V3_sigma10.mat');
+data3 = load('Fscatter_V3_sigma2.mat');
 Fm3 = data3.Fm;
 Fmean3 = mean(transpose(Fm3));
 
@@ -39,7 +39,7 @@ Fmean3 = mean(transpose(Fm3));
 % data = load('F_pd_std.mat');
 % Fstd = data.Fstd;
 
-data = load('Fscatter_dir_sigma10.mat');
+data = load('Fscatter_dir_sigma2.mat');
 Fm_dir = data.Fm_dir;
 Fmean_dir = mean(transpose(Fm_dir));
 Ncl_dir = sum(transpose(Fm_dir) > 0.5)/N;
@@ -101,7 +101,7 @@ plot(par, class, 'LineWidth', 1, 'Color', 'red');
 
 xlim([par(1) par(end)])
 
-subplot(2, 2,4)
+subplot(2, 2, 4)
 title('Direct')  
 % figure;
 hold on;
@@ -116,4 +116,4 @@ ylabel('$\bar{\mathcal{F}}$', 'Interpreter', 'latex');
 xlim([par(1) par(end)])
 
 
-savefigures('scatter.pdf')
+savefigures2('scatter.pdf')
