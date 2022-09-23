@@ -1,6 +1,6 @@
 clear;
 % Fidelity parameters
-V = 3;
+V = 10;
 coh_sigma = 10;
 epsilon = 0;
 
@@ -12,7 +12,7 @@ T0 = 0.;
 % Gaussian mean 
 mu = 0.6;
 % Gaussian sigma
-sigma = 0.2; 
+sigma = 0.3; 
 
 
 % Sample size
@@ -57,13 +57,13 @@ for i = 1:length(par)
     
     
     Fm(i, :) = transpose(Fmax);
-%     Fstd(i) = std(Fmax);
+    Fstd(i) = std(Fmax);
 
 
-%     Fs_dir = fid_tmsv_dir_eq(Ts1, epsilon, coh_sigma);
+    Fs_dir = fid_tmsv_dir_eq(Ts1, epsilon, coh_sigma);
 
     
-%     Fm_dir(i, :) = transpose(Fs_dir);
+    Fm_dir(i, :) = transpose(Fs_dir);
 %     Fstd_dir(i) = std(Fs_dir);
 
 
@@ -74,8 +74,8 @@ end
 % mu - par = 0.4:0.002:1 sigma=0.2 pd=0 T0=0;
 % sigma - par = 0:0.001:.3 mu=0.6 pd=0 T0=0;
 
-save('data/Fscatter_V3_sigma10.mat', 'Fm');
+save('data/Fscatter_V10_sigma3.mat', 'Fm');
 % save('data/F_pd_std.mat', 'Fstd');
 
-% save('data/Fscatter_dir_sigma10.mat', 'Fm_dir');
+save('data/Fscatter_dir_sigma3.mat', 'Fm_dir');
 % save('data/F_pd_std_dir.mat', 'Fstd_dir');

@@ -21,17 +21,20 @@ F_class = (1 + (1/sigma_coh))/(2 + (1/sigma_coh));
 X = repmat(par, Nsubset, 1);
 X = transpose(X);
 
-data = load('Fscatter_V10_sigma2.mat');
+
+sigma = '05';
+
+data = load(['Fscatter_V10_sigma', sigma, '.mat']);
 Fm = data.Fm;
 Fmean = mean(transpose(Fm));
 Ncl = sum(transpose(Fm) > F_class)/N;
 
 
-data2 = load('Fscatter_V6_sigma2.mat');
+data2 = load(['Fscatter_V10_sigma', sigma, '.mat']);
 Fm2 = data2.Fm;
 Fmean2 = mean(transpose(Fm2));
 
-data3 = load('Fscatter_V3_sigma2.mat');
+data3 = load(['Fscatter_V3_sigma', sigma, '.mat']);
 Fm3 = data3.Fm;
 Fmean3 = mean(transpose(Fm3));
 
@@ -39,7 +42,7 @@ Fmean3 = mean(transpose(Fm3));
 % data = load('F_pd_std.mat');
 % Fstd = data.Fstd;
 
-data = load('Fscatter_dir_sigma2.mat');
+data = load(['Fscatter_dir_sigma', sigma, '.mat']);
 Fm_dir = data.Fm_dir;
 Fmean_dir = mean(transpose(Fm_dir));
 Ncl_dir = sum(transpose(Fm_dir) > 0.5)/N;
@@ -116,4 +119,4 @@ ylabel('$\bar{\mathcal{F}}$', 'Interpreter', 'latex');
 xlim([par(1) par(end)])
 
 
-savefigures2('scatter.pdf')
+% savefigures2('scatter.pdf')
