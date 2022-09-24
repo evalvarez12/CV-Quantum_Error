@@ -7,9 +7,9 @@ epsilon = 0;
 
 
 % Sample size - same as phase screen data size
-N = 10000;
-
-dists = [900 1100 1300 1500 1700 1900 2100 2300];
+N = 200;
+rec = '0.15';
+dists = [1000 1400 1800 2200 2600 3000];
 
 Fm = zeros(length(dists), N);
 % Fstd = zeros(length(par), 1);
@@ -26,7 +26,7 @@ for i = 1:length(dists)
 
     d = dists(i);
 
-    T_ps = load(['ERASURE_d=', num2str(d), '_L0=1.5_l0=0.01_10000.mat']);
+    T_ps = load(['data/ERASURE_d=', num2str(d), '_L0=1.5_l0=0.01_rec=', rec,'_200.mat']);
     T_ps = T_ps.res;
     Ts1 = T_ps(randperm(length(T_ps)));
     Ts2 = T_ps(randperm(length(T_ps)));
@@ -61,8 +61,8 @@ end
 % mu - par = 0.4:0.002:1 sigma=0.2 pd=0 T0=0;
 % sigma - par = 0:0.001:.3 mu=0.6 pd=0 T0=0;
 
-save('data/Fscatter_phasesc_V3.mat', 'Fm');
+save(['data/Fscatter_phasesc_rec=', rec, '_V', num2str(V),'.mat'], 'Fm');
 % save('data/F_pd_std.mat', 'Fstd');
 
-save('data/Fscatter_phasesc_dir.mat', 'Fm_dir');
+save(['data/Fscatter_phasesc_rec=', rec, '_dir.mat'], 'Fm_dir');
 % save('data/F_pd_std_dir.mat', 'Fstd_dir');

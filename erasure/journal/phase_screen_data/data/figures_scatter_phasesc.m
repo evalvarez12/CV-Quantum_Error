@@ -11,20 +11,20 @@ set(0,'defaultTextInterpreter','latex');
 
 
 % PD
-N = 10000;
-Nsubset = 5e2;
+N = 200;
+rec = '0.1';
 
-dists = [900 1100 1300 1500 1700 1900 2100 2300];
+dists = [1000 1400 1800 2200 2600 3000];
 sigma_coh = 10;
 F_class = (1 + (1/sigma_coh))/(2 + (1/sigma_coh));
 
 
-data = load('Fscatter_phasesc_V3.mat');
+data = load(['Fscatter_phasesc_rec=', rec,'_V3.mat']);
 Fm = data.Fm;
 Fmean = mean(transpose(Fm));
 
 
-data2 = load('Fscatter_phasesc_V3.mat');
+data2 = load(['Fscatter_phasesc_rec=', rec, '_V10.mat']);
 Fm2 = data2.Fm;
 Fmean2 = mean(transpose(Fm2));
 
@@ -34,7 +34,7 @@ Fmean2 = mean(transpose(Fm2));
 % data = load('F_pd_std.mat');
 % Fstd = data.Fstd;
 
-data = load('Fscatter_phasesc_dir.mat');
+data = load(['Fscatter_phasesc_rec=', rec, '_dir.mat']);
 Fm_dir = data.Fm_dir;
 Fmean_dir = mean(transpose(Fm_dir));
 
