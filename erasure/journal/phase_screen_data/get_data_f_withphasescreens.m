@@ -1,15 +1,15 @@
 clear;
 % Fidelity parameters
-V = 3;
+V = 1;
 coh_sigma = 10;
 epsilon = 0;
 
 
 
 % Sample size - same as phase screen data size
-N = 200;
+N = 10000;
 rec = '0.15';
-dists = [1000 1400 1800 2200 2600 3000];
+dists = [1000 1200 1400 1600 1800 2000 2200 2400 2600];
 
 Fm = zeros(length(dists), N);
 % Fstd = zeros(length(par), 1);
@@ -26,7 +26,7 @@ for i = 1:length(dists)
 
     d = dists(i);
 
-    T_ps = load(['data/ERASURE_d=', num2str(d), '_L0=1.5_l0=0.01_rec=', rec,'_200.mat']);
+    T_ps = load(['data/ERASURE_d=', num2str(d), '_L0=1.5_l0=0.01_rec=', rec,'_10000.mat']);
     T_ps = T_ps.res;
     Ts1 = T_ps(randperm(length(T_ps)));
     Ts2 = T_ps(randperm(length(T_ps)));

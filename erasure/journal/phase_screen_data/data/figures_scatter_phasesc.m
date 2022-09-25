@@ -11,10 +11,10 @@ set(0,'defaultTextInterpreter','latex');
 
 
 % PD
-N = 200;
-rec = '0.1';
+N = 10000;
+rec = '0.15';
 
-dists = [1000 1400 1800 2200 2600 3000];
+dists = [1000 1200 1400 1600 1800 2000 2200 2400 2600];
 sigma_coh = 10;
 F_class = (1 + (1/sigma_coh))/(2 + (1/sigma_coh));
 
@@ -51,12 +51,12 @@ hold on;
 
 % yyaxis left
 % title('Plots with Different y-Scales')
-xlabel('$T$', 'Interpreter', 'latex');
+xlabel('$L[m]$', 'Interpreter', 'latex');
 ylabel('$\bar{\mathcal{F}}$', 'Interpreter', 'latex');
 
-plot(dists, Fmean2, 'v-', 'LineWidth', 1.2, 'DisplayName', 'V=3');
+plot(dists, Fmean, 'v-', 'LineWidth', 1.2, 'DisplayName', 'V=3');
 
-plot(dists, Fmean, '*-', 'LineWidth', 1.2, 'DisplayName', 'V=10');
+plot(dists, Fmean2, '*-', 'LineWidth', 1.2, 'DisplayName', 'V=10');
 
 % plot(par(1:10:end), Fmean2(1:10:end),'*-', 'LineWidth', 1.2, 'DisplayName', 'V=6');
 
@@ -64,10 +64,10 @@ plot(dists, Fmean_dir, 'k-', 'LineWidth', 1.7, 'DisplayName', 'Direct');
 
 
 % xlim([par(1) par(end)])
-% ylim([.55 .95])
+ylim([.5 1])
 legend('Location','northwest')
 
-
+savefigures('scatter_phasesc')
 
 
 
