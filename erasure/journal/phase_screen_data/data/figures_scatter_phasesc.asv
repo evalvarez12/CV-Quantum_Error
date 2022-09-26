@@ -44,7 +44,7 @@ Fstd_dir = std(transpose(Fm_dir));
 
 y = [Fmean(1:end-1) - Fstd(1:end-1); Fmean(2:end) - Fstd(2:end); flipud(Fmean(2:end) + Fstd(2:end)); flipud(Fmean(1:end-1) + Fstd(1:end-1))];
 
-y2 = [Fmean2(1:end-1) - Fstd2(1:end-1); Fmean2(2:end) - Fstd2(2:end); flipud(Fmean2(2:end) + Fstd2(2:end)); flipud(Fmean2(1:end-1) + Fstd2(1:end-1))];
+y = [Fmean2(1:end-1) - Fstd(1:end-1); Fmean(2:end) - Fstd(2:end); flipud(Fmean(2:end) + Fstd(2:end)); flipud(Fmean(1:end-1) + Fstd(1:end-1))];
 
 x = [dists(1:end-1); dists(2:end); dists(2:end); dists(1:end-1)];
 
@@ -77,7 +77,7 @@ fill(x, y_dir, 'black','LineStyle','none','FaceAlpha',0.2,'HandleVisibility','of
 
 fill(x, y, 'red','LineStyle','none','FaceAlpha',0.2,'HandleVisibility','off');
 
-fill(x, y2, 'blue','LineStyle','none','FaceAlpha',0.2,'HandleVisibility','off');
+
 
 % xlim([par(1) par(end)])
 ylim([.5 1])

@@ -1,6 +1,6 @@
 clear;
 % Fidelity parameters
-V = 1;
+V = 3;
 coh_sigma = 10;
 epsilon = 0;
 
@@ -10,6 +10,9 @@ epsilon = 0;
 N = 10000;
 rec = '0.15';
 dists = [1000 1200 1400 1600 1800 2000 2200 2400 2600];
+
+% rec = '0.1';
+% dists = [1000 1200 1400 1600 1800 2000 2200 2400];
 
 Fm = zeros(length(dists), N);
 % Fstd = zeros(length(par), 1);
