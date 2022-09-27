@@ -1,4 +1,4 @@
-function [res] = snr(V, sigma, T1r, T2r, T3r, D1, D2)
+function [res] = old_snr(V, sigma, T1r, T2r, T3r, D1, D2)
     T1 = sqrt(T1r);
     T2 = sqrt(T2r);
     T3 = sqrt(T3r);

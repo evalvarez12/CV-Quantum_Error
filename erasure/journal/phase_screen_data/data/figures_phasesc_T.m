@@ -47,7 +47,22 @@ for i = 1:length(dists2)
     Tstd2(i) = std(Ts);
 end
 
+rec = '0.2';
+dists3 = [1000 1200 1400 1600 1800 2000 2200 2400 2600 2800 3000];
 
+
+Tm3 = zeros(length(dists2), 1);
+Tstd3 = zeros(length(dists2), 1);
+for i = 1:length(dists3)
+
+    d = dists3(i);
+
+    Ts = load(['data/ERASURE_d=', num2str(d), '_L0=1.5_l0=0.01_rec=', rec,'_10000.mat']);
+    Ts = Ts.res;
+
+    Tm3(i) = mean(Ts);
+    Tstd3(i) = std(Ts);
+end
 
 
 Tm1 = transpose(Tm1);
@@ -66,15 +81,23 @@ y2 = [Tm2(1:end-1) - Tstd2(1:end-1); Tm2(2:end) - Tstd2(2:end); flipud(Tm2(2:end
 
 x2 = [dists2(1:end-1); dists2(2:end); dists2(2:end); dists2(1:end-1)];
 
+
+Tm3 = transpose(Tm3);
+Tstd3 = transpose(Tstd3);
+
+y3 = [Tm3(1:end-1) - Tstd3(1:end-1); Tm3(2:end) - Tstd3(2:end); flipud(Tm3(2:end) + Tstd3(2:end)); flipud(Tm3(1:end-1) + Tstd3(1:end-1))];
+
+x3 = [dists3(1:end-1); dists3(2:end); dists3(2:end); dists3(1:end-1)];
+
 hold on;
 fill(x1, y1, 'blue','LineStyle','none','FaceAlpha',0.2,'HandleVisibility','off');
-
-plot(dists1, Tm1, 'DisplayName', '$r_d=0.1m$');
-
+plot(dists1, Tm1, 'LineWidth', 1.4, 'DisplayName', '$r_d=0.1m$');
 
 fill(x2, y2, 'red','LineStyle','none','FaceAlpha',0.2,'HandleVisibility','off');
+plot(dists2, Tm2, 'LineWidth', 1.4, 'DisplayName', '$r_d=0.15m$');
 
-plot(dists2, Tm2, 'DisplayName', '$r_d=0.15m$');
+fill(x3, y3, 'yellow','LineStyle','none','FaceAlpha',0.2,'HandleVisibility','off');
+plot(dists3, Tm3, 'LineWidth', 1.4, 'DisplayName', '$r_d=0.2m$');
 
 % errorbar(par(1:2:end), snr_m(1:2:end), snr_std(1:2:end),'-','LineWidth',1.2, 'CapSize',4, 'DisplayName','\Delta =10');
 
