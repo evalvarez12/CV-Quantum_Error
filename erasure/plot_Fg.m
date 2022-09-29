@@ -1,6 +1,6 @@
 clear;
 % Fidelity parameters
-V = 20;
+V = 10;
 coh_sigma = 10;
 epsilon = 0;
 
@@ -23,6 +23,10 @@ N = 5;
 Ts1 = distribution(pd, T0, mu, sigma, N);
 Ts2 = distribution(pd, T0, mu, sigma, N);
 Ts3 = distribution(pd, T0, mu, sigma, N);
+
+Ts1 = [0.97 0.47 0.45 0.88 0.66];
+Ts2 = [0.98 0.88 0.84 0.52 0.41];
+Ts3 = [0.64 0.92 0.56 0.83 0.74];
 % 
 % Ts1 = [0.8 0.6 0.7 .3];
 % Ts2 = [0.8 0.2 0.7 0.8];
@@ -34,7 +38,7 @@ gmax = zeros(N, 1);
 gs = -1:.01:1;
 
 for j = 1:N
-    T1 = 0;
+    T1 = Ts1(j);
     T2 = Ts2(j);
     T3 = Ts3(j);
 
@@ -47,14 +51,14 @@ for j = 1:N
 
 
 % %     plot(gs, Fs);
-    plot(gs, Fs, 'LineWidth', 1,"Color", [rand(1,3) 0.8])
+    plot(gs, Fs, 'LineWidth', 1.)
     [Fmax(j), gmax(j)]= max(Fs);
     Ttext = ['[' num2str(round(T1,2)) ' , ' num2str(round(T2,2))  ' , ' num2str(round(T3,2)) ']' ];
-    text(gs(gmax(j)), Fmax(j), Ttext);
+    text(gs(gmax(j)) - 0.14, Fmax(j) + 0.03, Ttext);
 end
 
 scatter(gs(gmax), Fmax, 'filled', 'MarkerFaceColor', 'red');
 
-
+savefigures('gs')
 
 

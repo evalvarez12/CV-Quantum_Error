@@ -10,9 +10,9 @@ epsilon = 0;
 N = 10000;
 
 rec = '0.2';
-dists = [1000 ];
+dists = [1000 1200 1400 1600 1800 2000 2200 2400 2600 2800 3000];
 
-delta = 10;
+delta = 5;
 
 % rec = '0.15';
 % dists = [1000 1200 1400 1600 1800 2000 2200 2400 2600];
@@ -40,7 +40,7 @@ for i = 1:length(dists)
         T2 = Ts2(j);
         T3 = Ts3(j);
     
-        snrs(i) = my_snr(T1, T2, T3, coh_sigma, V, delta);
+        snrs(j) = 10*log10(my_snr(T1, T2, T3, coh_sigma, V, delta));
     end
 
     snr_m(i) = mean(snrs);
@@ -51,10 +51,7 @@ end
 
 
 
-% 
-% save(['data/snrm_phasesc_rec=', rec, '_delta=', num2str(delta), '.mat'], 'snr_m');
-% save(['data/snrstd_phasesc_rec=', rec, '_delta=', num2str(delta), '.mat'], 'snr_m');
-% 
-% 
-% 
+save(['data/snrm_phasesc_rec=', rec, '_delta=', num2str(delta), '.mat'], 'snr_m');
+save(['data/snrstd_phasesc_rec=', rec, '_delta=', num2str(delta), '.mat'], 'snr_std');
+
 
