@@ -103,8 +103,7 @@ y3 = [Tm3(1:end-1) - Tstd3(1:end-1); Tm3(2:end) - Tstd3(2:end); flipud(Tm3(2:end
 x3 = [dists(1:end-1); dists(2:end); dists(2:end); dists(1:end-1)];
 
 hold on;
-fill(x1, y1, 'blue','LineStyle','none','FaceAlpha',0.2,'HandleVisibility','off');
-plot(dists, Tm1, 's-','LineWidth', 1.4, 'DisplayName', '$r_d=0.1m$');
+fill(x1, y1, 'red','LineStyle','none','FaceAlpha',0.2,'HandleVisibility','off');
 % errorbar(dists, Tm1, Tstd1,'LineWidth', 1.4, 'DisplayName', '$r_d=0.1m$');
 
 
@@ -112,8 +111,14 @@ plot(dists, Tm1, 's-','LineWidth', 1.4, 'DisplayName', '$r_d=0.1m$');
 % plot(dists, Tm2, 'LineWidth', 1.4, 'DisplayName', '$r_d=0.15m$');
 % errorbar(dists, Tm2, Tstd2,'LineWidth', 1.4, 'DisplayName', '$r_d=0.15m$');
 
-fill(x3, y3, 'red','LineStyle','none','FaceAlpha',0.2,'HandleVisibility','off');
+fill(x3, y3, 'blue','LineStyle','none','FaceAlpha',0.2,'HandleVisibility','off');
+
+
+
 plot(dists, Tm3, 'v-','LineWidth', 1.4, 'DisplayName', '$r_d=0.2m$');
+plot(dists, Tm1, 's-','LineWidth', 1.4, 'DisplayName', '$r_d=0.1m$');
+
+
 % errorbar(dists, Tm3, Tstd3,'LineWidth', 1.4, 'DisplayName', '$r_d=0.2m$');
 
 % errorbar(par(1:2:end), snr_m(1:2:end), snr_std(1:2:end),'-','LineWidth',1.2, 'CapSize',4, 'DisplayName','\Delta =10');

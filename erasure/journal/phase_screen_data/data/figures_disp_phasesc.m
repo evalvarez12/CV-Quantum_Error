@@ -64,16 +64,15 @@ xlabel('$L[m]$', 'Interpreter', 'latex');
 ylabel('$|\Delta|^2$', 'Interpreter', 'latex');
 
 
-
+fill(x, y2, 'red','LineStyle','none','FaceAlpha',0.2,'HandleVisibility','off');
 
 
 fill(x, y, 'blue','LineStyle','none','FaceAlpha',0.2,'HandleVisibility','off');
 
-fill(x, y2, 'red','LineStyle','none','FaceAlpha',0.2,'HandleVisibility','off');
 
 plot(dists, snr_m, 'v-', 'LineWidth', 1.2, 'DisplayName', '$r_\mathrm{det}=0.2m$');
 
-plot(dists, snr_m2, '*-', 'LineWidth', 1.2, 'DisplayName', '$r_\mathrm{det}=0.1m$');
+plot(dists, snr_m2, 's-', 'LineWidth', 1.2, 'DisplayName', '$r_\mathrm{det}=0.1m$');
 
 % xlim([par(1) par(end)])
 % ylim([15 30])
