@@ -4,7 +4,7 @@ set(0,'defaultTextInterpreter','latex');
 
 
 
-rec = '0.2';
+
 dists = [1000 1200 1400 1600 1800 2000 2200 2400 2600 2800 3000];
 
 % rec = '0.15';
@@ -16,16 +16,16 @@ dists = [1000 1200 1400 1600 1800 2000 2200 2400 2600 2800 3000];
 sigma_coh = 10;
 F_class = (1 + (1/sigma_coh))/(2 + (1/sigma_coh));
 
-
-data = load(['snrm_phasesc_rec=', rec,'_delta=5.mat']);
+rec = '0.2';
+data = load(['dispm_phasesc_rec=', rec,'.mat']);
 snr_m = transpose(data.snr_m);
-data = load(['snrstd_phasesc_rec=', rec,'_delta=5.mat']);
+data = load(['dispstd_phasesc_rec=', rec,'.mat']);
 snr_std = transpose(data.snr_std);
 
-
-data = load(['snrm_phasesc_rec=', rec,'_delta=10.mat']);
+rec = '0.1';
+data = load(['dispm_phasesc_rec=', rec,'.mat']);
 snr_m2 = transpose(data.snr_m);
-data = load(['snrstd_phasesc_rec=', rec,'_delta=10.mat']);
+data = load(['dispstd_phasesc_rec=', rec,'.mat']);
 snr_std2 = transpose(data.snr_std);
 
 
@@ -61,11 +61,9 @@ hold on;
 % yyaxis left
 % title('Plots with Different y-Scales')
 xlabel('$L[m]$', 'Interpreter', 'latex');
-ylabel('$\mathrm{SNR}$', 'Interpreter', 'latex');
+ylabel('$|\Delta|^2$', 'Interpreter', 'latex');
 
-plot(dists, snr_m, 'v-', 'LineWidth', 1.2, 'DisplayName', '\Delta=5');
 
-plot(dists, snr_m2, '*-', 'LineWidth', 1.2, 'DisplayName', '\Delta=10');
 
 
 
@@ -73,14 +71,15 @@ fill(x, y, 'blue','LineStyle','none','FaceAlpha',0.2,'HandleVisibility','off');
 
 fill(x, y2, 'red','LineStyle','none','FaceAlpha',0.2,'HandleVisibility','off');
 
+plot(dists, snr_m, 'v-', 'LineWidth', 1.2, 'DisplayName', '$r_\mathrm{det}=0.2m$');
+
+plot(dists, snr_m2, '*-', 'LineWidth', 1.2, 'DisplayName', '$r_\mathrm{det}=0.1m$');
+
 % xlim([par(1) par(end)])
-% ylim([.5 1])
-legend('Location','northeast')
+% ylim([15 30])
+legend('Location','northwest', 'Interpreter', 'latex');
 
-
-% savefigures('scatter_phasesc_02');
-
-
+savefigures('disp_phasesc');
 
 % yyaxis right
 % ylabel('$\%> F_\mathrm{class}$', 'Interpreter', 'latex');

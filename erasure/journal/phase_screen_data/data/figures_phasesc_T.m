@@ -17,6 +17,7 @@ dists = [1000 1200 1400 1600 1800 2000 2200 2400 2600 2800 3000];
 
 Tm1 = zeros(length(dists), 1);
 Tstd1 = zeros(length(dists), 1);
+sigs1 = zeros(length(dists), 1);
 
 for i = 1:length(dists)
 
@@ -28,6 +29,8 @@ for i = 1:length(dists)
     Tm1(i) = mean(Ts);
     Tstd1(i) = std(Ts);
 
+    sigs1(i) = (mean(Ts.^2)/(mean(Ts)^2)) - 1;
+
 end
 
 
@@ -36,6 +39,8 @@ rec = '0.15';
 
 Tm2 = zeros(length(dists), 1);
 Tstd2 = zeros(length(dists), 1);
+sigs2 = zeros(length(dists), 1);
+
 for i = 1:length(dists)
 
     d = dists(i);
@@ -46,6 +51,9 @@ for i = 1:length(dists)
 
     Tm2(i) = mean(Ts);
     Tstd2(i) = std(Ts);
+
+    sigs2(i) = (mean(Ts.^2)/(mean(Ts)^2)) - 1;
+
 end
 
 rec = '0.2';
@@ -53,6 +61,8 @@ rec = '0.2';
 
 Tm3 = zeros(length(dists), 1);
 Tstd3 = zeros(length(dists), 1);
+sigs3 = zeros(length(dists), 1);
+
 for i = 1:length(dists)
 
     d = dists(i);
@@ -62,6 +72,9 @@ for i = 1:length(dists)
 
     Tm3(i) = mean(Ts);
     Tstd3(i) = std(Ts);
+
+    sigs3(i) = (mean(Ts.^2)/(mean(Ts)^2)) - 1;
+
 end
 
 
