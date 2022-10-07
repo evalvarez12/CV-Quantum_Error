@@ -13,7 +13,7 @@ set(0,'defaultTextInterpreter','latex');
 % PD
 N = 10000;
 
-rec = '0.2';
+rec = '0.1';
 dists = [1000 1200 1400 1600 1800 2000 2200 2400 2600 2800 3000];
 
 % rec = '0.15';
@@ -82,16 +82,16 @@ fill(x, y, 'blue','LineStyle','none','FaceAlpha',0.2,'HandleVisibility','off');
 
 plot(dists, Fmean_dir, 'k-', 'LineWidth', 1.7, 'DisplayName', 'Direct');
 
-plot(dists, Fmean, 'v-', 'LineWidth', 1.2, 'DisplayName', 'Protocol');
+plot(dists, Fmean, 'o-', 'LineWidth', 1.2, 'DisplayName', 'Protocol');
 
 
 % xlim([par(1) par(end)])
 ylim([.5 1])
 legend('Location','northeast')
+text(1020, .98, '$r_\mathrm{d}=0.1m$')
 
 
-savefigures('scatter_phasesc_02');
-
+savefigures('scatter_phasesc_01');
 
 
 % yyaxis right

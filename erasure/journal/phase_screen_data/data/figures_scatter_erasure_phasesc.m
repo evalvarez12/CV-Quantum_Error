@@ -13,7 +13,7 @@ set(0,'defaultTextInterpreter','latex');
 % PD
 N = 10000;
 
-rec = '0.2';
+rec = '0.1';
 dists = [1000 1200 1400 1600 1800 2000 2200 2400 2600 2800 3000];
 
 % rec = '0.15';
@@ -81,7 +81,7 @@ fill(x, y, 'blue','LineStyle','none','FaceAlpha',0.2,'HandleVisibility','off');
 
 fill(x, y2, 'red','LineStyle','none','FaceAlpha',0.2,'HandleVisibility','off');
 
-plot(dists, Fmean, 's-', 'LineWidth', 1.2, 'DisplayName', 'Erasure - V=3');
+plot(dists, Fmean, 'o-', 'LineWidth', 1.2, 'DisplayName', 'Erasure - V=3');
 
 plot(dists, Fmean2, 'v-', 'LineWidth', 1.2, 'DisplayName', 'Erasure - V=10');
 
@@ -93,9 +93,10 @@ plot(dists, Fmean_dir, 'k-', 'LineWidth', 1.7, 'DisplayName', 'No erasure');
 % xlim([par(1) par(end)])
 ylim([.5 1])
 legend('Location','northeast')
+text(1020, .98, '$r_\mathrm{d}=0.1m$')
 
 
-savefigures('scatter_phasesc_erasure_02');
+savefigures('scatter_phasesc_erasure_01');
 
 
 

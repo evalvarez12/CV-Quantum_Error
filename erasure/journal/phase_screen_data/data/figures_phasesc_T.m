@@ -2,13 +2,6 @@ clear;
 set(0,'defaultTextInterpreter','latex');
 
 
-% Fidelity parameters
-V = 1;
-coh_sigma = 10;
-epsilon = 0;
-
-
-
 % Sample size - same as phase screen data size
 N = 10000;
 rec = '0.1';
@@ -134,4 +127,4 @@ plot(dists, Tm1, 's-','LineWidth', 1.4, 'DisplayName', '$r_d=0.1m$');
 legend('Interpreter', 'latex')
 xlabel('$L[m]$', 'Interpreter', 'latex');
 ylabel('$T$', 'Interpreter', 'latex');
-savefigures('phasesc_T')
+% savefigures('phasesc_T')
