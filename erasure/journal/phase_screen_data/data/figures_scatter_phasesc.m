@@ -13,7 +13,7 @@ set(0,'defaultTextInterpreter','latex');
 % PD
 N = 10000;
 
-rec = '0.1';
+rec = '0.2';
 dists = [1000 1200 1400 1600 1800 2000 2200 2400 2600 2800 3000];
 
 % rec = '0.15';
@@ -27,8 +27,9 @@ F_class = (1 + (1/sigma_coh))/(2 + (1/sigma_coh));
 
 
 data = load(['Fscatter_phasesc_rec=', rec,'_V3.mat']);
-[Fmean, Fstd] = data.Fm;
-
+Fm = data.Fm;
+Fmean = mean(transpose(Fm));
+Fstd = std(transpose(Fm));
 
 data2 = load(['Fscatter_phasesc_rec=', rec, '_V10.mat']);
 Fm2 = data2.Fm;
@@ -39,10 +40,10 @@ Fstd2 = std(transpose(Fm2));
 % data = load('F_pd_std.mat');
 % Fstd = data.Fstd;
 
-% data = load(['Fscatter_phasesc_rec=', rec, '_dir.mat']);
-% Fm_dir = data.Fm_dir;
-% Fmean_dir = mean(transpose(Fm_dir));
-% Fstd_dir = std(transpose(Fm_dir));
+data = load(['Fscatter_phasesc_rec=', rec, '_dir.mat']);
+Fm_dir = data.Fm_dir;
+Fmean_dir = mean(transpose(Fm_dir));
+Fstd_dir = std(transpose(Fm_dir));
 
 y = [Fmean(1:end-1) - Fstd(1:end-1); Fmean(2:end) - Fstd(2:end); flipud(Fmean(2:end) + Fstd(2:end)); flipud(Fmean(1:end-1) + Fstd(1:end-1))];
 
@@ -50,7 +51,7 @@ y2 = [Fmean2(1:end-1) - Fstd2(1:end-1); Fmean2(2:end) - Fstd2(2:end); flipud(Fme
 
 x = [dists(1:end-1); dists(2:end); dists(2:end); dists(1:end-1)];
 
-% y_dir = [Fmean_dir(1:end-1) - Fstd_dir(1:end-1); Fmean_dir(2:end) - Fstd_dir(2:end); flipud(Fmean_dir(2:end) + Fstd_dir(2:end)); flipud(Fmean_dir(1:end-1) + Fstd_dir(1:end-1))];
+y_dir = [Fmean_dir(1:end-1) - Fstd_dir(1:end-1); Fmean_dir(2:end) - Fstd_dir(2:end); flipud(Fmean_dir(2:end) + Fstd_dir(2:end)); flipud(Fmean_dir(1:end-1) + Fstd_dir(1:end-1))];
 
 % data = load('F_pd_std_dir.mat');
 % Fstd_dir = data.Fstd_dir;
@@ -67,26 +68,29 @@ hold on;
 xlabel('$L[m]$', 'Interpreter', 'latex');
 ylabel('$\bar{\mathcal{F}}$', 'Interpreter', 'latex');
 
-plot(dists, Fmean, 'v-', 'LineWidth', 1.2, 'DisplayName', 'Protocol');
 
-plot(dists, Fmean2, '*-', 'LineWidth', 1.2, 'DisplayName', 'V=10');
+% plot(dists, Fmean2, '*-', 'LineWidth', 1.2, 'DisplayName', 'V=10');
 
 % plot(par(1:10:end), Fmean2(1:10:end),'*-', 'LineWidth', 1.2, 'DisplayName', 'V=6');
 
-% plot(dists, Fmean_dir, 'k-', 'LineWidth', 1.7, 'DisplayName', 'Direct');
 
-% fill(x, y_dir, 'black','LineStyle','none','FaceAlpha',0.2,'HandleVisibility','off');
+fill(x, y_dir, 'black','LineStyle','none','FaceAlpha',0.2,'HandleVisibility','off');
 
 fill(x, y, 'blue','LineStyle','none','FaceAlpha',0.2,'HandleVisibility','off');
 
-fill(x, y2, 'blue','LineStyle','none','FaceAlpha',0.2,'HandleVisibility','off');
+% fill(x, y2, 'blue','LineStyle','none','FaceAlpha',0.2,'HandleVisibility','off');
+
+plot(dists, Fmean_dir, 'k-', 'LineWidth', 1.7, 'DisplayName', 'Direct');
+
+plot(dists, Fmean, 'v-', 'LineWidth', 1.2, 'DisplayName', 'Protocol');
+
 
 % xlim([par(1) par(end)])
 ylim([.5 1])
 legend('Location','northeast')
 
 
-% savefigures('scatter_phasesc_02');
+savefigures('scatter_phasesc_02');
 
 
 

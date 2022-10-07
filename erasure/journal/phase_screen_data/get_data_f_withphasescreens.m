@@ -2,8 +2,8 @@ clear;
 % Fidelity parameters
 V = 10;
 coh_sigma = 10;
-epsilon = 0;
-
+epsilon = 0.1;
+eta = 10^(-1/10);
 
 
 % Sample size - same as phase screen data size
@@ -27,7 +27,7 @@ Fm = zeros(length(dists), N);
 
 Fmax = zeros(N,1);
 gmax = zeros(N, 1);
-gs = -1:.01:1;
+gs = -1.26:.01:1.26;
 
 for i = 1:length(dists)
 
@@ -44,7 +44,7 @@ for i = 1:length(dists)
         T2 = Ts2(j);
         T3 = Ts3(j);
     
-        Fs = fid_tmsv_gen_loss_eq(V, gs, coh_sigma, T1, T2, T3, epsilon);
+        Fs = fid_tmsv_gen_loss_eq(V, gs, coh_sigma, T1, T2, T3, epsilon, eta);
         [Fmax(j), gmax(j)]= max(Fs);
     
     end

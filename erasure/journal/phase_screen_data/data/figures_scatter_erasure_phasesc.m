@@ -13,14 +13,14 @@ set(0,'defaultTextInterpreter','latex');
 % PD
 N = 10000;
 
-% rec = '0.2';
-% dists = [1000 1200 1400 1600 1800 2000 2200 2400 2600 2800 3000];
+rec = '0.2';
+dists = [1000 1200 1400 1600 1800 2000 2200 2400 2600 2800 3000];
 
 % rec = '0.15';
 % dists = [1000 1200 1400 1600 1800 2000 2200 2400 2600];
 
-rec = '0.1';
-dists = [1000 1200 1400 1600 1800 2000 2200 2400];
+% rec = '0.1';
+% dists = [1000 1200 1400 1600 1800 2000 2200 2400];
 
 sigma_coh = 10;
 F_class = (1 + (1/sigma_coh))/(2 + (1/sigma_coh));
@@ -37,10 +37,10 @@ Fmean2 = mean(transpose(Fm2));
 Fstd2 = std(transpose(Fm2));
 
 
-data3 = load(['Fscatter_erasure_phasesc_rec=', rec, '_V6.mat']);
-Fm3 = data3.Fm;
-Fmean3 = mean(transpose(Fm3));
-Fstd3 = std(transpose(Fm3));
+% data3 = load(['Fscatter_erasure_phasesc_rec=', rec, '_V6.mat']);
+% Fm3 = data3.Fm;
+% Fmean3 = mean(transpose(Fm3));
+% Fstd3 = std(transpose(Fm3));
 
 
 % data = load('F_pd_std.mat');
@@ -74,25 +74,28 @@ hold on;
 xlabel('$L[m]$', 'Interpreter', 'latex');
 ylabel('$\bar{\mathcal{F}}$', 'Interpreter', 'latex');
 
-plot(dists, Fmean, 'v-', 'LineWidth', 1.2, 'DisplayName', 'Erasure - V=3');
-
-plot(dists, Fmean2, '*-', 'LineWidth', 1.2, 'DisplayName', 'Erasure - V=10');
-
-% plot(par(1:10:end), Fmean2(1:10:end),'*-', 'LineWidth', 1.2, 'DisplayName', 'V=6');
-
-plot(dists, Fmean_dir, 'k-', 'LineWidth', 1.7, 'DisplayName', 'No erasure');
 
 fill(x, y_dir, 'black','LineStyle','none','FaceAlpha',0.2,'HandleVisibility','off');
 
 fill(x, y, 'blue','LineStyle','none','FaceAlpha',0.2,'HandleVisibility','off');
 
 fill(x, y2, 'red','LineStyle','none','FaceAlpha',0.2,'HandleVisibility','off');
+
+plot(dists, Fmean, 's-', 'LineWidth', 1.2, 'DisplayName', 'Erasure - V=3');
+
+plot(dists, Fmean2, 'v-', 'LineWidth', 1.2, 'DisplayName', 'Erasure - V=10');
+
+% plot(par(1:10:end), Fmean2(1:10:end),'*-', 'LineWidth', 1.2, 'DisplayName', 'V=6');
+
+plot(dists, Fmean_dir, 'k-', 'LineWidth', 1.7, 'DisplayName', 'No erasure');
+
+
 % xlim([par(1) par(end)])
 ylim([.5 1])
 legend('Location','northeast')
 
 
-savefigures('scatter_phasesc_erasure_01');
+savefigures('scatter_phasesc_erasure_02');
 
 
 
