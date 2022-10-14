@@ -1,6 +1,6 @@
 clear;
 % Fidelity parameters
-V = 3;
+V = 15;
 coh_sigma = 10;
 epsilon = 0.1;
 eta = .9;
@@ -10,7 +10,7 @@ erasure = true;
 % Sample size - same as phase screen data size
 N = 10000;
 
-rec = '0.1';
+rec = '0.2';
 dists = [1000 1200 1400 1600 1800 2000 2200 2400 2600 2800 3000];
 
 % rec = '0.15';

@@ -13,8 +13,10 @@ set(0,'defaultTextInterpreter','latex');
 % PD
 N = 10000;
 
-rec = '0.1';
+rec = '0.2';
 dists = [1000 1200 1400 1600 1800 2000 2200 2400 2600 2800 3000];
+
+pe = 0;
 
 % rec = '0.15';
 % dists = [1000 1200 1400 1600 1800 2000 2200 2400 2600];
@@ -28,12 +30,12 @@ F_class = (1 + (1/sigma_coh))/(2 + (1/sigma_coh));
 
 data = load(['Fscatter_erasure_phasesc_rec=', rec,'_V3.mat']);
 Fm = data.Fm;
-Fmean = mean(transpose(Fm));
+Fmean = (1-pe^2)*mean(transpose(Fm));
 Fstd = std(transpose(Fm));
 
 data2 = load(['Fscatter_erasure_phasesc_rec=', rec, '_V10.mat']);
 Fm2 = data2.Fm;
-Fmean2 = mean(transpose(Fm2));
+Fmean2 = (1-pe^2)*mean(transpose(Fm2));
 Fstd2 = std(transpose(Fm2));
 
 
@@ -47,7 +49,7 @@ Fstd2 = std(transpose(Fm2));
 % Fstd = data.Fstd;
 
 data = load(['Fscatter_phasesc_rec=', rec, '_V10.mat']);
-Fm_dir = data.Fm;
+Fm_dir = (1-pe)*data.Fm;
 Fmean_dir = mean(transpose(Fm_dir));
 Fstd_dir = std(transpose(Fm_dir));
 
@@ -91,10 +93,12 @@ plot(dists, Fmean_dir, 'k-', 'LineWidth', 1.7, 'DisplayName', 'No erasure');
 
 
 % xlim([par(1) par(end)])
-ylim([.5 1])
-legend('Location','northeast')
-text(1020, .98, '$r_\mathrm{d}=0.1m$')
+ylim([0.5 1]);
+legend('Location','northeast');
+% text(1020, .98, ['$r_\mathrm{d}=', rec, 'm$']);
 
+txt = ['$p_e =', num2str(pe), '$'];
+text(1020, .5, txt);
 
 savefigures('scatter_phasesc_erasure_01');
 

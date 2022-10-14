@@ -16,6 +16,8 @@ N = 10000;
 rec = '0.2';
 dists = [1000 1200 1400 1600 1800 2000 2200 2400 2600 2800 3000];
 
+pe = 0;
+
 % rec = '0.15';
 % dists = [1000 1200 1400 1600 1800 2000 2200 2400 2600];
 
@@ -26,24 +28,45 @@ sigma_coh = 10;
 F_class = (1 + (1/sigma_coh))/(2 + (1/sigma_coh));
 
 
+data = load(['Fscatter_erasure_phasesc_rec=', rec,'_V3.mat']);
+Fm_erasure = data.Fm;
+Fmean_erasure = (1-pe^2)*mean(transpose(Fm_erasure));
+Fstd_erasure = std(transpose(Fm_erasure));
+
+data = load(['Fscatter_erasure_phasesc_rec=', rec, '_V10.mat']);
+Fm_erasure2 = data.Fm;
+Fmean_erasure2 = (1-pe^2)*mean(transpose(Fm_erasure2));
+Fstd_erasure2 = std(transpose(Fm_erasure2));
+
 data = load(['Fscatter_phasesc_rec=', rec,'_V3.mat']);
 Fm = data.Fm;
-Fmean = mean(transpose(Fm));
+Fmean = (1-pe^2)*mean(transpose(Fm));
 Fstd = std(transpose(Fm));
 
-data2 = load(['Fscatter_phasesc_rec=', rec, '_V10.mat']);
-Fm2 = data2.Fm;
-Fmean2 = mean(transpose(Fm2));
+data = load(['Fscatter_phasesc_rec=', rec, '_V10.mat']);
+Fm2 = data.Fm;
+Fmean2 = (1-pe^2)*mean(transpose(Fm2));
 Fstd2 = std(transpose(Fm2));
+
+data = load(['Fscatter_phasesc_rec=', rec, '_dir.mat']);
+Fm_dir = (1-pe)*data.Fm_dir;
+Fmean_dir = mean(transpose(Fm_dir));
+Fstd_dir = std(transpose(Fm_dir));
+
+
+F_total = (1-pe)^3*Fmean + 3*pe*(1-pe)^2*Fmean_erasure;
+F_total_dir = (1-pe)*Fmean_dir;
+
+% data3 = load(['Fscatter_erasure_phasesc_rec=', rec, '_V6.mat']);
+% Fm3 = data3.Fm;
+% Fmean3 = mean(transpose(Fm3));
+% Fstd3 = std(transpose(Fm3));
 
 
 % data = load('F_pd_std.mat');
 % Fstd = data.Fstd;
 
-data = load(['Fscatter_phasesc_rec=', rec, '_dir.mat']);
-Fm_dir = data.Fm_dir;
-Fmean_dir = mean(transpose(Fm_dir));
-Fstd_dir = std(transpose(Fm_dir));
+
 
 y = [Fmean(1:end-1) - Fstd(1:end-1); Fmean(2:end) - Fstd(2:end); flipud(Fmean(2:end) + Fstd(2:end)); flipud(Fmean(1:end-1) + Fstd(1:end-1))];
 
@@ -69,29 +92,31 @@ xlabel('$L[m]$', 'Interpreter', 'latex');
 ylabel('$\bar{\mathcal{F}}$', 'Interpreter', 'latex');
 
 
-% plot(dists, Fmean2, '*-', 'LineWidth', 1.2, 'DisplayName', 'V=10');
-
-% plot(par(1:10:end), Fmean2(1:10:end),'*-', 'LineWidth', 1.2, 'DisplayName', 'V=6');
-
-
 fill(x, y_dir, 'black','LineStyle','none','FaceAlpha',0.2,'HandleVisibility','off');
 
 fill(x, y, 'blue','LineStyle','none','FaceAlpha',0.2,'HandleVisibility','off');
 
-% fill(x, y2, 'blue','LineStyle','none','FaceAlpha',0.2,'HandleVisibility','off');
+fill(x, y2, 'red','LineStyle','none','FaceAlpha',0.2,'HandleVisibility','off');
 
-plot(dists, Fmean_dir, 'k-', 'LineWidth', 1.7, 'DisplayName', 'Direct');
+plot(dists, Fmean, 'o-', 'LineWidth', 1.2, 'DisplayName', 'Erasure - V=3');
 
-plot(dists, Fmean, 'o-', 'LineWidth', 1.2, 'DisplayName', 'Protocol');
+plot(dists, Fmean2, 'v-', 'LineWidth', 1.2, 'DisplayName', 'Erasure - V=10');
+
+% plot(par(1:10:end), Fmean2(1:10:end),'*-', 'LineWidth', 1.2, 'DisplayName', 'V=6');
+
+plot(dists, Fmean_dir, 'k-', 'LineWidth', 1.7, 'DisplayName', 'No erasure');
 
 
 % xlim([par(1) par(end)])
-ylim([.5 1])
-legend('Location','northeast')
-text(1020, .98, '$r_\mathrm{d}=0.1m$')
+ylim([0.3 0.95]);
+legend('Location','northeast');
+% text(1020, .98, ['$r_\mathrm{d}=', rec, 'm$']);
 
+txt = ['$p_e =', num2str(pe), '$'];
+text(1020, .5, txt);
 
-savefigures('scatter_phasesc_01');
+savefigures('scatter_phasesc_erasure_01');
+
 
 
 % yyaxis right
