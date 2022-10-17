@@ -88,10 +88,10 @@ plot(dists, Fmean, 'o-', 'LineWidth', 1.2, 'DisplayName', 'Protocol');
 % xlim([par(1) par(end)])
 ylim([.5 1])
 legend('Location','northeast')
-text(1020, .98, '$r_\mathrm{d}=0.1m$')
+text(1020, .98, '$r_\mathrm{d}=0.2m$')
 
 
-savefigures('scatter_phasesc_01');
+savefigures('scatter_phasesc_02');
 
 
 % yyaxis right

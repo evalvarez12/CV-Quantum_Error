@@ -108,8 +108,8 @@ fill(x3, y3, 'blue','LineStyle','none','FaceAlpha',0.2,'HandleVisibility','off')
 
 
 
-plot(dists, Tm3, 'v-','LineWidth', 1.4, 'DisplayName', '$r_d=0.2m$');
-plot(dists, Tm1, 's-','LineWidth', 1.4, 'DisplayName', '$r_d=0.1m$');
+plot(dists, Tm3, 'v-','LineWidth', 1.4, 'DisplayName', '$r_\mathrm{d}=0.2m$');
+plot(dists, Tm1, 's-','LineWidth', 1.4, 'DisplayName', '$r_\mathrm{d}=0.1m$');
 
 
 % errorbar(dists, Tm3, Tstd3,'LineWidth', 1.4, 'DisplayName', '$r_d=0.2m$');

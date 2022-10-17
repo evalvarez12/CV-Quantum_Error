@@ -28,12 +28,12 @@ sigma_coh = 10;
 F_class = (1 + (1/sigma_coh))/(2 + (1/sigma_coh));
 
 
-data = load(['Fscatter_erasure_phasesc_rec=', rec,'_V3.mat']);
+data = load(['Fscatter_erasure_on3_phasesc_rec=', rec,'_V3.mat']);
 Fm = data.Fm;
 Fmean = (1-pe^2)*mean(transpose(Fm));
 Fstd = std(transpose(Fm));
 
-data2 = load(['Fscatter_erasure_phasesc_rec=', rec, '_V10.mat']);
+data2 = load(['Fscatter_erasure_on3_phasesc_rec=', rec, '_V10.mat']);
 Fm2 = data2.Fm;
 Fmean2 = (1-pe^2)*mean(transpose(Fm2));
 Fstd2 = std(transpose(Fm2));
@@ -77,30 +77,30 @@ xlabel('$L[m]$', 'Interpreter', 'latex');
 ylabel('$\bar{\mathcal{F}}$', 'Interpreter', 'latex');
 
 
-fill(x, y_dir, 'black','LineStyle','none','FaceAlpha',0.2,'HandleVisibility','off');
+% fill(x, y_dir, 'black','LineStyle','none','FaceAlpha',0.2,'HandleVisibility','off');
 
 fill(x, y, 'blue','LineStyle','none','FaceAlpha',0.2,'HandleVisibility','off');
 
 fill(x, y2, 'red','LineStyle','none','FaceAlpha',0.2,'HandleVisibility','off');
 
-plot(dists, Fmean, 'o-', 'LineWidth', 1.2, 'DisplayName', 'Erasure - V=3');
+plot(dists, Fmean, 'o-', 'LineWidth', 1.2, 'DisplayName', 'V=3');
 
-plot(dists, Fmean2, 'v-', 'LineWidth', 1.2, 'DisplayName', 'Erasure - V=10');
+plot(dists, Fmean2, 'v-', 'LineWidth', 1.2, 'DisplayName', 'V=10');
 
 % plot(par(1:10:end), Fmean2(1:10:end),'*-', 'LineWidth', 1.2, 'DisplayName', 'V=6');
 
-plot(dists, Fmean_dir, 'k-', 'LineWidth', 1.7, 'DisplayName', 'No erasure');
+% plot(dists, Fmean_dir, 'k-', 'LineWidth', 1.7, 'DisplayName', 'No erasure');
 
 
 % xlim([par(1) par(end)])
 ylim([0.5 1]);
-legend('Location','northeast');
+legend('Location','northeast', 'Interpreter', 'latex');
 % text(1020, .98, ['$r_\mathrm{d}=', rec, 'm$']);
 
-txt = ['$p_e =', num2str(pe), '$'];
-text(1020, .5, txt);
+txt = ['$r_\mathrm{d}=', rec, 'm$'];
+text(2700, .7, txt);
 
-savefigures('scatter_phasesc_erasure_01');
+% savefigures('scatter_phasesc_erasure_02');
 
 
 
