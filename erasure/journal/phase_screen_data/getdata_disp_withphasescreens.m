@@ -30,7 +30,7 @@ for i = 1:length(dists)
 
     T_ps = load(['data/ERASURE_d=', num2str(d), '_L0=1.5_l0=0.01_rec=', rec,'_10000.mat']);
     T_ps = T_ps.res;
-    Ts1 = T_ps(randperm(length(T_ps)));
+    Ts1 = T_ps(randperm(length(T_ps)))*0;
     Ts2 = T_ps(randperm(length(T_ps)));
     Ts3 = T_ps(randperm(length(T_ps)));
     
@@ -39,7 +39,7 @@ for i = 1:length(dists)
         T2 = Ts2(j);
         T3 = Ts3(j);
     
-        snrs(j) = 10*log10(bpsk_disp(T1, T2, T3, coh_sigma, V, eps, eta));
+        snrs(j) = bpsk_disp(T1, T2, T3, coh_sigma, V, eps, eta);
     end
 
     snr_m(i) = mean(snrs);
@@ -50,7 +50,7 @@ end
 
 
 
-save(['data/dispm_noers_phasesc_rec=', rec, '.mat'], 'snr_m');
-save(['data/dispstd_noers_phasesc_rec=', rec, '.mat'], 'snr_std');
+save(['data/dispm_phasesc_rec=', rec, '.mat'], 'snr_m');
+save(['data/dispstd_phasesc_rec=', rec, '.mat'], 'snr_std');
 
 
