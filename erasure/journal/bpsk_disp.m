@@ -11,8 +11,8 @@ function [delta2] = bpsk_disp(T1, T2, T3, sigma, V, eps, eta)
     c = 1 + eta*(eps - T1/4 - T2/4 - T3/2);
     d = eta*Tm^2;
 
-    sig2_snr = d*sigma + (a + b + c);
-    delta_a =  eta*Tp^2;
+    sig2_snr = sqrt(d*sigma + (a + b + c));
+    delta_a =  sqrt(eta)*Tp;
 
 
 
