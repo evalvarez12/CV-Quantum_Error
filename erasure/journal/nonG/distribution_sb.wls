@@ -2,7 +2,7 @@
 (* ::Package:: *)
 
 Clear["Global`*"];
-Import["/home/eduardo/quantum/CV-Quantum_Error_Correction/erasure/nonG/ToMatlab.m", "Package"];
+Import["/home/eduardo/quantum/CV-Quantum_Error_Correction/erasure/journal/nonG/ToMatlab.m", "Package"];
 
 (*---------------- Variables -----------------*)
 T1 = .;
@@ -15,7 +15,8 @@ ra = .;
 ri = .;
 da = .;
 di = .;
-
+xbar = .;
+pbar = .;
 
 (*---------------- Coherent state -----------------*)
 CFcoh[a_,ac_] = Exp[-(a*ac)/2+(a*(ra - I*ri)-ac*(ra + I*ri))];
@@ -47,17 +48,22 @@ CFsb[a_, ac_, b_, bc_] = 1/Sqrt[Cos[d]^2 + Sin[d]^2]*Exp[-1/2*(ap[a, ac, b ,bc]*
 																		
 (*------- Output CF of code --------------*)
 CFcode[a_,ac_] = CFs[a*((T1+T2)/2 + g*(T1-T2)/2), ac*((T1+T2)/2 + g*(T1-T2)/2)]*CFab[a*((T1-T2)/2 + g*(T1+T2)/2), ac*((T1-T2)/2 + g*(T1+T2)/2), ac*T3*g, a*T3*g]*
-				 CF0[a*Sqrt[(1-T1^2)/2*(1+g)^2 + (1-T2^2)/2*(1-g)^2 + (1-T3^2)*g^2], ac*Sqrt[(1-T1^2)/2*(1+g)^2 + (1-T2^2)/2*(1-g)^2 + (1-T3^2)*g^2]];					
+				 CF0[a*Sqrt[(1-T1^2)/2*(1+g)^2 + (1-T2^2)/2*(1-g)^2 + (1-T3^2)*g^2], ac*Sqrt[(1-T1^2)/2*(1+g)^2 + (1-T2^2)/2*(1-g)^2 + (1-T3^2)*g^2]];
 
 
-(*------- Fidelity SB --------------*)
+(*------- PROBABILITY DISTRIBUTION --------------*)
 CFs[a_, ac_] = CFcoh[a, ac];
 CFab[a_, ac_, b_, bc_] = Simplify[CFsb[a, ac, b, bc]];	
-				 
-Fsb[a_, ac_] = CFcode[a, ac]*CFs[-a, -ac]/Pi;
-FidPolarSb[r_, theta_] = Simplify[r*Fsb[r*Exp[theta*I], r*Exp[-theta*I]]];
-Print["-----------------  Fid sb"];
 
-ToMatlab[FidPolarSb[r, theta]]
+(*------- Displacement CF --------------*)
+DCF[a_,ac_] = Exp[(da - I*di)*a - (da + I*di)*ac];
 
+(*------- Distribtion --------------*)
+P[a_, ac_] = CFs[a*((T1-T2)/(Sqrt[2]*2)),ac*((T1-T2)/(Sqrt[2]*2))]*CFab[a*((T1+T2)/(Sqrt[2]*2)), ac*((T1+T2)/(Sqrt[2]*2)), ac*T3/Sqrt[2], a*T3/Sqrt[2]]*
+					CF0[a*Sqrt[1-T1^2]/2, ac*Sqrt[1-T1^2]/2]*CF0[a*Sqrt[1-T2^2]/2, ac*Sqrt[1-T2^2]/2]*CF0[a*Sqrt[(1-T3^2)/2], ac*Sqrt[(1-T3^2)/2]]*
+					DCF[a*((T1+T2)/(Sqrt[2]*2)), ac*((T1+T2)/(Sqrt[2]*2))]*Exp[(xbar - I*pbar)*a - (xbar + I*pbar)*ac];
+
+PPolar[r_, theta_] = Simplify[P[r*Exp[theta*I], r*Exp[-theta*I]]];
+
+ToMatlab[PPolar[r, theta]]
 
