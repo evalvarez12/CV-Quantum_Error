@@ -15,42 +15,37 @@ T1 = 0;
 T2 = 1;
 T3 = 1;
 
-da = 30;
-di = 0.01;
-
 d = 0.4032;
 
 
-xbar_c = da;
-pbar_c = di;
+da = 30;
+di = 0.01;
 
-bar_d = 0.05;
-bar_N = 2;
+delta = 5;
+N = 5;
 
+xbars = linspace(da-delta, da+delta,N);
+pbars = linspace(di-delta, di+delta,N);
 
-xbar_ini = xbar_c - (bar_N/2)*bar_d;
-xbar_end = xbar_c + (bar_N/2)*bar_d;
-pbar_ini = pbar_c - (bar_N/2)*bar_d;
-pbar_end = pbar_c + (bar_N/2)*bar_d;
+ps = zeros(N^2, 1);
 
-xbars = xbar_ini:bar_d:xbar_end;
-pbars = pbar_ini:bar_d:pbar_end;
-
-ps = zeros(bar_N, bar_N);
+[x, y] = meshgrid(xbars, pbars);
+xf = x(:);
+yf = y(:);
 
 
-for i=1:bar_N
-    xbar = xbars(i);
 
-    for j=1:bar_N
-        i
-        j
-        pbar = pbars(j);
+parfor i=1:N^2
+    i
+    xbar = xf(i);
+    pbar = yf(i);
     
-        ps(i, j) = prob_dist_sb(xbar, pbar, da, di, T1, T2, T3, V, d, sigma);
-    end
+    ps(i) = prob_dist_sb(xbar, pbar, da, di, T1, T2, T3, V, d, sigma);
+   
 end
 
+
+ps = reshape(ps, N, N);
 
 
 

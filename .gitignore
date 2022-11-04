@@ -12,3 +12,4 @@
 *.mat
 __pycache__/
 !erasure/journal/phase_screen_data/data/*.mat
+!erasure/journal/nonG/*.mat
