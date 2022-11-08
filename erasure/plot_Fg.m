@@ -1,9 +1,10 @@
 clear;
+set(0,'defaultTextInterpreter','latex');
 % Fidelity parameters
 V = 10;
 coh_sigma = 10;
-epsilon = 0.1;
-eta = 0.9;
+epsilon = 0.05;
+eta = sqrt(.9);
 
 % Distribution parameters
 % Discrete error rate
@@ -15,6 +16,7 @@ mu = 0.8;
 % Gaussian sigma
 sigma = 0.2; 
 % figure;
+set(gca,'fontname','times') 
 hold on;
 xlabel('$g$', 'Interpreter', 'latex');
 ylabel('$\bar{\mathcal{F}}$', 'Interpreter', 'latex');
@@ -25,9 +27,9 @@ Ts1 = distribution(pd, T0, mu, sigma, N);
 Ts2 = distribution(pd, T0, mu, sigma, N);
 Ts3 = distribution(pd, T0, mu, sigma, N);
 
-Ts1 = [0.87 0.17 0.45 0.88 0.66];
-Ts2 = [0.78 0.88 0.84 0.22 0.41];
-Ts3 = [0.34 0.92 0.56 0.83 0.74];
+Ts1 = [.87 0. 0.75 0.88 0.66];
+Ts2 = [.92 0.89 0.72 0. 0.42];
+Ts3 = [0. 0.94 0.76 0.83 0.71];
 % 
 % Ts1 = [0.8 0.6 0.7 .3];
 % Ts2 = [0.8 0.2 0.7 0.8];
