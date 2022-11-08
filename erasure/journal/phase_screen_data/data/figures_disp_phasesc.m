@@ -17,16 +17,16 @@ sigma_coh = 10;
 F_class = (1 + (1/sigma_coh))/(2 + (1/sigma_coh));
 
 rec = '0.2';
-data = load(['dispm_phasesc_rec=', rec,'.mat']);
+data = load(['dispm_T3_phasesc_rec=', rec,'.mat']);
 snr_m = transpose(data.snr_m);
-data = load(['dispstd_phasesc_rec=', rec,'.mat']);
+data = load(['dispstd_T3_phasesc_rec=', rec,'.mat']);
 snr_std = transpose(data.snr_std);
 
 
 rec = '0.1';
-data = load(['dispm_phasesc_rec=', rec,'.mat']);
+data = load(['dispm_T3_phasesc_rec=', rec,'.mat']);
 snr_m2 = transpose(data.snr_m);
-data = load(['dispstd_phasesc_rec=', rec,'.mat']);
+data = load(['dispstd_T3_phasesc_rec=', rec,'.mat']);
 snr_std2 = transpose(data.snr_std);
 
 
@@ -76,10 +76,10 @@ plot(dists, snr_m, 'v-', 'LineWidth', 1.2, 'DisplayName', '$r_\mathrm{d}=0.2m$')
 plot(dists, snr_m2, 'o-', 'LineWidth', 1.2, 'DisplayName', '$r_\mathrm{d}=0.1m$');
 
 % xlim([par(1) par(end)])
-ylim([15 37])
+ylim([8 17])
 legend('Location','northwest', 'Interpreter', 'latex');
 
-savefigures('disp_phasesc');
+savefigures('disp_phasesc2');
 
 % yyaxis right
 % ylabel('$\%> F_\mathrm{class}$', 'Interpreter', 'latex');

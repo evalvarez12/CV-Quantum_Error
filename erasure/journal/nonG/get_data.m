@@ -1,9 +1,12 @@
-V = 10;
+V = 3;
 sigma = 10;
 
 g = -1;
 
-Ts = linspace(0.6,1,12);
+% Ts = linspace(0.6,1,12);
+Ts = [1];
+Ts = sqrt(Ts);
+
 len = length(Ts);
 
 F_tmsv = zeros(1, len);
@@ -25,7 +28,7 @@ dini = 0.4;
 OptOption = optimoptions(@fmincon, 'FunctionTolerance', 1e-30,'StepTolerance', 1e-20, 'Display','off');
 
 
-for i=11:len
+for i=1:len
     
     T = Ts(i);
     T1 = 0;
@@ -43,7 +46,7 @@ for i=11:len
 %     [~, F_ps(i)] = fmincon(fun_ps, Tini, [],[],[],[], Tmin, Tmax, [], OptOption);
 %     [~, F_pa(i)] = fmincon(fun_pa, Tini, [],[],[],[], Tmin, Tmax, [], OptOption);
 %     [~, F_pc(i)] = fmincon(fun_pc, Tini, [],[],[],[], Tmin, Tmax, [], OptOption);
-%     [~, F_pspa(i)] = fmincon(fun_pspa, Tini, [],[],[],[], Tmin, Tmax, [], OptOption);
+%     [d, F_pspa(i)] = fmincon(fun_pspa, Tini, [],[],[],[], Tmin, Tmax, [], OptOption);
 %     [~, F_paps(i)] = fmincon(fun_paps, Tini, [],[],[],[], Tmin, Tmax, [], OptOption);
     [d, F_sb(i)] = fmincon(fun_sb, dini, [],[],[],[], dmin, dmax, [], OptOption);
     d

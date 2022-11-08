@@ -6,7 +6,7 @@ function [delta2] = bpsk_disp(T1, T2, T3, sigma, V, eps, eta)
     Tp = (sqrt(T1) + sqrt(T2))/2;
     Tm = (sqrt(T1) - sqrt(T2))/2;
 
-    a = eta^2*(V*(Tp^2/2 + T3/2) - 2*V2*Tp*sqrt(T_3)/2);
+    a = eta^2*(V*(Tp^2/2 + T3/2) - 2*V2*Tp*sqrt(T3)/2);
     b = eta^2*Tm^2/2;
     c = 1 + eta^2*(eps - T1/4 - T2/4 - T3/2);
     d = eta^2*Tm^2;

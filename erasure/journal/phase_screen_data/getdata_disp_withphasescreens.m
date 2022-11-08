@@ -10,7 +10,7 @@ eps = 0.1;
 % Sample size - same as phase screen data size
 N = 10000;
 
-rec = '0.2';
+rec = '0.1';
 dists = [1000 1200 1400 1600 1800 2000 2200 2400 2600 2800 3000];
 
 % rec = '0.15';
@@ -30,9 +30,9 @@ for i = 1:length(dists)
 
     T_ps = load(['data/ERASURE_d=', num2str(d), '_L0=1.5_l0=0.01_rec=', rec,'_10000.mat']);
     T_ps = T_ps.res;
-    Ts1 = T_ps(randperm(length(T_ps)))*0;
+    Ts1 = T_ps(randperm(length(T_ps)));
     Ts2 = T_ps(randperm(length(T_ps)));
-    Ts3 = T_ps(randperm(length(T_ps)));
+    Ts3 = T_ps(randperm(length(T_ps)))*0;
     
     for j = 1:N
         T1 = Ts1(j);
@@ -50,7 +50,7 @@ end
 
 
 
-save(['data/dispm_phasesc_rec=', rec, '.mat'], 'snr_m');
-save(['data/dispstd_phasesc_rec=', rec, '.mat'], 'snr_std');
+save(['data/dispm_T3_phasesc_rec=', rec, '.mat'], 'snr_m');
+save(['data/dispstd_T3_phasesc_rec=', rec, '.mat'], 'snr_std');
 
 
