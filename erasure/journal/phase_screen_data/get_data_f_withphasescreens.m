@@ -1,11 +1,11 @@
 clear;
 % Fidelity parameters
-V = 10;
+V = 3;
 coh_sigma = 10;
-epsilon = 0.1;
-eta = .9;
+epsilon = 0.049;
+eta = 0.9;
 
-erasure = true;
+erasure = false;
 
 % Sample size - same as phase screen data size
 N = 10000;
@@ -37,8 +37,8 @@ for i = 1:length(dists)
     T_ps = load(['data/ERASURE_d=', num2str(d), '_L0=1.5_l0=0.01_rec=', rec,'_10000.mat']);
     T_ps = T_ps.res;
     Ts1 = T_ps(randperm(length(T_ps)));
-    Ts2 = T_ps(randperm(length(T_ps)));
-    Ts3 = T_ps(randperm(length(T_ps)))*logical(~erasure);
+    Ts2 = T_ps(randperm(length(T_ps)))*logical(~erasure);
+    Ts3 = T_ps(randperm(length(T_ps)));
     
     for j = 1:N
         T1 = Ts1(j);
@@ -69,7 +69,7 @@ end
 
 
 if erasure
-    save(['data/Fscatter_erasure_on3_phasesc_rec=', rec, '_V', num2str(V),'.mat'], 'Fm');
+    save(['data/Fscatter_erasure_phasesc_rec=', rec, '_V', num2str(V),'.mat'], 'Fm');
     
 else
     save(['data/Fscatter_phasesc_rec=', rec, '_V', num2str(V),'.mat'], 'Fm');

@@ -36,11 +36,12 @@
 % Pn^2
 % (Pn/N)^2
 
+
 x = gg(:,: ,1);
 y = gg(:,:,2);
-
+ps = real(ps);
 surf(x,y,ps);
 % contour(x,y,p);
 N = sum(ps, 'all');
 Ny = sum(ps);
-sum(Ny(17:end))/N
+sum(Ny(1:17))/N

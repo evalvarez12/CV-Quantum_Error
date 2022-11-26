@@ -1,7 +1,7 @@
 V = 3;
 sigma = 10;
 
-g = -1;
+g = 1;
 
 % Ts = linspace(0.6,1,12);
 Ts = [1];
@@ -31,8 +31,8 @@ OptOption = optimoptions(@fmincon, 'FunctionTolerance', 1e-30,'StepTolerance', 1
 for i=1:len
     
     T = Ts(i);
-    T1 = 0;
-    T2 = T;
+    T1 = T;
+    T2 = T*0;
     T3 = T;
 
 %     fun_ps = @(par) -f_code(T1, T2, T3, V, par, g, 'ps', sigma);

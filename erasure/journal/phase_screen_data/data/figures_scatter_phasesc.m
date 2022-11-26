@@ -65,7 +65,7 @@ hold on;
 
 % yyaxis left
 % title('Plots with Different y-Scales')
-xlabel('$L[m]$', 'Interpreter', 'latex');
+xlabel('$L[\mathrm{m}]$', 'Interpreter', 'latex');
 ylabel('$\bar{\mathcal{F}}$', 'Interpreter', 'latex');
 
 
@@ -87,8 +87,9 @@ plot(dists, Fmean, 'o-', 'LineWidth', 1.2, 'DisplayName', 'Protocol');
 
 % xlim([par(1) par(end)])
 ylim([.5 1])
-legend('Location','northeast')
-text(1020, .98, '$r_\mathrm{d}=0.2m$')
+% legend('Location','northeast')
+% text(2160, .89, '$r_\mathrm{d}=0.1$ m')
+text(2700, .94, '$r_\mathrm{d}=0.1$ m')
 
 
 savefigures('scatter_phasesc_02');

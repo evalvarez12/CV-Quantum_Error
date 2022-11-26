@@ -102,7 +102,7 @@ hold on;
 
 % yyaxis left
 % title('Plots with Different y-Scales')
-xlabel('$L[m]$', 'Interpreter', 'latex');
+xlabel('$L[\mathrm{m}]$', 'Interpreter', 'latex');
 ylabel('$\bar{\mathcal{F}}$', 'Interpreter', 'latex');
 
 
@@ -138,11 +138,13 @@ plot(dists, F_total_dir4, '--', 'Color', color4, 'LineWidth', 1.4, 'HandleVisibi
 
 % xlim([par(1) par(end)])
 ylim([0.5 0.95]);
-legend('fontname','times', 'Location','northeast','Interpreter', 'latex');
+% xlim([1000 1910]);
+% legend('fontname','times', 'Location','northeast','Interpreter', 'latex');
 % text(1020, .98, ['$r_\mathrm{d}=', rec, 'm$']);
 
-txt = ['$r_\mathrm{d} =', rec, '$'];
-text(2700, .7, txt);
+txt = ['$r_\mathrm{d} =', rec, '$ m'];
+% text(1750, .80, txt);
+text(2700, .93, txt);
 
 savefigures('total2');
 
