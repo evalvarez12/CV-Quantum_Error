@@ -17,7 +17,7 @@ function [delta2] = bpsk_disp(T1, T2, T3, sigma, V, eps, eta)
 
 
     % Return |delta|^2 value 
-    delta2 = sig2_snr/delta_a * erfcinv(2*ber);
+    delta2 = sqrt(2)*sig2_snr/delta_a * erfcinv(2*ber);
 
 
 end

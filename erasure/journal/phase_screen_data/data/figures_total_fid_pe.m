@@ -103,7 +103,7 @@ hold on;
 % yyaxis left
 % title('Plots with Different y-Scales')
 xlabel('$L[\mathrm{m}]$', 'Interpreter', 'latex');
-ylabel('$\bar{\mathcal{F}}$', 'Interpreter', 'latex');
+ylabel('$\mathcal{F}_\mathrm{total}$', 'Interpreter', 'latex');
 
 
 % fill(x, y_dir, 'black','LineStyle','none','FaceAlpha',0.2,'HandleVisibility','off');

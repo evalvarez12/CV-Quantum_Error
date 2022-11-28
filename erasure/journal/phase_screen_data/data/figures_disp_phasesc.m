@@ -76,10 +76,10 @@ plot(dists, snr_m, 'v-', 'LineWidth', 1.2, 'DisplayName', '$r_\mathrm{d}=0.2$ m'
 plot(dists, snr_m2, 'o-', 'LineWidth', 1.2, 'DisplayName', '$r_\mathrm{d}=0.1$ m');
 
 % xlim([par(1) par(end)])
-ylim([16 35])
+ylim([23 50])
 legend('Location','northwest', 'Interpreter', 'latex');
 
-savefigures('disp_phasesc2');
+savefigures('disp_phasesc');
 
 % yyaxis right
 % ylabel('$\%> F_\mathrm{class}$', 'Interpreter', 'latex');

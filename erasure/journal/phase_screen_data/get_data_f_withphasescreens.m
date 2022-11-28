@@ -2,15 +2,20 @@ clear;
 % Fidelity parameters
 V = 3;
 coh_sigma = 10;
-epsilon = 0.049;
+% epsilon = 0.043;
 eta = 0.9;
 
-erasure = false;
+
+
+disp= [25.2491   25.2679   25.3129   25.4089   25.5921   25.9594   26.4423   27.1864   28.1080   29.2475   30.4720];
+% disp= [25.4403   25.8218   26.6874   28.1420   30.0458   32.4353   34.8482   38.1391   41.3907   44.9236   48.2826];
+
+erasure = true;
 
 % Sample size - same as phase screen data size
 N = 10000;
 
-rec = '0.1';
+rec = '0.2';
 dists = [1000 1200 1400 1600 1800 2000 2200 2400 2600 2800 3000];
 
 % rec = '0.15';
@@ -32,6 +37,7 @@ gs = -1.26:.01:1.26;
 
 for i = 1:length(dists)
 
+    epsilon = 10e-4 * disp(i) + 0.013;
     d = dists(i);
 
     T_ps = load(['data/ERASURE_d=', num2str(d), '_L0=1.5_l0=0.01_rec=', rec,'_10000.mat']);

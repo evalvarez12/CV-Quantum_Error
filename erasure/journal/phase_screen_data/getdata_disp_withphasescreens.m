@@ -4,7 +4,7 @@ V = 10;
 coh_sigma = 10;
 epsilon = 0;
 eta = .9;
-eps = 0.049;
+eps = 0.043;
 
 
 % Sample size - same as phase screen data size
