@@ -33,6 +33,8 @@ pspa = data(:, 6);
 paps = data(:, 7);
 sb = data(:, 8);
 
+par = sqrt(par);
+
 
 hold on;
 plot(par, ps, 'o-', 'LineWidth', 1.7, 'DisplayName', 'PS');
