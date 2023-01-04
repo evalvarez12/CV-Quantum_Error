@@ -1,9 +1,9 @@
 clear all;
 
-vs = 400;
-T=1;
+vs = 10;
+T=0.8;
 eps = 0.0;
-V= 50;
+V= 10;
 V2 = sqrt(V^2-1);
 
 
@@ -22,6 +22,16 @@ b = T*vs + 2*T*(V-V2) + 3 + 3*eps - 3*T;
 c = sqrt(T)*sqrt(vs^2-1);
 
 f_tmsv_gauss(ai, bi, ci, a, b, c)
+
+Fne = f_tmsv_gauss(ai, bi, ci, adir, bdir, cdir);
+
+Fe = f_tmsv_gauss(ai, bi, ci, a, b, c);
+F0 = f_tmsv_gauss(ai, bi, ci, vs, 1, 0);
+
+pe =0.1;
+PRO = ((1-pe)^3 + pe*(1-pe)^2)*Fne + 2*pe*(1-pe)^2*Fe + (3*pe^2*(1-pe) + pe^3)*F0
+DIR = (1-pe)*Fne + pe*F0
+
 
 % f_code_tmsv(0,1,1,0,-1,10,10)
 % 
