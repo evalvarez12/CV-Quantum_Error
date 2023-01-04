@@ -3,10 +3,10 @@ close all;
 set(0,'defaultTextInterpreter','latex');
 
 vs = 1.5e12;
-eps = 0.005;
+eps = 0.0;
 eta = 1;
 T = linspace(0.9999999999999, .6, 100);
-V = 50;
+V = 1.5e12;
 
 
 pe = 0.1;
