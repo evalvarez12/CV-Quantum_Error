@@ -13,7 +13,7 @@ set(0,'defaultTextInterpreter','latex');
 % PD
 N = 10000;
 
-rec = '0.2';
+rec = '0.1';
 dists = [1000 1200 1400 1600 1800 2000 2200 2400 2600 2800 3000];
 
 
@@ -52,7 +52,7 @@ Fm_dir = data.Fm_dir;
 Fmean_dir = mean(transpose(Fm_dir));
 Fstd_dir = std(transpose(Fm_dir));
  
-F0 = 0.;
+F0 = 0.09;
 
 pe1 = 0.1;
 F_total1 = (1-pe1)^3*Fmean10 + (pe1*(1-pe1)^2)*(2*Fmean_erasure10 + Fmean10) + 3*(1-pe1)*pe1^2*F0 + pe1^3*F0;
@@ -102,7 +102,7 @@ hold on;
 
 % yyaxis left
 % title('Plots with Different y-Scales')
-xlabel('$L[\mathrm{m}]$', 'Interpreter', 'latex');
+xlabel('$L~[\mathrm{m}]$', 'Interpreter', 'latex');
 ylabel('$\mathcal{F}_\mathrm{total}$', 'Interpreter', 'latex');
 
 
@@ -139,14 +139,14 @@ plot(dists, F_total_dir4, '--', 'Color', color4, 'LineWidth', 1.4, 'HandleVisibi
 % xlim([par(1) par(end)])
 ylim([0.5 0.95]);
 % xlim([1000 1910]);
-% legend('fontname','times', 'Location','northeast','Interpreter', 'latex');
+legend('fontname','times', 'Location','northeast','Interpreter', 'latex');
 % text(1020, .98, ['$r_\mathrm{d}=', rec, 'm$']);
 
 txt = ['$r_\mathrm{d} =', rec, '$ m'];
-% text(1750, .80, txt);
-text(2700, .93, txt);
+text(1750, .80, txt);
+% text(2700, .79, txt);
 
-savefigures('total2');
+savefigures('total1');
 
 
 

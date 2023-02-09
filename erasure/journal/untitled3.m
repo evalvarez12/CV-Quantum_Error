@@ -1,9 +1,9 @@
 clear all;
 
-vs = 10;
-T=0.8;
+vs = 9000;
+T=0.999;
 eps = 0.0;
-V= 10;
+V= vs;
 V2 = sqrt(V^2-1);
 
 

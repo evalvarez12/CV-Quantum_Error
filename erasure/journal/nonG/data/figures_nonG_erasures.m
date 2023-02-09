@@ -33,7 +33,7 @@ pspa = data(:, 6);
 paps = data(:, 7);
 sb = data(:, 8);
 
-par = sqrt(par);
+% par = sqrt(par);
 
 
 hold on;
@@ -47,7 +47,7 @@ plot(par, tmsv, 'k-',  'LineWidth', 3, 'DisplayName', 'TMSV');
 
 legend('Location','northwest');
 
-xlabel('$T$', 'Interpreter', 'latex');
+xlabel("$T'$", 'Interpreter', 'latex');
 ylabel('$\bar{\mathcal{F}}$ ','Interpreter', 'latex');
 
 % xlim([.5 1])

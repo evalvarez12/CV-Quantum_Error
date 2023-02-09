@@ -13,7 +13,7 @@ set(0,'defaultTextInterpreter','latex');
 % PD
 N = 10000;
 
-rec = '0.2';
+rec = '0.1';
 dists = [1000 1200 1400 1600 1800 2000 2200 2400 2600 2800 3000];
 
 pe = 0;
@@ -73,7 +73,7 @@ hold on;
 
 % yyaxis left
 % title('Plots with Different y-Scales')
-xlabel('$L[\mathrm{m}]$', 'Interpreter', 'latex');
+xlabel('$L~[\mathrm{m}]$', 'Interpreter', 'latex');
 ylabel('$\bar{\mathcal{F}}$', 'Interpreter', 'latex');
 
 
@@ -94,14 +94,14 @@ plot(dists, Fmean2, 'v-', 'LineWidth', 1.2, 'DisplayName', '$r=10 ~\mathrm{dB}$'
 
 % xlim([par(1) par(end)])
 ylim([0.5 .85]);
-% legend('Location','northeast', 'Interpreter', 'latex');
+legend('Location','northeast', 'Interpreter', 'latex');
 % text(1020, .98, ['$r_\mathrm{d}=', rec, 'm$']);
 
 txt = ['$r_\mathrm{d}=', rec, '$ m'];
-% text(1740, .77, txt);
-text(2640, .77, txt);
+text(1740, .77, txt);
+% text(2640, .77, txt);
 
-savefigures('scatter_phasesc_erasure_02');
+savefigures('scatter_phasesc_erasure_01');
 
 
 

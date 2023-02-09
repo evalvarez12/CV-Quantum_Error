@@ -3,14 +3,14 @@ clear;
 V = 3;
 coh_sigma = 10;
 % epsilon = 0.043;
-eta = 0.9;
+eta = sqrt(0.9);
 
 
 
 disp= [25.2491   25.2679   25.3129   25.4089   25.5921   25.9594   26.4423   27.1864   28.1080   29.2475   30.4720];
 % disp= [25.4403   25.8218   26.6874   28.1420   30.0458   32.4353   34.8482   38.1391   41.3907   44.9236   48.2826];
 
-erasure = true;
+erasure = false;
 
 % Sample size - same as phase screen data size
 N = 10000;
