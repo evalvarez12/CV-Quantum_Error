@@ -8,7 +8,12 @@ function [res]=RCI_dir(vs, T, eps, pe)
     v1 = (z+(a-b))/2;
     v2 = (z-(a-b))/2;
     
+    r  = acosh(vs)/2;
+    nth = sinh(r)^2;
+
+
     Sth = gfun(vs);
+%     Sth = gfun(2*nth +1);
     S = real(gfun(v1) + gfun(v2));
     
     S(S<0) = 0;

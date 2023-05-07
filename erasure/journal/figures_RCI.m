@@ -3,10 +3,10 @@ close all;
 set(0,'defaultTextInterpreter','latex');
 
 vs = 4e12;
-eps = 0.013;
+eps = 0.013*0;
 eta = 1;
 T = linspace(0.9999999, .6, 100);
-V = 1.5e12;
+V = 4e12;
 
 pe = 0.;
 R0 = RCI(V, vs, T, eps, eta, pe);
