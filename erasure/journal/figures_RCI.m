@@ -2,7 +2,7 @@ clear all;
 close all;
 set(0,'defaultTextInterpreter','latex');
 
-vs = 1.5e12;
+vs = 4e12;
 eps = 0.013;
 eta = 1;
 T = linspace(0.9999999, .6, 100);
@@ -28,9 +28,15 @@ color1 = [0, 0.4470, 0.7410];
 color2 = [0.8500, 0.3250, 0.0980];
 color3 = [0.9290, 0.6940, 0.1250];
 
+
+R00 = -log2(1-T);
+
 hold on;
 plot(T, R0, '-', 'Color', 'black', 'LineWidth', 1.6, 'DisplayName', '$p_\mathrm{e}=0.$');
 plot(T, Rdir0,'--', 'Color', 'black', 'LineWidth', 1.4, 'HandleVisibility','off');
+
+plot(T, R00, '-', 'Color', 'red', 'LineWidth', 1.6, 'DisplayName', '$p_\mathrm{e}=0.$');
+
 
 plot(T, R1, '-', 'Color', color1, 'LineWidth', 1.4, 'DisplayName', '$p_\mathrm{e}=0.1$');
 plot(T, Rdir1,'--', 'Color', color1, 'LineWidth', 1.4, 'HandleVisibility','off');
@@ -50,7 +56,7 @@ legend('fontname','times', 'Location','northwest','Interpreter', 'latex');
 
 xlim([0.8 1]);
 % ylim([1 10]);
-savefigures('RCI')
+% savefigures('RCI')
 
 % 
 % 
